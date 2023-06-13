@@ -5,5 +5,5 @@
 * [ ] Host creation (Hetzner, Contabo)
 * [ ] Host provisioning (ssh)
 * [ ] Instance creation
-* [ ] Instance setup (engine-version, mtui, mapserver, matterbridge)
+* [ ] Instance setup (mtui)
 * [ ] Backups?
