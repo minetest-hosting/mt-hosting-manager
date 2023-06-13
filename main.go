@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"mt-hosting-manager/web"
 )
 
 func main() {
 	fmt.Println("Listening on port 8080")
-	http.ListenAndServe(":8080", nil)
+	err := web.Serve()
+	if err != nil {
+		panic(err)
+	}
 }

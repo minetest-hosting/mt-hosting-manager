@@ -1,0 +1,26 @@
+{{define "navbar"}}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a href="{{BaseURL}}" class="navbar-brand">Minetest hosting</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a href="{{BaseURL}}login" class="nav-link">
+                    <i class="fa fa-sign-in"></i> Login
+                </a>
+            </li>
+        </ul>
+        {{if Claims}}
+        <form class="d-flex">
+            <div class="btn btn-light">
+                <a href="{{BaseURL}}profile">
+                    <i class="fas fa-user"></i>
+                    <span>
+                        Logged in as <b>{{Claims.Username}}</b>
+                    </span>
+                </a>
+            </div>
+        </form>
+        {{end}}
+    </div>
+</nav>
+{{end}}
