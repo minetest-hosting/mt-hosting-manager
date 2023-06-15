@@ -6,7 +6,7 @@ COPY . .
 RUN go test ./... -vet=off && \
 	CGO_ENABLED=0 go build .
 
-FROM alpine:3.18.0
+FROM alpine:3.18.2
 WORKDIR /
 COPY --from=go-app /data/mt-hosting-manager /.
 CMD ["/mt-hosting-manager"]
