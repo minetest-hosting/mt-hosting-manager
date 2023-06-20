@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"time"
 
 	"mt-hosting-manager/tmpl"
@@ -29,6 +30,14 @@ func formattime(ts int64) string {
 	return t.Format(time.UnixDate)
 }
 
+func baseurl() string {
+	u := os.Getenv("BASEURL")
+	if u == "" {
+		u = "http://127.0.0.1:8080"
+	}
+	return u
+}
+
 func Serve() error {
 
 	key := "mykey"
@@ -43,7 +52,7 @@ func Serve() error {
 	tu := &tmpl.TemplateUtil{
 		Files: Files,
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
-			funcs["BaseURL"] = func() string { return "http://127.0.0.1:8080/" }
+			funcs["BaseURL"] = baseurl
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
