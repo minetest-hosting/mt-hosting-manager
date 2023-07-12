@@ -1,4 +1,4 @@
-FROM golang:1.20.5 as go-app
+FROM golang:1.20.6 as go-app
 WORKDIR /data
 COPY go.* ./
 RUN go mod download
