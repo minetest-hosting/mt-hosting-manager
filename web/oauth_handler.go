@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"mt-hosting-manager/db"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/oauth"
@@ -71,12 +72,15 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if user == nil {
 		user = &types.User{
-			Created:    time.Now().Unix(),
-			Name:       info.Name,
-			Mail:       info.Email,
-			ExternalID: info.ExternalID,
-			Type:       h.Type,
-			Role:       types.UserRoleUser,
+			Created:     time.Now().Unix(),
+			Name:        info.Name,
+			Mail:        info.Email,
+			ExternalID:  info.ExternalID,
+			Type:        h.Type,
+			Role:        types.UserRoleUser,
+			Credits:     0,
+			MaxCredits:  100 * 100 * 1000, // 100$
+			WarnCredits: 4 * 100 * 1000,   // 4$
 		}
 		err = h.UserRepo.Insert(user)
 		if err != nil {
@@ -89,6 +93,11 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"mail":        user.Mail,
 			"external_id": user.ExternalID,
 		}).Debug("created new user")
+
+		notify.Send(&notify.NtfyNotification{
+			Title:   fmt.Sprintf("New user signed up: %s", user.Name),
+			Message: fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
+		}, true)
 	}
 
 	dur := time.Duration(24 * 180 * time.Hour)
