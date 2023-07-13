@@ -5,13 +5,13 @@ import (
 )
 
 type Repositories struct {
-	UserRepo *UserRepository
-	NodeRepo *NodeRepository
+	UserRepo     *UserRepository
+	NodeTypeRepo *NodeTypeRepository
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
 	return &Repositories{
-		UserRepo: &UserRepository{DB: db},
-		NodeRepo: &NodeRepository{DB: db},
+		UserRepo:     &UserRepository{DB: db},
+		NodeTypeRepo: &NodeTypeRepository{DB: db},
 	}
 }

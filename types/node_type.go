@@ -6,7 +6,7 @@ const (
 	ProviderHetzner ProviderType = "HETZNER"
 )
 
-type Node struct {
+type NodeType struct {
 	ID                      string       `json:"id"`
 	Deprecated              bool         `json:"deprecated"`
 	OrderID                 int          `json:"order_id"`
@@ -19,7 +19,7 @@ type Node struct {
 	MaxInstances            int          `json:"max_instances"`
 }
 
-func (m *Node) Columns(action string) []string {
+func (m *NodeType) Columns(action string) []string {
 	return []string{
 		"id",
 		"deprecated",
@@ -34,14 +34,14 @@ func (m *Node) Columns(action string) []string {
 	}
 }
 
-func (m *Node) Table() string {
-	return "node"
+func (m *NodeType) Table() string {
+	return "node_type"
 }
 
-func (m *Node) Scan(action string, r func(dest ...any) error) error {
+func (m *NodeType) Scan(action string, r func(dest ...any) error) error {
 	return r(&m.ID, &m.Deprecated, &m.OrderID, &m.Provider, &m.ServerType, &m.Name, &m.Description, &m.CostPerHour, &m.MaxRecommendedInstances, &m.MaxInstances)
 }
 
-func (m *Node) Values(action string) []any {
+func (m *NodeType) Values(action string) []any {
 	return []any{m.ID, m.Deprecated, m.OrderID, m.Provider, m.ServerType, m.Name, m.Description, m.CostPerHour, m.MaxRecommendedInstances, m.MaxInstances}
 }

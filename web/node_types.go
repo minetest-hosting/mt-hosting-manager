@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (ctx *Context) Nodes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (ctx *Context) NodeTypes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 
 	if r.Method == http.MethodPost {
 		err := r.ParseForm()
@@ -19,10 +19,10 @@ func (ctx *Context) Nodes(w http.ResponseWriter, r *http.Request, c *types.Claim
 
 		switch r.Form.Get("action") {
 		case "new":
-			http.Redirect(w, r, fmt.Sprintf("%s/nodes/%s", ctx.BaseURL, uuid.NewString()), http.StatusSeeOther)
+			http.Redirect(w, r, fmt.Sprintf("%s/node_types/%s", ctx.BaseURL, uuid.NewString()), http.StatusSeeOther)
 			return
 		}
 	}
 
-	ctx.tu.ExecuteTemplate(w, r, "nodes.html", nil)
+	ctx.tu.ExecuteTemplate(w, r, "node_types.html", nil)
 }

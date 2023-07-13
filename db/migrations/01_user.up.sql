@@ -14,8 +14,8 @@ create table user(
     warn_credits bigint not null default 5 -- warn if the credits fall below this threshold
 );
 
--- available nodes to select
-create table node(
+-- available node types to select
+create table node_type(
     id varchar(36) primary key not null, -- uuid
     deprecated boolean not null default false,
     order_id int not null default 1, -- order id
@@ -32,7 +32,7 @@ create table node(
 create table user_node(
     id varchar(36) primary key not null, -- uuid
     user_id varchar(36) not null references user(id),
-    node_id varchar(36) not null references node(id),
+    node_type_id varchar(36) not null references node_type(id),
     created bigint not null, -- creation time in `time.Now().Unix()`
     started bool not null default false,
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
@@ -42,9 +42,9 @@ create table user_node(
 
 -- update user set credits = credits - (select sum(n.cost_per_hour) from user_node un join node n on un.node_id = n.id where un.user_id = user.id);
 
-create table minetest_instance(
+create table minetest_server(
     id varchar(36) primary key not null, -- uuid
     user_node_id varchar(36) not null references user_node(id),
-    name varchar(64) not null, -- name of the instance, used for dns CNAME
+    name varchar(64) not null, -- name of the server, used for dns CNAME
     created bigint not null -- creation time in `time.Now().Unix()`
 );

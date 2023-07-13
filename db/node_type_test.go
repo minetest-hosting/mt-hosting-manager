@@ -10,7 +10,7 @@ import (
 func TestNodeRepository(t *testing.T) {
 	repos := setupRepos(t)
 
-	assert.NoError(t, repos.NodeRepo.Insert(&types.Node{
+	assert.NoError(t, repos.NodeTypeRepo.Insert(&types.NodeType{
 		Provider:   types.ProviderHetzner,
 		ServerType: "cx11",
 		Name:       "",
