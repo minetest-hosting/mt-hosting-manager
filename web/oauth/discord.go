@@ -3,6 +3,7 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -12,6 +13,7 @@ type DiscordResponse struct {
 	ID       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
+	Verified bool   `json:"verified"`
 }
 
 type DiscordOauth struct{}
@@ -72,7 +74,10 @@ func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*
 		return nil, err
 	}
 
-	fmt.Println(userData)
+	if !userData.Verified {
+		return nil, errors.New("mail-address not verified")
+	}
+
 	info := OauthUserInfo{
 		Name:       userData.Username,
 		Email:      userData.Email,
