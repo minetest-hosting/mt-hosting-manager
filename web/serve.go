@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
 
 	"github.com/gorilla/csrf"
@@ -35,7 +36,7 @@ func formattime(ts int64) string {
 	return t.Format(time.UnixDate)
 }
 
-func Serve() error {
+func Serve(repos *db.Repositories) error {
 
 	r := mux.NewRouter()
 	r.Use(prometheusMiddleware)
@@ -78,7 +79,8 @@ func Serve() error {
 
 	// templates, pages
 	ctx := &Context{
-		tu: tu,
+		tu:    tu,
+		repos: repos,
 	}
 	ctx.Setup(tmplRoute)
 

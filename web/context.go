@@ -2,7 +2,11 @@ package web
 
 import (
 	"embed"
+	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
+	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/oauth"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/vearutop/statigz"
@@ -13,12 +17,27 @@ import (
 var Files embed.FS
 
 type Context struct {
-	tu *tmpl.TemplateUtil
+	tu    *tmpl.TemplateUtil
+	repos *db.Repositories
 }
 
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/", ctx.Index)
 	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
+
+	if os.Getenv("GITHUB_CLIENTID") != "" {
+		r.Handle("/oauth_callback/github", &OauthHandler{
+			Impl:     &oauth.GithubOauth{},
+			BaseURL:  os.Getenv("BASEURL"),
+			Type:     types.UserTypeGithub,
+			Tu:       ctx.tu,
+			UserRepo: ctx.repos.UserRepo,
+			Config: &oauth.OAuthConfig{
+				ClientID: os.Getenv("GITHUB_CLIENTID"),
+				Secret:   os.Getenv("GITHUB_SECRET"),
+			},
+		})
+	}
 
 	r.NotFoundHandler = ctx.NotFound()
 }

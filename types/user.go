@@ -7,17 +7,25 @@ const (
 	UserTypeDiscord UserType = "DISCORD"
 )
 
+type UserRole string
+
+const (
+	UserRoleUser  UserRole = "USER"
+	UserRoleAdmin UserRole = "ADMIN"
+)
+
 type User struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	Mail       string `json:"mail"`
-	Created    int64  `json:"created"`
-	ExternalID string `json:"external_id"`
-	Type       string `json:"type"`
+	ID         string   `json:"id"`
+	Name       string   `json:"name"`
+	Mail       string   `json:"mail"`
+	Created    int64    `json:"created"`
+	ExternalID string   `json:"external_id"`
+	Type       UserType `json:"type"`
+	Role       UserRole `json:"role"`
 }
 
 func (m *User) Columns(action string) []string {
-	return []string{"id", "name", "mail", "created", "external_id", "type"}
+	return []string{"id", "name", "mail", "created", "external_id", "type", "role"}
 }
 
 func (m *User) Table() string {
@@ -25,9 +33,9 @@ func (m *User) Table() string {
 }
 
 func (m *User) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.Name, &m.Mail, &m.Created, &m.ExternalID, &m.Type)
+	return r(&m.ID, &m.Name, &m.Mail, &m.Created, &m.ExternalID, &m.Type, &m.Role)
 }
 
 func (m *User) Values(action string) []any {
-	return []any{m.ID, m.Name, m.Mail, m.Created, m.ExternalID, m.Type}
+	return []any{m.ID, m.Name, m.Mail, m.Created, m.ExternalID, m.Type, m.Role}
 }

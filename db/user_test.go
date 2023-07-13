@@ -16,7 +16,8 @@ func TestUserRepository(t *testing.T) {
 		Mail:       "x@y.ch",
 		Created:    time.Now().Unix(),
 		ExternalID: "abc",
-		Type:       string(types.UserTypeGithub),
+		Type:       types.UserTypeGithub,
+		Role:       types.UserRoleUser,
 	}))
 
 	// existing user
