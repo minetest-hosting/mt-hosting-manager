@@ -51,8 +51,6 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("%v\n", info)
-
 	if info.Email == "" {
 		h.Tu.RenderError(w, r, 500, errors.New("empty email"))
 		return
