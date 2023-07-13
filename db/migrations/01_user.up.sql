@@ -14,7 +14,7 @@ create table user(
     warn_credits bigint not null default 5 -- warn if the credits fall below this threshold
 );
 
--- availabe node to select
+-- available nodes to select
 create table node(
     id varchar(36) primary key not null, -- uuid
     deprecated boolean not null default false,
