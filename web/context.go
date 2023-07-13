@@ -28,6 +28,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.Login))
 	r.HandleFunc("/profile", ctx.tu.Secure(ctx.Profile))
 	r.HandleFunc("/node_types", ctx.tu.Secure(ctx.NodeTypes, tmpl.RoleCheck(types.UserRoleAdmin)))
+	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin)))
 	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
 
 	if os.Getenv("GITHUB_CLIENTID") != "" {
