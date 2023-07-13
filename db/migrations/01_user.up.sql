@@ -40,6 +40,8 @@ create table user_node(
     ipv6 varchar(128) not null
 );
 
+-- update user set credits = credits - (select sum(n.cost_per_hour) from user_node un join node n on un.node_id = n.id where un.user_id = user.id);
+
 create table minetest_instance(
     id varchar(36) primary key not null, -- uuid
     user_node_id varchar(36) not null references user_node(id),
