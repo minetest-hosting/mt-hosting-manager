@@ -3,6 +3,7 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 )
@@ -17,6 +18,11 @@ type GithubUserResponse struct {
 	ID    int    `json:"id"`
 	Login string `json:"login"`
 	Email string `json:"email"`
+}
+
+type GithubUserMail struct {
+	Email   string `json:"email"`
+	Primary bool   `json:"primary"`
 }
 
 type GithubOauth struct{}
@@ -56,9 +62,10 @@ func (o *GithubOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig)
 }
 
 func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*OauthUserInfo, error) {
+	// fetch user data
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
 	req.Header.Set("Accept", "application/json")
@@ -76,10 +83,39 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*O
 		return nil, err
 	}
 
+	// fetch mails
+	req, err = http.NewRequest("GET", "https://api.github.com/user/emails", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+access_token)
+
+	resp, err = client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	mails := []GithubUserMail{}
+	err = json.NewDecoder(resp.Body).Decode(&mails)
+
+	// fetch primary mail
+	primary_mail := ""
+	for _, mail := range mails {
+		if mail.Primary {
+			primary_mail = mail.Email
+		}
+	}
+
+	if primary_mail == "" {
+		return nil, errors.New("No primary email set")
+	}
+
 	external_id := strconv.Itoa(userData.ID)
 	info := OauthUserInfo{
 		Name:       userData.Login,
-		Email:      userData.Email,
+		Email:      primary_mail,
 		ExternalID: external_id,
 	}
 

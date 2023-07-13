@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
@@ -48,6 +49,8 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.Tu.RenderError(w, r, 500, err)
 		return
 	}
+
+	fmt.Printf("%v\n", info)
 
 	if info.Email == "" {
 		h.Tu.RenderError(w, r, 500, errors.New("empty email"))

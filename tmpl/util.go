@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 type TemplateUtil struct {
@@ -44,6 +46,10 @@ func (tu *TemplateUtil) ExecuteTemplate(w http.ResponseWriter, r *http.Request, 
 }
 
 func (tu *TemplateUtil) RenderError(w http.ResponseWriter, r *http.Request, code int, err error) {
+	logrus.WithFields(logrus.Fields{
+		"error": err,
+		"code":  code,
+	}).Error()
 	w.WriteHeader(code)
 	t := tu.CreateTemplate("error.html", r)
 	t.ExecuteTemplate(w, "layout", err)

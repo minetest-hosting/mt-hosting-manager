@@ -1,2 +1,3 @@
 mt-hosting.sqlite*
 mt-hosting-manager
+docker-compose.override.yml
