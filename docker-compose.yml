@@ -1,0 +1,26 @@
+version: "3.6"
+
+services:
+ hosting:
+  image: golang:1.20.0
+  volumes:
+   - ".:/data"
+   - "go_build_cache:/root/.cache/go-build"
+   - "go_mod_cache:/root/go"
+  environment:
+   - LOGLEVEL=debug
+   - BASEURL=http://localhost:8080
+   - COOKIE_DOMAIN=localhost
+   - COOKIE_PATH=/
+   - COOKIE_SECURE=false
+   - CSRF_KEY=my-csrf-key
+   - JWT_KEY=my-jwt-key
+   - WEBDEV=true
+  ports:
+   - "8080:8080"
+  working_dir: /data
+  command: ["go", "run", "."]
+
+volumes:
+  go_build_cache: {}
+  go_mod_cache: {}

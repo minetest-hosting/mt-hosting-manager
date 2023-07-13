@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"html/template"
+	"io/fs"
 	"net/http"
 	"os"
 	"time"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -30,38 +32,36 @@ func formattime(ts int64) string {
 	return t.Format(time.UnixDate)
 }
 
-func baseurl() string {
-	u := os.Getenv("BASEURL")
-	if u == "" {
-		u = "http://127.0.0.1:8080"
-	}
-	return u
-}
-
 func Serve() error {
-
-	key := "mykey"
 
 	r := mux.NewRouter()
 	r.Use(prometheusMiddleware)
 	r.Use(loggingMiddleware)
 
 	tmplRoute := r.NewRoute().Subrouter()
-	tmplRoute.Use(csrf.Protect([]byte(key)))
+	tmplRoute.Use(csrf.Protect([]byte(os.Getenv("CSRF_KEY"))))
+
+	var files fs.FS
+	if os.Getenv("WEBDEV") == "true" {
+		logrus.Warn("Webdev mode enabled")
+		files = os.DirFS("web")
+	} else {
+		files = Files
+	}
 
 	tu := &tmpl.TemplateUtil{
-		Files: Files,
+		Files: files,
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
-			funcs["BaseURL"] = baseurl
+			funcs["BaseURL"] = func() string { return os.Getenv("BASEURL") }
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
 		},
-		JWTKey:       key,
+		JWTKey:       os.Getenv("JWT_KEY"),
 		CookieName:   "mt-hosting-manager",
-		CookieDomain: "127.0.0.1",
-		CookiePath:   "/",
-		CookieSecure: false,
+		CookieDomain: os.Getenv("COOKIE_DOMAIN"),
+		CookiePath:   os.Getenv("COOKIE_PATH"),
+		CookieSecure: os.Getenv("COOKIE_SECURE") == "true",
 	}
 
 	// templates, pages

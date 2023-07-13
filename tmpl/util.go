@@ -2,13 +2,13 @@ package tmpl
 
 import (
 	"bytes"
-	"embed"
 	"html/template"
+	"io/fs"
 	"net/http"
 )
 
 type TemplateUtil struct {
-	Files        embed.FS
+	Files        fs.FS
 	AddFuncs     func(funcs template.FuncMap, r *http.Request)
 	JWTKey       string
 	CookieName   string
