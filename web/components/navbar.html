@@ -8,6 +8,15 @@
                     <i class="fa fa-sign-in"></i> Login
                 </a>
             </li>
+            {{if Claims}}
+                {{if eq Claims.Role "ADMIN"}}
+                <li class="nav-item">
+                    <a href="{{BaseURL}}/nodes" class="nav-link">
+                        <i class="fa fa-server"></i> Nodes
+                    </a>
+                </li>
+                {{end}}
+            {{end}}
         </ul>
         {{if Claims}}
         <form class="d-flex">
