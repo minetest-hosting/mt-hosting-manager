@@ -93,8 +93,9 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}).Debug("created new user")
 
 		notify.Send(&notify.NtfyNotification{
-			Title:   fmt.Sprintf("New user signed up: %s", user.Name),
-			Message: fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
+			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
+			Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
+			Priority: 3,
 		}, true)
 	}
 
