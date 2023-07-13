@@ -79,8 +79,9 @@ func Serve(repos *db.Repositories) error {
 
 	// templates, pages
 	ctx := &Context{
-		tu:    tu,
-		repos: repos,
+		tu:      tu,
+		repos:   repos,
+		BaseURL: os.Getenv("BASEURL"),
 	}
 	ctx.Setup(tmplRoute)
 

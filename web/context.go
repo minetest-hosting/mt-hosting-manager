@@ -20,6 +20,7 @@ type Context struct {
 	tu          *tmpl.TemplateUtil
 	repos       *db.Repositories
 	GithubOauth *oauth.OAuthConfig
+	BaseURL     string
 }
 
 func (ctx *Context) Setup(r *mux.Router) {
@@ -37,7 +38,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 
 		r.Handle("/oauth_callback/github", &OauthHandler{
 			Impl:     &oauth.GithubOauth{},
-			BaseURL:  os.Getenv("BASEURL"),
+			BaseURL:  ctx.BaseURL,
 			Type:     types.UserTypeGithub,
 			Tu:       ctx.tu,
 			UserRepo: ctx.repos.UserRepo,
