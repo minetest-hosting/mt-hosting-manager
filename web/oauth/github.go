@@ -21,8 +21,9 @@ type GithubUserResponse struct {
 }
 
 type GithubUserMail struct {
-	Email   string `json:"email"`
-	Primary bool   `json:"primary"`
+	Email    string `json:"email"`
+	Primary  bool   `json:"primary"`
+	Verified bool   `json:"verified"`
 }
 
 type GithubOauth struct{}
@@ -103,13 +104,13 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*O
 	// fetch primary mail
 	primary_mail := ""
 	for _, mail := range mails {
-		if mail.Primary {
+		if mail.Primary && mail.Verified {
 			primary_mail = mail.Email
 		}
 	}
 
 	if primary_mail == "" {
-		return nil, errors.New("No primary email set")
+		return nil, errors.New("No primary and verified email address found")
 	}
 
 	external_id := strconv.Itoa(userData.ID)
