@@ -1,6 +1,7 @@
 package web
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -12,7 +13,9 @@ import (
 
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/text/language"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -49,6 +52,11 @@ func Serve() error {
 		files = Files
 	}
 
+	bundle := i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
+	bundle.LoadMessageFileFS(files, "locale/en.json")
+	bundle.LoadMessageFileFS(files, "locale/de.json")
+
 	tu := &tmpl.TemplateUtil{
 		Files: files,
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
@@ -56,6 +64,10 @@ func Serve() error {
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
+			funcs["T"] = func(msgId string) string {
+				localizer := i18n.NewLocalizer(bundle, r.Header.Get("Accept-Language"))
+				return localizer.MustLocalize(&i18n.LocalizeConfig{MessageID: msgId})
+			}
 		},
 		JWTKey:       os.Getenv("JWT_KEY"),
 		CookieName:   "mt-hosting-manager",
