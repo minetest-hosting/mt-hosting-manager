@@ -3,7 +3,6 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -72,7 +71,8 @@ func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*
 		return nil, err
 	}
 
-	fmt.Println(userData)
+	//TODO: verify mail: https://try.gitea.io/api/swagger#/user/userListEmails
+
 	external_id := strconv.Itoa(userData.ID)
 	info := OauthUserInfo{
 		Name:       userData.Login,
