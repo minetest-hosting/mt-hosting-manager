@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
  hosting:
-  image: golang:1.20.0
+  image: golang:1.20.6
   volumes:
    - ".:/data"
    - "go_build_cache:/root/.cache/go-build"
