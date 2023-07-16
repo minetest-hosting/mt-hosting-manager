@@ -70,6 +70,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if user == nil {
 		user = &types.User{
 			Created:     time.Now().Unix(),
+			State:       types.UserStateActive,
 			Name:        info.Name,
 			Mail:        info.Email,
 			ExternalID:  info.ExternalID,

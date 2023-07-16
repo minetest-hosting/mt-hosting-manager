@@ -3,6 +3,7 @@ PRAGMA foreign_keys = ON;
 -- registered user
 create table user(
     id varchar(36) primary key not null, -- uuid
+    state varchar(16) not null default 'ACTIVE',
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
     created bigint not null, -- creation time in `time.Now().Unix()`

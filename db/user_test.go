@@ -13,6 +13,7 @@ func TestUserRepository(t *testing.T) {
 
 	assert.NoError(t, repos.UserRepo.Insert(&types.User{
 		Name:       "Some dude",
+		State:      types.UserStateActive,
 		Mail:       "x@y.ch",
 		Created:    time.Now().Unix(),
 		ExternalID: "abc",
@@ -24,6 +25,7 @@ func TestUserRepository(t *testing.T) {
 	u, err := repos.UserRepo.GetByMail("x@y.ch")
 	assert.NoError(t, err)
 	assert.NotNil(t, u)
+	assert.Equal(t, types.UserStateActive, u.State)
 
 	// non existent user
 	u, err = repos.UserRepo.GetByMail("non@existent")
