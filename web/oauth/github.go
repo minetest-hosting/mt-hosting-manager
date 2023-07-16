@@ -100,6 +100,9 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*O
 
 	mails := []GithubUserMail{}
 	err = json.NewDecoder(resp.Body).Decode(&mails)
+	if err != nil {
+		return nil, err
+	}
 
 	// fetch primary mail
 	primary_mail := ""
@@ -110,7 +113,7 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*O
 	}
 
 	if primary_mail == "" {
-		return nil, errors.New("No primary and verified email address found")
+		return nil, errors.New("no primary and verified email address found")
 	}
 
 	external_id := strconv.Itoa(userData.ID)
