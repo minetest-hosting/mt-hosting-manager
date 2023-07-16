@@ -1,20 +1,110 @@
 package web
 
 import (
+	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
+	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
 func (ctx *Context) NodeTypes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	model := make(map[string]any)
 
-	ctx.tu.ExecuteTemplate(w, r, "node_types.html", nil)
+	list, err := ctx.repos.NodeTypeRepo.GetAll()
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+	model["NodeTypes"] = list
+
+	ctx.tu.ExecuteTemplate(w, r, "node_types.html", model)
 }
 
 func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	ctx.tu.ExecuteTemplate(w, r, "node_type_edit.html", id)
+	model := make(map[string]any)
+
+	nt, err := ctx.repos.NodeTypeRepo.GetByID(id)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+
+	if id == "new" {
+		nt = &types.NodeType{
+			ID: uuid.NewString(),
+		}
+	}
+
+	if nt == nil {
+		ctx.tu.RenderError(w, r, 404, err)
+		return
+	}
+
+	model["NodeType"] = nt
+
+	ctx.tu.ExecuteTemplate(w, r, "node_type_edit.html", model)
+}
+
+func (ctx *Context) NodeTypeSave(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	err := r.ParseForm()
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+
+	// remove action
+	if r.FormValue("action") == "remove" {
+		err = ctx.repos.NodeTypeRepo.Delete(r.FormValue("id"))
+		if err != nil {
+			ctx.tu.RenderError(w, r, 404, err)
+			return
+		}
+
+		http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.BaseURL), http.StatusSeeOther)
+		return
+	}
+
+	// save / update
+	nt, err := ctx.repos.NodeTypeRepo.GetByID(r.FormValue("id"))
+	if err != nil {
+		ctx.tu.RenderError(w, r, 404, err)
+		return
+	}
+
+	if nt == nil {
+		nt = &types.NodeType{}
+	}
+
+	nt.Name = r.FormValue("name")
+	nt.Description = r.FormValue("description")
+	nt.Deprecated = r.FormValue("deprecated") == "on"
+	nt.Provider = types.ProviderType(r.FormValue("provider"))
+	nt.ServerType = r.FormValue("server_type")
+	nt.CostPerHour, _ = strconv.ParseInt(r.FormValue("cost_per_hour"), 10, 32)
+	num, _ := strconv.ParseInt(r.FormValue("max_recommended_instances"), 10, 32)
+	nt.MaxRecommendedInstances = int(num)
+	num, _ = strconv.ParseInt(r.FormValue("max_instances"), 10, 32)
+	nt.MaxInstances = int(num)
+
+	if nt.ID == "" {
+		// insert new record
+		nt.ID = r.FormValue("id")
+		err = ctx.repos.NodeTypeRepo.Insert(nt)
+	} else {
+		// update
+		err = ctx.repos.NodeTypeRepo.Update(nt)
+	}
+
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.BaseURL), http.StatusSeeOther)
 }

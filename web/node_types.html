@@ -1,12 +1,42 @@
 {{define "title"}}Node-Types{{end}}
 {{define "content"}}
 <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">
             Node-Types
             </div>
+            <table class="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Provider</th>
+                    <th>Server-Type</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {{range $nt := .NodeTypes}}
+                    <tr>
+                        <td>
+                            {{$nt.ID}}
+                            {{if $nt.Deprecated}}
+                                <span class="badge text-bg-warning">Deprecated</span>
+                            {{end}}
+                        </td>
+                        <td>{{$nt.Name}}</td>
+                        <td>{{$nt.Provider}}</td>
+                        <td>{{$nt.ServerType}}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{BaseURL}}/node_types/{{$nt.ID}}">
+                                <i class="fa fa-pen-to-square"></i>
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
             <div class="card-body">
                 <a class="btn btn-success" href="{{BaseURL}}/node_types/new">
                     Create node-type
@@ -14,6 +44,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
 </div>
 {{end}}

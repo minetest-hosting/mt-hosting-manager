@@ -14,8 +14,6 @@ func Init(data_dir string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.SetMaxOpenConns(1)
-	db.SetMaxIdleConns(1)
 
 	err = db.Ping()
 	if err != nil {

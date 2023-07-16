@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
@@ -20,6 +21,14 @@ func (r *NodeTypeRepository) Insert(n *types.NodeType) error {
 
 func (r *NodeTypeRepository) Update(n *types.NodeType) error {
 	return dbutil.Update(r.DB, n, "where id = $1", n.ID)
+}
+
+func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
+	nt, err := dbutil.Select(r.DB, &types.NodeType{}, "where id = $1", id)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return nt, err
 }
 
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
