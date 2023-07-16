@@ -39,7 +39,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 			Secret:   os.Getenv("GITHUB_SECRET"),
 		}
 
-		r.Handle("/oauth_callback/github", &OauthHandler{
+		r.Handle("/oauth_callback/github", &oauth.OauthHandler{
 			Impl:     &oauth.GithubOauth{},
 			BaseURL:  ctx.BaseURL,
 			Type:     types.UserTypeGithub,

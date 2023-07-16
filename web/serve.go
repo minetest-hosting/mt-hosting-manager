@@ -11,6 +11,7 @@ import (
 
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
+	"mt-hosting-manager/web/middleware"
 
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
@@ -39,8 +40,8 @@ func formattime(ts int64) string {
 func Serve(repos *db.Repositories) error {
 
 	r := mux.NewRouter()
-	r.Use(prometheusMiddleware)
-	r.Use(loggingMiddleware)
+	r.Use(middleware.PrometheusMiddleware)
+	r.Use(middleware.LoggingMiddleware)
 
 	tmplRoute := r.NewRoute().Subrouter()
 	tmplRoute.Use(csrf.Protect([]byte(os.Getenv("CSRF_KEY"))))

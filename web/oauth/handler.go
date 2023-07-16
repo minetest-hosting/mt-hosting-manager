@@ -1,4 +1,4 @@
-package web
+package oauth
 
 import (
 	"encoding/json"
@@ -8,7 +8,6 @@ import (
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
-	"mt-hosting-manager/web/oauth"
 	"net/http"
 	"time"
 
@@ -16,9 +15,9 @@ import (
 )
 
 type OauthHandler struct {
-	Impl     oauth.OauthImplementation
+	Impl     OauthImplementation
 	UserRepo *db.UserRepository
-	Config   *oauth.OAuthConfig
+	Config   *OAuthConfig
 	BaseURL  string
 	Type     types.UserType
 	Tu       *tmpl.TemplateUtil
