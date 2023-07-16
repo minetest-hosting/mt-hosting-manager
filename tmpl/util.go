@@ -52,5 +52,8 @@ func (tu *TemplateUtil) RenderError(w http.ResponseWriter, r *http.Request, code
 	}).Error()
 	w.WriteHeader(code)
 	t := tu.CreateTemplate("error.html", r)
-	t.ExecuteTemplate(w, "layout", err)
+	t.ExecuteTemplate(w, "error", map[string]any{
+		"Error": err,
+		"Code":  code,
+	})
 }

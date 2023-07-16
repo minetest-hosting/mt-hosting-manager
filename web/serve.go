@@ -66,9 +66,9 @@ func Serve(repos *db.Repositories) error {
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
-			funcs["T"] = func(msgId string) string {
+			funcs["T"] = func(msgId string) (string, error) {
 				localizer := i18n.NewLocalizer(bundle, r.Header.Get("Accept-Language"))
-				return localizer.MustLocalize(&i18n.LocalizeConfig{MessageID: msgId})
+				return localizer.Localize(&i18n.LocalizeConfig{MessageID: msgId})
 			}
 		},
 		JWTKey:       os.Getenv("JWT_KEY"),

@@ -1,6 +1,17 @@
-{{define "title"}}Error{{end}}
-{{define "content"}}
-<div class="alert alert-danger" role="alert">
-    An error occured: <b>{{.}}</b>
-</div>  
+{{define "error"}}
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="theme-color" content="#000">
+        <title>Error: {{.Code}}</title>
+    </head>
+    <body>
+        <h3>Error: {{.Code}}</h3>
+        <div>
+            An error occured: <b>{{.Error}}</b>
+        </div>
+    </body>
+</html>
 {{end}}
