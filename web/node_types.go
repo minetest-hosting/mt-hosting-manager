@@ -83,7 +83,7 @@ func (ctx *Context) NodeTypeSave(w http.ResponseWriter, r *http.Request, c *type
 
 	nt.Name = r.FormValue("name")
 	nt.Description = r.FormValue("description")
-	nt.Deprecated = r.FormValue("deprecated") == "on"
+	nt.State = r.FormValue("state")
 	nt.Provider = types.ProviderType(r.FormValue("provider"))
 	nt.ServerType = r.FormValue("server_type")
 	nt.CostPerHour, _ = strconv.ParseInt(r.FormValue("cost_per_hour"), 10, 32)

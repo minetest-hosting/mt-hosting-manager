@@ -17,7 +17,7 @@ create table user(
 -- available node types to select
 create table node_type(
     id varchar(36) primary key not null, -- uuid
-    deprecated boolean not null default false,
+    state varchar(16) not null default 'INACTIVE',
     order_id int not null default 1, -- order id
     provider varchar(16) not null, -- HETZNER
     server_type varchar(16) not null, -- provider server-type: cx11
@@ -34,7 +34,7 @@ create table user_node(
     user_id varchar(36) not null references user(id),
     node_type_id varchar(36) not null references node_type(id),
     created bigint not null, -- creation time in `time.Now().Unix()`
-    started bool not null default false,
+    state varchar(16) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     ipv4 varchar(32) not null,
     ipv6 varchar(128) not null

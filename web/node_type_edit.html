@@ -17,9 +17,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Deprecated</td>
+                            <td>State</td>
                             <td>
-                                <input type="checkbox" class="form-check-input" name="deprecated" {{if .NodeType.Deprecated}}checked{{end}}/>
+                                <select name="state" class="form-control">
+                                    <option value="ACTIVE" {{if eq .NodeType.State "ACTIVE"}}selected{{end}}>Active</option>
+                                    <option value="INACTIVE" {{if eq .NodeType.State "INACTIVE"}}selected{{end}}>Inactive</option>
+                                    <option value="DEPRECATED" {{if eq .NodeType.State "DEPRECATED"}}selected{{end}}>Deprecated</option>
+                                </select>
                             </td>
                         </tr>
                         <tr>

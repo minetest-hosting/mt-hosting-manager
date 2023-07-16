@@ -20,7 +20,13 @@
                     <tr>
                         <td>
                             {{$nt.ID}}
-                            {{if $nt.Deprecated}}
+                            {{if eq $nt.State "ACTIVE"}}
+                                <span class="badge text-bg-success">Active</span>
+                            {{end}}
+                            {{if eq $nt.State "INACTIVE"}}
+                                <span class="badge text-bg-info">Inactive</span>
+                            {{end}}
+                            {{if eq $nt.State "DEPRECATED"}}
                                 <span class="badge text-bg-warning">Deprecated</span>
                             {{end}}
                         </td>

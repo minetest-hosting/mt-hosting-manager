@@ -6,9 +6,17 @@ const (
 	ProviderHetzner ProviderType = "HETZNER"
 )
 
+type NodeTypeState string
+
+const (
+	NodeTypeStateInactive   NodeTypeState = "INACTIVE"
+	NodeTypeStateActive     NodeTypeState = "ACTIVE"
+	NodeTypeStateDeprecated NodeTypeState = "DEPRECATED"
+)
+
 type NodeType struct {
 	ID                      string       `json:"id"`
-	Deprecated              bool         `json:"deprecated"`
+	State                   string       `json:"state"`
 	OrderID                 int          `json:"order_id"`
 	Provider                ProviderType `json:"provider"`
 	ServerType              string       `json:"server_type"`
@@ -22,7 +30,7 @@ type NodeType struct {
 func (m *NodeType) Columns(action string) []string {
 	return []string{
 		"id",
-		"deprecated",
+		"state",
 		"order_id",
 		"provider",
 		"server_type",
@@ -39,9 +47,9 @@ func (m *NodeType) Table() string {
 }
 
 func (m *NodeType) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.Deprecated, &m.OrderID, &m.Provider, &m.ServerType, &m.Name, &m.Description, &m.CostPerHour, &m.MaxRecommendedInstances, &m.MaxInstances)
+	return r(&m.ID, &m.State, &m.OrderID, &m.Provider, &m.ServerType, &m.Name, &m.Description, &m.CostPerHour, &m.MaxRecommendedInstances, &m.MaxInstances)
 }
 
 func (m *NodeType) Values(action string) []any {
-	return []any{m.ID, m.Deprecated, m.OrderID, m.Provider, m.ServerType, m.Name, m.Description, m.CostPerHour, m.MaxRecommendedInstances, m.MaxInstances}
+	return []any{m.ID, m.State, m.OrderID, m.Provider, m.ServerType, m.Name, m.Description, m.CostPerHour, m.MaxRecommendedInstances, m.MaxInstances}
 }
