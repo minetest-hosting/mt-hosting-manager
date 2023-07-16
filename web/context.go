@@ -6,6 +6,7 @@ import (
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/oauth"
+	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
@@ -25,7 +26,8 @@ type Context struct {
 
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/", ctx.Index)
-	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.Login))
+	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginGet)).Methods(http.MethodGet)
+	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginPost)).Methods(http.MethodPost)
 	r.HandleFunc("/profile", ctx.tu.Secure(ctx.Profile))
 	r.HandleFunc("/node_types", ctx.tu.Secure(ctx.NodeTypes, tmpl.RoleCheck(types.UserRoleAdmin)))
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin)))

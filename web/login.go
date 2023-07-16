@@ -10,26 +10,26 @@ type LoginModel struct {
 	GithubOauth *oauth.OAuthConfig
 }
 
-func (ctx *Context) Login(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-
+func (ctx *Context) LoginGet(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	lm := &LoginModel{
 		GithubOauth: ctx.GithubOauth,
 	}
 
-	if r.Method == http.MethodPost {
-		err := r.ParseForm()
-		if err != nil {
-			ctx.tu.RenderError(w, r, 500, err)
-			return
-		}
+	ctx.tu.ExecuteTemplate(w, r, "login.html", lm)
+}
 
-		switch r.Form.Get("action") {
-		case "logout":
-			ctx.tu.ClearClaims(w)
-			http.Redirect(w, r, "login", http.StatusSeeOther)
-			return
-		}
+func (ctx *Context) LoginPost(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	err := r.ParseForm()
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
 	}
 
-	ctx.tu.ExecuteTemplate(w, r, "login.html", lm)
+	switch r.Form.Get("action") {
+	case "logout":
+		ctx.tu.ClearClaims(w)
+	}
+
+	http.Redirect(w, r, "login", http.StatusSeeOther)
+
 }
