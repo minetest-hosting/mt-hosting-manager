@@ -21,11 +21,11 @@ func RoleCheck(req_role types.UserRole) ClaimsCheck {
 var err_unauthorized = errors.New("unauthorized")
 var err_forbidden = errors.New("forbidden")
 
-func (ctx *TemplateUtil) OptionalSecure(h SecureHandlerFunc) http.HandlerFunc {
+func (tu *TemplateUtil) OptionalSecure(h SecureHandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		claims, err := ctx.GetClaims(r)
+		claims, err := tu.GetClaims(r)
 		if err != nil {
-			ctx.RenderError(w, r, 500, err)
+			tu.RenderError(w, r, 500, err)
 			return
 		}
 
@@ -33,26 +33,26 @@ func (ctx *TemplateUtil) OptionalSecure(h SecureHandlerFunc) http.HandlerFunc {
 	}
 }
 
-func (ctx *TemplateUtil) Secure(h SecureHandlerFunc, checks ...ClaimsCheck) http.HandlerFunc {
+func (tu *TemplateUtil) Secure(h SecureHandlerFunc, checks ...ClaimsCheck) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		claims, err := ctx.GetClaims(r)
+		claims, err := tu.GetClaims(r)
 		if err != nil {
-			ctx.RenderError(w, r, 500, err)
+			tu.RenderError(w, r, 500, err)
 			return
 		}
 		if claims == nil {
-			ctx.RenderError(w, r, 401, err_unauthorized)
+			tu.RenderError(w, r, 401, err_unauthorized)
 			return
 		}
 
 		for _, c := range checks {
 			ok, err := c(claims)
 			if err != nil {
-				ctx.RenderError(w, r, 500, err)
+				tu.RenderError(w, r, 500, err)
 				return
 			}
 			if !ok {
-				ctx.RenderError(w, r, 403, err_forbidden)
+				tu.RenderError(w, r, 403, err_forbidden)
 				return
 			}
 		}
@@ -61,17 +61,17 @@ func (ctx *TemplateUtil) Secure(h SecureHandlerFunc, checks ...ClaimsCheck) http
 	}
 }
 
-func (ctx *TemplateUtil) CreateJWT(c *types.Claims, d time.Duration) (string, error) {
+func (tu *TemplateUtil) CreateToken(c *types.Claims, d time.Duration) (string, error) {
 	c.RegisteredClaims = &jwt.RegisteredClaims{
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(d)),
 	}
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
-	return t.SignedString([]byte(ctx.JWTKey))
+	return t.SignedString([]byte(tu.JWTKey))
 }
 
-func (ctx *TemplateUtil) ParseJWT(token string) (*types.Claims, error) {
+func (tu *TemplateUtil) ParseToken(token string) (*types.Claims, error) {
 	t, err := jwt.ParseWithClaims(token, &types.Claims{}, func(token *jwt.Token) (any, error) {
-		return []byte(ctx.JWTKey), nil
+		return []byte(tu.JWTKey), nil
 	})
 
 	if err != nil {
@@ -90,8 +90,8 @@ func (ctx *TemplateUtil) ParseJWT(token string) (*types.Claims, error) {
 	return claims, nil
 }
 
-func (ctx *TemplateUtil) GetClaims(r *http.Request) (*types.Claims, error) {
-	co, err := r.Cookie(ctx.CookieName)
+func (tu *TemplateUtil) GetClaims(r *http.Request) (*types.Claims, error) {
+	co, err := r.Cookie(tu.CookieName)
 	if err == http.ErrNoCookie {
 		return nil, nil
 	}
@@ -99,7 +99,7 @@ func (ctx *TemplateUtil) GetClaims(r *http.Request) (*types.Claims, error) {
 		return nil, err
 	}
 
-	c, err := ctx.ParseJWT(co.Value)
+	c, err := tu.ParseToken(co.Value)
 	if err != nil {
 		return nil, err
 	}
@@ -107,19 +107,19 @@ func (ctx *TemplateUtil) GetClaims(r *http.Request) (*types.Claims, error) {
 	return c, nil
 }
 
-func (ctx *TemplateUtil) SetClaims(w http.ResponseWriter, token string, d time.Duration) {
+func (tu *TemplateUtil) SetToken(w http.ResponseWriter, token string, d time.Duration) {
 	c := &http.Cookie{
-		Name:     ctx.CookieName,
+		Name:     tu.CookieName,
 		Value:    token,
-		Path:     ctx.CookiePath,
+		Path:     tu.CookiePath,
 		Expires:  time.Now().Add(d),
-		Domain:   ctx.CookieDomain,
+		Domain:   tu.CookieDomain,
 		HttpOnly: true,
-		Secure:   ctx.CookieSecure,
+		Secure:   tu.CookieSecure,
 	}
 	http.SetCookie(w, c)
 }
 
-func (ctx *TemplateUtil) ClearClaims(w http.ResponseWriter) {
-	ctx.SetClaims(w, "", time.Duration(0))
+func (tu *TemplateUtil) ClearToken(w http.ResponseWriter) {
+	tu.SetToken(w, "", time.Duration(0))
 }

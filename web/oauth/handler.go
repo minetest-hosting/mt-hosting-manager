@@ -105,13 +105,13 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Role: user.Role,
 	}
 
-	token, err := h.Tu.CreateJWT(claims, dur)
+	token, err := h.Tu.CreateToken(claims, dur)
 	if err != nil {
 		h.Tu.RenderError(w, r, 500, err)
 		return
 	}
 
-	h.Tu.SetClaims(w, token, dur)
+	h.Tu.SetToken(w, token, dur)
 
 	target := h.BaseURL + "/profile"
 	http.Redirect(w, r, target, http.StatusSeeOther)

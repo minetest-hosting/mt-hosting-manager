@@ -27,7 +27,7 @@ func (ctx *Context) LoginPost(w http.ResponseWriter, r *http.Request, c *types.C
 
 	switch r.Form.Get("action") {
 	case "logout":
-		ctx.tu.ClearClaims(w)
+		ctx.tu.ClearToken(w)
 	}
 
 	http.Redirect(w, r, "login", http.StatusSeeOther)

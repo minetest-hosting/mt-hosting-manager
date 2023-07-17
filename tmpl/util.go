@@ -27,17 +27,6 @@ func (tu *TemplateUtil) CreateTemplate(pagename string, r *http.Request) (*templ
 	return template.New("").Funcs(funcs).ParseFS(tu.Files, "components/*.html", pagename)
 }
 
-func (tu *TemplateUtil) StaticPage(name string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		t, err := tu.CreateTemplate(name, r)
-		if err != nil {
-			tu.RenderError(w, r, 500, err)
-			return
-		}
-		t.ExecuteTemplate(w, "layout", nil)
-	}
-}
-
 func (tu *TemplateUtil) ExecuteTemplate(w http.ResponseWriter, r *http.Request, name string, data any) {
 	t, err := tu.CreateTemplate(name, r)
 	if err != nil {
