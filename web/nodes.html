@@ -7,23 +7,24 @@
             <div class="card-header">
             Nodes
             </div>
-            <table class="table">
-                <thead>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Node-Type</th>
-                    <th>Actions</th>
-                </thead>
-                <tbody>
-                    {{range $nt := .Nodes}}
-                    <tr>
-                        
-                    </tr>
-                    {{end}}
-                </tbody>
-            </table>
             <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Node-Type</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        {{range $nt := .Nodes}}
+                        <tr>
+                            
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
                 <a class="btn btn-success" href="{{BaseURL}}/nodes/new">
+                    <i class="fa fa-plus"></i>
                     Create node
                 </a>
             </div>
