@@ -5,8 +5,7 @@ services:
   image: golang:1.20.6
   volumes:
    - ".:/data"
-   - "go_build_cache:/root/.cache/go-build"
-   - "go_mod_cache:/root/go"
+   - "go_cache:/go"
   environment:
    - LOGLEVEL=debug
    - BASEURL=http://localhost:8080
@@ -25,5 +24,4 @@ services:
   command: ["go", "run", "."]
 
 volumes:
-  go_build_cache: {}
-  go_mod_cache: {}
+  go_cache: {}
