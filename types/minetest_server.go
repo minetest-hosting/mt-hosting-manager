@@ -1,10 +1,17 @@
 package types
 
+type MinetestServerState string
+
+const (
+	MinetestServerStateCreated MinetestServerState = "CREATED"
+)
+
 type MinetestServer struct {
-	ID         string `json:"id"`
-	UserNodeID string `json:"user_node_id"`
-	Name       string `json:"name"`
-	Created    int64  `json:"created"`
+	ID         string        `json:"id"`
+	UserNodeID string        `json:"user_node_id"`
+	Name       string        `json:"name"`
+	Created    int64         `json:"created"`
+	State      UserNodeState `json:"state"`
 }
 
 func (m *MinetestServer) Columns(action string) []string {
