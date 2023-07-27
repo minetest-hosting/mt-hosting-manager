@@ -31,3 +31,7 @@ func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
 func (r *UserRepository) GetAll() ([]*types.User, error) {
 	return dbutil.SelectMulti(r.DB, func() *types.User { return &types.User{} }, "")
 }
+
+func (r *UserRepository) Delete(user_id string) error {
+	return dbutil.Delete(r.DB, &types.User{}, "where id = $1", user_id)
+}

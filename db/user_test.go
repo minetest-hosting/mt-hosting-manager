@@ -37,4 +37,7 @@ func TestUserRepository(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, list)
 	assert.Equal(t, 1, len(list))
+
+	// delete
+	assert.NoError(t, repos.UserRepo.Delete(list[0].ID))
 }
