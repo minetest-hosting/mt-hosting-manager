@@ -20,9 +20,18 @@ func (ctx *Context) ShowUserNodes(w http.ResponseWriter, r *http.Request, c *typ
 	ctx.tu.ExecuteTemplate(w, r, "user_node.html", model)
 }
 
-func (ctx *Context) UserNodeCreate(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	// TODO: create new node
-	ctx.tu.ExecuteTemplate(w, r, "user_node_create.html", nil)
+func (ctx *Context) UserNodeCreateForm(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	// create new node
+	nodetypes, err := ctx.repos.NodeTypeRepo.GetByState(types.NodeTypeStateActive)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+
+	model := make(map[string]any)
+	model["NodeTypes"] = nodetypes
+
+	ctx.tu.ExecuteTemplate(w, r, "user_node_create.html", model)
 }
 
 func (ctx *Context) UserNodeDetail(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -30,8 +39,13 @@ func (ctx *Context) UserNodeDetail(w http.ResponseWriter, r *http.Request, c *ty
 	ctx.tu.ExecuteTemplate(w, r, "user_node_detail.html", nil)
 }
 
+func (ctx *Context) UserNodeCreate(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	// TODO: POST for edit
+	http.Redirect(w, r, fmt.Sprintf("%s/nodes", ctx.BaseURL), http.StatusSeeOther)
+}
+
 func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	// TODO: POST for edit and create
+	// TODO: POST for edit
 	http.Redirect(w, r, fmt.Sprintf("%s/nodes", ctx.BaseURL), http.StatusSeeOther)
 }
 

@@ -35,7 +35,8 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeSave, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodPost)
 
-	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.ShowUserNodes)).Methods(http.MethodGet)
+	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.ShowUserNodes)).Methods(http.MethodPost)
+	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.UserNodeCreateForm)).Methods(http.MethodGet)
 	r.HandleFunc("/nodes/new", ctx.tu.Secure(ctx.UserNodeCreate)).Methods(http.MethodGet)
 	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeDetail)).Methods(http.MethodGet)
 	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeSave)).Methods(http.MethodPost)

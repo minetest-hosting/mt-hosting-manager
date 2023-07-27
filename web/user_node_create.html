@@ -1,6 +1,36 @@
 {{define "title"}}Create Node{{end}}
 {{define "content"}}
-<table class="table">
-    
-</table>
+<form method="POST" action="{{BaseURL}}/nodes">
+    <table class="table">
+        <tr>
+            <td>Node-Type</td>
+            <td>
+                <select name="nodetype" class="form-control">
+                    {{range $nt := .NodeTypes}}
+                    <option value="{{$nt.ID}}">
+                        {{$nt.Name}}
+                    </option>
+                    {{end}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input type="text" class="form-control" name="name" value=""/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="d-grid gap-2">
+                    {{ CSRFField }}
+                    <button class="btn btn-success" type="submit" name="action" value="save">
+                        <i class="fa fa-floppy-disk"></i>
+                        Create
+                    </button>
+                </div>    
+            </td>
+        </tr>
+    </table>
+</form>
 {{end}}

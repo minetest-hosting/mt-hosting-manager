@@ -31,6 +31,10 @@ func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
 	return nt, err
 }
 
+func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeType, error) {
+	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "where state = $1", t)
+}
+
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
 	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "")
 }
