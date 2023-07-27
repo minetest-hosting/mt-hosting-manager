@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+	if os.Getenv("LOGLEVEL") == "debug" {
+		logrus.SetLevel(logrus.DebugLevel)
+	}
+
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
