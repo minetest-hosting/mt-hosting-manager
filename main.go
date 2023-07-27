@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/web"
+	"mt-hosting-manager/worker"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	fmt.Println("Listening on port 8080")
-
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -26,6 +26,19 @@ func main() {
 	}
 
 	repos := db.NewRepositories(db_)
+
+	// worker (optional)
+	if os.Getenv("ENABLE_WORKER") == "true" {
+		logrus.Info("Starting worker")
+		w := worker.NewWorker(repos)
+		w.Start()
+	}
+
+	// web (always on)
+	logrus.WithFields(logrus.Fields{
+		"port": 8080,
+	}).Info("Starting webserver")
+
 	err = web.Serve(repos)
 	if err != nil {
 		panic(err)
