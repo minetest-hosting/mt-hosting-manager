@@ -1,31 +1,18 @@
 {{define "title"}}Login{{end}}
 {{define "content"}}
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-            Login
-            </div>
-            <div class="card-body">
-                {{if Claims}}
-                <form method="POST" style="display: inline;">
-                    <input type="hidden" name="action" value="logout"/>
-                    <button type="submit" class="btn btn-secondary">Logout</button>
-                    {{ CSRFField }}
-                </form>
-                {{else}}
-                    {{if .GithubOauth}}
-                    <a href="https://github.com/login/oauth/authorize?client_id={{.GithubOauth.ClientID}}&scope=user:email" class="btn btn-secondary">
-                        <i class="fab fa-github"></i>
-                        Login with Github
-                    </a>
-                    &nbsp;
-                    {{end}}
-                {{end}}
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4"></div>
-</div>
+    {{if Claims}}
+    <form method="POST" style="display: inline;">
+        <input type="hidden" name="action" value="logout"/>
+        <button type="submit" class="btn btn-secondary">Logout</button>
+        {{ CSRFField }}
+    </form>
+    {{else}}
+        {{if .GithubOauth}}
+        <a href="https://github.com/login/oauth/authorize?client_id={{.GithubOauth.ClientID}}&scope=user:email" class="btn btn-secondary">
+            <i class="fab fa-github"></i>
+            Login with Github
+        </a>
+        &nbsp;
+        {{end}}
+    {{end}}
 {{end}}

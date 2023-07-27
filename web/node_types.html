@@ -1,56 +1,43 @@
 {{define "title"}}Node-Types{{end}}
 {{define "content"}}
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-            Node-Types
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Provider</th>
-                        <th>Server-Type</th>
-                        <th>Actions</th>
-                    </thead>
-                    <tbody>
-                        {{range $nt := .NodeTypes}}
-                        <tr>
-                            <td>
-                                {{$nt.ID}}
-                                {{if eq $nt.State "ACTIVE"}}
-                                    <span class="badge text-bg-success">Active</span>
-                                {{end}}
-                                {{if eq $nt.State "INACTIVE"}}
-                                    <span class="badge text-bg-info">Inactive</span>
-                                {{end}}
-                                {{if eq $nt.State "DEPRECATED"}}
-                                    <span class="badge text-bg-warning">Deprecated</span>
-                                {{end}}
-                            </td>
-                            <td>{{$nt.Name}}</td>
-                            <td>{{$nt.Provider}}</td>
-                            <td>{{$nt.ServerType}}</td>
-                            <td>
-                                <a class="btn btn-primary" href="{{BaseURL}}/node_types/{{$nt.ID}}">
-                                    <i class="fa fa-pen-to-square"></i>
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
-                        {{end}}
-                    </tbody>
-                </table>
-                <a class="btn btn-success" href="{{BaseURL}}/node_types/new">
-                    <i class="fa fa-plus"></i>
-                    Create node-type
+<table class="table">
+    <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Provider</th>
+        <th>Server-Type</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {{range $nt := .NodeTypes}}
+        <tr>
+            <td>
+                {{$nt.ID}}
+                {{if eq $nt.State "ACTIVE"}}
+                    <span class="badge text-bg-success">Active</span>
+                {{end}}
+                {{if eq $nt.State "INACTIVE"}}
+                    <span class="badge text-bg-info">Inactive</span>
+                {{end}}
+                {{if eq $nt.State "DEPRECATED"}}
+                    <span class="badge text-bg-warning">Deprecated</span>
+                {{end}}
+            </td>
+            <td>{{$nt.Name}}</td>
+            <td>{{$nt.Provider}}</td>
+            <td>{{$nt.ServerType}}</td>
+            <td>
+                <a class="btn btn-primary" href="{{BaseURL}}/node_types/{{$nt.ID}}">
+                    <i class="fa fa-pen-to-square"></i>
+                    Edit
                 </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3"></div>
-</div>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+<a class="btn btn-success" href="{{BaseURL}}/node_types/new">
+    <i class="fa fa-plus"></i>
+    Create node-type
+</a>
 {{end}}
