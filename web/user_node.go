@@ -25,9 +25,9 @@ func (ctx *Context) UserNodeCreate(w http.ResponseWriter, r *http.Request, c *ty
 	ctx.tu.ExecuteTemplate(w, r, "user_node_create.html", nil)
 }
 
-func (ctx *Context) UserNodeView(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (ctx *Context) UserNodeDetail(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	// TODO: view details
-	ctx.tu.ExecuteTemplate(w, r, "user_node_view.html", nil)
+	ctx.tu.ExecuteTemplate(w, r, "user_node_detail.html", nil)
 }
 
 func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *types.Claims) {

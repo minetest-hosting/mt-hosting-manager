@@ -26,16 +26,20 @@ type Context struct {
 
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/", ctx.Index)
+
 	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginGet)).Methods(http.MethodGet)
 	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginPost)).Methods(http.MethodPost)
 	r.HandleFunc("/profile", ctx.tu.Secure(ctx.Profile))
+
 	r.HandleFunc("/node_types", ctx.tu.Secure(ctx.NodeTypes, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeSave, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodPost)
+
 	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.ShowUserNodes)).Methods(http.MethodGet)
-	r.HandleFunc("/nodes/create", ctx.tu.Secure(ctx.UserNodeCreate)).Methods(http.MethodGet)
-	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeView)).Methods(http.MethodGet)
+	r.HandleFunc("/nodes/new", ctx.tu.Secure(ctx.UserNodeCreate)).Methods(http.MethodGet)
+	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeDetail)).Methods(http.MethodGet)
 	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeSave)).Methods(http.MethodPost)
+
 	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
 
 	if os.Getenv("GITHUB_CLIENTID") != "" {
