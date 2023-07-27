@@ -10,7 +10,15 @@
     <tbody>
         {{range $nt := .Nodes}}
         <tr>
-            
+            <td>{{$nt.ID}}</td>
+            <td>{{$nt.Name}}</td>
+            <td></td>
+            <td>
+                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$nt.ID}}">
+                    <i class="fa fa-pen-to-square"></i>
+                    Edit
+                </a>
+            </td>
         </tr>
         {{end}}
     </tbody>
