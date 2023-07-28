@@ -23,25 +23,6 @@ func (ctx *Context) ShowUserNodes(w http.ResponseWriter, r *http.Request, c *typ
 	ctx.tu.ExecuteTemplate(w, r, "user_node.html", model)
 }
 
-// create new node
-func (ctx *Context) UserNodeCreate(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	nodetypes, err := ctx.repos.NodeTypeRepo.GetByState(types.NodeTypeStateActive)
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	model := make(map[string]any)
-	model["NodeTypes"] = nodetypes
-
-	ctx.tu.ExecuteTemplate(w, r, "user_node_create.html", model)
-}
-
-// view details
-func (ctx *Context) UserNodeDetail(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	ctx.tu.ExecuteTemplate(w, r, "user_node_detail.html", nil)
-}
-
 // POST for edit / create
 func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 
