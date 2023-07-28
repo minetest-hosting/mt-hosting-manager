@@ -6,6 +6,7 @@ import (
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/oauth"
+	"mt-hosting-manager/web/usernode"
 	"net/http"
 	"os"
 
@@ -21,7 +22,6 @@ type Context struct {
 	tu          *tmpl.TemplateUtil
 	repos       *db.Repositories
 	GithubOauth *oauth.OAuthConfig
-	BaseURL     string
 }
 
 func (ctx *Context) Setup(r *mux.Router) {
@@ -35,10 +35,8 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeSave, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodPost)
 
-	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.ShowUserNodes)).Methods(http.MethodGet)
-	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.UserNodeSave)).Methods(http.MethodPost)
-	r.HandleFunc("/nodes/new", ctx.tu.Secure(ctx.UserNodeCreate)).Methods(http.MethodGet)
-	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.UserNodeDetail)).Methods(http.MethodGet)
+	usernode_ctx := usernode.New(ctx.tu, ctx.repos)
+	usernode_ctx.Setup(r)
 
 	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
 
@@ -50,7 +48,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 
 		r.Handle("/oauth_callback/github", &oauth.OauthHandler{
 			Impl:     &oauth.GithubOauth{},
-			BaseURL:  ctx.BaseURL,
+			BaseURL:  ctx.tu.BaseURL,
 			Type:     types.UserTypeGithub,
 			Tu:       ctx.tu,
 			UserRepo: ctx.repos.UserRepo,

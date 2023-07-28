@@ -66,7 +66,7 @@ func (ctx *Context) NodeTypeSave(w http.ResponseWriter, r *http.Request, c *type
 			return
 		}
 
-		http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.BaseURL), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.tu.BaseURL), http.StatusSeeOther)
 		return
 	}
 
@@ -106,5 +106,5 @@ func (ctx *Context) NodeTypeSave(w http.ResponseWriter, r *http.Request, c *type
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.BaseURL), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("%s/node_types", ctx.tu.BaseURL), http.StatusSeeOther)
 }

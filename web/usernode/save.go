@@ -1,4 +1,4 @@
-package web
+package usernode
 
 import (
 	"fmt"
@@ -9,22 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-// show all nodes by the user
-func (ctx *Context) ShowUserNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	nodes, err := ctx.repos.UserNodeRepo.GetByUserID(c.ID)
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	model := make(map[string]any)
-	model["Nodes"] = nodes
-
-	ctx.tu.ExecuteTemplate(w, r, "user_node.html", model)
-}
-
 // POST for edit / create
-func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (ctx *Context) Save(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 
 	err := r.ParseForm()
 	if err != nil {
@@ -73,7 +59,7 @@ func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *type
 		//TODO: add provisioning job
 
 		// redirect to detail page
-		http.Redirect(w, r, fmt.Sprintf("%s/nodes/%s", ctx.BaseURL, user_node.ID), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf("%s/nodes/%s", ctx.tu.BaseURL, user_node.ID), http.StatusSeeOther)
 		return
 
 	} else {
@@ -81,7 +67,5 @@ func (ctx *Context) UserNodeSave(w http.ResponseWriter, r *http.Request, c *type
 		//TODO
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("%s/nodes", ctx.BaseURL), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("%s/nodes", ctx.tu.BaseURL), http.StatusSeeOther)
 }
-
-//TODO: remove (and confirm remove)

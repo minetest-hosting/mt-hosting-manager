@@ -13,6 +13,7 @@ type TemplateUtil struct {
 	Files        fs.FS
 	AddFuncs     func(funcs template.FuncMap, r *http.Request)
 	JWTKey       string
+	BaseURL      string
 	CookieName   string
 	CookieDomain string
 	CookiePath   string
@@ -21,7 +22,8 @@ type TemplateUtil struct {
 
 func (tu *TemplateUtil) CreateTemplate(pagename string, r *http.Request) (*template.Template, error) {
 	funcs := template.FuncMap{
-		"Claims": func() (any, error) { return tu.GetClaims(r) },
+		"BaseURL": func() string { return tu.BaseURL },
+		"Claims":  func() (any, error) { return tu.GetClaims(r) },
 	}
 	tu.AddFuncs(funcs, r)
 	return template.New("").Funcs(funcs).ParseFS(tu.Files, "components/*.html", pagename)

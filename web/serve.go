@@ -62,7 +62,6 @@ func Serve(repos *db.Repositories) error {
 	tu := &tmpl.TemplateUtil{
 		Files: files,
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
-			funcs["BaseURL"] = func() string { return os.Getenv("BASEURL") }
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
@@ -72,6 +71,7 @@ func Serve(repos *db.Repositories) error {
 			}
 		},
 		JWTKey:       os.Getenv("JWT_KEY"),
+		BaseURL:      os.Getenv("BASEURL"),
 		CookieName:   "mt-hosting-manager",
 		CookieDomain: os.Getenv("COOKIE_DOMAIN"),
 		CookiePath:   os.Getenv("COOKIE_PATH"),
@@ -80,9 +80,8 @@ func Serve(repos *db.Repositories) error {
 
 	// templates, pages
 	ctx := &Context{
-		tu:      tu,
-		repos:   repos,
-		BaseURL: os.Getenv("BASEURL"),
+		tu:    tu,
+		repos: repos,
 	}
 	ctx.Setup(tmplRoute)
 
