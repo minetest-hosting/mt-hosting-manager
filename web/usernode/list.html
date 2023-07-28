@@ -10,11 +10,11 @@
     <tbody>
         {{range $nt := .Nodes}}
         <tr>
-            <td>{{$nt.ID}}</td>
-            <td>{{$nt.Name}}</td>
-            <td></td>
+            <td>{{$nt.UserNode.ID}}</td>
+            <td>{{$nt.UserNode.Name}}</td>
+            <td>{{$nt.NodeType.Name}}</td>
             <td>
-                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$nt.ID}}">
+                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$nt.UserNode.ID}}">
                     <i class="fa fa-pen-to-square"></i>
                     Edit
                 </a>
