@@ -1,10 +1,14 @@
 package types
 
+import "regexp"
+
 type UserNodeState string
 
 const (
 	UserNodeStateCreated UserNodeState = "CREATED"
 )
+
+var ValidUserNodeName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
 
 type UserNode struct {
 	ID         string        `json:"id"`

@@ -1,6 +1,6 @@
 {{define "title"}}Create Node{{end}}
 {{define "content"}}
-<form method="POST" action="{{BaseURL}}/nodes">
+<form method="POST" action="{{BaseURL}}/nodes/new">
     <table class="table">
         <tr>
             <td>Node-Type</td>
@@ -17,7 +17,14 @@
         <tr>
             <td>Name</td>
             <td>
-                <input type="text" class="form-control" name="name" value=""/>
+                <div class="input-group has-validation">
+                    <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="name" value="{{.Name}}"/>
+                    {{if .NameErr}}
+                    <div class="invalid-feedback">
+                        {{T .NameErr}}
+                    </div>
+                    {{end}}
+                </div>
             </td>
         </tr>
         <tr>

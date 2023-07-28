@@ -1,3 +1,5 @@
 {
-    "Start": "Start-en"
+    "Start": "Start-en",
+    "invalid-server-name": "Server-name is invalid, can only contain letters from a to z and numbers",
+    "duplicate-server-name": "Server-name is already taken"
 }

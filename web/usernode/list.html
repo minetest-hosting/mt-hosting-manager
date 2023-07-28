@@ -4,6 +4,7 @@
     <thead>
         <th>ID</th>
         <th>Name</th>
+        <th>Created</th>
         <th>Node-Type</th>
         <th>Actions</th>
     </thead>
@@ -12,6 +13,7 @@
         <tr>
             <td>{{$nt.UserNode.ID}}</td>
             <td>{{$nt.UserNode.Name}}</td>
+            <td>{{formattime $nt.Created}}</td>
             <td>{{$nt.NodeType.Name}}</td>
             <td>
                 <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$nt.UserNode.ID}}">

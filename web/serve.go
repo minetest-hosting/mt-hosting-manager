@@ -33,8 +33,8 @@ func prettysize(num int) string {
 }
 
 func formattime(ts int64) string {
-	t := time.UnixMilli(ts)
-	return t.Format(time.UnixDate)
+	t := time.Unix(ts, 0)
+	return t.Format(time.RFC3339)
 }
 
 func Serve(repos *db.Repositories) error {
