@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"errors"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"time"
@@ -66,43 +67,31 @@ func (w *Worker) Run() {
 func (w *Worker) ExecuteJob(job *types.Job) {
 	logrus.WithFields(job.LogrusFields()).Debug("Executing job")
 
-	if job.Type == types.JobTypeNodeDestroy {
-		node, err := w.repos.UserNodeRepo.GetByID(job.UserNodeID)
-		if err != nil {
-			fields := job.LogrusFields()
-			fields["err"] = err
-			logrus.WithFields(fields).Error("node fetch failed")
-			return
-		}
-		if node == nil {
-			logrus.WithFields(job.LogrusFields()).Warn("node not found")
-			job.Finished = time.Now().Unix()
-			job.State = types.JobStateDoneFailure
-			job.Message = "Node not found"
-			err := w.repos.JobRepo.Update(job)
-			if err != nil {
-				fields := job.LogrusFields()
-				fields["err"] = err
-				logrus.WithFields(fields).Error("job update failed")
-			}
-			return
-		}
-
-		//TODO: resource removals
-		err = w.repos.UserNodeRepo.Delete(node.ID)
-		if err != nil {
-			fields := job.LogrusFields()
-			fields["err"] = err
-			logrus.WithFields(fields).Error("job update failed")
-			return
-		}
+	var err error
+	switch job.Type {
+	case types.JobTypeNodeDestroy:
+		err = w.NodeDestroy(job)
+	case types.JobTypeNodeSetup:
+		err = w.NodeProvision(job)
+	default:
+		err = errors.New("type not implemented")
 	}
 
-	//TODO: node provision
+	if err != nil {
+		job.State = types.JobStateDoneFailure
+		job.Message = err.Error()
+
+		fields := job.LogrusFields()
+		fields["err"] = err
+		logrus.WithFields(fields).Error("job failed")
+
+	} else {
+		job.State = types.JobStateDoneSuccess
+
+	}
 
 	job.Finished = time.Now().Unix()
-	job.State = types.JobStateDoneSuccess
-	err := w.repos.JobRepo.Update(job)
+	err = w.repos.JobRepo.Update(job)
 	if err != nil {
 		fields := job.LogrusFields()
 		fields["err"] = err
@@ -110,5 +99,5 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		return
 	}
 
-	logrus.WithFields(job.LogrusFields()).Debug("Job finished (success)")
+	logrus.WithFields(job.LogrusFields()).Debug("Job finished")
 }
