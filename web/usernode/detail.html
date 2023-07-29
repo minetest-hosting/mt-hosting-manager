@@ -1,11 +1,17 @@
 {{define "title"}}Node details{{end}}
 {{define "content"}}
-<form method="POST" action="{{BaseURL}}/nodes/{{.UserNode.ID}}">
+<form method="POST">
     <table class="table">
         <tr>
             <td>ID</td>
             <td>
-                <input type="text" readonly="true" class="form-control" name="id" value="{{.UserNode.ID}}"/>
+                <input type="text" readonly="true" class="form-control" disabled="true" name="id" value="{{.UserNode.ID}}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input type="text" class="form-control" name="name" value="{{.UserNode.Name}}"/>
             </td>
         </tr>
         <tr>
@@ -20,11 +26,10 @@
             </td>
             <td>
                 <div class="d-grid gap-2">
-                    {{ CSRFField }}
-                    <button class="btn btn-danger" type="submit" name="action" value="remove">
+                    <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
                         <i class="fa fa-floppy-disk"></i>
                         Delete
-                    </button>
+                    </a>
                 </div>    
             </td>
         </tr>

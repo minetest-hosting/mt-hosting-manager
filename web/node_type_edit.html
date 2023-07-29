@@ -1,11 +1,11 @@
 {{define "title"}}Edit Node-Type{{end}}
 {{define "content"}}
-<form method="POST" action="{{BaseURL}}/node_types/{{.NodeType.ID}}">
+<form method="POST">
     <table class="table">
         <tr>
             <td>ID</td>
             <td>
-                <input type="text" readonly="true" class="form-control" name="id" value="{{.NodeType.ID}}"/>
+                <input type="text" readonly="true" disabled="true" class="form-control" name="id" value="{{.NodeType.ID}}"/>
             </td>
         </tr>
         <tr>

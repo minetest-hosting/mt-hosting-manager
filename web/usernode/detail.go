@@ -22,6 +22,19 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	if r.Method == http.MethodPost {
+		err = r.ParseForm()
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, err)
+			return
+		}
+
+		switch r.FormValue("action") {
+		case "save":
+			//TODO: validate and save name, schedule renaming job
+		}
+	}
+
 	m := &DetailModel{
 		UserNode: node,
 	}
