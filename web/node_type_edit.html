@@ -1,7 +1,4 @@
 {{define "title"}}Edit Node-Type{{end}}
-{{define "top-content"}}
-    {{block "breadcrumb" .Breadcrumb}}{{end}}
-{{end}}
 {{define "content"}}
 <form method="POST" action="{{BaseURL}}/node_types/{{.NodeType.ID}}">
     <table class="table">
