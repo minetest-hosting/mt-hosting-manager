@@ -31,6 +31,10 @@ func (r *JobRepository) GetByID(id string) (*types.Job, error) {
 	return nt, err
 }
 
+func (r *JobRepository) GetByState(state types.JobState) ([]*types.Job, error) {
+	return dbutil.SelectMulti(r.DB, func() *types.Job { return &types.Job{} }, "where state = $1", state)
+}
+
 func (r *JobRepository) GetAll() ([]*types.Job, error) {
 	return dbutil.SelectMulti(r.DB, func() *types.Job { return &types.Job{} }, "")
 }

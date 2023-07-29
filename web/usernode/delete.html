@@ -1,4 +1,4 @@
-{{define "title"}}Node details{{end}}
+{{define "title"}}Confirm node deletion{{end}}
 {{define "content"}}
 <form method="POST">
     <table class="table">
@@ -11,25 +11,25 @@
         <tr>
             <td>Name</td>
             <td>
-                <input type="text" class="form-control" name="name" value="{{.UserNode.Name}}"/>
+                <input type="text" readonly="true" class="form-control" disabled="true" name="name" value="{{.UserNode.Name}}"/>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="d-grid gap-2">
-                    {{ CSRFField }}
-                    <button class="btn btn-success" type="submit" name="action" value="save">
+                    <button class="btn btn-danger" type="submit" name="action" value="delete">
                         <i class="fa fa-floppy-disk"></i>
-                        Save
+                        Confirm deletion
                     </button>
                 </div>
             </td>
             <td>
                 <div class="d-grid gap-2">
-                    <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
+                    {{ CSRFField }}
+                    <button class="btn btn-warning" type="submit" name="action" value="abort">
                         <i class="fa fa-floppy-disk"></i>
-                        Delete
-                    </a>
+                        Abort
+                    </button>
                 </div>
             </td>
         </tr>

@@ -30,12 +30,6 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	if r.Method == http.MethodPost {
 		// new node
-		err := r.ParseForm()
-		if err != nil {
-			ctx.tu.RenderError(w, r, 500, err)
-			return
-		}
-
 		nodetypeid := r.FormValue("nodetype")
 		node_type, err := ctx.repos.NodeTypeRepo.GetByID(nodetypeid)
 		if err != nil {
@@ -80,7 +74,19 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				ctx.tu.RenderError(w, r, 500, err)
 				return
 			}
-			//TODO: add provisioning job
+
+			// add provisioning job
+			job := &types.Job{
+				ID:         uuid.NewString(),
+				Type:       types.JobTypeNodeSetup,
+				State:      types.JobStateCreated,
+				UserNodeID: user_node.ID,
+			}
+			err = ctx.repos.JobRepo.Insert(job)
+			if err != nil {
+				ctx.tu.RenderError(w, r, 500, err)
+				return
+			}
 
 			// redirect to detail page
 			http.Redirect(w, r, fmt.Sprintf("%s/nodes/%s", ctx.tu.BaseURL, user_node.ID), http.StatusSeeOther)

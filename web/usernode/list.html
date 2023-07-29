@@ -9,14 +9,28 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        {{range $nt := .Nodes}}
+        {{range $n := .Nodes}}
         <tr>
-            <td>{{$nt.UserNode.ID}}</td>
-            <td>{{$nt.UserNode.Name}}</td>
-            <td>{{formattime $nt.Created}}</td>
-            <td>{{$nt.NodeType.Name}}</td>
             <td>
-                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$nt.UserNode.ID}}">
+                {{$n.UserNode.ID}}
+                {{if eq $n.UserNode.State "CREATED"}}
+                    <span class="badge text-bg-info">Created</span>
+                {{end}}
+                {{if eq $n.UserNode.State "RUNNING"}}
+                    <span class="badge text-bg-success">Running</span>
+                {{end}}
+                {{if eq $n.UserNode.State "STOPPED"}}
+                    <span class="badge text-bg-warning">Stopped</span>
+                {{end}}
+                {{if eq $n.UserNode.State "REMOVING"}}
+                    <span class="badge text-bg-danger">Removing</span>
+                {{end}}
+            </td>
+            <td>{{$n.UserNode.Name}}</td>
+            <td>{{formattime $n.Created}}</td>
+            <td>{{$n.NodeType.Name}}</td>
+            <td>
+                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$n.UserNode.ID}}">
                     <i class="fa fa-pen-to-square"></i>
                     Edit
                 </a>

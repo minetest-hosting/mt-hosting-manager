@@ -35,7 +35,7 @@ func main() {
 	if os.Getenv("ENABLE_WORKER") == "true" {
 		logrus.Info("Starting worker")
 		w := worker.NewWorker(repos)
-		w.Start()
+		go w.Run()
 	}
 
 	// web (always on)

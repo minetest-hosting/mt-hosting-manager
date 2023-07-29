@@ -1,15 +1,21 @@
 package types
 
+import "github.com/sirupsen/logrus"
+
 type JobState string
 
 const (
-	JobStateCreated JobState = "CREATED"
+	JobStateCreated     JobState = "CREATED"
+	JobStateRunning     JobState = "RUNNING"
+	JobStateDoneSuccess JobState = "DONE_SUCCESS"
+	JobStateDoneFailure JobState = "DONE_FAILURE"
 )
 
 type JobType string
 
 const (
-	JobTypeNodeSetup JobType = "NODE_SETUP"
+	JobTypeNodeSetup   JobType = "NODE_SETUP"
+	JobTypeNodeDestroy JobType = "NODE_DESTROY"
 )
 
 type Job struct {
@@ -71,5 +77,17 @@ func (m *Job) Values(action string) []any {
 		m.ProgressPercent,
 		m.Message,
 		m.Data,
+	}
+}
+
+func (job *Job) LogrusFields() logrus.Fields {
+	return logrus.Fields{
+		"jobid":              job.ID,
+		"type":               job.Type,
+		"state":              job.State,
+		"user_node_id":       job.UserNodeID,
+		"minetest_server_id": job.MinetestServerID,
+		"message":            job.Message,
+		"started":            job.Started,
 	}
 }

@@ -5,7 +5,10 @@ import "regexp"
 type UserNodeState string
 
 const (
-	UserNodeStateCreated UserNodeState = "CREATED"
+	UserNodeStateCreated  UserNodeState = "CREATED"
+	UserNodeStateRunning  UserNodeState = "RUNNING"
+	UserNodeStateStopped  UserNodeState = "STOPPED"
+	UserNodeStateRemoving UserNodeState = "REMOVING"
 )
 
 var ValidUserNodeName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
