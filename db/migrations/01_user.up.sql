@@ -34,8 +34,8 @@ create table node_type(
 -- a node set up by a user
 create table user_node(
     id varchar(36) primary key not null, -- uuid
-    user_id varchar(36) not null references user(id) on delete cascade,
-    node_type_id varchar(36) not null references node_type(id) on delete cascade,
+    user_id varchar(36) not null references user(id) on delete restrict,
+    node_type_id varchar(36) not null references node_type(id) on delete restrict,
     created bigint not null, -- creation time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
@@ -47,7 +47,7 @@ create table user_node(
 
 create table minetest_server(
     id varchar(36) primary key not null, -- uuid
-    user_node_id varchar(36) not null references user_node(id) on delete cascade,
+    user_node_id varchar(36) not null references user_node(id) on delete restrict,
     name varchar(64) not null, -- name of the server, used for dns CNAME
     created bigint not null, -- creation time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED'

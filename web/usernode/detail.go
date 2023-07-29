@@ -22,13 +22,6 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	if r.Method == http.MethodPost {
-		switch r.FormValue("action") {
-		case "save":
-			//TODO: validate and save name, schedule renaming job
-		}
-	}
-
 	m := &DetailModel{
 		UserNode: node,
 	}

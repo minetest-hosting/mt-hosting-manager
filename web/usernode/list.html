@@ -13,18 +13,7 @@
         <tr>
             <td>
                 {{$n.UserNode.ID}}
-                {{if eq $n.UserNode.State "CREATED"}}
-                    <span class="badge text-bg-info">Created</span>
-                {{end}}
-                {{if eq $n.UserNode.State "RUNNING"}}
-                    <span class="badge text-bg-success">Running</span>
-                {{end}}
-                {{if eq $n.UserNode.State "STOPPED"}}
-                    <span class="badge text-bg-warning">Stopped</span>
-                {{end}}
-                {{if eq $n.UserNode.State "REMOVING"}}
-                    <span class="badge text-bg-danger">Removing</span>
-                {{end}}
+                {{block "node_state" $n.UserNode}}{{end}}
             </td>
             <td>{{$n.UserNode.Name}}</td>
             <td>{{formattime $n.Created}}</td>
