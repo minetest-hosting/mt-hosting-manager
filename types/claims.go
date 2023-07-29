@@ -6,6 +6,7 @@ import (
 
 type Claims struct {
 	*jwt.RegisteredClaims
-	Mail string   `json:"mail"`
-	Role UserRole `json:"role"`
+	UserID string   `json:"user_id"`
+	Mail   string   `json:"mail"`
+	Role   UserRole `json:"role"`
 }

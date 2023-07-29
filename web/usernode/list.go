@@ -13,7 +13,7 @@ type UserNodeInfo struct {
 
 // show all nodes by the user
 func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	nodes, err := ctx.repos.UserNodeRepo.GetByUserID(c.ID)
+	nodes, err := ctx.repos.UserNodeRepo.GetByUserID(c.UserID)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, err)
 		return

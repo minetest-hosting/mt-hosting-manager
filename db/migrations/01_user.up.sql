@@ -1,5 +1,3 @@
-PRAGMA foreign_keys = ON;
-
 -- registered user
 create table user(
     id varchar(36) primary key not null, -- uuid

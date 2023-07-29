@@ -7,7 +7,7 @@ import (
 )
 
 func (w *Worker) NodeProvision(job *types.Job) error {
-	node, err := w.repos.UserNodeRepo.GetByID(job.UserNodeID)
+	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
 	if err != nil {
 		return err
 	}

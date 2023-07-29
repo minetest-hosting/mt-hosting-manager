@@ -22,7 +22,7 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 		ctx.tu.RenderError(w, r, 404, fmt.Errorf("node not found: %s", id))
 		return
 	}
-	if node.UserID != c.ID {
+	if node.UserID != c.UserID {
 		ctx.tu.RenderError(w, r, 403, fmt.Errorf("unauthorized"))
 		return
 	}
@@ -36,7 +36,7 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 			node.State = types.UserNodeStateRemoving
 			err = ctx.repos.UserNodeRepo.Update(node)
 			if err != nil {
-				ctx.tu.RenderError(w, r, 500, err)
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("node-update failed: %v", err))
 				return
 			}
 
@@ -45,11 +45,11 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 				ID:         uuid.NewString(),
 				Type:       types.JobTypeNodeDestroy,
 				State:      types.JobStateCreated,
-				UserNodeID: id,
+				UserNodeID: &id,
 			}
 			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
-				ctx.tu.RenderError(w, r, 500, err)
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("job insert failed: %v", err))
 				return
 			}
 

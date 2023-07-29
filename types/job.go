@@ -24,8 +24,8 @@ type Job struct {
 	State            JobState `json:"state"`
 	Started          int64    `json:"started"`
 	Finished         int64    `json:"finished"`
-	UserNodeID       string   `json:"user_node_id"`
-	MinetestServerID string   `json:"minetest_server_id"`
+	UserNodeID       *string  `json:"user_node_id"`
+	MinetestServerID *string  `json:"minetest_server_id"`
 	ProgressPercent  float64  `json:"progress_percent"`
 	Message          string   `json:"message"`
 	Data             []byte   `json:"data"`

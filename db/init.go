@@ -15,12 +15,20 @@ func Init(data_dir string) (*sql.DB, error) {
 		return nil, err
 	}
 
+	db.SetMaxOpenConns(1)
+	db.SetMaxIdleConns(1)
+
 	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
 
-	err = EnableWAL(db)
+	_, err = db.Exec("pragma journal_mode = wal")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = db.Exec("pragma foreign_keys = ON")
 	if err != nil {
 		return nil, err
 	}

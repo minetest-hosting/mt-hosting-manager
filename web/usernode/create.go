@@ -63,15 +63,16 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			// everything ok, add server and redirect to detail page
 			user_node := &types.UserNode{
 				ID:         uuid.NewString(),
-				UserID:     c.ID,
+				UserID:     c.UserID,
 				NodeTypeID: node_type.ID,
 				Created:    time.Now().Unix(),
 				State:      types.UserNodeStateCreated,
 				Name:       model.Name,
 			}
+			fmt.Printf("%v\n", user_node)
 			err = ctx.repos.UserNodeRepo.Insert(user_node)
 			if err != nil {
-				ctx.tu.RenderError(w, r, 500, err)
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("create failed: %v", err))
 				return
 			}
 
@@ -80,11 +81,11 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				ID:         uuid.NewString(),
 				Type:       types.JobTypeNodeSetup,
 				State:      types.JobStateCreated,
-				UserNodeID: user_node.ID,
+				UserNodeID: &user_node.ID,
 			}
 			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
-				ctx.tu.RenderError(w, r, 500, err)
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("job insert failed: %v", err))
 				return
 			}
 

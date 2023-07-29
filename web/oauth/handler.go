@@ -101,8 +101,9 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	dur := time.Duration(24 * 180 * time.Hour)
 	claims := &types.Claims{
-		Mail: user.Mail,
-		Role: user.Role,
+		Mail:   user.Mail,
+		Role:   user.Role,
+		UserID: user.ID,
 	}
 
 	token, err := h.Tu.CreateToken(claims, dur)
