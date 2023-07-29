@@ -22,6 +22,6 @@ func New(tu *tmpl.TemplateUtil, repos *db.Repositories) *Context {
 
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.List)).Methods(http.MethodGet)
-	r.HandleFunc("/nodes/new", ctx.tu.Secure(ctx.Create)).Methods(http.MethodGet, http.MethodPost)
-	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.Detail)).Methods(http.MethodGet, http.MethodPost)
+	r.HandleFunc("/nodes/new", ctx.tu.Secure(ctx.Create))
+	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.Detail))
 }

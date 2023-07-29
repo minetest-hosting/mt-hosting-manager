@@ -27,13 +27,11 @@ type Context struct {
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/", ctx.Index)
 
-	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginGet)).Methods(http.MethodGet)
-	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.LoginPost)).Methods(http.MethodPost)
+	r.HandleFunc("/login", ctx.tu.OptionalSecure(ctx.Login))
 	r.HandleFunc("/profile", ctx.tu.Secure(ctx.Profile))
 
 	r.HandleFunc("/node_types", ctx.tu.Secure(ctx.NodeTypes, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
-	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
-	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeSave, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodPost)
+	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin)))
 
 	usernode_ctx := usernode.New(ctx.tu, ctx.repos)
 	usernode_ctx.Setup(r)
