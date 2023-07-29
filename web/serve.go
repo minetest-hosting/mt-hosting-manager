@@ -17,6 +17,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/sirupsen/logrus"
+	"github.com/vearutop/statigz"
+	"github.com/vearutop/statigz/brotli"
 	"golang.org/x/text/language"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -40,11 +42,13 @@ func formattime(ts int64) string {
 func Serve(repos *db.Repositories) error {
 
 	r := mux.NewRouter()
-	r.Use(middleware.PrometheusMiddleware)
-	r.Use(middleware.LoggingMiddleware)
+	// static assets
+	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
 
 	tmplRoute := r.NewRoute().Subrouter()
 	tmplRoute.Use(csrf.Protect([]byte(os.Getenv("CSRF_KEY"))))
+	tmplRoute.Use(middleware.PrometheusMiddleware)
+	tmplRoute.Use(middleware.LoggingMiddleware)
 
 	var files fs.FS
 	if os.Getenv("WEBDEV") == "true" {

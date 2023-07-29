@@ -1,7 +1,6 @@
 package web
 
 import (
-	"embed"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
@@ -11,12 +10,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/vearutop/statigz"
-	"github.com/vearutop/statigz/brotli"
 )
-
-//go:embed *
-var Files embed.FS
 
 type Context struct {
 	tu          *tmpl.TemplateUtil
@@ -35,8 +29,6 @@ func (ctx *Context) Setup(r *mux.Router) {
 
 	usernode_ctx := usernode.New(ctx.tu, ctx.repos)
 	usernode_ctx.Setup(r)
-
-	r.PathPrefix("/assets").Handler(statigz.FileServer(Files, brotli.AddEncoding))
 
 	if os.Getenv("GITHUB_CLIENTID") != "" {
 		ctx.GithubOauth = &oauth.OAuthConfig{
