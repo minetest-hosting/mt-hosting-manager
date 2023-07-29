@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 	"strconv"
 
@@ -10,11 +11,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type NodeTypeEditModel struct {
+	NodeType   *types.NodeType
+	Breadcrumb *components.Breadcrumb
+}
+
 func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	model := make(map[string]any)
+	model := &NodeTypeEditModel{}
 
 	nt, err := ctx.repos.NodeTypeRepo.GetByID(id)
 	if err != nil {
@@ -85,7 +91,22 @@ func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *type
 		return
 	}
 
-	model["NodeType"] = nt
+	model.NodeType = nt
+	model.Breadcrumb = &components.Breadcrumb{
+		Entries: []*components.BreadcrumbEntry{
+			{
+				Name: "Start",
+				Link: "",
+			}, {
+				Name: "Node-Types",
+				Link: "",
+			}, {
+				Name:   nt.ID,
+				Link:   "",
+				Active: true,
+			},
+		},
+	}
 
 	ctx.tu.ExecuteTemplate(w, r, "node_type_edit.html", model)
 }

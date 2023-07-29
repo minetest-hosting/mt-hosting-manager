@@ -1,0 +1,11 @@
+{{define "breadcrumb"}}
+<nav>
+    <ol class="breadcrumb">
+        {{ range $e := .Entries }}
+        <li class="breadcrumb-item {{if $e.Active}}active{{end}}">
+            <a href="{{$e.Link}}">{{$e.Name}}</a>
+        </li>
+        {{end}}
+    </ol>
+</nav>
+{{end}}
