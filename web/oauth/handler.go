@@ -9,6 +9,7 @@ import (
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -77,6 +78,12 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			Type:       h.Type,
 			Role:       types.UserRoleUser,
 		}
+
+		// check for admin mail config
+		if user.Mail == os.Getenv("ADMIN_USER_MAIL") {
+			user.Role = types.UserRoleAdmin
+		}
+
 		err = h.UserRepo.Insert(user)
 		if err != nil {
 			h.Tu.RenderError(w, r, 500, err)
