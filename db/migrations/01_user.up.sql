@@ -7,10 +7,7 @@ create table user(
     created bigint not null, -- creation time in `time.Now().Unix()`
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
-    role varchar(32) not null, -- ADMIN / USER
-    credits bigint not null default 0, -- credits in millicents USD
-    max_credits bigint not null default 100, -- max credits in millicents USD
-    warn_credits bigint not null default 5 -- warn if the credits fall below this threshold
+    role varchar(32) not null -- ADMIN / USER
 );
 
 create unique index user_mail on user(mail);

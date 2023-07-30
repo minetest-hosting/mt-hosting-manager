@@ -69,16 +69,13 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if user == nil {
 		user = &types.User{
-			Created:     time.Now().Unix(),
-			State:       types.UserStateActive,
-			Name:        info.Name,
-			Mail:        info.Email,
-			ExternalID:  info.ExternalID,
-			Type:        h.Type,
-			Role:        types.UserRoleUser,
-			Credits:     0,
-			MaxCredits:  100 * 100 * 1000, // 100$
-			WarnCredits: 4 * 100 * 1000,   // 4$
+			Created:    time.Now().Unix(),
+			State:      types.UserStateActive,
+			Name:       info.Name,
+			Mail:       info.Email,
+			ExternalID: info.ExternalID,
+			Type:       h.Type,
+			Role:       types.UserRoleUser,
 		}
 		err = h.UserRepo.Insert(user)
 		if err != nil {
