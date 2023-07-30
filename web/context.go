@@ -16,6 +16,7 @@ type Context struct {
 	tu          *tmpl.TemplateUtil
 	repos       *db.Repositories
 	GithubOauth *oauth.OAuthConfig
+	cfg         *types.Config
 }
 
 func (ctx *Context) Setup(r *mux.Router) {
@@ -27,7 +28,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/node_types", ctx.tu.Secure(ctx.NodeTypes, tmpl.RoleCheck(types.UserRoleAdmin))).Methods(http.MethodGet)
 	r.HandleFunc("/node_types/{id}", ctx.tu.Secure(ctx.NodeTypeEdit, tmpl.RoleCheck(types.UserRoleAdmin)))
 
-	usernode_ctx := usernode.New(ctx.tu, ctx.repos)
+	usernode_ctx := usernode.New(ctx.tu, ctx.repos, ctx.cfg)
 	usernode_ctx.Setup(r)
 
 	if os.Getenv("GITHUB_CLIENTID") != "" {

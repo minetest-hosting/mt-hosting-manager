@@ -19,6 +19,7 @@
             <td>
                 <div class="input-group has-validation">
                     <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="name" value="{{.Name}}"/>
+                    <span class="input-group-text">.{{Config.HostingDomainSuffix}}</span>
                     {{if .NameErr}}
                     <div class="invalid-feedback">
                         {{T .NameErr}}

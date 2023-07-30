@@ -11,6 +11,7 @@ import (
 
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
+	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/middleware"
 
 	"github.com/gorilla/csrf"
@@ -58,6 +59,8 @@ func Serve(repos *db.Repositories) error {
 		files = Files
 	}
 
+	cfg := types.NewConfig()
+
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 	bundle.LoadMessageFileFS(files, "locale/en.json")
@@ -68,6 +71,7 @@ func Serve(repos *db.Repositories) error {
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
+			funcs["Config"] = func() *types.Config { return cfg }
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
 			funcs["T"] = func(msgId string) (string, error) {
 				localizer := i18n.NewLocalizer(bundle, r.Header.Get("Accept-Language"))
@@ -86,6 +90,7 @@ func Serve(repos *db.Repositories) error {
 	ctx := &Context{
 		tu:    tu,
 		repos: repos,
+		cfg:   cfg,
 	}
 	ctx.Setup(tmplRoute)
 
