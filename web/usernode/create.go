@@ -69,7 +69,6 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				State:      types.UserNodeStateCreated,
 				Name:       model.Name,
 			}
-			fmt.Printf("%v\n", user_node)
 			err = ctx.repos.UserNodeRepo.Insert(user_node)
 			if err != nil {
 				ctx.tu.RenderError(w, r, 500, fmt.Errorf("create failed: %v", err))
