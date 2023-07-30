@@ -1,6 +1,6 @@
 {{define "title"}}Edit Node-Type{{end}}
 {{define "content"}}
-<form method="POST">
+<form method="POST" action="{{BaseURL}}/node_types/{{.NodeType.ID}}">
     <table class="table">
         <tr>
             <td>ID</td>

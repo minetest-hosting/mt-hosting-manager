@@ -43,7 +43,7 @@ func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *type
 
 		// remove action
 		if r.FormValue("action") == "remove" {
-			err = ctx.repos.NodeTypeRepo.Delete(r.FormValue("id"))
+			err = ctx.repos.NodeTypeRepo.Delete(id)
 			if err != nil {
 				ctx.tu.RenderError(w, r, 404, err)
 				return
