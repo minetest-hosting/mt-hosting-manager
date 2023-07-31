@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-func CreateTransaction(userID, key string, tx *TransactionRequest) (*TransactionResponse, error) {
+func (c *WalleeClient) CreateTransaction(tx *TransactionRequest) (*TransactionResponse, error) {
 	ts := time.Now().Unix()
 	path := "/api/transaction/createTransactionCredentials"
 	method := http.MethodPost
 
-	mac, err := CreateMac(userID, key, method, path, ts)
+	mac, err := CreateMac(c.UserID, c.Key, method, path, ts)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func CreateTransaction(userID, key string, tx *TransactionRequest) (*Transaction
 	}
 
 	req.Header.Set("x-mac-version", "1")
-	req.Header.Set("x-mac-userid", userID)
+	req.Header.Set("x-mac-userid", c.UserID)
 	req.Header.Set("x-mac-timestamp", fmt.Sprintf("%d", ts))
 	req.Header.Set("x-mac-value", mac)
 
@@ -44,7 +44,7 @@ func CreateTransaction(userID, key string, tx *TransactionRequest) (*Transaction
 	return txr, err
 }
 
-func GetTransaction(userID, key, id string) (*TransactionResponse, error) {
+func SearchTransaction(userID, key string, filter TransactionSearchFilter) ([]*TransactionResponse, error) {
 	return nil, nil
 }
 

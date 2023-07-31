@@ -39,6 +39,10 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 
 * `ADMIN_USER_MAIL` mail of the user that gets the admin role on register
 
+* `WALLEE_USERID`
+* `WALLEE_SPACEID`
+* `WALLEE_KEY`
+
 * `NTFY_URL`
 * `NTFY_TOPIC`
 * `NTFY_USERNAME`
