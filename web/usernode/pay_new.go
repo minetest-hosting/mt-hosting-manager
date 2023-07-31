@@ -90,6 +90,7 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 			UserID:     c.UserID,
 			NodeTypeID: nodetype.ID,
 			Created:    time.Now().Unix(),
+			Expires:    time.Now().Unix(),
 			State:      types.UserNodeStateCreated,
 			Name:       uuid.NewString(), //TODO: better hostnames
 		}

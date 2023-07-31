@@ -27,12 +27,18 @@ create table node_type(
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
 
+-- default node types
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','1;3;12','10;25;100',2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','MEDIUM1','Medium node for average servers and mod-sets','1;3;12','20;40;200',3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','LARGE1','Larger node for heavier workloads','1;3;12','50;100;500',5,10);
+
 -- a node set up by a user
 create table user_node(
     id varchar(36) primary key not null, -- uuid
     user_id varchar(36) not null references user(id) on delete restrict,
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
     created bigint not null, -- creation time in `time.Now().Unix()`
+    expires bigint not null, -- expiration time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     ipv4 varchar(32) not null,

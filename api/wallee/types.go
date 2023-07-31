@@ -18,7 +18,7 @@ const (
 type LineItem struct {
 	AmountIncludingTax float64      `json:"amountIncludingTax"`
 	Name               string       `json:"name"`
-	Quantity           int          `json:"quantity"`
+	Quantity           float64      `json:"quantity"`
 	Type               LineItemType `json:"type"`
 	UniqueID           string       `json:"uniqueId"`
 	ID                 *int64       `json:"id"`
@@ -47,7 +47,7 @@ type FilterTypeType string
 const FilterTypeLeaf FilterTypeType = "LEAF"
 
 type TransactionSearchFilter struct {
-	FieldName string             `json:"fieldname"`
+	FieldName string             `json:"fieldName"`
 	Operator  FilterOperatorType `json:"operator"`
 	Type      FilterTypeType     `json:"type"`
 	Value     string             `json:"value"`
@@ -56,5 +56,3 @@ type TransactionSearchFilter struct {
 type TransactionSearchRequest struct {
 	Filter *TransactionSearchFilter `json:"filter"`
 }
-
-type TransactionSearchResponse []*TransactionResponse
