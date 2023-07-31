@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -63,10 +65,12 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 			return
 		}
 
+		payment_tx_id := uuid.NewString()
+
 		tx, err := ctx.wc.CreateTransaction(&wallee.TransactionRequest{
 			Currency:   "EUR",
 			LineItems:  []*wallee.LineItem{item},
-			SuccessURL: fmt.Sprintf("%s/nodes/pay-callback/%s", ctx.tu.BaseURL, "local-job-or-tx-id-TODO"),
+			SuccessURL: fmt.Sprintf("%s/nodes/pay-callback/%s", ctx.tu.BaseURL, payment_tx_id),
 			//TODO: failedURL
 		})
 		if err != nil {
@@ -75,6 +79,33 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 		}
 
 		url, err := ctx.wc.CreatePaymentPageURL(tx.ID)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, err)
+			return
+		}
+
+		// create usernode
+		node := &types.UserNode{
+			ID:         uuid.NewString(),
+			UserID:     c.UserID,
+			NodeTypeID: nodetype.ID,
+			Created:    time.Now().Unix(),
+			State:      types.UserNodeStateCreated,
+			Name:       uuid.NewString(), //TODO: better hostnames
+		}
+		err = ctx.repos.UserNodeRepo.Insert(node)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, err)
+			return
+		}
+
+		payment_tx := &types.PaymentTransaction{
+			ID:            payment_tx_id,
+			TransactionID: fmt.Sprintf("%d", tx.ID),
+			Created:       time.Now().Unix(),
+			UserNodeID:    node.ID,
+		}
+		err = ctx.repos.PaymentTransactionRepo.Insert(payment_tx)
 		if err != nil {
 			ctx.tu.RenderError(w, r, 500, err)
 			return

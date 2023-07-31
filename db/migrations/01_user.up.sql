@@ -63,3 +63,10 @@ create table job(
 );
 
 create index job_type_state_started on job(type, state, started);
+
+create table payment_transaction(
+    id varchar(36) primary key not null, -- uuid
+    transaction_id varchar not null, -- external tx id
+    created bigint not null, -- creation time in `time.Now().Unix()`
+    user_node_id varchar(36) not null references user_node(id) on delete restrict
+);
