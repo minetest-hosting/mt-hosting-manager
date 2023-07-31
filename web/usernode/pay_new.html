@@ -1,6 +1,11 @@
 {{define "title"}}Payment{{end}}
 {{define "content"}}
-    <a href="{{BaseURL}}/nodes/pay-callback" class="btn btn-primary">
+<form method="post">
+    TODO: summary of items
+    {{CSRFField}}
+    <hr>
+    <button type="submit" class="btn btn-primary">
         Proceed to payment
-    </a>
+    </button>
+</form>
 {{end}}

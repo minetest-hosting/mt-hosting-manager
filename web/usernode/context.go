@@ -34,7 +34,7 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/nodes", ctx.tu.Secure(ctx.List))
 	r.HandleFunc("/nodes/select-new", ctx.tu.Secure(ctx.SelectNew))
 	r.HandleFunc("/nodes/new/{nodetype-id}/{months}", ctx.tu.Secure(ctx.PayNew))
-	r.HandleFunc("/nodes/pay-callback", ctx.tu.Secure(ctx.PayCallback))
+	r.HandleFunc("/nodes/pay-callback/{tx-id}", ctx.tu.Secure(ctx.PayCallback))
 	r.HandleFunc("/nodes/{id}", ctx.tu.Secure(ctx.Detail))
 	r.HandleFunc("/nodes/{id}/delete", ctx.tu.Secure(ctx.Delete))
 }

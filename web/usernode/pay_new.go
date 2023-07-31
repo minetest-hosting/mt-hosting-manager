@@ -30,41 +30,56 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 	costs := strings.Split(nodetype.Cost, ";")
 	months := strings.Split(nodetype.MonthChoices, ";")
 
-	item := &wallee.LineItem{
-		Name:     nodetype.Name,
-		Quantity: 1,
-		Type:     wallee.LineItemTypeProduct,
-		UniqueID: nodetype.ID,
+	if r.Method == http.MethodGet {
+		// show details
+		ctx.tu.ExecuteTemplate(w, r, "usernode/pay_new.html", nil)
+		return
 	}
 
-	cost_found := false
-	for i, m := range months {
-		if m == months_str {
-			cost, err := strconv.ParseFloat(costs[i], 64)
-			if err != nil {
-				ctx.tu.RenderError(w, r, 500, err)
-				return
-			}
-			item.AmountIncludingTax = cost
-			cost_found = true
+	if r.Method == http.MethodPost {
+		// create tx and redirect to payment site
+		item := &wallee.LineItem{
+			Name:     nodetype.Name,
+			Quantity: 1,
+			Type:     wallee.LineItemTypeProduct,
+			UniqueID: nodetype.ID,
 		}
+
+		cost_found := false
+		for i, m := range months {
+			if m == months_str {
+				cost, err := strconv.ParseFloat(costs[i], 64)
+				if err != nil {
+					ctx.tu.RenderError(w, r, 500, err)
+					return
+				}
+				item.AmountIncludingTax = cost
+				cost_found = true
+			}
+		}
+
+		if !cost_found {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("month selection not found: '%s'", months_str))
+			return
+		}
+
+		tx, err := ctx.wc.CreateTransaction(&wallee.TransactionRequest{
+			Currency:   "EUR",
+			LineItems:  []*wallee.LineItem{item},
+			SuccessURL: fmt.Sprintf("%s/nodes/pay-callback/%s", ctx.tu.BaseURL, "local-job-or-tx-id-TODO"),
+			//TODO: failedURL
+		})
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, err)
+			return
+		}
+
+		url, err := ctx.wc.CreatePaymentPageURL(tx.ID)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, err)
+			return
+		}
+
+		http.Redirect(w, r, url, http.StatusSeeOther)
 	}
-
-	if !cost_found {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("month selection not found: '%s'", months_str))
-		return
-	}
-
-	tx, err := ctx.wc.CreateTransaction(&wallee.TransactionRequest{
-		Currency:  "EUR",
-		LineItems: []*wallee.LineItem{item},
-	})
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	fmt.Printf("Tx-id: %d\n", tx.ID)
-
-	ctx.tu.ExecuteTemplate(w, r, "usernode/pay_new.html", nil)
 }

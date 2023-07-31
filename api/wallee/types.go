@@ -25,8 +25,10 @@ type LineItem struct {
 }
 
 type TransactionRequest struct {
-	Currency  string      `json:"currency"`
-	LineItems []*LineItem `json:"lineItems"`
+	Currency   string      `json:"currency"`
+	LineItems  []*LineItem `json:"lineItems"`
+	FailedURL  string      `json:"failedUrl"`
+	SuccessURL string      `json:"successUrl"`
 }
 
 type TransactionResponse struct {
