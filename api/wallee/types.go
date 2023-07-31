@@ -3,7 +3,8 @@ package wallee
 type LineItemType string
 
 const (
-	LineItemTypeFee LineItemType = "FEE"
+	LineItemTypeFee     LineItemType = "FEE"
+	LineItemTypeProduct LineItemType = "PRODUCT"
 )
 
 type TransactionStateType string
@@ -15,9 +16,9 @@ const (
 )
 
 type LineItem struct {
-	AmountIncludingTax string       `json:"amountIncludingTax"`
+	AmountIncludingTax float64      `json:"amountIncludingTax"`
 	Name               string       `json:"name"`
-	Quantity           string       `json:"quantity"`
+	Quantity           int          `json:"quantity"`
 	Type               LineItemType `json:"type"`
 	UniqueID           string       `json:"uniqueId"`
 	ID                 *int64       `json:"id"`

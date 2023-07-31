@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 )
 
 func (c *WalleeClient) CreateTransaction(tx *TransactionRequest) (*TransactionResponse, error) {
 	ts := time.Now().Unix()
-	path := "/api/transaction/createTransactionCredentials"
+	path := fmt.Sprintf("/api/transaction/create?spaceId=%s", c.SpaceID)
 	method := http.MethodPost
 
 	mac, err := CreateMac(c.UserID, c.Key, method, path, ts)
@@ -23,7 +24,10 @@ func (c *WalleeClient) CreateTransaction(tx *TransactionRequest) (*TransactionRe
 		return nil, err
 	}
 
-	req, err := http.NewRequest(method, fmt.Sprintf("https://app-wallee.com%s", path), bytes.NewBuffer(data))
+	url := fmt.Sprintf("https://app-wallee.com%s", path)
+	fmt.Printf("Url: '%s', Data: %s\n", url, data)
+
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +36,7 @@ func (c *WalleeClient) CreateTransaction(tx *TransactionRequest) (*TransactionRe
 	req.Header.Set("x-mac-userid", c.UserID)
 	req.Header.Set("x-mac-timestamp", fmt.Sprintf("%d", ts))
 	req.Header.Set("x-mac-value", mac)
+	req.Header.Set("Content-Type", "application/json")
 
 	client := http.Client{}
 	resp, err := client.Do(req)
@@ -39,8 +44,19 @@ func (c *WalleeClient) CreateTransaction(tx *TransactionRequest) (*TransactionRe
 		return nil, err
 	}
 
+	resp_bytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Printf("Response: %s\n", resp_bytes)
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
+	}
+
 	txr := &TransactionResponse{}
-	err = json.NewDecoder(resp.Body).Decode(txr)
+	err = json.Unmarshal(resp_bytes, txr)
 	return txr, err
 }
 

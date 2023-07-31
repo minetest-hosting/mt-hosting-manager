@@ -1,9 +1,11 @@
 package usernode
 
 import (
+	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -12,6 +14,7 @@ type Context struct {
 	tu    *tmpl.TemplateUtil
 	repos *db.Repositories
 	cfg   *types.Config
+	wc    *wallee.WalleeClient
 }
 
 func New(tu *tmpl.TemplateUtil, repos *db.Repositories, cfg *types.Config) *Context {
@@ -19,6 +22,11 @@ func New(tu *tmpl.TemplateUtil, repos *db.Repositories, cfg *types.Config) *Cont
 		tu:    tu,
 		repos: repos,
 		cfg:   cfg,
+		wc: wallee.New(
+			os.Getenv("WALLEE_USERID"),
+			os.Getenv("WALLEE_SPACEID"),
+			os.Getenv("WALLEE_KEY"),
+		),
 	}
 }
 
