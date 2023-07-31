@@ -32,11 +32,11 @@ func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
 }
 
 func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeType, error) {
-	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "where state = $1", t)
+	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "where state = $1 order by order_id asc", t)
 }
 
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
-	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "")
+	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "order by order_id asc")
 }
 
 func (r *NodeTypeRepository) Delete(node_type_id string) error {

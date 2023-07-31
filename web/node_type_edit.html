@@ -51,9 +51,15 @@
             </td>
         </tr>
         <tr>
-            <td>Cost per hour</td>
+            <td>Month-choices</td>
             <td>
-                <input type="number" min="0" class="form-control" name="cost_per_hour" value="{{.NodeType.CostPerHour}}"/>
+                <input type="text" class="form-control" name="month_choices" value="{{.NodeType.MonthChoices}}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Cost &euro;</td>
+            <td>
+                <input type="text" class="form-control" name="cost" value="{{.NodeType.Cost}}"/>
             </td>
         </tr>
         <tr>

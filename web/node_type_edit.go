@@ -14,6 +14,7 @@ import (
 type NodeTypeEditModel struct {
 	NodeType   *types.NodeType
 	Breadcrumb *components.Breadcrumb
+	HasError   bool
 }
 
 func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -62,11 +63,16 @@ func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *type
 		nt.State = r.FormValue("state")
 		nt.Provider = types.ProviderType(r.FormValue("provider"))
 		nt.ServerType = r.FormValue("server_type")
-		nt.CostPerHour, _ = strconv.ParseInt(r.FormValue("cost_per_hour"), 10, 32)
+		nt.MonthChoices = r.FormValue("month_choices")
+		nt.Cost = r.FormValue("cost")
+		order_id, _ := strconv.ParseInt(r.FormValue("order_id"), 10, 32)
+		nt.OrderID = int(order_id)
 		num, _ := strconv.ParseInt(r.FormValue("max_recommended_instances"), 10, 32)
 		nt.MaxRecommendedInstances = int(num)
 		num, _ = strconv.ParseInt(r.FormValue("max_instances"), 10, 32)
 		nt.MaxInstances = int(num)
+
+		//TODO: validate input
 
 		if nt.ID == "" {
 			// insert new record

@@ -1,0 +1,19 @@
+{{define "title"}}Select Node-Type{{end}}
+{{define "content"}}
+    {{range $nt := .NodeTypes}}
+    <div class="card w-100">
+        <div class="card-body">
+            <h5 class="card-title">{{$nt.Name}}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+            {{range $dp := $nt.DescriptionParagraphs}}
+                <p class="card-text">{{$dp}}</p>
+            {{end}}
+            {{range $ti := $nt.TimeSelection}}
+                <a href="{{BaseURL}}/nodes/new/{{$nt.ID}}/{{$ti.Months}}" class="btn btn-primary btn-xs">
+                    {{$ti.Months}} Months ({{$ti.Cost}} {{$ti.Currency}})
+                </a>
+            {{end}}
+        </div>
+    </div>
+    {{end}}
+{{end}}

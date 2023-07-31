@@ -21,7 +21,8 @@ create table node_type(
     server_type varchar(32) not null, -- provider server-type: cx11
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
-    cost_per_hour bigint not null default 0.01, -- cost in millicents USD per hour
+    month_choices varchar not null default '', -- 1;3;12
+    cost varchar not null default '', -- 10;25;100
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
