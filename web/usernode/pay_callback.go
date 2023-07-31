@@ -44,5 +44,8 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		Node:        node,
 	}
 
+	//TODO: verify tx success
+	//TODO: start node provisioning
+
 	ctx.tu.ExecuteTemplate(w, r, "usernode/pay_callback.html", m)
 }
