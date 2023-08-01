@@ -1,21 +1,14 @@
 package usernode
 
 import (
+	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
-type TimeSelection struct {
-	Months   int64
-	Cost     float64
-	Currency string
-}
-
 type NodeTypeInfo struct {
 	*types.NodeType
-	TimeSelection         []*TimeSelection
 	DescriptionParagraphs []string
 }
 
@@ -24,6 +17,14 @@ type SelectNewModel struct {
 }
 
 func (ctx *Context) SelectNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+
+	if r.Method == http.MethodPost {
+		url := fmt.Sprintf("%s/nodes/order/%s/%s",
+			ctx.tu.BaseURL, r.FormValue("node_type_id"), r.FormValue("months"),
+		)
+		http.Redirect(w, r, url, http.StatusSeeOther)
+		return
+	}
 
 	ntl, err := ctx.repos.NodeTypeRepo.GetByState(types.NodeTypeStateActive)
 	if err != nil {
@@ -37,25 +38,8 @@ func (ctx *Context) SelectNew(w http.ResponseWriter, r *http.Request, c *types.C
 
 	for i, nt := range ntl {
 
-		months_str := strings.Split(nt.MonthChoices, ";")
-		costs_str := strings.Split(nt.Cost, ";")
-
-		tsl := make([]*TimeSelection, len(months_str))
-		for j, month_str := range months_str {
-
-			months, _ := strconv.ParseInt(month_str, 10, 64)
-			cost, _ := strconv.ParseFloat(costs_str[j], 64)
-
-			tsl[j] = &TimeSelection{
-				Currency: "€",
-				Months:   months,
-				Cost:     cost,
-			}
-		}
-
 		m.NodeTypes[i] = &NodeTypeInfo{
 			NodeType:              nt,
-			TimeSelection:         tsl,
 			DescriptionParagraphs: strings.Split(nt.Description, "\n"),
 		}
 	}

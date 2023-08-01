@@ -6,14 +6,13 @@ import (
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
-func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 
 	nodetype_id := vars["nodetype-id"]
@@ -29,40 +28,36 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	costs := strings.Split(nodetype.Cost, ";")
-	months := strings.Split(nodetype.MonthChoices, ";")
+	months, err := strconv.ParseInt(months_str, 10, 32)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("month parse error: %v", err))
+		return
+	}
+	if months < 1 || months > int64(nodetype.MaxMonths) {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("invalid month choice: %s", months_str))
+		return
+	}
 
 	if r.Method == http.MethodGet {
 		// show details
-		ctx.tu.ExecuteTemplate(w, r, "usernode/pay_new.html", nil)
+		ctx.tu.ExecuteTemplate(w, r, "usernode/order_new.html", nil)
 		return
 	}
 
 	if r.Method == http.MethodPost {
 		// create tx and redirect to payment site
-		item := &wallee.LineItem{
-			Name:     nodetype.Name,
-			Quantity: 1,
-			Type:     wallee.LineItemTypeProduct,
-			UniqueID: nodetype.ID,
-		}
-
-		cost_found := false
-		for i, m := range months {
-			if m == months_str {
-				cost, err := strconv.ParseFloat(costs[i], 64)
-				if err != nil {
-					ctx.tu.RenderError(w, r, 500, err)
-					return
-				}
-				item.AmountIncludingTax = cost
-				cost_found = true
-			}
-		}
-
-		if !cost_found {
-			ctx.tu.RenderError(w, r, 500, fmt.Errorf("month selection not found: '%s'", months_str))
+		node_cost, err := strconv.ParseFloat(nodetype.MonthlyCost, 64)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("monthlycost parse error: %v", err))
 			return
+		}
+
+		item := &wallee.LineItem{
+			Name:               nodetype.Name,
+			Quantity:           float64(months),
+			AmountIncludingTax: node_cost * float64(months),
+			Type:               wallee.LineItemTypeProduct,
+			UniqueID:           nodetype.ID,
 		}
 
 		payment_tx_id := uuid.NewString()
@@ -84,27 +79,12 @@ func (ctx *Context) PayNew(w http.ResponseWriter, r *http.Request, c *types.Clai
 			return
 		}
 
-		// create usernode
-		node := &types.UserNode{
-			ID:         uuid.NewString(),
-			UserID:     c.UserID,
-			NodeTypeID: nodetype.ID,
-			Created:    time.Now().Unix(),
-			Expires:    time.Now().Unix(),
-			State:      types.UserNodeStateCreated,
-			Name:       uuid.NewString(), //TODO: better hostnames
-		}
-		err = ctx.repos.UserNodeRepo.Insert(node)
-		if err != nil {
-			ctx.tu.RenderError(w, r, 500, err)
-			return
-		}
-
 		payment_tx := &types.PaymentTransaction{
 			ID:            payment_tx_id,
 			TransactionID: fmt.Sprintf("%d", tx.ID),
 			Created:       time.Now().Unix(),
-			UserNodeID:    node.ID,
+			NodeTypeID:    nodetype.ID,
+			Months:        int(months),
 		}
 		err = ctx.repos.PaymentTransactionRepo.Insert(payment_tx)
 		if err != nil {

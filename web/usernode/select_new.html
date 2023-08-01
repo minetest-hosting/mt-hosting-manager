@@ -8,11 +8,14 @@
             {{range $dp := $nt.DescriptionParagraphs}}
                 <p class="card-text">{{$dp}}</p>
             {{end}}
-            {{range $ti := $nt.TimeSelection}}
-                <a href="{{BaseURL}}/nodes/new/{{$nt.ID}}/{{$ti.Months}}" class="btn btn-primary btn-xs">
-                    {{$ti.Months}} Months ({{$ti.Cost}} {{$ti.Currency}})
-                </a>
-            {{end}}
+            <form method="post">
+                {{CSRFField}}
+                <input type="number" class="form-control" min="1" max="{{$nt.MaxMonths}}" name="months" value="1"/>
+                <input type="hidden" name="node_type_id" value="{{$nt.ID}}"/>
+                <button type="submit" class="btn btn-primary btn-xs">
+                    Order
+                </button>
+            </form>
         </div>
     </div>
     {{end}}

@@ -2,6 +2,7 @@ package usernode
 
 import (
 	"fmt"
+	"math/rand"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/types"
 	"net/http"
@@ -10,6 +11,20 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
+
+func RandStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
 
 type PayCallbackModel struct {
 	Transaction *types.PaymentTransaction
@@ -36,7 +51,18 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	node, err := ctx.repos.UserNodeRepo.GetByID(tx.UserNodeID)
+	// create usernode
+	node := &types.UserNode{
+		ID:         uuid.NewString(),
+		UserID:     c.UserID,
+		NodeTypeID: tx.NodeTypeID,
+		Created:    time.Now().Unix(),
+		Expires:    time.Now().Unix(),
+		State:      types.UserNodeStateCreated,
+		Name:       fmt.Sprintf("node-%s", RandStringRunes(5)),
+	}
+	fmt.Printf("%v\n", node)
+	err = ctx.repos.UserNodeRepo.Insert(node)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, err)
 		return
@@ -47,7 +73,7 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		Node:        node,
 	}
 
-	//TODO: verify tx success
+	// verify tx success
 	txr := &wallee.TransactionSearchRequest{
 		Filter: &wallee.TransactionSearchFilter{
 			FieldName: "id",

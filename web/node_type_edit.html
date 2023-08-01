@@ -51,15 +51,15 @@
             </td>
         </tr>
         <tr>
-            <td>Month-choices</td>
+            <td>Monthly cost [&euro;]</td>
             <td>
-                <input type="text" class="form-control" name="month_choices" value="{{.NodeType.MonthChoices}}"/>
+                <input type="text" class="form-control" name="monthly_cost" value="{{.NodeType.MonthlyCost}}"/>
             </td>
         </tr>
         <tr>
-            <td>Cost &euro;</td>
+            <td>Max months</td>
             <td>
-                <input type="text" class="form-control" name="cost" value="{{.NodeType.Cost}}"/>
+                <input type="number" class="form-control" name="max_months" value="{{.NodeType.MaxMonths}}"/>
             </td>
         </tr>
         <tr>
