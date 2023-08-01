@@ -37,6 +37,7 @@ create table user_node(
     id varchar(36) primary key not null, -- uuid
     user_id varchar(36) not null references user(id) on delete restrict,
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
+    external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
     expires bigint not null, -- expiration time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',

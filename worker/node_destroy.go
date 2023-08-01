@@ -2,8 +2,8 @@ package worker
 
 import (
 	"errors"
+	"fmt"
 	"mt-hosting-manager/types"
-	"time"
 )
 
 func (w *Worker) NodeDestroy(job *types.Job) error {
@@ -15,8 +15,10 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		return errors.New("node not found")
 	}
 
-	//TODO: resource removals
-	time.Sleep(time.Second * 10)
+	err = w.hcc.DeleteServer(node.ExternalID)
+	if err != nil {
+		return fmt.Errorf("delete server failed: %v", err)
+	}
 
 	return w.repos.UserNodeRepo.Delete(node.ID)
 }

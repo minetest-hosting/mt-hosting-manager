@@ -17,6 +17,7 @@ type UserNode struct {
 	ID         string        `json:"id"`
 	UserID     string        `json:"user_id"`
 	NodeTypeID string        `json:"node_type_id"`
+	ExternalID string        `json:"external_id"`
 	Created    int64         `json:"created"`
 	Expires    int64         `json:"expires"`
 	State      UserNodeState `json:"state"`
@@ -30,6 +31,7 @@ func (m *UserNode) Columns(action string) []string {
 		"id",
 		"user_id",
 		"node_type_id",
+		"external_id",
 		"created",
 		"expires",
 		"state",
@@ -44,9 +46,9 @@ func (m *UserNode) Table() string {
 }
 
 func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.UserID, &m.NodeTypeID, &m.Created, &m.Expires, &m.State, &m.Name, &m.IPv4, &m.IPv6)
+	return r(&m.ID, &m.UserID, &m.NodeTypeID, &m.ExternalID, &m.Created, &m.Expires, &m.State, &m.Name, &m.IPv4, &m.IPv6)
 }
 
 func (m *UserNode) Values(action string) []any {
-	return []any{m.ID, m.UserID, m.NodeTypeID, m.Created, m.Expires, m.State, m.Name, m.IPv4, m.IPv6}
+	return []any{m.ID, m.UserID, m.NodeTypeID, m.ExternalID, m.Created, m.Expires, m.State, m.Name, m.IPv4, m.IPv6}
 }
