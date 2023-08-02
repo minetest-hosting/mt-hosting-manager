@@ -6,6 +6,7 @@ import (
 	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/provision"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
@@ -84,6 +85,7 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 					"err": err,
 				}).Warn("ssh-client failed")
 				try_count++
+				time.Sleep(10 * time.Second)
 			}
 		} else {
 			break
