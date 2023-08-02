@@ -40,3 +40,26 @@ type ServerInfo struct {
 type CreateServerResponse struct {
 	Server *ServerInfo `json:"server"`
 }
+
+type TimeSeriesData struct {
+	Values map[string][2]float64 `json:"values"`
+}
+
+type TimeSeries struct {
+	CPU                 *TimeSeriesData `json:"cpu"`
+	Disk0BandwithRead   *TimeSeriesData `json:"disk.0.bandwidth.read"`
+	Disk0BandwithWrite  *TimeSeriesData `json:"disk.0.bandwidth.write"`
+	Network0BandwithIn  *TimeSeriesData `json:"network.0.bandwidth.in"`
+	Network0BandwithOut *TimeSeriesData `json:"network.0.bandwidth.out"`
+}
+
+type Metrics struct {
+	Start      string      `json:"start"`
+	End        string      `json:"end"`
+	Step       int         `json:"step"`
+	TimeSeries *TimeSeries `json:"time_series"`
+}
+
+type MetricsResponse struct {
+	Metrics *Metrics `json:"metrics"`
+}
