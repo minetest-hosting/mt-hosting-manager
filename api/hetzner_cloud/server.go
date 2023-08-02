@@ -41,6 +41,29 @@ func (c *HetznerCloudClient) CreateServer(csr *CreateServerRequest) (*CreateServ
 	return crsresp, err
 }
 
+func (c *HetznerCloudClient) GetServer(id string) (*CreateServerResponse, error) {
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://api.hetzner.cloud/v1/servers/%s", id), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Key))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
+	}
+
+	csr := &CreateServerResponse{}
+	err = json.NewDecoder(resp.Body).Decode(csr)
+
+	return csr, err
+}
+
 func (c *HetznerCloudClient) DeleteServer(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("https://api.hetzner.cloud/v1/servers/%s", id), nil)
 	if err != nil {

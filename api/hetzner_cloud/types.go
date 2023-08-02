@@ -31,8 +31,12 @@ type PublicNetInfo struct {
 	IPv6 *PublicNetEntry `json:"ipv6"`
 }
 
-type CreateServerResponse struct {
+type ServerInfo struct {
 	ID        int            `json:"id"`
 	Status    string         `json:"status"`
 	PublicNet *PublicNetInfo `json:"public_net"`
+}
+
+type CreateServerResponse struct {
+	Server *ServerInfo `json:"server"`
 }

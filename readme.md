@@ -48,3 +48,5 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 * `NTFY_TOPIC`
 * `NTFY_USERNAME`
 * `NTFY_PASSWORD`
+
+* `SSH_KEY`

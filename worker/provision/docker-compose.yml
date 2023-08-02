@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+ exporter:
+  image: prom/node-exporter:v1.6.1
+  restart: always
+  volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /:/rootfs:ro
+  command:
+    - '--path.procfs=/host/proc'
+    - '--path.rootfs=/rootfs'
+    - '--path.sysfs=/host/sys'
+    - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+  privileged: true
+  network_mode: "host"
+
+ traefik:
+  image: traefik:v3.0
+  restart: always
+  ports:
+   - "80:80"
+   - "443:443"
+  volumes:
+   - "letsencrypt:/letsencrypt"
+   - "/var/run/docker.sock:/var/run/docker.sock:ro"      
+  networks:
+   - terminator
+  labels:
+   - "promtail=true"
+   - "traefik.enable=true"
+   - "traefik.docker.network=terminator"
+  command:
+   - "--api=true"
+   - "--api.dashboard=true"
+   - "--accesslog=true"
+   - "--accesslog.format=json"
+   - "--accesslog.fields.headers.defaultmode=keep"
+   - "--providers.docker=true"
+   - "--providers.docker.exposedbydefault=false"
+   - "--entrypoints.web.address=:80"
+   - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+   - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+   - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+   - "--entrypoints.websecure.address=:443"
+   - "--certificatesresolvers.default.acme.tlschallenge=true"
+   - "--certificatesresolvers.default.acme.email=thomas@rudin.io"
+   - "--certificatesresolvers.default.acme.storage=/letsencrypt/acme.json"
+  logging:
+   options:
+    max-size: 50m
+
+networks:
+ terminator:
+  external: true
+
+volumes:
+ letsencrypt: {}
