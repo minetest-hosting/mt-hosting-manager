@@ -16,7 +16,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz")
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz0123456789")
 
 func RandStringRunes(n int) string {
 	b := make([]rune, n)
@@ -59,7 +59,7 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		Created:    time.Now().Unix(),
 		Expires:    time.Now().Unix(),
 		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s", RandStringRunes(5)),
+		Name:       fmt.Sprintf("node-%s", RandStringRunes(7)),
 	}
 	fmt.Printf("%v\n", node)
 	err = ctx.repos.UserNodeRepo.Insert(node)
