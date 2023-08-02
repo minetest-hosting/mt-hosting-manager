@@ -18,3 +18,7 @@ type Record struct {
 	Value    string     `json:"value"`
 	TTL      int        `json:"ttl"`
 }
+
+type RecordsResponse struct {
+	Records []*Record `json:"records"`
+}
