@@ -75,11 +75,8 @@ func Provision(client *ssh.Client) error {
 	}
 	defer sftp.Close()
 
-	fi, err := sftp.Stat("/provision")
+	_, err = sftp.Stat("/provision")
 	if err != nil {
-		return fmt.Errorf("could not stat file: %v", err)
-	}
-	if !fi.IsDir() {
 		err = sftp.Mkdir("/provision")
 		if err != nil {
 			return fmt.Errorf("could not create directory: %v", err)

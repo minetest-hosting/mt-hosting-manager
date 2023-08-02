@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"mt-hosting-manager/api/hetzner_cloud"
+	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/provision"
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -61,16 +63,92 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 
 		node.ExternalID = fmt.Sprintf("%d", resp.Server.ID)
 		node.IPv4 = resp.Server.PublicNet.IPv4.IP
-		node.IPv6 = resp.Server.PublicNet.IPv6.IP
+
+		// replace trailing /64 with 1
+		ipv6_parts := strings.Split(resp.Server.PublicNet.IPv6.IP, "/")
+		node.IPv6 = fmt.Sprintf("%s1", ipv6_parts[0])
 		err = w.repos.UserNodeRepo.Update(node)
 		if err != nil {
 			return fmt.Errorf("external-id update failed: %v", err)
 		}
 	}
 
+	var a_record *hetzner_dns.Record
+	var aaaa_record *hetzner_dns.Record
+
+	records, err := w.hdc.GetRecords()
+	if err != nil {
+		return fmt.Errorf("fetch records error: %v", err)
+	}
+	for _, r := range records.Records {
+		if r.Type == hetzner_dns.RecordA && r.Name == node.Name {
+			a_record = r
+			continue
+		}
+		if r.Type == hetzner_dns.RecordAAAA && r.Name == node.Name {
+			aaaa_record = r
+			continue
+		}
+	}
+
+	if a_record == nil {
+		// create new record
+		logrus.WithFields(logrus.Fields{
+			"ipv4": node.IPv4,
+			"name": node.Name,
+		}).Info("Creating A-Record")
+
+		a_record = &hetzner_dns.Record{
+			Type:  hetzner_dns.RecordA,
+			Name:  node.Name,
+			Value: node.IPv4,
+			TTL:   300,
+		}
+		err := w.hdc.CreateRecord(a_record)
+		if err != nil {
+			return fmt.Errorf("create a-record error: %v", err)
+		}
+
+	} else if a_record.Value != node.IPv4 {
+		// update record
+		a_record.Value = node.IPv4
+		err = w.hdc.UpdateRecord(a_record)
+		if err != nil {
+			return fmt.Errorf("update a-record error: %v", err)
+		}
+
+	}
+
+	if aaaa_record == nil {
+		logrus.WithFields(logrus.Fields{
+			"ipv6": node.IPv6,
+			"name": node.Name,
+		}).Info("Creating AAAA-Record")
+
+		a_record = &hetzner_dns.Record{
+			Type:  hetzner_dns.RecordAAAA,
+			Name:  node.Name,
+			Value: node.IPv6,
+			TTL:   300,
+		}
+		err := w.hdc.CreateRecord(a_record)
+		if err != nil {
+			return fmt.Errorf("create aaaa-record error: %v", err)
+		}
+
+	} else if aaaa_record.Value != node.IPv6 {
+		// update record
+		a_record.Value = node.IPv6
+		err = w.hdc.UpdateRecord(a_record)
+		if err != nil {
+			return fmt.Errorf("update aaaa-record error: %v", err)
+		}
+	}
+
 	logrus.WithFields(logrus.Fields{
 		"external_id": node.ExternalID,
 		"ipv4":        node.IPv4,
+		"ipv6":        node.IPv6,
 	}).Info("Executing provisioning")
 
 	var client *ssh.Client

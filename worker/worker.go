@@ -3,6 +3,7 @@ package worker
 import (
 	"errors"
 	"mt-hosting-manager/api/hetzner_cloud"
+	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"os"
@@ -14,12 +15,14 @@ import (
 type Worker struct {
 	repos *db.Repositories
 	hcc   *hetzner_cloud.HetznerCloudClient
+	hdc   *hetzner_dns.HetznerDNSClient
 }
 
 func NewWorker(repos *db.Repositories) *Worker {
 	return &Worker{
 		repos: repos,
 		hcc:   hetzner_cloud.New(os.Getenv("HETZNER_CLOUD_KEY")),
+		hdc:   hetzner_dns.New(os.Getenv("HETZNER_API_KEY"), os.Getenv("HETZNER_API_ZONEID")),
 	}
 }
 
