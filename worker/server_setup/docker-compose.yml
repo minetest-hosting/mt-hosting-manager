@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+ ui:
+  image: ghcr.io/minetest-go/mtui:{{.MTUIVersion}}
+  networks:
+   - terminator
+   - default
+  environment:
+   COOKIE_DOMAIN: "{{.Hostname}}"
+   COOKIE_SECURE: "true"
+   LOGLEVEL: debug
+   WORLD_DIR: "/root/.minetest/worlds/world"
+   API_KEY: "{{.MTUIKey}}"
+   ENABLE_FEATURES: "shell,luashell"
+  volumes:
+   - "./world:/root/.minetest/worlds/world"
+  labels:
+    - "promtail=true"
+    - "traefik.enable=true"
+    - "traefik.docker.network=terminator"
+    - "traefik.http.routers.{{.HTTPRouterName}}.rule=Host(`{{.Hostname}}`)"
+    - "traefik.http.services.{{.HTTPRouterName}}.loadbalancer.server.port=8080"
+    - "traefik.http.routers.{{.HTTPRouterName}}.entrypoints=websecure"
+    - "traefik.http.routers.{{.HTTPRouterName}}.tls.certresolver=default"
+
+networks:
+ terminator:
+  external: true
