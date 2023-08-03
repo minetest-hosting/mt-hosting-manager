@@ -17,9 +17,9 @@
                 </a>
             </td>
             <td>{{block "node_state" $n.UserNode}}{{end}}</td>
-            <td>{{formattime $n.Created}} ({{daysuntil .UserNode.Created}} days ago)</td>
+            <td>{{formattime $n.UserNode.Created}} ({{daysuntil $n.UserNode.Created}} days ago)</td>
             <td>
-                {{formattime $n.Expires}} (in {{daysuntil .UserNode.Expires}} days)
+                {{formattime $n.UserNode.Expires}} (in {{daysuntil $n.UserNode.Expires}} days)
                 {{if $n.UserNode.ExpirationWarning}}
                     <i class="fa-solid fa-triangle-exclamation" title="Expires soon!"></i>
                 {{end}}

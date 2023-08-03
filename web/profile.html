@@ -1,3 +1,19 @@
 {{define "title"}}Profile{{end}}
 {{define "content"}}
+<table class="table">
+    <tr>
+        <td>Mail</td>
+        <td>{{.User.Mail}}</td>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <td>{{.User.Role}}</td>
+    </tr>
+    <tr>
+        <td>Created</td>
+        <td>
+            {{formattime .User.Created}} ({{daysuntil .User.Created}} days ago)
+        </td>
+    </tr>
+</table>
 {{end}}
