@@ -2,6 +2,9 @@
     {{if eq .State "CREATED"}}
     <span class="badge text-bg-info">Created</span>
     {{end}}
+    {{if eq .State "PROVISIONING"}}
+    <span class="badge text-bg-info">Provisioning</span>
+    {{end}}
     {{if eq .State "RUNNING"}}
     <span class="badge text-bg-success">Running</span>
     {{end}}

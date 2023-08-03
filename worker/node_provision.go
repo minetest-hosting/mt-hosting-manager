@@ -24,6 +24,12 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		return errors.New("node not found")
 	}
 
+	node.State = types.UserNodeStateProvisioning
+	err = w.repos.UserNodeRepo.Update(node)
+	if err != nil {
+		return err
+	}
+
 	nodetype, err := w.repos.NodeTypeRepo.GetByID(node.NodeTypeID)
 	if err != nil {
 		return err

@@ -8,7 +8,8 @@ import (
 )
 
 type DetailModel struct {
-	UserNode *types.UserNode
+	UserNode  *types.UserNode
+	LatestJob *types.Job
 }
 
 // view details
@@ -22,8 +23,15 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	job, err := ctx.repos.JobRepo.GetLatestByUserNodeID(node.ID)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
+
 	m := &DetailModel{
-		UserNode: node,
+		UserNode:  node,
+		LatestJob: job,
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "usernode/detail.html", m)

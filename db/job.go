@@ -35,6 +35,14 @@ func (r *JobRepository) GetByState(state types.JobState) ([]*types.Job, error) {
 	return dbutil.SelectMulti(r.DB, func() *types.Job { return &types.Job{} }, "where state = $1", state)
 }
 
+func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, error) {
+	nt, err := dbutil.Select(r.DB, &types.Job{}, "where user_node_id = $1 order by started desc limit 1", usernodeID)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return nt, err
+}
+
 func (r *JobRepository) GetAll() ([]*types.Job, error) {
 	return dbutil.SelectMulti(r.DB, func() *types.Job { return &types.Job{} }, "")
 }

@@ -1,17 +1,26 @@
 package types
 
-import "regexp"
+import (
+	"regexp"
+	"time"
+)
 
 type UserNodeState string
 
 const (
-	UserNodeStateCreated  UserNodeState = "CREATED"
-	UserNodeStateRunning  UserNodeState = "RUNNING"
-	UserNodeStateStopped  UserNodeState = "STOPPED"
-	UserNodeStateRemoving UserNodeState = "REMOVING"
+	UserNodeStateCreated      UserNodeState = "CREATED"
+	UserNodeStateProvisioning UserNodeState = "PROVISIONING"
+	UserNodeStateRunning      UserNodeState = "RUNNING"
+	UserNodeStateStopped      UserNodeState = "STOPPED"
+	UserNodeStateRemoving     UserNodeState = "REMOVING"
 )
 
+// Created -> Provisioning -> Running <-> Stopped
+//                                     -> Removing
+
 var ValidUserNodeName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
+
+const ExpirationWarnThreshold = time.Hour * 24 * 14
 
 type UserNode struct {
 	ID         string        `json:"id"`
@@ -51,4 +60,8 @@ func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
 
 func (m *UserNode) Values(action string) []any {
 	return []any{m.ID, m.UserID, m.NodeTypeID, m.ExternalID, m.Created, m.Expires, m.State, m.Name, m.IPv4, m.IPv6}
+}
+
+func (m *UserNode) ExpirationWarning() bool {
+	return time.Unix(m.Expires, 0).Add(-ExpirationWarnThreshold).Before(time.Now())
 }

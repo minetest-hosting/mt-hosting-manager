@@ -1,49 +1,80 @@
 {{define "title"}}Node details{{end}}
 {{define "content"}}
+<h4>Status</h4>
+<div class="row">
+    <table class="table">
+        <tr>
+            <td>ID</td>
+            <td>
+                {{.UserNode.ID}}
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                {{.UserNode.Name}}
+            </td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>
+                {{block "node_state" .UserNode}}{{end}}
+            </td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>{{formattime .UserNode.Created}} ({{daysuntil .UserNode.Created}} days ago)</td>
+        </tr>
+        <tr class="{{if .UserNode.ExpirationWarning}}table-warning{{end}}">
+            <td>Expires</td>
+            <td>
+                {{formattime .UserNode.Expires}} (in {{daysuntil .UserNode.Expires}} days)
+                {{if .UserNode.ExpirationWarning}}
+                    <i class="fa-solid fa-triangle-exclamation" title="Expires soon!"></i>
+                {{end}}
+            </td>
+        </tr>
+        <tr>
+            <td>Actions</td>
+            <td>
+                <form method="post">
+                    {{CSRFField}}
+                    <div class="btn-group">
+                        <button class="btn btn-warning">
+                            <i class="fa fa-pause"></i>
+                            Stop
+                        </button>
+                        <button class="btn btn-success">
+                            <i class="fa fa-play"></i>
+                            Start
+                        </button>
+                        <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </a>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<h4>Servers</h4>
 <table class="table">
-    <tr>
-        <td>ID</td>
+    <thead>
+        <th>Name</th>
+        <th>Created</th>
+        <th>State</th>
+    </thead>
+    <tbody>
         <td>
-            <input type="text" readonly="true" class="form-control" disabled="true" name="id" value="{{.UserNode.ID}}"/>
-        </td>
-    </tr>
-    <tr>
-        <td>Name</td>
-        <td>
-            <input type="text" class="form-control" name="name" value="{{.UserNode.Name}}"/>
-        </td>
-    </tr>
-    <tr>
-        <td>State</td>
-        <td>
-            {{block "node_state" .UserNode}}{{end}}
-        </td>
-    </tr>
-    <tr>
-        <td>Created</td>
-        <td>{{formattime .UserNode.Created}}</td>
-    </tr>
-    <tr>
-        <td>Expires</td>
-        <td>{{formattime .UserNode.Expires}}</td>
-    </tr>
-    <tr>
-        <td>
-            <div class="d-grid gap-2">
-                <a class="btn btn-success" href="{{BaseURL}}/nodes">
-                    <i class="fa fa-floppy-disk"></i>
-                    Back
-                </a>
-            </div>
+            <a href="#">my-server</a>
         </td>
         <td>
-            <div class="d-grid gap-2">
-                <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
-                    <i class="fa fa-floppy-disk"></i>
-                    Delete
-                </a>
-            </div>
+            2010-10-10 20:10
         </td>
-    </tr>
+        <td>
+            <div class="badge bg-info">Running</div>
+        </td>
+    </tbody>
 </table>
 {{end}}

@@ -11,6 +11,9 @@ const (
 	JobStateDoneFailure JobState = "DONE_FAILURE"
 )
 
+// Created -> Running -> Done_Success -> (Created)
+//                    -> Done_Failure -> (Created)
+
 type JobType string
 
 const (

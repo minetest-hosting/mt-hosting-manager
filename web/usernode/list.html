@@ -2,28 +2,29 @@
 {{define "content"}}
 <table class="table">
     <thead>
-        <th>ID</th>
         <th>Name</th>
+        <th>State</th>
         <th>Created</th>
+        <th>Expires</th>
         <th>Node-Type</th>
-        <th>Actions</th>
     </thead>
     <tbody>
         {{range $n := .Nodes}}
-        <tr>
+        <tr class="{{if $n.UserNode.ExpirationWarning}}table-warning{{end}}">
             <td>
-                {{$n.UserNode.ID}}
-                {{block "node_state" $n.UserNode}}{{end}}
-            </td>
-            <td>{{$n.UserNode.Name}}</td>
-            <td>{{formattime $n.Created}}</td>
-            <td>{{$n.NodeType.Name}}</td>
-            <td>
-                <a class="btn btn-primary" href="{{BaseURL}}/nodes/{{$n.UserNode.ID}}">
-                    <i class="fa fa-pen-to-square"></i>
-                    Edit
+                <a href="{{BaseURL}}/nodes/{{$n.UserNode.ID}}">
+                    {{$n.UserNode.Name}}
                 </a>
             </td>
+            <td>{{block "node_state" $n.UserNode}}{{end}}</td>
+            <td>{{formattime $n.Created}} ({{daysuntil .UserNode.Created}} days ago)</td>
+            <td>
+                {{formattime $n.Expires}} (in {{daysuntil .UserNode.Expires}} days)
+                {{if $n.UserNode.ExpirationWarning}}
+                    <i class="fa-solid fa-triangle-exclamation" title="Expires soon!"></i>
+                {{end}}
+            </td>
+            <td>{{$n.NodeType.Name}}</td>
         </tr>
         {{end}}
     </tbody>

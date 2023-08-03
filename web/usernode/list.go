@@ -6,9 +6,14 @@ import (
 	"net/http"
 )
 
+type UserNodeListModel struct {
+	Nodes []*UserNodeInfo
+}
+
 type UserNodeInfo struct {
 	*types.UserNode
 	*types.NodeType
+	ExpirationWarning bool
 }
 
 // show all nodes by the user
@@ -37,8 +42,8 @@ func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims
 		}
 	}
 
-	model := map[string]any{
-		"Nodes": nodeinfos,
+	model := &UserNodeListModel{
+		Nodes: nodeinfos,
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "usernode/list.html", model)

@@ -5,34 +5,72 @@
         <tr>
             <td>ID</td>
             <td>
-                <input type="text" readonly="true" class="form-control" disabled="true" name="id" value="{{.UserNode.ID}}"/>
+                {{.UserNode.ID}}
             </td>
         </tr>
         <tr>
             <td>Name</td>
             <td>
-                <input type="text" readonly="true" class="form-control" disabled="true" name="name" value="{{.UserNode.Name}}"/>
+                {{.UserNode.Name}}
+            </td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>
+                {{formattime .UserNode.Created}} ({{daysuntil .UserNode.Created}} days ago)
+            </td>
+        </tr>
+        <tr>
+            <td>Expires</td>
+            <td>
+                {{formattime .UserNode.Expires}} (in {{daysuntil .UserNode.Expires}} days)
+            </td>
+        </tr>
+        {{if .NodeDeleted}}
+        <tr>
+            <td colspan="2">
+                <div class="alert alert-info">
+                    <i class="fa fa-trash"></i> Node has been scheduled for deletion
+                </div>
+            </td>
+        </tr>
+        {{end}}
+        {{if not .NodeDeleted}}
+        <tr>
+            <td>Confirm node-name</td>
+            <td>
+                <div class="input-group has-validation">
+                    <input class="form-control {{if .ConfirmFailed}}is-invalid{{end}}"
+                        name="confirm_name"
+                        placeholder="enter node-name to confirm deletion"/>
+                    {{if .ConfirmFailed}}
+                    <div class="invalid-feedback">
+                        Node-name invalid
+                    </div>                
+                    {{end}}
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-danger" type="submit" name="action" value="delete">
-                        <i class="fa fa-floppy-disk"></i>
-                        Confirm deletion
-                    </button>
+                    {{ CSRFField }}
+                    <a class="btn btn-warning" href="{{BaseURL}}/nodes/{{.UserNode.ID}}">
+                        <i class="fa fa-times"></i>
+                        Abort
+                    </a>
                 </div>
             </td>
             <td>
                 <div class="d-grid gap-2">
-                    {{ CSRFField }}
-                    <button class="btn btn-warning" type="submit" name="action" value="abort">
-                        <i class="fa fa-floppy-disk"></i>
-                        Abort
+                    <button class="btn btn-danger" type="submit" name="action" value="delete">
+                        <i class="fa fa-trash"></i>
+                        Confirm deletion
                     </button>
                 </div>
             </td>
         </tr>
+        {{end}}
     </table>
 </form>
 {{end}}

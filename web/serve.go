@@ -40,6 +40,12 @@ func formattime(ts int64) string {
 	return t.Format(time.RFC3339)
 }
 
+func daysuntil(ts int64) int {
+	t := time.Unix(ts, 0)
+	d := t.Sub(time.Now())
+	return int(d.Hours() / 24)
+}
+
 func Serve(repos *db.Repositories) error {
 
 	r := mux.NewRouter()
@@ -71,6 +77,7 @@ func Serve(repos *db.Repositories) error {
 		AddFuncs: func(funcs template.FuncMap, r *http.Request) {
 			funcs["prettysize"] = prettysize
 			funcs["formattime"] = formattime
+			funcs["daysuntil"] = daysuntil
 			funcs["Config"] = func() *types.Config { return cfg }
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
 			funcs["T"] = func(msgId string) (string, error) {

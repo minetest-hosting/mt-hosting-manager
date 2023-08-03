@@ -9,6 +9,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type DeleteModel struct {
+	UserNode      *types.UserNode
+	ConfirmFailed bool
+	NodeDeleted   bool
+}
+
 func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -27,12 +33,21 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	m := &DeleteModel{
+		UserNode:      node,
+		ConfirmFailed: false,
+		NodeDeleted:   false,
+	}
+
 	if r.Method == http.MethodPost {
 		switch r.FormValue("action") {
-		case "abort":
-			http.Redirect(w, r, fmt.Sprintf("%s/nodes/%s", ctx.tu.BaseURL, id), http.StatusSeeOther)
 		case "delete":
 			// mark for removal
+			if r.FormValue("confirm_name") != node.Name {
+				m.ConfirmFailed = true
+				break
+			}
+
 			node.State = types.UserNodeStateRemoving
 			err = ctx.repos.UserNodeRepo.Update(node)
 			if err != nil {
@@ -53,13 +68,8 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 				return
 			}
 
-			http.Redirect(w, r, fmt.Sprintf("%s/nodes", ctx.tu.BaseURL), http.StatusSeeOther)
+			m.NodeDeleted = true
 		}
-		return
-	}
-
-	m := &DetailModel{
-		UserNode: node,
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "usernode/delete.html", m)
