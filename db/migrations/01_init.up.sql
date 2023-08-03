@@ -43,7 +43,12 @@ create table user_node(
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     ipv4 varchar(32) not null,
-    ipv6 varchar(128) not null
+    ipv6 varchar(128) not null,
+    load_percent int not null default 0,
+    disk_size int not null default 0,
+    disk_used int not null default 0,
+    memory_size int not null default 0,
+    memory_used int not null default 0
 );
 
 -- update user set credits = credits - (select sum(n.cost_per_hour) from user_node un join node n on un.node_id = n.id where un.user_id = user.id);
