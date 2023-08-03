@@ -28,6 +28,12 @@
             </li>
             {{end}}
         </ul>
+        {{if ne Config.Stage "prod"}}
+            <div class="btn btn-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Stage: {{Config.Stage}}
+            </div>
+        {{end}}
         {{if Claims}}
         <form class="d-flex">
             <div class="btn btn-light">

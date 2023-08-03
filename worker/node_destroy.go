@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
+
+	"github.com/sirupsen/logrus"
 )
 
 func (w *Worker) NodeDestroy(job *types.Job) error {
@@ -18,7 +20,9 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 
 	err = w.hcc.DeleteServer(node.ExternalID)
 	if err != nil {
-		return fmt.Errorf("delete server failed: %v", err)
+		logrus.WithFields(logrus.Fields{
+			"ExternalID": node.ExternalID,
+		}).Warn("Server instance not found, not deleting anything")
 	}
 
 	var a_record *hetzner_dns.Record

@@ -3,6 +3,7 @@ package usernode
 import (
 	"fmt"
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
@@ -11,6 +12,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
+
+type OrderNewModel struct {
+	NodeType   *types.NodeType
+	Months     int
+	TotalCost  string
+	Expiration int64
+}
 
 func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
@@ -38,24 +46,33 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
+	cost_per_month, err := strconv.ParseFloat(nodetype.MonthlyCost, 64)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("monthlycost parse error: %v", err))
+		return
+	}
+
+	total_cost := cost_per_month * float64(months)
+
 	if r.Method == http.MethodGet {
 		// show details
-		ctx.tu.ExecuteTemplate(w, r, "usernode/order_new.html", nil)
+		m := &OrderNewModel{
+			NodeType:   nodetype,
+			Months:     int(months),
+			TotalCost:  fmt.Sprintf("%.2f", total_cost),
+			Expiration: core.AddMonths(time.Now(), int(months)).Unix(),
+		}
+
+		ctx.tu.ExecuteTemplate(w, r, "usernode/order_new.html", m)
 		return
 	}
 
 	if r.Method == http.MethodPost {
 		// create tx and redirect to payment site
-		node_cost, err := strconv.ParseFloat(nodetype.MonthlyCost, 64)
-		if err != nil {
-			ctx.tu.RenderError(w, r, 500, fmt.Errorf("monthlycost parse error: %v", err))
-			return
-		}
-
 		item := &wallee.LineItem{
 			Name:               nodetype.Name,
 			Quantity:           float64(months),
-			AmountIncludingTax: node_cost * float64(months),
+			AmountIncludingTax: total_cost,
 			Type:               wallee.LineItemTypeProduct,
 			UniqueID:           nodetype.ID,
 		}

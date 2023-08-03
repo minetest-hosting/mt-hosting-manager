@@ -4,17 +4,22 @@
     <div class="card w-100">
         <div class="card-body">
             <h5 class="card-title">{{$nt.Name}}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">
+                Cost: {{$nt.MonthlyCost}} &euro; per month
+            </h6>
             {{range $dp := $nt.DescriptionParagraphs}}
                 <p class="card-text">{{$dp}}</p>
             {{end}}
             <form method="post">
                 {{CSRFField}}
-                <input type="number" class="form-control" min="1" max="{{$nt.MaxMonths}}" name="months" value="1"/>
                 <input type="hidden" name="node_type_id" value="{{$nt.ID}}"/>
-                <button type="submit" class="btn btn-primary btn-xs">
-                    Order
-                </button>
+                <div class="input-group">
+                    <span class="input-group-text">Select months to order:</span>
+                    <input type="number" class="form-control" min="1" max="{{$nt.MaxMonths}}" name="months" value="1"/>
+                    <button type="submit" class="btn btn-primary btn-xs">
+                        Order
+                    </button>
+                </div>
             </form>
         </div>
     </div>

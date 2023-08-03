@@ -1,11 +1,41 @@
 {{define "title"}}Order overview{{end}}
 {{define "content"}}
 <form method="post">
-    TODO: summary of items
+    <table class="table">
+        <tr>
+            <td>Node-type</td>
+            <td>{{.NodeType.Name}}</td>
+        </tr>
+        <tr>
+            <td>Cost per month</td>
+            <td>{{.NodeType.MonthlyCost}} &euro;</td>
+        </tr>
+        <tr>
+            <td>Amount of months</td>
+            <td>{{.Months}}</td>
+        </tr>
+        <tr>
+            <td>End-Date</td>
+            <td>
+                {{formattime .Expiration}}
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <b>Note:</b> Renewal is always possible up to a total of {{.NodeType.MaxMonths}} months
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Total cost for {{.Months}} months</b>
+            </td>
+            <td>
+                <b>{{.TotalCost}} &euro;</b>
+            </td>
+        </tr>
+    </table>
     {{CSRFField}}
-    <hr>
     <button type="submit" class="btn btn-primary">
-        Proceed to payment
+        Proceed to payment ({{.TotalCost}} &euro;)
     </button>
 </form>
 {{end}}

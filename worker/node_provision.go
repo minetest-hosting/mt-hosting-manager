@@ -7,6 +7,7 @@ import (
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/provision"
+	"os"
 	"strings"
 	"time"
 
@@ -41,6 +42,7 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 			Image: "ubuntu-22.04",
 			Labels: map[string]string{
 				"node_id": node.ID,
+				"stage":   os.Getenv("STAGE"),
 			},
 			Location: hetzner_cloud.LocationNuernberg,
 			Name:     node.Name,
@@ -160,7 +162,8 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 				return fmt.Errorf("ssh-client connection failed: %v", err)
 			} else {
 				logrus.WithFields(logrus.Fields{
-					"err": err,
+					"err":       err,
+					"try_count": try_count,
 				}).Warn("ssh-client failed")
 				try_count++
 				time.Sleep(10 * time.Second)

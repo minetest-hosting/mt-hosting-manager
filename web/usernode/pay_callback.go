@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -59,7 +61,7 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		Created:    time.Now().Unix(),
 		Expires:    time.Now().Unix(),
 		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s", RandStringRunes(7)),
+		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), RandStringRunes(7)),
 	}
 	fmt.Printf("%v\n", node)
 	err = ctx.repos.UserNodeRepo.Insert(node)
@@ -97,8 +99,7 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	//TODO: increment expiration time properly
-	node.Expires = time.Unix(node.Expires, 0).Add(time.Hour * 24 * 31).Unix()
+	node.Expires = core.AddMonths(time.Unix(node.Expires, 0), tx.Months).Unix()
 	err = ctx.repos.UserNodeRepo.Update(node)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, fmt.Errorf("failed to update expiration time on node %s: %v", node.ID, err))
