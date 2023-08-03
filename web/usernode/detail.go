@@ -11,6 +11,7 @@ import (
 type DetailModel struct {
 	UserNode      *types.UserNode
 	LatestJob     *types.Job
+	Servers       []*types.MinetestServer
 	DiskPercent   int
 	DiskGBUsed    float64
 	DiskGBTotal   float64
@@ -34,6 +35,16 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		ctx.tu.RenderError(w, r, 500, err)
 		return
 	}
+	if node == nil {
+		ctx.tu.RenderError(w, r, 404, fmt.Errorf("node not found: %s", id))
+		return
+	}
+
+	servers, err := ctx.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, err)
+		return
+	}
 
 	job, err := ctx.repos.JobRepo.GetLatestByUserNodeID(node.ID)
 	if err != nil {
@@ -45,6 +56,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 	m := &DetailModel{
 		UserNode:      node,
 		LatestJob:     job,
+		Servers:       servers,
 		DiskPercent:   int(float64(node.DiskUsed) / float64(node.DiskSize) * 100),
 		DiskGBUsed:    float64(node.DiskUsed) / bytes_in_gb,
 		DiskGBTotal:   float64(node.DiskSize) / bytes_in_gb,

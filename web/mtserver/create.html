@@ -5,7 +5,7 @@
         <tr>
             <td>Node</td>
             <td>
-                <select name="nodetype" class="form-control">
+                <select name="nodeid" class="form-control">
                     {{range $n := .Nodes}}
                     <option value="{{$n.ID}}" {{if $n.Selected}}selected{{end}}>
                         {{$n.Alias}} ({{$n.Name}})

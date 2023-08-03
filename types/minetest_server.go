@@ -5,7 +5,11 @@ import "regexp"
 type MinetestServerState string
 
 const (
-	MinetestServerStateCreated MinetestServerState = "CREATED"
+	MinetestServerStateCreated      MinetestServerState = "CREATED"
+	MinetestServerStateProvisioning MinetestServerState = "PROVISIONING"
+	MinetestServerStateRunning      MinetestServerState = "RUNNING"
+	MinetestServerStateStopped      MinetestServerState = "STOPPED"
+	MinetestServerStateRemoving     MinetestServerState = "REMOVING"
 )
 
 var ValidServerName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)

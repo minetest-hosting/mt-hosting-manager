@@ -83,6 +83,10 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		err = w.NodeDestroy(job)
 	case types.JobTypeNodeSetup:
 		err = w.NodeProvision(job)
+	case types.JobTypeServerSetup:
+		err = w.ServerSetup(job)
+	case types.JobTypeServerDestroy:
+		err = w.ServerDestroy(job)
 	default:
 		err = errors.New("type not implemented")
 	}

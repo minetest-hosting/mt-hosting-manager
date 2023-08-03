@@ -5,6 +5,9 @@ import (
 	"mt-hosting-manager/types"
 	"net/http"
 	"strings"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 type NodeInfo struct {
@@ -42,6 +45,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 	}
 
 	if r.Method == http.MethodPost {
+		nodeid = r.FormValue("nodeid")
 		m.Name = r.FormValue("name")
 		if !types.ValidServerName.Match([]byte(m.Name)) {
 			m.NameErr = "invalid-server-name"
@@ -59,7 +63,48 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			m.NameErr = "duplicate-server-name"
 		}
 
-		//TODO: create server stuff
+		if m.NameErr == "" {
+			// valid name, create server
+			node, err := ctx.repos.UserNodeRepo.GetByID(nodeid)
+			if err != nil {
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("usernode getbyid error: %v", err))
+				return
+			}
+			if node == nil {
+				ctx.tu.RenderError(w, r, 404, fmt.Errorf("usernode not found: %s", nodeid))
+				return
+			}
+
+			server := &types.MinetestServer{
+				ID:         uuid.NewString(),
+				UserNodeID: node.ID,
+				Name:       m.Name,
+				Created:    time.Now().Unix(),
+				State:      types.UserNodeStateCreated,
+			}
+			err = ctx.repos.MinetestServerRepo.Insert(server)
+			if err != nil {
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("server insert error: %v", err))
+				return
+			}
+
+			job := &types.Job{
+				ID:               uuid.NewString(),
+				Type:             types.JobTypeServerSetup,
+				State:            types.JobStateCreated,
+				UserNodeID:       &node.ID,
+				MinetestServerID: &server.ID,
+			}
+			err = ctx.repos.JobRepo.Insert(job)
+			if err != nil {
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("job insert error: %v", err))
+				return
+			}
+
+			http.Redirect(w, r, fmt.Sprintf("%s/mtserver/%s", ctx.tu.BaseURL, server.ID), http.StatusSeeOther)
+			return
+		}
+
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "mtserver/create.html", m)

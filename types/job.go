@@ -17,8 +17,10 @@ const (
 type JobType string
 
 const (
-	JobTypeNodeSetup   JobType = "NODE_SETUP"
-	JobTypeNodeDestroy JobType = "NODE_DESTROY"
+	JobTypeNodeSetup     JobType = "NODE_SETUP"
+	JobTypeNodeDestroy   JobType = "NODE_DESTROY"
+	JobTypeServerSetup   JobType = "SERVER_SETUP"
+	JobTypeServerDestroy JobType = "SERVER_DESTROY"
 )
 
 type Job struct {

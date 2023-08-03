@@ -110,6 +110,7 @@
     </table>
 </div>
 <h4>Servers</h4>
+{{if .Servers}}
 <table class="table">
     <thead>
         <th>Name</th>
@@ -117,21 +118,30 @@
         <th>State</th>
     </thead>
     <tbody>
-        <td>
-            <a href="#">my-server</a>
-        </td>
-        <td>
-            2010-10-10 20:10
-        </td>
-        <td>
-            <div class="badge bg-info">Running</div>
-        </td>
+        {{range $s := .Servers}}
+        <tr>
+            <td>
+                <a href="{{BaseURL}}/mtserver/{{$s.ID}}">
+                    {{$s.Name}}
+                </a>
+            </td>
+            <td>
+                {{formattime $s.Created}}
+            </td>
+            <td>
+                <div class="badge bg-info">{{$s.State}}</div>
+            </td>
+        </tr>
+        {{end}}
     </tbody>
 </table>
+{{end}}
+{{if not .Servers}}
 <div class="alert alert-info">
     <i class="fa fa-info"></i>
     There are no minetest servers in this node yet, use <b>Create Server</b> to create the first one
 </div>
+{{end}}
 <a class="btn btn-success" href="{{BaseURL}}/mtserver/create?node_id={{.UserNode.ID}}">
     <i class="fa fa-plus"></i>
     Create server

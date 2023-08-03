@@ -25,4 +25,5 @@ func New(tu *tmpl.TemplateUtil, repos *db.Repositories, cfg *types.Config) *Cont
 func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/mtserver", ctx.tu.Secure(ctx.List))
 	r.HandleFunc("/mtserver/create", ctx.tu.Secure(ctx.Create))
+	r.HandleFunc("/mtserver/{id}", ctx.tu.Secure(ctx.Detail))
 }
