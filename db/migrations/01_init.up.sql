@@ -42,6 +42,7 @@ create table user_node(
     expires bigint not null, -- expiration time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
+    alias varchar(256) not null, -- internal name, user-specified
     ipv4 varchar(32) not null,
     ipv6 varchar(128) not null,
     load_percent int not null default 0,

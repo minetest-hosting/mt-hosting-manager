@@ -8,7 +8,7 @@
                 <select name="nodetype" class="form-control">
                     {{range $n := .Nodes}}
                     <option value="{{$n.ID}}" {{if $n.Selected}}selected{{end}}>
-                        {{$n.Name}}
+                        {{$n.Alias}} ({{$n.Name}})
                     </option>
                     {{end}}
                 </select>

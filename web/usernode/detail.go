@@ -21,6 +21,7 @@ type DetailModel struct {
 	MemoryGBTotal float64
 	MemoryWarn    bool
 	MemoryDanger  bool
+	AliasUpdated  bool
 }
 
 // view details
@@ -67,6 +68,9 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 	if r.Method == http.MethodPost {
 
 		switch r.FormValue("action") {
+		case "set-alias":
+			node.Alias = r.FormValue("alias")
+			m.AliasUpdated = true
 		case "start":
 			err = ctx.hcc.PowerOnServer(node.ExternalID)
 			node.State = types.UserNodeStateRunning
@@ -81,7 +85,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		}
 		err = ctx.repos.UserNodeRepo.Update(node)
 		if err != nil {
-			ctx.tu.RenderError(w, r, 500, fmt.Errorf("start/stop node-update error: %v", err))
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("node-update error: %v", err))
 			return
 		}
 	}

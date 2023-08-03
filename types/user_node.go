@@ -28,6 +28,7 @@ type UserNode struct {
 	Expires     int64         `json:"expires"`
 	State       UserNodeState `json:"state"`
 	Name        string        `json:"name"`
+	Alias       string        `json:"alias"`
 	IPv4        string        `json:"ipv4"`
 	IPv6        string        `json:"ipv6"`
 	LoadPercent int           `json:"load_percent"`
@@ -47,6 +48,7 @@ func (m *UserNode) Columns(action string) []string {
 		"expires",
 		"state",
 		"name",
+		"alias",
 		"ipv4",
 		"ipv6",
 		"load_percent",
@@ -71,6 +73,7 @@ func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
 		&m.Expires,
 		&m.State,
 		&m.Name,
+		&m.Alias,
 		&m.IPv4,
 		&m.IPv6,
 		&m.LoadPercent,
@@ -91,6 +94,7 @@ func (m *UserNode) Values(action string) []any {
 		m.Expires,
 		m.State,
 		m.Name,
+		m.Alias,
 		m.IPv4,
 		m.IPv6,
 		m.LoadPercent,

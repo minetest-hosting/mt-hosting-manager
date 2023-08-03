@@ -13,7 +13,7 @@
         <tr class="{{if $n.UserNode.ExpirationWarning}}table-warning{{end}}">
             <td>
                 <a href="{{BaseURL}}/nodes/{{$n.UserNode.ID}}">
-                    {{$n.UserNode.Name}}
+                    {{$n.UserNode.Alias}} ({{$n.UserNode.Name}})
                 </a>
             </td>
             <td>{{block "node_state" $n.UserNode}}{{end}}</td>

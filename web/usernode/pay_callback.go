@@ -53,6 +53,8 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
+	randstr := RandStringRunes(7)
+
 	// create usernode
 	node := &types.UserNode{
 		ID:         uuid.NewString(),
@@ -61,7 +63,8 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		Created:    time.Now().Unix(),
 		Expires:    time.Now().Unix(),
 		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), RandStringRunes(7)),
+		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), randstr),
+		Alias:      randstr,
 	}
 	fmt.Printf("%v\n", node)
 	err = ctx.repos.UserNodeRepo.Insert(node)

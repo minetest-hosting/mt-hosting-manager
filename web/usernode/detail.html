@@ -10,9 +10,21 @@
             </td>
         </tr>
         <tr>
-            <td>Name</td>
+            <td>Hostname</td>
+            <td>{{.UserNode.Name}}.{{Config.HostingDomainSuffix}}</td>
+        </tr>
+        <tr>
+            <td>Alias</td>
             <td>
-                {{.UserNode.Name}}
+                <form method="post">
+                    {{CSRFField}}
+                    <div class="btn-group w-100">
+                        <input type="text" class="form-control {{if .AliasUpdated}}is-valid{{end}}" name="alias" value="{{.UserNode.Alias}}"/>
+                        <button class="btn btn-xs btn-info" type="submit" name="action" value="set-alias">
+                            <i class="fa fa-floppy-disk"></i>
+                        </button>
+                    </div>
+                </form>
             </td>
         </tr>
         <tr>
@@ -116,6 +128,10 @@
         </td>
     </tbody>
 </table>
+<div class="alert alert-info">
+    <i class="fa fa-info"></i>
+    There are no minetest servers in this node yet, use <b>Create Server</b> to create the first one
+</div>
 <a class="btn btn-success" href="{{BaseURL}}/mtserver/create?node_id={{.UserNode.ID}}">
     <i class="fa fa-plus"></i>
     Create server
