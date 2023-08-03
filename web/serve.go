@@ -70,7 +70,6 @@ func Serve(repos *db.Repositories) error {
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 	bundle.LoadMessageFileFS(files, "locale/en.json")
-	bundle.LoadMessageFileFS(files, "locale/de.json")
 
 	tu := &tmpl.TemplateUtil{
 		Files: files,
@@ -81,7 +80,7 @@ func Serve(repos *db.Repositories) error {
 			funcs["Config"] = func() *types.Config { return cfg }
 			funcs["CSRFField"] = func() template.HTML { return csrf.TemplateField(r) }
 			funcs["T"] = func(msgId string) (string, error) {
-				localizer := i18n.NewLocalizer(bundle, r.Header.Get("Accept-Language"))
+				localizer := i18n.NewLocalizer(bundle, r.Header.Get("Accept-Language"), "en")
 				return localizer.Localize(&i18n.LocalizeConfig{MessageID: msgId})
 			}
 		},
