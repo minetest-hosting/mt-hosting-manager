@@ -97,9 +97,26 @@ func ParseNodeExporterMetrics(data []byte) (*NodeExporterMetrics, error) {
 	if mf == nil {
 		return nil, fmt.Errorf("metric 'node_memory_MemFree_bytes' not found")
 	}
-
 	for _, m := range mf.Metric {
 		metrics.MemoryUsed = metrics.MemorySize - int64(m.Gauge.GetValue())
+		break
+	}
+	// subtract buffer
+	mf = mfs["node_memory_Buffers_bytes"]
+	if mf == nil {
+		return nil, fmt.Errorf("metric 'node_memory_Buffers_bytes' not found")
+	}
+	for _, m := range mf.Metric {
+		metrics.MemoryUsed -= int64(m.Gauge.GetValue())
+		break
+	}
+	// subtract cache
+	mf = mfs["node_memory_Cached_bytes"]
+	if mf == nil {
+		return nil, fmt.Errorf("metric 'node_memory_Cached_bytes' not found")
+	}
+	for _, m := range mf.Metric {
+		metrics.MemoryUsed -= int64(m.Gauge.GetValue())
 		break
 	}
 

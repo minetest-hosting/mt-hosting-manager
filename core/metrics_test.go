@@ -21,5 +21,5 @@ func TestNodeExporterMetrics(t *testing.T) {
 	assert.Equal(t, int64(50531442688), metrics.DiskSize)
 	assert.Equal(t, int64(14798311424), metrics.DiskUsed)
 	assert.Equal(t, int64(16791117824), metrics.MemorySize)
-	assert.Equal(t, int64(12169216000), metrics.MemoryUsed)
+	assert.Equal(t, int64(5006323712), metrics.MemoryUsed)
 }
