@@ -3,6 +3,7 @@ package hetzner_cloud
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -62,6 +63,50 @@ func (c *HetznerCloudClient) GetServer(id string) (*CreateServerResponse, error)
 	err = json.NewDecoder(resp.Body).Decode(csr)
 
 	return csr, err
+}
+
+var ErrStillInPowerCycle = errors.New("server still in previous power-cycle")
+
+func (c *HetznerCloudClient) PowerOffServer(id string) error {
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("https://api.hetzner.cloud/v1/servers/%s/actions/poweroff", id), nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Key))
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode == 423 {
+		return ErrStillInPowerCycle
+	}
+	if resp.StatusCode != 201 {
+		return fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
+func (c *HetznerCloudClient) PowerOnServer(id string) error {
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("https://api.hetzner.cloud/v1/servers/%s/actions/poweron", id), nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Key))
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode == 423 {
+		return ErrStillInPowerCycle
+	}
+	if resp.StatusCode != 201 {
+		return fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
+	}
+
+	return nil
 }
 
 func (c *HetznerCloudClient) DeleteServer(id string) error {

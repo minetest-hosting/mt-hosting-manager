@@ -1,6 +1,7 @@
 package usernode
 
 import (
+	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
@@ -15,6 +16,7 @@ type Context struct {
 	repos *db.Repositories
 	cfg   *types.Config
 	wc    *wallee.WalleeClient
+	hcc   *hetzner_cloud.HetznerCloudClient
 }
 
 func New(tu *tmpl.TemplateUtil, repos *db.Repositories, cfg *types.Config) *Context {
@@ -27,6 +29,7 @@ func New(tu *tmpl.TemplateUtil, repos *db.Repositories, cfg *types.Config) *Cont
 			os.Getenv("WALLEE_SPACEID"),
 			os.Getenv("WALLEE_KEY"),
 		),
+		hcc: hetzner_cloud.New(os.Getenv("HETZNER_CLOUD_KEY")),
 	}
 }
 

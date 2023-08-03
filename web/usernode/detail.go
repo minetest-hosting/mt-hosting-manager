@@ -1,6 +1,7 @@
 package usernode
 
 import (
+	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
 
@@ -61,6 +62,28 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		m.MemoryDanger = true
 	} else if m.MemoryPercent > 75 {
 		m.MemoryWarn = true
+	}
+
+	if r.Method == http.MethodPost {
+
+		switch r.FormValue("action") {
+		case "start":
+			err = ctx.hcc.PowerOnServer(node.ExternalID)
+			node.State = types.UserNodeStateRunning
+		case "stop":
+			err = ctx.hcc.PowerOffServer(node.ExternalID)
+			node.State = types.UserNodeStateStopped
+		}
+
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("start/stop error: %v", err))
+			return
+		}
+		err = ctx.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("start/stop node-update error: %v", err))
+			return
+		}
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "usernode/detail.html", m)
