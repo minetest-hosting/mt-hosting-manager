@@ -24,7 +24,7 @@ services:
    - "443:443"
   volumes:
    - "letsencrypt:/letsencrypt"
-   - "/var/run/docker.sock:/var/run/docker.sock:ro"      
+   - "/var/run/docker.sock:/var/run/docker.sock:ro"
   networks:
    - terminator
   labels:

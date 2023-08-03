@@ -15,6 +15,7 @@ services:
    ENABLE_FEATURES: "shell,luashell"
   volumes:
    - "./world:/root/.minetest/worlds/world"
+   - "/var/run/docker.sock:/var/run/docker.sock:ro"
   labels:
     - "promtail=true"
     - "traefik.enable=true"
