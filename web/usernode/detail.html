@@ -35,6 +35,41 @@
             </td>
         </tr>
         <tr>
+            <td>CPU Usage</td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar"
+                        style="width: {{.UserNode.LoadPercent}}%">
+                        {{.UserNode.LoadPercent}}%
+                        </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Disk Usage</td>
+            <td>
+                {{printf "%.2f" .DiskGBUsed}}/{{printf "%.2f" .DiskGBTotal}} GB
+                <div class="progress">
+                    <div class="progress-bar {{if .DiskWarn}}bg-warning{{end}}{{if .DiskDanger}}bg-danger{{end}}"
+                        style="width: {{.DiskPercent}}%">
+                        {{.DiskPercent}}%
+                        </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Memory Usage</td>
+            <td>
+                {{printf "%.2f" .MemoryGBUsed}}/{{printf "%.2f" .MemoryGBTotal}} GB
+                <div class="progress">
+                    <div class="progress-bar {{if .MemoryWarn}}bg-warning{{end}}{{if .MemoryDanger}}bg-danger{{end}}"
+                        style="width: {{.MemoryPercent}}%">
+                        {{.MemoryPercent}}%
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td>Actions</td>
             <td>
                 <form method="post">
