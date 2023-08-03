@@ -1,7 +1,6 @@
 package types
 
 import (
-	"regexp"
 	"time"
 )
 
@@ -17,8 +16,6 @@ const (
 
 // Created -> Provisioning -> Running <-> Stopped
 //                                     -> Removing
-
-var ValidUserNodeName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
 
 const ExpirationWarnThreshold = time.Hour * 24 * 14
 

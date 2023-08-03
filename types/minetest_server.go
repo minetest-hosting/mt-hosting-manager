@@ -1,10 +1,14 @@
 package types
 
+import "regexp"
+
 type MinetestServerState string
 
 const (
 	MinetestServerStateCreated MinetestServerState = "CREATED"
 )
+
+var ValidServerName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
 
 type MinetestServer struct {
 	ID         string        `json:"id"`

@@ -4,6 +4,7 @@ import (
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/mtserver"
 	"mt-hosting-manager/web/oauth"
 	"mt-hosting-manager/web/usernode"
 	"net/http"
@@ -32,6 +33,9 @@ func (ctx *Context) Setup(r *mux.Router) {
 
 	usernode_ctx := usernode.New(ctx.tu, ctx.repos, ctx.cfg)
 	usernode_ctx.Setup(r)
+
+	mtserver_ctx := mtserver.New(ctx.tu, ctx.repos, ctx.cfg)
+	mtserver_ctx.Setup(r)
 
 	if os.Getenv("GITHUB_CLIENTID") != "" {
 		ctx.GithubOauth = &oauth.OAuthConfig{
