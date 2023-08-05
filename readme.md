@@ -51,3 +51,9 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 * `NTFY_PASSWORD`
 
 * `SSH_KEY`
+
+# License
+
+* Code: `MIT`
+* Media
+  * "docs/minetest.svg" `CC BY-SA 3.0`
