@@ -1,22 +1,31 @@
 
-## TODO
+# Minetest hosting orchestrator
+
+State: **WIP**
+
+## Roadmap
 
 * [ ] Login options
-  * [x] github
+  * [x] github (MVP)
   * [ ] discord
   * [ ] mesehub
   * [ ] gitlab
+* [ ] Payment options
+  * [x] Wallee (MVP)
+  * [ ] Stripe
+  * [ ] Coinbase crypto
 * [ ] Host creation
-  * [ ] Hetzner
+  * [x] Hetzner (MVP)
   * [ ] Contabo
-* [ ] Host provisioning (ssh)
-* [ ] Instance creation
-* [ ] Instance setup (mtui)
+* [x] Host provisioning (MVP)
+* [ ] Instance setup
 * [ ] Backups?
 
 # Dev
 
 ```sh
+# setup
+docker-compose up
 # set all users as admin
 sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 ```
