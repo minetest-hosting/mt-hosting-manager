@@ -68,6 +68,5 @@ jobs:
         with:
           workflow: deploy
           repo: minetest-hosting/hosting.minetest.ch
-          inputs: '{ "type": "deploy" }'
           ref: refs/heads/main
           token: ${{ secrets.GH_DEPLOY_TOKEN }}
