@@ -17,7 +17,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/vearutop/statigz v1.4.0
 	golang.org/x/crypto v0.11.0
-	golang.org/x/text v0.11.0
+	golang.org/x/text v0.12.0
 	modernc.org/sqlite v1.24.0
 )
 
