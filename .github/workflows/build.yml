@@ -61,3 +61,12 @@ jobs:
           CGO_ENABLED=0 go build .
           docker build . -t ghcr.io/minetest-hosting/mt-hosting-manager:latest
           docker push ghcr.io/minetest-hosting/mt-hosting-manager:latest
+
+      - name: Trigger deployment on hosting.minetest.ch
+        if: success() && github.ref == 'refs/heads/master'
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: deploy
+          repo: minetest-hosting/hosting.minetest.ch
+          inputs: '{ "type": "deploy" }'
+          token: ${{ secrets.GH_DEPLOY_TOKEN }}
