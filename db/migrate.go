@@ -5,17 +5,16 @@ import (
 	"embed"
 
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/sqlite"
+	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
-	_ "modernc.org/sqlite"
 )
 
 //go:embed migrations/*.sql
 var migrations embed.FS
 
 func Migrate(db *sql.DB) error {
-	driver, err := sqlite.WithInstance(db, &sqlite.Config{})
+	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
 	if err != nil {
 		return err
 	}

@@ -9,22 +9,22 @@ import (
 )
 
 type NodeTypeRepository struct {
-	DB dbutil.DBTx
+	dbu *dbutil.DBUtil[*types.NodeType]
 }
 
 func (r *NodeTypeRepository) Insert(n *types.NodeType) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return dbutil.Insert(r.DB, n)
+	return r.dbu.Insert(n)
 }
 
 func (r *NodeTypeRepository) Update(n *types.NodeType) error {
-	return dbutil.Update(r.DB, n, "where id = $1", n.ID)
+	return r.dbu.Update(n, "where id = %s", n.ID)
 }
 
 func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
-	nt, err := dbutil.Select(r.DB, &types.NodeType{}, "where id = $1", id)
+	nt, err := r.dbu.Select("where id = %s", id)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -32,13 +32,13 @@ func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
 }
 
 func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeType, error) {
-	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "where state = $1 order by order_id asc", t)
+	return r.dbu.SelectMulti("where state = %s order by order_id asc", t)
 }
 
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
-	return dbutil.SelectMulti(r.DB, func() *types.NodeType { return &types.NodeType{} }, "order by order_id asc")
+	return r.dbu.SelectMulti("order by order_id asc")
 }
 
 func (r *NodeTypeRepository) Delete(node_type_id string) error {
-	return dbutil.Delete(r.DB, &types.NodeType{}, "where id = $1", node_type_id)
+	return r.dbu.Delete("where id = %s", node_type_id)
 }

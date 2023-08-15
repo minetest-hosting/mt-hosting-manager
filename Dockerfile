@@ -4,7 +4,7 @@ COPY go.* ./
 RUN go mod download
 COPY . .
 RUN go test ./... -vet=off && \
-	CGO_ENABLED=0 go build .
+	go build -ldflags="-s -w -extldflags=-static"
 
 FROM alpine:3.18.2
 WORKDIR /

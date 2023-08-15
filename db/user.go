@@ -9,18 +9,18 @@ import (
 )
 
 type UserRepository struct {
-	DB dbutil.DBTx
+	dbu *dbutil.DBUtil[*types.User]
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
 	if u.ID == "" {
 		u.ID = uuid.NewString()
 	}
-	return dbutil.Insert(r.DB, u)
+	return r.dbu.Insert(u)
 }
 
 func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
-	u, err := dbutil.Select(r.DB, &types.User{}, "where mail = $1", mail)
+	u, err := r.dbu.Select("where mail = %s", mail)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	} else {
@@ -29,9 +29,9 @@ func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
 }
 
 func (r *UserRepository) GetAll() ([]*types.User, error) {
-	return dbutil.SelectMulti(r.DB, func() *types.User { return &types.User{} }, "")
+	return r.dbu.SelectMulti("")
 }
 
 func (r *UserRepository) Delete(user_id string) error {
-	return dbutil.Delete(r.DB, &types.User{}, "where id = $1", user_id)
+	return r.dbu.Delete("where id = %s", user_id)
 }

@@ -9,24 +9,22 @@ import (
 )
 
 type UserNodeRepository struct {
-	DB dbutil.DBTx
+	dbu *dbutil.DBUtil[*types.UserNode]
 }
-
-func UserNodeFactory() *types.UserNode { return &types.UserNode{} }
 
 func (r *UserNodeRepository) Insert(n *types.UserNode) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return dbutil.Insert(r.DB, n)
+	return r.dbu.Insert(n)
 }
 
 func (r *UserNodeRepository) Update(n *types.UserNode) error {
-	return dbutil.Update(r.DB, n, "where id = $1", n.ID)
+	return r.dbu.Update(n, "where id = %s", n.ID)
 }
 
 func (r *UserNodeRepository) GetByID(id string) (*types.UserNode, error) {
-	nt, err := dbutil.Select(r.DB, &types.UserNode{}, "where id = $1", id)
+	nt, err := r.dbu.Select("where id = %s", id)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -34,7 +32,7 @@ func (r *UserNodeRepository) GetByID(id string) (*types.UserNode, error) {
 }
 
 func (r *UserNodeRepository) GetByName(name string) (*types.UserNode, error) {
-	nt, err := dbutil.Select(r.DB, &types.UserNode{}, "where name = $1", name)
+	nt, err := r.dbu.Select("where name = %s", name)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -42,13 +40,13 @@ func (r *UserNodeRepository) GetByName(name string) (*types.UserNode, error) {
 }
 
 func (r *UserNodeRepository) GetByUserID(user_id string) ([]*types.UserNode, error) {
-	return dbutil.SelectMulti(r.DB, UserNodeFactory, "where user_id = $1", user_id)
+	return r.dbu.SelectMulti("where user_id = %s", user_id)
 }
 
 func (r *UserNodeRepository) GetAll() ([]*types.UserNode, error) {
-	return dbutil.SelectMulti(r.DB, UserNodeFactory, "")
+	return r.dbu.SelectMulti("")
 }
 
 func (r *UserNodeRepository) Delete(id string) error {
-	return dbutil.Delete(r.DB, &types.UserNode{}, "where id = $1", id)
+	return r.dbu.Delete("where id = %s", id)
 }

@@ -9,18 +9,18 @@ import (
 )
 
 type PaymentTransactionRepository struct {
-	DB dbutil.DBTx
+	dbu *dbutil.DBUtil[*types.PaymentTransaction]
 }
 
 func (r *PaymentTransactionRepository) Insert(n *types.PaymentTransaction) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return dbutil.Insert(r.DB, n)
+	return r.dbu.Insert(n)
 }
 
 func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransaction, error) {
-	nt, err := dbutil.Select(r.DB, &types.PaymentTransaction{}, "where id = $1", id)
+	nt, err := r.dbu.Select("where id = %s", id)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -28,5 +28,5 @@ func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransac
 }
 
 func (r *PaymentTransactionRepository) Delete(id string) error {
-	return dbutil.Delete(r.DB, &types.PaymentTransaction{}, "where id = $1", id)
+	return r.dbu.Delete("where id = %s", id)
 }
