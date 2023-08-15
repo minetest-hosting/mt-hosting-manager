@@ -9,10 +9,8 @@ import (
 	"mt-hosting-manager/worker/provision"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/sirupsen/logrus"
-	"golang.org/x/crypto/ssh"
 )
 
 func (w *Worker) NodeProvision(job *types.Job) error {
@@ -159,24 +157,9 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		"ipv6":        node.IPv6,
 	}).Info("Executing provisioning")
 
-	var client *ssh.Client
-	try_count := 0
-	for {
-		client, err = provision.CreateClient(fmt.Sprintf("%s:22", node.IPv4))
-		if err != nil {
-			if try_count > 5 {
-				return fmt.Errorf("ssh-client connection failed: %v", err)
-			} else {
-				logrus.WithFields(logrus.Fields{
-					"err":       err,
-					"try_count": try_count,
-				}).Warn("ssh-client failed")
-				try_count++
-				time.Sleep(10 * time.Second)
-			}
-		} else {
-			break
-		}
+	client, err := TrySSHConnection(node)
+	if err != nil {
+		return err
 	}
 
 	err = provision.Provision(client)

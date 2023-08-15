@@ -1,9 +1,32 @@
 package worker
 
-import "mt-hosting-manager/types"
+import (
+	"fmt"
+	"mt-hosting-manager/types"
+	"mt-hosting-manager/worker/server_setup"
+)
 
 func (w *Worker) ServerSetup(job *types.Job) error {
-	_, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
-	//TODO
-	return err
+	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
+	if err != nil {
+		return fmt.Errorf("usernode fetch error: %v", err)
+	}
+	if node == nil {
+		return fmt.Errorf("usernode not found: %s", *job.UserNodeID)
+	}
+
+	server, err := w.repos.MinetestServerRepo.GetByID(*job.MinetestServerID)
+	if err != nil {
+		return fmt.Errorf("usernode fetch error: %v", err)
+	}
+	if server == nil {
+		return fmt.Errorf("server not found: %s", *job.MinetestServerID)
+	}
+
+	client, err := TrySSHConnection(node)
+	if err != nil {
+		return err
+	}
+
+	return server_setup.Setup(client, node, server)
 }

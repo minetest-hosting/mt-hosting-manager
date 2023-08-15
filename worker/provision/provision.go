@@ -3,6 +3,7 @@ package provision
 import (
 	"bytes"
 	"fmt"
+	"mt-hosting-manager/core"
 	"os"
 
 	"github.com/pkg/sftp"
@@ -37,31 +38,6 @@ func CreateClient(addr string) (*ssh.Client, error) {
 	return client, nil
 }
 
-func writeFile(sftp *sftp.Client, filename, target string, mode os.FileMode) error {
-	data, err := Files.ReadFile(filename)
-	if err != nil {
-		return fmt.Errorf("could not read file: %v", err)
-	}
-
-	dstFile, err := sftp.Create(target)
-	if err != nil {
-		return fmt.Errorf("could not create file: %v", err)
-	}
-	defer dstFile.Close()
-
-	_, err = dstFile.ReadFrom(bytes.NewBuffer(data))
-	if err != nil {
-		return fmt.Errorf("could not copy file: %v", err)
-	}
-
-	err = sftp.Chmod(target, mode)
-	if err != nil {
-		return fmt.Errorf("could not chmod file: %v", err)
-	}
-
-	return nil
-}
-
 func Provision(client *ssh.Client) error {
 	session, err := client.NewSession()
 	if err != nil {
@@ -75,20 +51,17 @@ func Provision(client *ssh.Client) error {
 	}
 	defer sftp.Close()
 
-	_, err = sftp.Stat("/provision")
+	err = core.SCPMkDir(sftp, "/provision")
 	if err != nil {
-		err = sftp.Mkdir("/provision")
-		if err != nil {
-			return fmt.Errorf("could not create directory: %v", err)
-		}
+		return err
 	}
 
-	err = writeFile(sftp, "setup.sh", "/provision/setup.sh", 0755)
+	err = core.SCPWriteFile(sftp, Files, "setup.sh", "/provision/setup.sh", 0755)
 	if err != nil {
 		return fmt.Errorf("could not write file: %v", err)
 	}
 
-	err = writeFile(sftp, "docker-compose.yml", "/provision/docker-compose.yml", 0644)
+	err = core.SCPWriteFile(sftp, Files, "docker-compose.yml", "/provision/docker-compose.yml", 0644)
 	if err != nil {
 		return fmt.Errorf("could not write file: %v", err)
 	}
