@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/csrf v1.7.1
 	github.com/gorilla/mux v1.8.0
-	github.com/minetest-go/dbutil v1.0.7
+	github.com/minetest-go/dbutil v1.1.0
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.16.0
