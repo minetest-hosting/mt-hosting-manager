@@ -17,14 +17,14 @@ var ValidServerName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
 func MinetestServerProvider() *MinetestServer { return &MinetestServer{} }
 
 type MinetestServer struct {
-	ID         string        `json:"id"`
-	UserNodeID string        `json:"user_node_id"`
-	Name       string        `json:"name"`
-	DNSName    string        `json:"dns_name"`
-	Port       int           `json:"port"`
-	UIVersion  string        `json:"ui_version"`
-	Created    int64         `json:"created"`
-	State      UserNodeState `json:"state"`
+	ID         string              `json:"id"`
+	UserNodeID string              `json:"user_node_id"`
+	Name       string              `json:"name"`
+	DNSName    string              `json:"dns_name"`
+	Port       int                 `json:"port"`
+	UIVersion  string              `json:"ui_version"`
+	Created    int64               `json:"created"`
+	State      MinetestServerState `json:"state"`
 }
 
 func (m *MinetestServer) Columns(action string) []string {

@@ -22,11 +22,27 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	if server == nil {
 		return fmt.Errorf("server not found: %s", *job.MinetestServerID)
 	}
+	server.State = types.MinetestServerStateProvisioning
+	err = w.repos.MinetestServerRepo.Update(server)
+	if err != nil {
+		return fmt.Errorf("server entity update error: %v", err)
+	}
 
 	client, err := TrySSHConnection(node)
 	if err != nil {
 		return err
 	}
 
-	return server_setup.Setup(client, node, server)
+	err = server_setup.Setup(client, node, server)
+	if err != nil {
+		return err
+	}
+
+	server.State = types.MinetestServerStateRunning
+	err = w.repos.MinetestServerRepo.Update(server)
+	if err != nil {
+		return fmt.Errorf("server entity update error: %v", err)
+	}
+
+	return nil
 }

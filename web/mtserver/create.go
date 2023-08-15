@@ -83,7 +83,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				Name:       m.Name,
 				DNSName:    m.DNSName,
 				Created:    time.Now().Unix(),
-				State:      types.UserNodeStateCreated,
+				State:      types.MinetestServerStateCreated,
 			}
 			err = ctx.repos.MinetestServerRepo.Insert(server)
 			if err != nil {
