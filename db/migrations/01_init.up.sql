@@ -85,6 +85,8 @@ create table payment_transaction(
     id varchar(36) primary key not null, -- uuid
     transaction_id varchar not null, -- external tx id
     created bigint not null, -- creation time in `time.Now().Unix()`
-    node_type_id varchar(36) not null references node_type(id) on delete restrict,
-    months int not null
+    node_type_id varchar(36) not null references node_type(id) on delete restrict, -- node-type to set up
+    node_id varchar(36) not null default '', -- set-up node after successful playment
+    months int not null, -- amount of months
+    state varchar(32) not null default 'PENDING' -- state of the transaction
 );
