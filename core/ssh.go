@@ -31,19 +31,33 @@ func SCPWriteBytes(sftp *sftp.Client, data []byte, target string, mode os.FileMo
 	return nil
 }
 
-func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, model any) error {
-	t, err := template.New("tmpl").ParseFS(fs, filename)
+func TemplateFile(fs embed.FS, filename string, model any) ([]byte, error) {
+	data, err := fs.ReadFile(filename)
 	if err != nil {
-		return fmt.Errorf("error templating %s: %v", filename, err)
+		return nil, fmt.Errorf("could not open file '%s': %v", filename, err)
+	}
+
+	t, err := template.New("tmpl").Parse(string(data))
+	if err != nil {
+		return nil, fmt.Errorf("error templating %s: %v", filename, err)
 	}
 
 	buf := bytes.NewBuffer([]byte{})
 	err = t.Execute(buf, model)
 	if err != nil {
-		return fmt.Errorf("error executing template '%s': %v", filename, err)
+		return nil, fmt.Errorf("error executing template '%s': %v", filename, err)
 	}
 
-	return SCPWriteBytes(sftp, buf.Bytes(), target, mode)
+	return buf.Bytes(), nil
+}
+
+func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, model any) error {
+	data, err := TemplateFile(fs, filename, model)
+	if err != nil {
+		return err
+	}
+
+	return SCPWriteBytes(sftp, data, target, mode)
 }
 
 func SCPWriteFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode) error {

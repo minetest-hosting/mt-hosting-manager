@@ -56,6 +56,11 @@ func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServe
 		Port:          server.Port,
 	}
 
+	if m.MTUIVersion == "" {
+		// fall back to latest
+		m.MTUIVersion = "latest"
+	}
+
 	err = core.SCPTemplateFile(sftp, Files, "docker-compose.yml", fmt.Sprintf("%s/docker-compose.yml", basedir), 0644, m)
 	if err != nil {
 		return err

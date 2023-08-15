@@ -5,7 +5,7 @@ services:
   image: ghcr.io/minetest-go/mtui:{{.MTUIVersion}}
   networks:
    - terminator
-   - {{.ServerShortID}}
+   - network-{{.ServerShortID}}
   environment:
    COOKIE_DOMAIN: "{{.Hostname}}"
    COOKIE_SECURE: "true"
@@ -14,8 +14,8 @@ services:
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/minetest.conf"
    DOCKER_MINETEST_PORT: {{.Port}}
-   DOCKER_NETWORK: "{{.ServerShortID}}"
-   DOCKER_WORLD_DIR: "{{.BaseDir}}/dev/world"
+   DOCKER_NETWORK: "network-{{.ServerShortID}}"
+   DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_MINETEST_CONTAINER: "{{.ServerShortID}}_engine"
   volumes:
    - "./world:/root/.minetest/worlds/world"
@@ -31,4 +31,6 @@ services:
 
 networks:
  terminator:
+  external: true
+ network-{{.ServerShortID}}:
   external: true
