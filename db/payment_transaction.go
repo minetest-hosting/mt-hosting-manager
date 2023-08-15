@@ -27,6 +27,10 @@ func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransac
 	return nt, err
 }
 
+func (r *PaymentTransactionRepository) Update(tx *types.PaymentTransaction) error {
+	return r.dbu.Update(tx, "where id = %s", tx.ID)
+}
+
 func (r *PaymentTransactionRepository) Delete(id string) error {
 	return r.dbu.Delete("where id = %s", id)
 }

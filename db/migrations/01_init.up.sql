@@ -21,16 +21,16 @@ create table node_type(
     server_type varchar(32) not null, -- provider server-type: cx11
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
-    monthly_cost varchar not null default '', -- "5.20"
-    max_months int not null default '', -- 12
+    daily_cost varchar not null default '0.4', -- "0.40"
+    max_days int not null default 30, -- 30
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
 
 -- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','8.5',24,2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','MEDIUM1','Medium node for average servers and mod-sets','12.5',12,3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','LARGE1','Larger node for heavier workloads','17.5',12,5,10);
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',120,2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','MEDIUM1','Medium node for average servers and mod-sets','0.8',60,3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','LARGE1','Larger node for heavier workloads','1.2',30,5,10);
 
 -- a node set up by a user
 create table user_node(
@@ -87,6 +87,7 @@ create table payment_transaction(
     created bigint not null, -- creation time in `time.Now().Unix()`
     node_type_id varchar(36) not null references node_type(id) on delete restrict, -- node-type to set up
     node_id varchar(36) not null default '', -- set-up node after successful playment
-    months int not null, -- amount of months
+    start_date bigint not null, -- start time in `time.Now().Unix()`
+    until_date bigint not null, -- end time in `time.Now().Unix()`
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );

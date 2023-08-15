@@ -5,7 +5,7 @@ import (
 )
 
 // TODO: increment expiration time properly
-func AddMonths(t time.Time, months int) time.Time {
-	d := time.Hour * 24 * 31 * time.Duration(months)
+func AddDays(t time.Time, days int) time.Time {
+	d := time.Hour * 24 * time.Duration(days)
 	return t.Add(d)
 }

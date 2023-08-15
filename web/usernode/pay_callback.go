@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"mt-hosting-manager/api/wallee"
-	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"net/http"
 	"os"
@@ -46,38 +45,6 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	// remove tx entry after success
-	err = ctx.repos.PaymentTransactionRepo.Delete(tx.ID)
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	randstr := RandStringRunes(7)
-
-	// create usernode
-	node := &types.UserNode{
-		ID:         uuid.NewString(),
-		UserID:     c.UserID,
-		NodeTypeID: tx.NodeTypeID,
-		Created:    time.Now().Unix(),
-		Expires:    time.Now().Unix(),
-		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), randstr),
-		Alias:      randstr,
-	}
-	fmt.Printf("%v\n", node)
-	err = ctx.repos.UserNodeRepo.Insert(node)
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	m := &PayCallbackModel{
-		Transaction: tx,
-		Node:        node,
-	}
-
 	// verify tx success
 	txr := &wallee.TransactionSearchRequest{
 		Filter: &wallee.TransactionSearchFilter{
@@ -102,11 +69,37 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	node.Expires = core.AddMonths(time.Unix(node.Expires, 0), tx.Months).Unix()
-	err = ctx.repos.UserNodeRepo.Update(node)
+	randstr := RandStringRunes(7)
+
+	// create usernode
+	node := &types.UserNode{
+		ID:         uuid.NewString(),
+		UserID:     c.UserID,
+		NodeTypeID: tx.NodeTypeID,
+		Created:    time.Now().Unix(),
+		Expires:    tx.UntilDate,
+		State:      types.UserNodeStateCreated,
+		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), randstr),
+		Alias:      randstr,
+	}
+	err = ctx.repos.UserNodeRepo.Insert(node)
 	if err != nil {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("failed to update expiration time on node %s: %v", node.ID, err))
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("usernode insert failed: %v", err))
 		return
+	}
+
+	// mark tx as successful after payment
+	tx.State = types.PaymentStateSuccess
+	tx.NodeID = node.ID
+	err = ctx.repos.PaymentTransactionRepo.Update(tx)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("payment-tx update failed: %v", err))
+		return
+	}
+
+	m := &PayCallbackModel{
+		Transaction: tx,
+		Node:        node,
 	}
 
 	// start node provisioning

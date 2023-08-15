@@ -7,12 +7,12 @@
             <td>{{.NodeType.Name}}</td>
         </tr>
         <tr>
-            <td>Cost per month</td>
-            <td>{{.NodeType.MonthlyCost}} &euro;</td>
+            <td>Cost per day</td>
+            <td>{{.NodeType.DailyCost}} &euro;</td>
         </tr>
         <tr>
-            <td>Amount of months</td>
-            <td>{{.Months}}</td>
+            <td>Amount of days</td>
+            <td>{{.Days}}</td>
         </tr>
         <tr>
             <td>End-Date</td>
@@ -20,13 +20,13 @@
                 {{formattime .Expiration}}
                 <div class="alert alert-info">
                     <i class="fa-solid fa-circle-info"></i>
-                    <b>Note:</b> Renewal is always possible up to a total of {{.NodeType.MaxMonths}} months
+                    <b>Note:</b> Renewal is always possible up to a total of {{.NodeType.MaxDays}} days
                 </div>
             </td>
         </tr>
         <tr>
             <td>
-                <b>Total cost for {{.Months}} months</b>
+                <b>Total cost for {{.Days}} days</b>
             </td>
             <td>
                 <b>{{.TotalCost}} &euro;</b>

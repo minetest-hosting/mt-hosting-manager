@@ -1,15 +1,24 @@
 package types
 
+type PaymentStateType string
+
+const (
+	PaymentStatePending PaymentStateType = "PENDING"
+	PaymentStateSuccess PaymentStateType = "SUCCESS"
+	PaymentStateError   PaymentStateType = "ERROR"
+)
+
 func PaymentTransactionProvider() *PaymentTransaction { return &PaymentTransaction{} }
 
 type PaymentTransaction struct {
-	ID            string `json:"id"`
-	TransactionID string `json:"transaction_id"`
-	Created       int64  `json:"created"`
-	NodeTypeID    string `json:"node_type_id"`
-	NodeID        string `json:"node_id"`
-	Months        int    `json:"months"`
-	State         string `json:"state"`
+	ID            string           `json:"id"`
+	TransactionID string           `json:"transaction_id"`
+	Created       int64            `json:"created"`
+	NodeTypeID    string           `json:"node_type_id"`
+	NodeID        string           `json:"node_id"`
+	StartDate     int64            `json:"start_date"`
+	UntilDate     int64            `json:"until_date"`
+	State         PaymentStateType `json:"state"`
 }
 
 func (m *PaymentTransaction) Columns(action string) []string {
@@ -19,7 +28,8 @@ func (m *PaymentTransaction) Columns(action string) []string {
 		"created",
 		"node_type_id",
 		"node_id",
-		"months",
+		"start_date",
+		"until_date",
 		"state",
 	}
 }
@@ -29,9 +39,9 @@ func (m *PaymentTransaction) Table() string {
 }
 
 func (m *PaymentTransaction) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.TransactionID, &m.Created, &m.NodeTypeID, &m.NodeID, &m.Months, &m.State)
+	return r(&m.ID, &m.TransactionID, &m.Created, &m.NodeTypeID, &m.NodeID, &m.StartDate, &m.UntilDate, &m.State)
 }
 
 func (m *PaymentTransaction) Values(action string) []any {
-	return []any{m.ID, m.TransactionID, m.Created, m.NodeTypeID, m.NodeID, m.Months, m.State}
+	return []any{m.ID, m.TransactionID, m.Created, m.NodeTypeID, m.NodeID, m.StartDate, m.UntilDate, m.State}
 }

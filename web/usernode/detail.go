@@ -2,6 +2,7 @@ package usernode
 
 import (
 	"fmt"
+	"math"
 	"mt-hosting-manager/types"
 	"net/http"
 
@@ -61,8 +62,8 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		DiskGBUsed:    float64(node.DiskUsed) / bytes_in_gb,
 		DiskGBTotal:   float64(node.DiskSize) / bytes_in_gb,
 		MemoryPercent: int(float64(node.MemoryUsed) / float64(node.MemorySize) * 100),
-		MemoryGBUsed:  float64(node.MemoryUsed) / bytes_in_gb,
-		MemoryGBTotal: float64(node.MemorySize) / bytes_in_gb,
+		MemoryGBUsed:  math.Max(0, float64(node.MemoryUsed)/bytes_in_gb),
+		MemoryGBTotal: math.Max(0, float64(node.MemorySize)/bytes_in_gb),
 	}
 
 	if m.DiskPercent > 90 {

@@ -15,7 +15,7 @@ import (
 
 type OrderNewModel struct {
 	NodeType   *types.NodeType
-	Months     int
+	Days       int
 	TotalCost  string
 	Expiration int64
 }
@@ -24,7 +24,7 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 	vars := mux.Vars(r)
 
 	nodetype_id := vars["nodetype-id"]
-	months_str := vars["months"]
+	days_str := vars["days"]
 
 	nodetype, err := ctx.repos.NodeTypeRepo.GetByID(nodetype_id)
 	if err != nil {
@@ -36,31 +36,31 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	months, err := strconv.ParseInt(months_str, 10, 32)
+	days, err := strconv.ParseInt(days_str, 10, 32)
 	if err != nil {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("month parse error: %v", err))
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("days parse error: %v", err))
 		return
 	}
-	if months < 1 || months > int64(nodetype.MaxMonths) {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("invalid month choice: %s", months_str))
+	if days < 1 || days > int64(nodetype.MaxDays) {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("invalid day choice: %s", days_str))
 		return
 	}
 
-	cost_per_month, err := strconv.ParseFloat(nodetype.MonthlyCost, 64)
+	cost_per_day, err := strconv.ParseFloat(nodetype.DailyCost, 64)
 	if err != nil {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("monthlycost parse error: %v", err))
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("DailyCost parse error: %v", err))
 		return
 	}
 
-	total_cost := cost_per_month * float64(months)
+	total_cost := cost_per_day * float64(days)
 
 	if r.Method == http.MethodGet {
 		// show details
 		m := &OrderNewModel{
 			NodeType:   nodetype,
-			Months:     int(months),
+			Days:       int(days),
 			TotalCost:  fmt.Sprintf("%.2f", total_cost),
-			Expiration: core.AddMonths(time.Now(), int(months)).Unix(),
+			Expiration: core.AddDays(time.Now(), int(days)).Unix(),
 		}
 
 		ctx.tu.ExecuteTemplate(w, r, "usernode/order_new.html", m)
@@ -71,7 +71,7 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 		// create tx and redirect to payment site
 		item := &wallee.LineItem{
 			Name:               nodetype.Name,
-			Quantity:           float64(months),
+			Quantity:           float64(days),
 			AmountIncludingTax: total_cost,
 			Type:               wallee.LineItemTypeProduct,
 			UniqueID:           nodetype.ID,
@@ -101,7 +101,9 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 			TransactionID: fmt.Sprintf("%d", tx.ID),
 			Created:       time.Now().Unix(),
 			NodeTypeID:    nodetype.ID,
-			Months:        int(months),
+			StartDate:     time.Now().Unix(),
+			UntilDate:     core.AddDays(time.Now(), int(days)).Unix(),
+			State:         types.PaymentStatePending,
 		}
 		err = ctx.repos.PaymentTransactionRepo.Insert(payment_tx)
 		if err != nil {

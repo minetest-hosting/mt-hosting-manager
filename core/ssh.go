@@ -32,7 +32,7 @@ func SCPWriteBytes(sftp *sftp.Client, data []byte, target string, mode os.FileMo
 }
 
 func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, model any) error {
-	t, err := template.New("").ParseFS(fs, filename)
+	t, err := template.New("tmpl").ParseFS(fs, filename)
 	if err != nil {
 		return fmt.Errorf("error templating %s: %v", filename, err)
 	}

@@ -36,8 +36,13 @@ func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServe
 	}
 	defer sftp.Close()
 
-	basedir := fmt.Sprintf("/data/%s", server.ID)
+	datadir := "/data"
+	err = core.SCPMkDir(sftp, datadir)
+	if err != nil {
+		return err
+	}
 
+	basedir := fmt.Sprintf("%s/%s", datadir, server.ID)
 	err = core.SCPMkDir(sftp, basedir)
 	if err != nil {
 		return err
