@@ -3,13 +3,16 @@ package provision
 import (
 	"fmt"
 	"mt-hosting-manager/core"
+	"mt-hosting-manager/types"
+	"net"
 	"os"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
 
-func CreateClient(addr string) (*ssh.Client, error) {
+func CreateClient(node *types.UserNode) (*ssh.Client, error) {
+	addr := fmt.Sprintf("%s:22", node.IPv4)
 	key_file := os.Getenv("SSH_KEY")
 	f, err := os.ReadFile(key_file)
 	if err != nil {
@@ -21,13 +24,26 @@ func CreateClient(addr string) (*ssh.Client, error) {
 		return nil, fmt.Errorf("could not parse private key: %v", err)
 	}
 
+	hostKeyCallback := func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		fp := ssh.FingerprintSHA256(key)
+		if node.Fingerprint == "" {
+			// no fingerprint yet, add and allow
+			node.Fingerprint = fp
+		}
+		if fp != node.Fingerprint {
+			// fingerprint mismatch
+			return fmt.Errorf("fingerprint mismatch, on record: '%s'", node.Fingerprint)
+		}
+
+		return nil
+	}
+
 	config := &ssh.ClientConfig{
 		User: "root",
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(key),
 		},
-		// TODO: remember fingerprint from first connection
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: hostKeyCallback,
 	}
 
 	client, err := ssh.Dial("tcp", addr, config)

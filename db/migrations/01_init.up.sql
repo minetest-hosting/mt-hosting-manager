@@ -45,6 +45,7 @@ create table user_node(
     alias varchar(256) not null, -- internal name, user-specified
     ipv4 varchar(32) not null,
     ipv6 varchar(128) not null,
+    fingerprint varchar(512) not null default '', -- ssh fingerprint
     load_percent int not null default 0,
     disk_size int not null default 0,
     disk_used int not null default 0,

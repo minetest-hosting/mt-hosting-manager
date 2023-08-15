@@ -13,7 +13,7 @@ import (
 func TrySSHConnection(node *types.UserNode) (*ssh.Client, error) {
 	try_count := 0
 	for {
-		client, err := provision.CreateClient(fmt.Sprintf("%s:22", node.IPv4))
+		client, err := provision.CreateClient(node)
 		if err != nil {
 			if try_count > 5 {
 				return nil, fmt.Errorf("ssh-client connection failed: %v", err)
