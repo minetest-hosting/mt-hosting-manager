@@ -15,10 +15,18 @@
             </td>
         </tr>
         <tr>
-            <td>Name</td>
+            <td>Display-Name</td>
+            <td>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="name" value="{{.Name}}"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>DNS-Name</td>
             <td>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="name" value="{{.Name}}"/>
+                    <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="DNSName" value="{{.DNSName}}"/>
                     <span class="input-group-text">.{{Config.HostingDomainSuffix}}</span>
                     {{if .NameErr}}
                     <div class="invalid-feedback">

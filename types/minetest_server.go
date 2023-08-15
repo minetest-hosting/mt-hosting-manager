@@ -18,6 +18,8 @@ type MinetestServer struct {
 	ID         string        `json:"id"`
 	UserNodeID string        `json:"user_node_id"`
 	Name       string        `json:"name"`
+	DNSName    string        `json:"dns_name"`
+	UIVersion  string        `json:"ui_version"`
 	Created    int64         `json:"created"`
 	State      UserNodeState `json:"state"`
 }
@@ -27,7 +29,10 @@ func (m *MinetestServer) Columns(action string) []string {
 		"id",
 		"user_node_id",
 		"name",
+		"dns_name",
+		"ui_version",
 		"created",
+		"state",
 	}
 }
 
@@ -36,9 +41,9 @@ func (m *MinetestServer) Table() string {
 }
 
 func (m *MinetestServer) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.UserNodeID, &m.Name, &m.Created)
+	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.UIVersion, &m.Created, &m.State)
 }
 
 func (m *MinetestServer) Values(action string) []any {
-	return []any{m.ID, m.UserNodeID, m.Name, m.Created}
+	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.UIVersion, m.Created, m.State}
 }

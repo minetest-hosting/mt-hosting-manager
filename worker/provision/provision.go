@@ -1,7 +1,6 @@
 package provision
 
 import (
-	"bytes"
 	"fmt"
 	"mt-hosting-manager/core"
 	"os"
@@ -66,27 +65,9 @@ func Provision(client *ssh.Client) error {
 		return fmt.Errorf("could not write file: %v", err)
 	}
 
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	session.Stdout = &stdout
-	session.Stderr = &stderr
-
-	err = session.Start("/provision/setup.sh")
+	_, _, err = core.SSHExecute(client, "/provision/setup.sh")
 	if err != nil {
-		return fmt.Errorf("start failed: %v", err)
-	}
-
-	err = session.Wait()
-	if err != nil {
-		ex, ok := err.(*ssh.ExitError)
-		if ok {
-			fmt.Printf("Exit status: %d\n", ex.ExitStatus())
-			if ex.ExitStatus() != 0 {
-				return fmt.Errorf("exit-status: %d", ex.ExitStatus())
-			}
-		} else {
-			return fmt.Errorf("unknown script execution error: %v", err)
-		}
+		return fmt.Errorf("SSHExecute error: %v", err)
 	}
 
 	return nil

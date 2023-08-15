@@ -20,6 +20,7 @@ type CreateServerModel struct {
 	NodeID  string
 	NameErr string
 	Name    string
+	DNSName string
 }
 
 func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -40,21 +41,22 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 	}
 
 	m := &CreateServerModel{
-		Nodes:  nodeinfos,
-		NodeID: nodeid,
+		Nodes:   nodeinfos,
+		NodeID:  nodeid,
+		Name:    r.FormValue("name"),
+		DNSName: r.FormValue("DNSName"),
 	}
 
 	if r.Method == http.MethodPost {
-		nodeid = r.FormValue("nodeid")
-		m.Name = r.FormValue("name")
-		if !types.ValidServerName.Match([]byte(m.Name)) {
+		m.DNSName = r.FormValue("DNSName")
+		if !types.ValidServerName.Match([]byte(m.DNSName)) {
 			m.NameErr = "invalid-server-name"
 		}
-		if strings.HasPrefix(m.Name, "node-") {
+		if strings.HasPrefix(m.DNSName, "node-") {
 			m.NameErr = "invalid-server-name"
 		}
 
-		existing_server, err := ctx.repos.MinetestServerRepo.GetByName(m.Name)
+		existing_server, err := ctx.repos.MinetestServerRepo.GetByName(m.DNSName)
 		if err != nil {
 			ctx.tu.RenderError(w, r, 500, fmt.Errorf("server getbyname error: %v", err))
 			return
@@ -79,6 +81,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				ID:         uuid.NewString(),
 				UserNodeID: node.ID,
 				Name:       m.Name,
+				DNSName:    m.DNSName,
 				Created:    time.Now().Unix(),
 				State:      types.UserNodeStateCreated,
 			}

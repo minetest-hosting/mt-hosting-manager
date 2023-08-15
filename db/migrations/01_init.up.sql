@@ -57,7 +57,9 @@ create table user_node(
 create table minetest_server(
     id varchar(36) primary key not null, -- uuid
     user_node_id varchar(36) not null references user_node(id) on delete restrict,
-    name varchar(64) not null, -- name of the server, used for dns CNAME
+    name varchar(64) not null, -- display name of the server
+    dns_name varchar(256) not null, -- DNS name
+    ui_version varchar(16) not null default 'latest', -- ui version to deploy
     created bigint not null, -- creation time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED'
 );
