@@ -1,5 +1,7 @@
 package types
 
+func PaymentTransactionProvider() *PaymentTransaction { return &PaymentTransaction{} }
+
 type PaymentTransaction struct {
 	ID            string `json:"id"`
 	TransactionID string `json:"transaction_id"`

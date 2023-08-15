@@ -14,6 +14,8 @@ const (
 
 var ValidServerName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)
 
+func MinetestServerProvider() *MinetestServer { return &MinetestServer{} }
+
 type MinetestServer struct {
 	ID         string        `json:"id"`
 	UserNodeID string        `json:"user_node_id"`

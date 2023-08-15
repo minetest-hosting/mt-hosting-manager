@@ -16,12 +16,13 @@ type Repositories struct {
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
+	dialect := dbutil.DialectSQLite
 	return &Repositories{
-		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dbutil.DialectSQLite, func() *types.User { return &types.User{} })},
-		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dbutil.DialectSQLite, func() *types.NodeType { return &types.NodeType{} })},
-		UserNodeRepo:           &UserNodeRepository{dbu: dbutil.New[*types.UserNode](db, dbutil.DialectSQLite, func() *types.UserNode { return &types.UserNode{} })},
-		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dbutil.DialectSQLite, func() *types.MinetestServer { return &types.MinetestServer{} })},
-		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dbutil.DialectSQLite, func() *types.Job { return &types.Job{} })},
-		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dbutil.DialectSQLite, func() *types.PaymentTransaction { return &types.PaymentTransaction{} })},
+		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dialect, types.UserProvider)},
+		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dialect, types.NodeTypeProvider)},
+		UserNodeRepo:           &UserNodeRepository{dbu: dbutil.New[*types.UserNode](db, dialect, types.UserNodeProvider)},
+		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},
+		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dialect, types.JobProvider)},
+		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dialect, types.PaymentTransactionProvider)},
 	}
 }

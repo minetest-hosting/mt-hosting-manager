@@ -20,6 +20,8 @@ const (
 	UserStateActive UserState = "ACTIVE"
 )
 
+func UserProvider() *User { return &User{} }
+
 type User struct {
 	ID         string    `json:"id"`
 	State      UserState `json:"state"`

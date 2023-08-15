@@ -14,6 +14,8 @@ const (
 	NodeTypeStateDeprecated NodeTypeState = "DEPRECATED"
 )
 
+func NodeTypeProvider() *NodeType { return &NodeType{} }
+
 type NodeType struct {
 	ID                      string       `json:"id"`
 	State                   string       `json:"state"`

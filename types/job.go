@@ -23,6 +23,8 @@ const (
 	JobTypeServerDestroy JobType = "SERVER_DESTROY"
 )
 
+func JobProvider() *Job { return &Job{} }
+
 type Job struct {
 	ID               string   `json:"id"`
 	Type             JobType  `json:"type"`

@@ -19,6 +19,8 @@ const (
 
 const ExpirationWarnThreshold = time.Hour * 24 * 14
 
+func UserNodeProvider() *UserNode { return &UserNode{} }
+
 type UserNode struct {
 	ID          string        `json:"id"`
 	UserID      string        `json:"user_id"`
