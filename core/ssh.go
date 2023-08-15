@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"text/template"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -28,6 +29,21 @@ func SCPWriteBytes(sftp *sftp.Client, data []byte, target string, mode os.FileMo
 	}
 
 	return nil
+}
+
+func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, model any) error {
+	t, err := template.New("").ParseFS(fs, filename)
+	if err != nil {
+		return fmt.Errorf("error templating %s: %v", filename, err)
+	}
+
+	buf := bytes.NewBuffer([]byte{})
+	err = t.Execute(buf, model)
+	if err != nil {
+		return fmt.Errorf("error executing template '%s': %v", filename, err)
+	}
+
+	return SCPWriteBytes(sftp, buf.Bytes(), target, mode)
 }
 
 func SCPWriteFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode) error {

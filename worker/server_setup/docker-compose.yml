@@ -5,13 +5,18 @@ services:
   image: ghcr.io/minetest-go/mtui:{{.MTUIVersion}}
   networks:
    - terminator
-   - default
+   - {{.ServerShortID}}
   environment:
    COOKIE_DOMAIN: "{{.Hostname}}"
    COOKIE_SECURE: "true"
    LOGLEVEL: debug
    WORLD_DIR: "/root/.minetest/worlds/world"
-   ENABLE_FEATURES: "shell,luashell"
+   ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
+   DOCKER_MINETEST_CONFIG: "{{BaseDir}}/minetest.conf"
+   DOCKER_MINETEST_PORT: {{.Port}}
+   DOCKER_NETWORK: "{{.ServerShortID}}"
+   DOCKER_WORLD_DIR: "{{BaseDir}}/dev/world"
+   DOCKER_MINETEST_CONTAINER: "{{.ServerShortID}}_engine"
   volumes:
    - "./world:/root/.minetest/worlds/world"
    - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -19,10 +24,10 @@ services:
     - "promtail=true"
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
-    - "traefik.http.routers.{{.HTTPRouterName}}.rule=Host(`{{.Hostname}}`)"
-    - "traefik.http.services.{{.HTTPRouterName}}.loadbalancer.server.port=8080"
-    - "traefik.http.routers.{{.HTTPRouterName}}.entrypoints=websecure"
-    - "traefik.http.routers.{{.HTTPRouterName}}.tls.certresolver=default"
+    - "traefik.http.routers.{{.ServerShortID}}.rule=Host(`{{.Hostname}}`)"
+    - "traefik.http.services.{{.ServerShortID}}.loadbalancer.server.port=8080"
+    - "traefik.http.routers.{{.ServerShortID}}.entrypoints=websecure"
+    - "traefik.http.routers.{{.ServerShortID}}.tls.certresolver=default"
 
 networks:
  terminator:

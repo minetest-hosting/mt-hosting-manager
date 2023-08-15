@@ -1,9 +1,7 @@
 package server_setup
 
 import (
-	"bytes"
 	"fmt"
-	"html/template"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"strings"
@@ -12,10 +10,17 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-type ComposeModel struct {
-	MTUIVersion    string
-	Hostname       string
-	HTTPRouterName string
+type SetupModel struct {
+	BaseDir       string
+	MTUIVersion   string
+	Hostname      string
+	ServerShortID string
+	Port          int
+}
+
+func GetShortName(id string) string {
+	parts := strings.Split(id, "-")
+	return parts[0]
 }
 
 func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServer) error {
@@ -38,32 +43,26 @@ func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServe
 		return err
 	}
 
-	routername := strings.ReplaceAll(server.DNSName, "-", "_")
-	routername = strings.ReplaceAll(routername, ".", "_")
-
-	m := &ComposeModel{
-		MTUIVersion:    server.UIVersion,
-		Hostname:       server.DNSName,
-		HTTPRouterName: routername,
+	m := &SetupModel{
+		BaseDir:       basedir,
+		MTUIVersion:   server.UIVersion,
+		Hostname:      server.DNSName,
+		ServerShortID: GetShortName(server.ID),
+		Port:          server.Port,
 	}
 
-	t, err := template.New("").ParseFS(Files, "docker-compose.yml")
-	if err != nil {
-		return fmt.Errorf("error templating docker-compose: %v", err)
-	}
-
-	buf := bytes.NewBuffer([]byte{})
-	err = t.Execute(buf, m)
-	if err != nil {
-		return fmt.Errorf("error executing template 'docker-compose.yml': %v", err)
-	}
-
-	err = core.SCPWriteBytes(sftp, buf.Bytes(), fmt.Sprintf("%s/docker-compose.yml", basedir), 0644)
+	err = core.SCPTemplateFile(sftp, Files, "docker-compose.yml", fmt.Sprintf("%s/docker-compose.yml", basedir), 0644, m)
 	if err != nil {
 		return err
 	}
 
-	_, _, err = core.SSHExecute(client, fmt.Sprintf("cd %s && docker-compose pull && docker-compose up -d", basedir))
+	setup_file := fmt.Sprintf("%s/setup.sh", basedir)
+	err = core.SCPTemplateFile(sftp, Files, "setup.sh", setup_file, 0755, m)
+	if err != nil {
+		return err
+	}
+
+	_, _, err = core.SSHExecute(client, setup_file)
 	if err != nil {
 		return err
 	}
