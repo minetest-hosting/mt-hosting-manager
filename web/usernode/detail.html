@@ -109,6 +109,7 @@
         </tr>
     </table>
 </div>
+<hr>
 <h4>Servers</h4>
 {{if .Servers}}
 <table class="table">
@@ -146,4 +147,22 @@
     <i class="fa fa-plus"></i>
     Create server
 </a>
+<hr>
+<h4>Payments</h4>
+<table class="table">
+    <thead>
+        <th>Start</th>
+        <th>End</th>
+        <th>State</th>
+    </thead>
+    <tbody>
+        {{range $tx := .Transactions}}
+        <tr>
+            <td>{{formattime $tx.StartDate}}</td>
+            <td>{{formattime $tx.UntilDate}}</td>
+            <td>{{block "transaction_state" $tx}}{{end}}</td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
 {{end}}

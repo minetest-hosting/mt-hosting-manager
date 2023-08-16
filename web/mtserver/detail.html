@@ -11,6 +11,15 @@
         <td>{{.Server.Name}}</td>
     </tr>
     <tr>
+        <td>Node</td>
+        <td>
+            <a href="{{BaseURL}}/nodes/{{.Server.UserNodeID}}">
+                <i class="fa fa-server"></i>
+                {{.Node.Name}} ({{.Server.UserNodeID}})
+            </a>
+        </td>
+    </tr>
+    <tr>
         <td>DNSName</td>
         <td>{{.Server.DNSName}}</td>
     </tr>
@@ -28,7 +37,7 @@
     </tr>
     <tr>
         <td>State</td>
-        <td>{{.Server.State}}</td>
+        <td>{{block "server_state" .Server}}{{end}}</td>
     </tr>
 </table>
 {{end}}

@@ -1,0 +1,11 @@
+{{define "transaction_state"}}
+    {{if eq .State "PENDING"}}
+    <span class="badge text-bg-info">Pending</span>
+    {{end}}
+    {{if eq .State "SUCCESS"}}
+    <span class="badge text-bg-info">Success</span>
+    {{end}}
+    {{if eq .State "ERROR"}}
+    <span class="badge text-bg-danger">Error</span>
+    {{end}}
+{{end}}

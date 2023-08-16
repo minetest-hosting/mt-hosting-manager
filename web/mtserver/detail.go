@@ -10,6 +10,7 @@ import (
 
 type ServerDetailModel struct {
 	Server *types.MinetestServer
+	Node   *types.UserNode
 }
 
 func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -26,8 +27,15 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	node, err := ctx.repos.UserNodeRepo.GetByID(server.UserNodeID)
+	if err != nil {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("get node error: %v", err))
+		return
+	}
+
 	m := &ServerDetailModel{
 		Server: server,
+		Node:   node,
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "mtserver/detail.html", m)

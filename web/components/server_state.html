@@ -1,0 +1,17 @@
+{{define "server_state"}}
+    {{if eq .State "CREATED"}}
+    <span class="badge text-bg-info">Created</span>
+    {{end}}
+    {{if eq .State "PROVISIONING"}}
+    <span class="badge text-bg-info">Provisioning</span>
+    {{end}}
+    {{if eq .State "RUNNING"}}
+    <span class="badge text-bg-success">Running</span>
+    {{end}}
+    {{if eq .State "STOPPED"}}
+    <span class="badge text-bg-warning">Stopped</span>
+    {{end}}
+    {{if eq .State "REMOVING"}}
+    <span class="badge text-bg-danger">Removing</span>
+    {{end}}
+{{end}}

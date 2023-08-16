@@ -91,3 +91,5 @@ create table payment_transaction(
     until_date bigint not null, -- end time in `time.Now().Unix()`
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
+
+create index payment_transaction_node_id on payment_transaction(node_id);

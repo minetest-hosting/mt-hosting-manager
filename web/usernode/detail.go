@@ -12,6 +12,7 @@ import (
 type DetailModel struct {
 	UserNode      *types.UserNode
 	LatestJob     *types.Job
+	Transactions  []*types.PaymentTransaction
 	Servers       []*types.MinetestServer
 	DiskPercent   int
 	DiskGBUsed    float64
@@ -41,6 +42,12 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	tx_list, err := ctx.repos.PaymentTransactionRepo.GetByNodeID(node.ID)
+	if node == nil {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("get transactions error: %s", err))
+		return
+	}
+
 	servers, err := ctx.repos.MinetestServerRepo.GetByNodeID(node.ID)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, err)
@@ -58,6 +65,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		UserNode:      node,
 		LatestJob:     job,
 		Servers:       servers,
+		Transactions:  tx_list,
 		DiskPercent:   int(float64(node.DiskUsed) / float64(node.DiskSize) * 100),
 		DiskGBUsed:    float64(node.DiskUsed) / bytes_in_gb,
 		DiskGBTotal:   float64(node.DiskSize) / bytes_in_gb,
