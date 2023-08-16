@@ -19,6 +19,7 @@ create table node_type(
     order_id int not null default 1, -- order id
     provider varchar(32) not null, -- HETZNER
     server_type varchar(32) not null, -- provider server-type: cx11
+    location varchar(32) not null, -- location name/id
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
     daily_cost varchar not null default '0.4', -- "0.40"
@@ -28,9 +29,9 @@ create table node_type(
 );
 
 -- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',120,2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','MEDIUM1','Medium node for average servers and mod-sets','0.8',60,3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','LARGE1','Larger node for heavier workloads','1.2',30,5,10);
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',120,2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets','0.8',60,3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads','1.2',30,5,10);
 
 -- a node set up by a user
 create table user_node(

@@ -3,7 +3,11 @@ package hetzner_cloud
 type LocationType string
 
 const (
-	LocationNuernberg LocationType = "nbg1"
+	LocationNuernberg   LocationType = "nbg1"
+	LocationFalkenstein LocationType = "fsn1"
+	LocationHelsinki    LocationType = "hel1"
+	LocationAhsburn     LocationType = "ash"
+	LocationHillsboro   LocationType = "hil"
 )
 
 type PublicNet struct {

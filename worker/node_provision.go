@@ -48,7 +48,7 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 				"node_id": node.ID,
 				"stage":   os.Getenv("STAGE"),
 			},
-			Location: hetzner_cloud.LocationNuernberg,
+			Location: hetzner_cloud.LocationType(nodetype.Location),
 			Name:     node.Name,
 			PublicNet: &hetzner_cloud.PublicNet{
 				EnableIPv4: true,

@@ -22,6 +22,7 @@ type NodeType struct {
 	OrderID                 int          `json:"order_id"`
 	Provider                ProviderType `json:"provider"`
 	ServerType              string       `json:"server_type"`
+	Location                string       `json:"location"`
 	Name                    string       `json:"name"`
 	Description             string       `json:"description"`
 	DailyCost               string       `json:"daily_cost"`
@@ -37,6 +38,7 @@ func (m *NodeType) Columns(action string) []string {
 		"order_id",
 		"provider",
 		"server_type",
+		"location",
 		"name",
 		"description",
 		"daily_cost",
@@ -51,9 +53,9 @@ func (m *NodeType) Table() string {
 }
 
 func (m *NodeType) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.State, &m.OrderID, &m.Provider, &m.ServerType, &m.Name, &m.Description, &m.DailyCost, &m.MaxDays, &m.MaxRecommendedInstances, &m.MaxInstances)
+	return r(&m.ID, &m.State, &m.OrderID, &m.Provider, &m.ServerType, &m.Location, &m.Name, &m.Description, &m.DailyCost, &m.MaxDays, &m.MaxRecommendedInstances, &m.MaxInstances)
 }
 
 func (m *NodeType) Values(action string) []any {
-	return []any{m.ID, m.State, m.OrderID, m.Provider, m.ServerType, m.Name, m.Description, m.DailyCost, m.MaxDays, m.MaxRecommendedInstances, m.MaxInstances}
+	return []any{m.ID, m.State, m.OrderID, m.Provider, m.ServerType, m.Location, m.Name, m.Description, m.DailyCost, m.MaxDays, m.MaxRecommendedInstances, m.MaxInstances}
 }

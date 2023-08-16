@@ -63,6 +63,7 @@ func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *type
 		nt.State = r.FormValue("state")
 		nt.Provider = types.ProviderType(r.FormValue("provider"))
 		nt.ServerType = r.FormValue("server_type")
+		nt.Location = r.FormValue("location")
 		nt.DailyCost = r.FormValue("daily_cost")
 		max_days, _ := strconv.ParseInt(r.FormValue("max_days"), 10, 32)
 		nt.MaxDays = int(max_days)
