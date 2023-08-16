@@ -41,8 +41,7 @@ func formattime(ts int64) string {
 }
 
 func daysuntil(ts int64) int {
-	t := time.Unix(ts, 0)
-	d := t.Sub(time.Now())
+	d := time.Until(time.Unix(ts, 0))
 	return int(d.Hours() / 24)
 }
 
