@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -16,11 +17,14 @@ type NodeInfo struct {
 }
 
 type CreateServerModel struct {
-	Nodes   []*NodeInfo
-	NodeID  string
-	NameErr string
-	Name    string
-	DNSName string
+	Nodes      []*NodeInfo
+	NodeID     string
+	Name       string
+	NameErr    string
+	Port       string
+	PortErr    string
+	DNSName    string
+	DNSNameErr string
 }
 
 func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -43,17 +47,27 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 	m := &CreateServerModel{
 		Nodes:   nodeinfos,
 		NodeID:  nodeid,
-		Name:    r.FormValue("name"),
+		Name:    r.FormValue("Name"),
 		DNSName: r.FormValue("DNSName"),
+		Port:    r.FormValue("Port"),
 	}
 
 	if r.Method == http.MethodPost {
+		port_num, err := strconv.ParseInt(m.Port, 10, 64)
+		if err != nil || port_num < 1000 || port_num > 65535 {
+			m.PortErr = "port-number-port-err"
+		}
+
+		if m.Name == "" {
+			m.NameErr = "server-name-empty-err"
+		}
+
 		m.DNSName = r.FormValue("DNSName")
 		if !types.ValidServerName.Match([]byte(m.DNSName)) {
-			m.NameErr = "invalid-server-name"
+			m.DNSNameErr = "invalid-server-name"
 		}
 		if strings.HasPrefix(m.DNSName, "node-") {
-			m.NameErr = "invalid-server-name"
+			m.DNSNameErr = "invalid-server-name"
 		}
 
 		existing_server, err := ctx.repos.MinetestServerRepo.GetByName(m.DNSName)
@@ -62,10 +76,10 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			return
 		}
 		if existing_server != nil {
-			m.NameErr = "duplicate-server-name"
+			m.DNSNameErr = "duplicate-server-name"
 		}
 
-		if m.NameErr == "" {
+		if m.DNSNameErr == "" && m.NameErr == "" {
 			// valid name, create server
 			node, err := ctx.repos.UserNodeRepo.GetByID(nodeid)
 			if err != nil {
@@ -82,6 +96,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				UserNodeID: node.ID,
 				Name:       m.Name,
 				DNSName:    m.DNSName,
+				Port:       int(port_num),
 				Created:    time.Now().Unix(),
 				State:      types.MinetestServerStateCreated,
 			}
@@ -108,6 +123,11 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			return
 		}
 
+	}
+
+	// default values
+	if m.Port == "" {
+		m.Port = "30000"
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "mtserver/create.html", m)

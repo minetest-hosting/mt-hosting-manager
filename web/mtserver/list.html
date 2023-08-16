@@ -3,6 +3,9 @@
 <table class="table">
     <thead>
         <th>Name</th>
+        <th>Created</th>
+        <th>DNS Name</th>
+        <th>State</th>
     </thead>
     <tbody>
         {{range $s := .Servers}}
@@ -12,6 +15,16 @@
                     {{$s.Name}}
                 </a>
             </td>
+            <td>{{formattime $s.Created}}</td>
+            <td>
+                <a href="https://{{$s.DNSName}}.{{Config.HostingDomainSuffix}}" target="_new">
+                    {{$s.DNSName}}.{{Config.HostingDomainSuffix}}
+                </a>
+            </td>
+            <td>
+                {{block "server_state" $s}}{{end}}
+            </td>
+        </tr>
         {{end}}
     </tbody>
 </table>

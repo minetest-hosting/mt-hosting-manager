@@ -23,6 +23,12 @@ func GetShortName(id string) string {
 	return parts[0]
 }
 
+const DataDir = "/data"
+
+func GetBaseDir(server *types.MinetestServer) string {
+	return fmt.Sprintf("%s/%s", DataDir, server.ID)
+}
+
 func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServer) error {
 	session, err := client.NewSession()
 	if err != nil {
@@ -36,13 +42,12 @@ func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServe
 	}
 	defer sftp.Close()
 
-	datadir := "/data"
-	err = core.SCPMkDir(sftp, datadir)
+	err = core.SCPMkDir(sftp, DataDir)
 	if err != nil {
 		return err
 	}
 
-	basedir := fmt.Sprintf("%s/%s", datadir, server.ID)
+	basedir := GetBaseDir(server)
 	err = core.SCPMkDir(sftp, basedir)
 	if err != nil {
 		return err

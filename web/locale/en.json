@@ -1,5 +1,7 @@
 {
     "Start": "Start-en",
-    "invalid-server-name": "Server-name is invalid, can only contain letters from a to z, 0 to 9 and can't start with 'node-'",
-    "duplicate-server-name": "Server-name is already taken"
+    "invalid-server-name": "Server dns-name is invalid, can only contain letters from a to z, 0 to 9 and can't start with 'node-'",
+    "duplicate-server-name": "Server dns-name is already taken",
+    "server-name-empty-err": "Server-name can't be empty",
+    "port-number-port-err": "Invalid port-number (must be between 1000 and 65535)"
 }

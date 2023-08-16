@@ -28,6 +28,8 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
+	//TODO: dns setup
+
 	client, err := TrySSHConnection(node)
 	if err != nil {
 		return err

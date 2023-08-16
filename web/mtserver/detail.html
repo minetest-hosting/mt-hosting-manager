@@ -21,7 +21,11 @@
     </tr>
     <tr>
         <td>DNSName</td>
-        <td>{{.Server.DNSName}}</td>
+        <td>
+            <a href="https://{{.Server.DNSName}}.{{Config.HostingDomainSuffix}}">
+                {{.Server.DNSName}}.{{Config.HostingDomainSuffix}}
+            </a>
+        </td>
     </tr>
     <tr>
         <td>Port</td>

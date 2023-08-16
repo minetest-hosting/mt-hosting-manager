@@ -17,8 +17,13 @@
         <tr>
             <td>Display-Name</td>
             <td>
-                <div class="input-group">
-                    <input type="text" class="form-control" name="name" value="{{.Name}}"/>
+                <div class="input-group has-validation">
+                    <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="Name" value="{{.Name}}"/>
+                    {{if .NameErr}}
+                    <div class="invalid-feedback">
+                        {{T .NameErr}}
+                    </div>
+                    {{end}}
                 </div>
             </td>
         </tr>
@@ -26,11 +31,24 @@
             <td>DNS-Name</td>
             <td>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control {{if .NameErr}}is-invalid{{end}}" name="DNSName" value="{{.DNSName}}"/>
+                    <input type="text" class="form-control {{if .DNSNameErr}}is-invalid{{end}}" name="DNSName" value="{{.DNSName}}"/>
                     <span class="input-group-text">.{{Config.HostingDomainSuffix}}</span>
-                    {{if .NameErr}}
+                    {{if .DNSNameErr}}
                     <div class="invalid-feedback">
-                        {{T .NameErr}}
+                        {{T .DNSNameErr}}
+                    </div>
+                    {{end}}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Port</td>
+            <td>
+                <div class="input-group has-validation">
+                    <input type="number" class="form-control {{if .PortErr}}is-invalid{{end}}" name="Port" value="{{.Port}}"/>
+                    {{if .PortErr}}
+                    <div class="invalid-feedback">
+                        {{T .PortErr}}
                     </div>
                     {{end}}
                 </div>
