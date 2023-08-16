@@ -92,12 +92,6 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		case "set-alias":
 			node.Alias = r.FormValue("alias")
 			m.AliasUpdated = true
-		case "start":
-			err = ctx.hcc.PowerOnServer(node.ExternalID)
-			node.State = types.UserNodeStateRunning
-		case "stop":
-			err = ctx.hcc.PowerOffServer(node.ExternalID)
-			node.State = types.UserNodeStateStopped
 		}
 
 		if err != nil {

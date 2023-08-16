@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/worker"
 	"net/http"
 	"os"
 	"time"
@@ -103,13 +104,7 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 	}
 
 	// start node provisioning
-	job := &types.Job{
-		ID:         uuid.NewString(),
-		Type:       types.JobTypeNodeSetup,
-		State:      types.JobStateCreated,
-		Started:    time.Now().Unix(),
-		UserNodeID: &node.ID,
-	}
+	job := worker.SetupNodeJob(node)
 	err = ctx.repos.JobRepo.Insert(job)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, err)

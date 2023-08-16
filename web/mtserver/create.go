@@ -3,6 +3,7 @@ package mtserver
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/worker"
 	"net/http"
 	"strconv"
 	"strings"
@@ -106,13 +107,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				return
 			}
 
-			job := &types.Job{
-				ID:               uuid.NewString(),
-				Type:             types.JobTypeServerSetup,
-				State:            types.JobStateCreated,
-				UserNodeID:       &node.ID,
-				MinetestServerID: &server.ID,
-			}
+			job := worker.SetupServerJob(node, server)
 			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
 				ctx.tu.RenderError(w, r, 500, fmt.Errorf("job insert error: %v", err))

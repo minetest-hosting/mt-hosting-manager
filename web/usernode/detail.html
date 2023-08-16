@@ -87,18 +87,6 @@
                 <form method="post">
                     {{CSRFField}}
                     <div class="btn-group">
-                        {{if eq .UserNode.State "RUNNING"}}
-                        <button class="btn btn-warning" type="submit" name="action" value="stop">
-                            <i class="fa fa-pause"></i>
-                            Stop
-                        </button>
-                        {{end}}
-                        {{if eq .UserNode.State "STOPPED"}}
-                        <button class="btn btn-success" type="submit" name="action" value="start">
-                            <i class="fa fa-play"></i>
-                            Start
-                        </button>
-                        {{end}}
                         <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
                             <i class="fa fa-trash"></i>
                             Delete

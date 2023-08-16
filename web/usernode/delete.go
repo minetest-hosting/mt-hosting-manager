@@ -3,9 +3,9 @@ package usernode
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/worker"
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -56,12 +56,7 @@ func (ctx *Context) Delete(w http.ResponseWriter, r *http.Request, c *types.Clai
 			}
 
 			// dispatch removal job
-			job := &types.Job{
-				ID:         uuid.NewString(),
-				Type:       types.JobTypeNodeDestroy,
-				State:      types.JobStateCreated,
-				UserNodeID: &id,
-			}
+			job := worker.RemoveNodeJob(node)
 			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
 				ctx.tu.RenderError(w, r, 500, fmt.Errorf("job insert failed: %v", err))
