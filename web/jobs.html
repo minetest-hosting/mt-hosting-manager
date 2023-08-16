@@ -6,6 +6,7 @@
         <th>Type</th>
         <th>State</th>
         <th>Message</th>
+        <th>Links</th>
         <th>Actions</th>
     </thead>
     <tbody>
@@ -28,6 +29,26 @@
                 {{end}}
             </td>
             <td>{{$j.Message}}</td>
+            <td>
+                <ul>
+                    {{if $j.UserNodeID}}
+                    <li>
+                        <a href="{{BaseURL}}/nodes/{{$j.UserNodeID}}">
+                            <i class="fa fa-server"></i>
+                            {{$j.UserNodeID}}
+                        </a>
+                    </li>
+                    {{end}}
+                    {{if $j.MinetestServerID}}
+                    <li>
+                        <a href="{{BaseURL}}/mtserver/{{$j.MinetestServerID}}">
+                            <i class="fa fa-list"></i>
+                            {{$j.MinetestServerID}}
+                        </a>
+                    </li>
+                    {{end}}
+                </ul>
+            </td>
             <td>
                 <form method="post">
                     {{CSRFField}}
