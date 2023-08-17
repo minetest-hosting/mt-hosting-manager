@@ -66,17 +66,24 @@ func Provision(client *ssh.Client) error {
 	}
 	defer sftp.Close()
 
+	dirs := []string{
+		"/etc/docker",
+		"/etc/iptables",
+		"/provision",
+	}
+	for _, dir := range dirs {
+		err = core.SCPMkDir(sftp, dir)
+		if err != nil {
+			return err
+		}
+	}
+
 	err = core.SCPTemplateFile(sftp, Files, "daemon.json", "/etc/docker/daemon.json", 0644, nil)
 	if err != nil {
 		return err
 	}
 
 	err = core.SCPTemplateFile(sftp, Files, "rules.v6", "/etc/iptables/rules.v6", 0644, nil)
-	if err != nil {
-		return err
-	}
-
-	err = core.SCPMkDir(sftp, "/provision")
 	if err != nil {
 		return err
 	}

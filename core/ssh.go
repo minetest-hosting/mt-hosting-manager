@@ -57,7 +57,12 @@ func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mo
 		return err
 	}
 
-	return SCPWriteBytes(sftp, data, target, mode)
+	err = SCPWriteBytes(sftp, data, target, mode)
+	if err != nil {
+		return fmt.Errorf("template error in file '%s': %v", target, err)
+	}
+
+	return nil
 }
 
 func SCPWriteFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode) error {
