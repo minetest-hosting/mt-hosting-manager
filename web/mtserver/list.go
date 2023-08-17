@@ -3,11 +3,13 @@ package mtserver
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 )
 
 type ServerListModel struct {
-	Servers []*types.MinetestServer
+	Servers    []*types.MinetestServer
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -19,6 +21,18 @@ func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims
 
 	m := &ServerListModel{
 		Servers: servers,
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				{
+					Name: "Home",
+					Link: "/",
+				}, {
+					Name:   "Servers",
+					Link:   "/mtserver",
+					Active: true,
+				},
+			},
+		},
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "mtserver/list.html", m)

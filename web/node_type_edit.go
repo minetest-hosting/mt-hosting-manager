@@ -103,14 +103,14 @@ func (ctx *Context) NodeTypeEdit(w http.ResponseWriter, r *http.Request, c *type
 	model.Breadcrumb = &components.Breadcrumb{
 		Entries: []*components.BreadcrumbEntry{
 			{
-				Name: "Start",
-				Link: "",
+				Name: "Home",
+				Link: "/",
 			}, {
-				Name: "Node-Types",
-				Link: "",
+				Name: "Node types",
+				Link: "/node_types",
 			}, {
 				Name:   nt.ID,
-				Link:   "",
+				Link:   fmt.Sprintf("/node_types/%s", nt.ID),
 				Active: true,
 			},
 		},

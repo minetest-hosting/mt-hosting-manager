@@ -2,11 +2,13 @@ package web
 
 import (
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 )
 
 type JobModel struct {
-	Jobs []*types.Job
+	Jobs       []*types.Job
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) Jobs(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -43,6 +45,18 @@ func (ctx *Context) Jobs(w http.ResponseWriter, r *http.Request, c *types.Claims
 
 	model := &JobModel{
 		Jobs: list,
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				{
+					Name: "Home",
+					Link: "/",
+				}, {
+					Name:   "Jobs",
+					Link:   "/jobs",
+					Active: true,
+				},
+			},
+		},
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "jobs.html", model)

@@ -3,6 +3,7 @@ package mtserver
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"mt-hosting-manager/worker"
 	"net/http"
 	"strconv"
@@ -26,6 +27,7 @@ type CreateServerModel struct {
 	PortErr    string
 	DNSName    string
 	DNSNameErr string
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -54,6 +56,23 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 		Name:    r.FormValue("Name"),
 		DNSName: r.FormValue("DNSName"),
 		Port:    r.FormValue("Port"),
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				{
+					Name: "Home",
+					Link: "/",
+				}, {
+					Name: "Nodes",
+					Link: "/nodes",
+				}, {
+					Name: fmt.Sprintf("Node '%s'", nodeid),
+					Link: fmt.Sprintf("/nodes/%s", nodeid),
+				}, {
+					Name:   "Create server",
+					Active: true,
+				},
+			},
+		},
 	}
 
 	if r.Method == http.MethodPost {

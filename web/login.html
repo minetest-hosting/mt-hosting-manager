@@ -1,4 +1,7 @@
 {{define "title"}}Login{{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
     {{if Claims}}
     <form method="POST" style="display: inline;">

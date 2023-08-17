@@ -3,17 +3,31 @@ package web
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"mt-hosting-manager/web/oauth"
 	"net/http"
 )
 
 type LoginModel struct {
 	GithubOauth *oauth.OAuthConfig
+	Breadcrumb  *components.Breadcrumb
 }
 
 func (ctx *Context) Login(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	lm := &LoginModel{
 		GithubOauth: ctx.GithubOauth,
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				{
+					Name: "Home",
+					Link: "/",
+				}, {
+					Name:   "Login",
+					Link:   "/login",
+					Active: true,
+				},
+			},
+		},
 	}
 
 	if r.Method == http.MethodPost {
