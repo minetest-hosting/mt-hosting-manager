@@ -56,7 +56,7 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 	m := &SetupModel{
 		BaseDir:       basedir,
 		MTUIVersion:   server.UIVersion,
-		Hostname:      fmt.Sprintf("%s.%s", cfg.BaseURL, server.DNSName),
+		Hostname:      fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix),
 		ServerShortID: GetShortName(server.ID),
 		Port:          server.Port,
 	}

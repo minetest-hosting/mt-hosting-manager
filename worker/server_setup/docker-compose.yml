@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
- ui:
+ ui-{{.ServerShortID}}:
   image: ghcr.io/minetest-go/mtui:{{.MTUIVersion}}
   networks:
    - terminator
