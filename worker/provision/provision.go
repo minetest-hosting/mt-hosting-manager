@@ -71,6 +71,11 @@ func Provision(client *ssh.Client) error {
 		return err
 	}
 
+	err = core.SCPTemplateFile(sftp, Files, "rules.v6", "/etc/iptables/rules.v6", 0644, nil)
+	if err != nil {
+		return err
+	}
+
 	err = core.SCPMkDir(sftp, "/provision")
 	if err != nil {
 		return err

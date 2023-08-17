@@ -1,0 +1,11 @@
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:DOCKER - [0:0]
+-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+-A OUTPUT -m addrtype --dst-type LOCAL -j DOCKER
+-A POSTROUTING -o docker0 -m addrtype --dst-type LOCAL -j MASQUERADE
+-A POSTROUTING -s fd00::/80 ! -o docker0 -j MASQUERADE
+COMMIT
