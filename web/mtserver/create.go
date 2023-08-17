@@ -31,7 +31,7 @@ type CreateServerModel struct {
 }
 
 func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	nodes, err := ctx.repos.UserNodeRepo.GetByUserID(c.UserID)
+	nodes, err := ctx.repos.UserNodeRepo.GetByUserIDAndState(c.UserID, types.UserNodeStateRunning)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, fmt.Errorf("get nodes error: %v", err))
 		return
@@ -136,6 +136,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 				DNSName:    m.DNSName,
 				Port:       int(port_num),
 				Created:    time.Now().Unix(),
+				UIVersion:  "latest",
 				State:      types.MinetestServerStateCreated,
 			}
 			err = ctx.repos.MinetestServerRepo.Insert(server)

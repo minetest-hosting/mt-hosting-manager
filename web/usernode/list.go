@@ -29,6 +29,10 @@ func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims
 
 	nodeinfos := make([]*UserNodeInfo, len(nodes))
 	for i, n := range nodes {
+		if n.State == types.UserNodeStateRemoving {
+			continue
+		}
+
 		nt, err := ctx.repos.NodeTypeRepo.GetByID(n.NodeTypeID)
 		if err != nil {
 			ctx.tu.RenderError(w, r, 500, err)

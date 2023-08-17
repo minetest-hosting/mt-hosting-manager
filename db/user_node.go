@@ -43,6 +43,10 @@ func (r *UserNodeRepository) GetByUserID(user_id string) ([]*types.UserNode, err
 	return r.dbu.SelectMulti("where user_id = %s", user_id)
 }
 
+func (r *UserNodeRepository) GetByUserIDAndState(user_id string, state types.UserNodeState) ([]*types.UserNode, error) {
+	return r.dbu.SelectMulti("where user_id = %s and state = %s", user_id, state)
+}
+
 func (r *UserNodeRepository) GetAll() ([]*types.UserNode, error) {
 	return r.dbu.SelectMulti("")
 }

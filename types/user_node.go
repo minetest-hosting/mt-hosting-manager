@@ -10,7 +10,6 @@ const (
 	UserNodeStateCreated      UserNodeState = "CREATED"
 	UserNodeStateProvisioning UserNodeState = "PROVISIONING"
 	UserNodeStateRunning      UserNodeState = "RUNNING"
-	UserNodeStateStopped      UserNodeState = "STOPPED"
 	UserNodeStateRemoving     UserNodeState = "REMOVING"
 )
 

@@ -39,10 +39,13 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	var job *types.Job
+
 	if r.Method == http.MethodPost {
 		switch r.FormValue("action") {
 		case "update-deployment":
-			err = ctx.repos.JobRepo.Insert(worker.SetupServerJob(node, server))
+			job = worker.SetupServerJob(node, server)
+			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
 				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not schedule job: %s", err))
 				return
@@ -50,10 +53,13 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		}
 	}
 
-	job, err := ctx.repos.JobRepo.GetLatestByMinetestServerID(server.ID)
-	if err != nil {
-		ctx.tu.RenderError(w, r, 500, fmt.Errorf("get job error: %v", err))
-		return
+	if job == nil {
+		// fetch job
+		job, err = ctx.repos.JobRepo.GetLatestByMinetestServerID(server.ID)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("get job error: %v", err))
+			return
+		}
 	}
 
 	m := &ServerDetailModel{

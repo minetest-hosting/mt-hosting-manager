@@ -8,7 +8,6 @@ const (
 	MinetestServerStateCreated      MinetestServerState = "CREATED"
 	MinetestServerStateProvisioning MinetestServerState = "PROVISIONING"
 	MinetestServerStateRunning      MinetestServerState = "RUNNING"
-	MinetestServerStateStopped      MinetestServerState = "STOPPED"
 	MinetestServerStateRemoving     MinetestServerState = "REMOVING"
 )
 

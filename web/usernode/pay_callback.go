@@ -69,6 +69,10 @@ func (ctx *Context) PayCallback(w http.ResponseWriter, r *http.Request, c *types
 		ctx.tu.RenderError(w, r, 500, fmt.Errorf("invalid transaction state %s", verfifed_tx.State))
 		return
 	}
+	if tx.NodeID != "" {
+		ctx.tu.RenderError(w, r, 500, fmt.Errorf("server already created for this transaction: '%s'", tx.NodeID))
+		return
+	}
 
 	randstr := RandStringRunes(7)
 
