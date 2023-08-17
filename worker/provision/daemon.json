@@ -1,5 +1,5 @@
 {
   "ipv6": true,
   "fixed-cidr-v6": "fd00::/80",
-	"userland-proxy": false
+  "userland-proxy": false
 }
