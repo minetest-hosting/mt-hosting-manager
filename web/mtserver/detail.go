@@ -43,13 +43,10 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	if r.Method == http.MethodPost {
 		switch r.FormValue("action") {
+		case "set-name":
+			server.Name = r.FormValue("Name")
 		case "set-uiversion":
 			server.UIVersion = r.FormValue("UIVersion")
-			err = ctx.repos.MinetestServerRepo.Update(server)
-			if err != nil {
-				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not update server: %v", err))
-				return
-			}
 		case "update-deployment":
 			job = worker.SetupServerJob(node, server)
 			err = ctx.repos.JobRepo.Insert(job)
@@ -57,6 +54,12 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not schedule job: %v", err))
 				return
 			}
+		}
+
+		err = ctx.repos.MinetestServerRepo.Update(server)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not update server: %v", err))
+			return
 		}
 	}
 

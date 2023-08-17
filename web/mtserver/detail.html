@@ -12,7 +12,17 @@
     </tr>
     <tr>
         <td>Name</td>
-        <td>{{.Server.Name}}</td>
+        <td>
+            <form method="post">
+                {{CSRFField}}
+                <div class="btn-group w-100">
+                    <input type="text" class="form-control" name="Name" value="{{.Server.Name}}"/>
+                    <button class="btn btn-xs btn-info" type="submit" name="action" value="set-name">
+                        <i class="fa fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </form>
+        </td>
     </tr>
     <tr>
         <td>Node</td>
@@ -41,8 +51,8 @@
         <td>
             <form method="post">
                 {{CSRFField}}
-                <div class="btn-group w-100 has-validation">
-                    <input type="text" class="form-control {{if true}}is-valid{{end}}" name="UIVersion" value="{{.Server.UIVersion}}"/>
+                <div class="btn-group w-100">
+                    <input type="text" class="form-control" name="UIVersion" value="{{.Server.UIVersion}}"/>
                     <button class="btn btn-xs btn-info" type="submit" name="action" value="set-uiversion">
                         <i class="fa fa-floppy-disk"></i>
                     </button>
