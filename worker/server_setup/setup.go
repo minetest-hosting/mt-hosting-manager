@@ -14,6 +14,7 @@ type SetupModel struct {
 	BaseDir       string
 	MTUIVersion   string
 	Hostname      string
+	Servername    string
 	ServerShortID string
 	Port          int
 }
@@ -57,6 +58,7 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 		BaseDir:       basedir,
 		MTUIVersion:   server.UIVersion,
 		Hostname:      fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix),
+		Servername:    server.Name,
 		ServerShortID: GetShortName(server.ID),
 		Port:          server.Port,
 	}
