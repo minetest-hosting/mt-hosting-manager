@@ -14,13 +14,15 @@ import (
 
 type Worker struct {
 	repos *db.Repositories
+	cfg   *types.Config
 	hcc   *hetzner_cloud.HetznerCloudClient
 	hdc   *hetzner_dns.HetznerDNSClient
 }
 
-func NewWorker(repos *db.Repositories) *Worker {
+func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 	return &Worker{
 		repos: repos,
+		cfg:   cfg,
 		hcc:   hetzner_cloud.New(os.Getenv("HETZNER_CLOUD_KEY")),
 		hdc:   hetzner_dns.New(os.Getenv("HETZNER_API_KEY"), os.Getenv("HETZNER_API_ZONEID")),
 	}

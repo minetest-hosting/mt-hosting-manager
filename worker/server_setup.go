@@ -2,6 +2,7 @@ package worker
 
 import (
 	"fmt"
+	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/server_setup"
 )
@@ -28,7 +29,15 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
-	//TODO: dns setup
+	records, err := w.hdc.GetRecords()
+	if err != nil {
+		return fmt.Errorf("fetch records error: %v", err)
+	}
+
+	err = w.UpdateDNSRecord(records, hetzner_dns.RecordCNAME, server.DNSName, node.Name)
+	if err != nil {
+		return err
+	}
 
 	client, err := TrySSHConnection(node)
 	if err != nil {

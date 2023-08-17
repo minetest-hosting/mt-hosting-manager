@@ -2,6 +2,7 @@ package main
 
 import (
 	"mt-hosting-manager/db"
+	"mt-hosting-manager/types"
 	"mt-hosting-manager/web"
 	"mt-hosting-manager/worker"
 	"os"
@@ -29,12 +30,13 @@ func main() {
 		panic(err)
 	}
 
+	cfg := types.NewConfig()
 	repos := db.NewRepositories(db_)
 
 	// worker (optional)
 	if os.Getenv("ENABLE_WORKER") == "true" {
 		logrus.Info("Starting worker")
-		w := worker.NewWorker(repos)
+		w := worker.NewWorker(repos, cfg)
 		go w.Run()
 	}
 
@@ -43,7 +45,7 @@ func main() {
 		"port": 8080,
 	}).Info("Starting webserver")
 
-	err = web.Serve(repos)
+	err = web.Serve(repos, cfg)
 	if err != nil {
 		panic(err)
 	}

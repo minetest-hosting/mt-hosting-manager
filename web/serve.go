@@ -45,7 +45,7 @@ func daysuntil(ts int64) int {
 	return int(d.Hours() / 24)
 }
 
-func Serve(repos *db.Repositories) error {
+func Serve(repos *db.Repositories, cfg *types.Config) error {
 
 	r := mux.NewRouter()
 	// static assets
@@ -63,8 +63,6 @@ func Serve(repos *db.Repositories) error {
 	} else {
 		files = Files
 	}
-
-	cfg := types.NewConfig()
 
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
