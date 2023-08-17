@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -12,6 +13,7 @@ import (
 type DetailModel struct {
 	UserNode      *types.UserNode
 	LatestJob     *types.Job
+	Breadcrumb    *components.Breadcrumb
 	Transactions  []*types.PaymentTransaction
 	Servers       []*types.MinetestServer
 	DiskPercent   int
@@ -62,9 +64,23 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	bytes_in_gb := 1024.0 * 1024.0 * 1024.0
 	m := &DetailModel{
-		UserNode:      node,
-		LatestJob:     job,
-		Servers:       servers,
+		UserNode:  node,
+		LatestJob: job,
+		Servers:   servers,
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				{
+					Name: "Home",
+					Link: "/",
+				}, {
+					Name: "Nodes",
+					Link: "/nodes",
+				}, {
+					Name: fmt.Sprintf("Node '%s'", node.Alias),
+					Link: fmt.Sprintf("/nodes/%s", node.ID),
+				},
+			},
+		},
 		Transactions:  tx_list,
 		DiskPercent:   int(float64(node.DiskUsed) / float64(node.DiskSize) * 100),
 		DiskGBUsed:    float64(node.DiskUsed) / bytes_in_gb,

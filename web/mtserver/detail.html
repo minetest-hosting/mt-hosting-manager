@@ -1,4 +1,7 @@
 {{define "title"}}Minetest server ({{.Server.Name}}){{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
 <h4>Status</h4>
 <table class="table">
@@ -22,6 +25,7 @@
     <tr>
         <td>DNSName</td>
         <td>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
             <a href="https://{{.Server.DNSName}}.{{Config.HostingDomainSuffix}}">
                 {{.Server.DNSName}}.{{Config.HostingDomainSuffix}}
             </a>
@@ -33,7 +37,17 @@
     </tr>
     <tr>
         <td>UIVersion</td>
-        <td>{{.Server.UIVersion}}</td>
+        <td>
+            <form method="post">
+                {{CSRFField}}
+                <div class="btn-group w-100 has-validation">
+                    <input type="text" class="form-control {{if true}}is-valid{{end}}" name="UIVersion" value="{{.Server.UIVersion}}"/>
+                    <button class="btn btn-xs btn-info" type="submit" name="action" value="set-uiversion">
+                        <i class="fa fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </form>
+        </td>
     </tr>
     <tr>
         <td>Created</td>
@@ -42,6 +56,33 @@
     <tr>
         <td>State</td>
         <td>{{block "server_state" .Server}}{{end}}</td>
+    </tr>
+    <tr>
+        <td>Actions</td>
+        <td>
+            <form method="post">
+                {{CSRFField}}
+                <div class="btn-group">
+                    <a class="btn btn-danger" href="{{BaseURL}}/mtserver/{{.Server.ID}}/delete">
+                        <i class="fa fa-trash"></i>
+                        Delete
+                    </a>
+                    <button type="submit" class="btn btn-primary" name="action" value="update-deployment" {{if .IsDeploying}}disabled{{end}}>
+                        <i class="fa fa-cloud-arrow-up"></i>
+                        Update deployment
+                        {{if .IsDeploying}}
+                            <span class="badge bg-success">active</span>
+                        {{end}}
+                    </button>
+                </div>
+            </form>
+            {{if.DeployError}}
+            <div class="alert alert-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <b>Error:</b> Deployment failed, please try again or contact the administrator
+            </div>
+            {{end}}
+        </td>
     </tr>
 </table>
 {{end}}

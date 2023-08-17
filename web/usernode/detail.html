@@ -1,6 +1,9 @@
 {{define "title"}}Node details ({{.UserNode.Name}}){{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
-<h4>Status</h4>
+<h4>Details</h4>
 <div class="row">
     <table class="table">
         <tr>
@@ -18,19 +21,13 @@
             <td>
                 <form method="post">
                     {{CSRFField}}
-                    <div class="btn-group w-100">
+                    <div class="btn-group has-validation w-100">
                         <input type="text" class="form-control {{if .AliasUpdated}}is-valid{{end}}" name="alias" value="{{.UserNode.Alias}}"/>
                         <button class="btn btn-xs btn-info" type="submit" name="action" value="set-alias">
                             <i class="fa fa-floppy-disk"></i>
                         </button>
                     </div>
                 </form>
-            </td>
-        </tr>
-        <tr>
-            <td>State</td>
-            <td>
-                {{block "node_state" .UserNode}}{{end}}
             </td>
         </tr>
         <tr>
@@ -44,6 +41,26 @@
                 {{if .UserNode.ExpirationWarning}}
                     <i class="fa-solid fa-triangle-exclamation" title="Expires soon!"></i>
                 {{end}}
+            </td>
+        </tr>
+        <tr>
+            <td>Actions</td>
+            <td>
+                <form method="post">
+                    {{CSRFField}}
+                    <div class="btn-group">
+                        <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </a>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>
+                {{block "node_state" .UserNode}}{{end}}
             </td>
         </tr>
         <tr>
@@ -79,20 +96,6 @@
                         {{.MemoryPercent}}%
                     </div>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Actions</td>
-            <td>
-                <form method="post">
-                    {{CSRFField}}
-                    <div class="btn-group">
-                        <a class="btn btn-danger" href="{{BaseURL}}/nodes/{{.UserNode.ID}}/delete">
-                            <i class="fa fa-trash"></i>
-                            Delete
-                        </a>
-                    </div>
-                </form>
             </td>
         </tr>
     </table>

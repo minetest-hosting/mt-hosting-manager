@@ -43,6 +43,14 @@ func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, er
 	return nt, err
 }
 
+func (r *JobRepository) GetLatestByMinetestServerID(minetestserverID string) (*types.Job, error) {
+	nt, err := r.dbu.Select("where minetest_server_id = %s order by started desc limit 1", minetestserverID)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return nt, err
+}
+
 func (r *JobRepository) GetAll() ([]*types.Job, error) {
 	return r.dbu.SelectMulti("")
 }

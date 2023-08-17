@@ -3,7 +3,7 @@
     <ol class="breadcrumb bg-primary-subtle">
         {{ range $e := .Entries }}
         <li class="breadcrumb-item {{if $e.Active}}active{{end}}">
-            <a href="{{$e.Link}}">{{$e.Name}}</a>
+            <a href="{{BaseURL}}{{$e.Link}}">{{$e.Name}}</a>
         </li>
         {{end}}
     </ol>

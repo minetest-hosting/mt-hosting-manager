@@ -15,18 +15,7 @@
             <td>{{$j.ID}}</td>
             <td>{{$j.Type}}</td>
             <td>
-                {{if eq $j.State "CREATED"}}
-                    <span class="badge text-bg-info">Created</span>
-                {{end}}
-                {{if eq $j.State "RUNNING"}}
-                    <span class="badge text-bg-success">Running</span>
-                {{end}}
-                {{if eq $j.State "DONE_SUCCESS"}}
-                    <span class="badge text-bg-success">Done (success)</span>
-                {{end}}
-                {{if eq $j.State "DONE_FAILURE"}}
-                    <span class="badge text-bg-danger">Done (failure)</span>
-                {{end}}
+                {{block "job_state" $j}}{{end}}
             </td>
             <td>{{$j.Message}}</td>
             <td>

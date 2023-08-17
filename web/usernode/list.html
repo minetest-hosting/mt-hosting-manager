@@ -1,9 +1,13 @@
 {{define "title"}}Nodes{{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
 <table class="table">
     <thead>
         <th>Name</th>
         <th>State</th>
+        <th>Servers</th>
         <th>Created</th>
         <th>Expires</th>
         <th>Node-Type</th>
@@ -17,6 +21,7 @@
                 </a>
             </td>
             <td>{{block "node_state" $n.UserNode}}{{end}}</td>
+            <td>{{$n.ServerCount}}</td>
             <td>{{formattime $n.UserNode.Created}} ({{daysuntil $n.UserNode.Created}} days ago)</td>
             <td>
                 {{formattime $n.UserNode.Expires}} (in {{daysuntil $n.UserNode.Expires}} days)

@@ -36,6 +36,9 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 	}
 
 	nodeid := r.URL.Query().Get("node_id")
+	if nodeid == "" {
+		nodeid = r.FormValue("nodeid")
+	}
 
 	nodeinfos := make([]*NodeInfo, len(nodes))
 	for i, node := range nodes {
@@ -54,15 +57,39 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 	}
 
 	if r.Method == http.MethodPost {
+		node, err := ctx.repos.UserNodeRepo.GetByID(m.NodeID)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("usernode getbyid error: %v", err))
+			return
+		}
+		if node == nil {
+			ctx.tu.RenderError(w, r, 404, fmt.Errorf("usernode not found: %s", nodeid))
+			return
+		}
+
+		// check for valid port number
 		port_num, err := strconv.ParseInt(m.Port, 10, 64)
 		if err != nil || port_num < 1000 || port_num > 65535 {
 			m.PortErr = "port-number-port-err"
 		}
-
 		if m.Name == "" {
 			m.NameErr = "server-name-empty-err"
 		}
 
+		// duplicate port number
+		other_servers, err := ctx.repos.MinetestServerRepo.GetByNodeID(node.ID)
+		if err != nil {
+			ctx.tu.RenderError(w, r, 500, fmt.Errorf("other_servers getby-nodeid error: %v", err))
+			return
+		}
+
+		for _, os := range other_servers {
+			if os.Port == int(port_num) {
+				m.PortErr = "port-number-already-in-use"
+			}
+		}
+
+		// check for valid dns name
 		m.DNSName = r.FormValue("DNSName")
 		if !types.ValidServerName.Match([]byte(m.DNSName)) {
 			m.DNSNameErr = "invalid-server-name"
@@ -71,6 +98,7 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			m.DNSNameErr = "invalid-server-name"
 		}
 
+		// duplicate dns name
 		existing_server, err := ctx.repos.MinetestServerRepo.GetByName(m.DNSName)
 		if err != nil {
 			ctx.tu.RenderError(w, r, 500, fmt.Errorf("server getbyname error: %v", err))
@@ -80,18 +108,8 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 			m.DNSNameErr = "duplicate-server-name"
 		}
 
-		if m.DNSNameErr == "" && m.NameErr == "" {
+		if m.DNSNameErr == "" && m.NameErr == "" && m.PortErr == "" {
 			// valid name, create server
-			node, err := ctx.repos.UserNodeRepo.GetByID(nodeid)
-			if err != nil {
-				ctx.tu.RenderError(w, r, 500, fmt.Errorf("usernode getbyid error: %v", err))
-				return
-			}
-			if node == nil {
-				ctx.tu.RenderError(w, r, 404, fmt.Errorf("usernode not found: %s", nodeid))
-				return
-			}
-
 			server := &types.MinetestServer{
 				ID:         uuid.NewString(),
 				UserNodeID: node.ID,

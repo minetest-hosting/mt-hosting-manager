@@ -3,6 +3,7 @@
 <table class="table">
     <thead>
         <th>Name</th>
+        <th>Parent node</th>
         <th>Created</th>
         <th>DNS Name</th>
         <th>State</th>
@@ -12,11 +13,19 @@
         <tr>
             <td>
                 <a href="{{BaseURL}}/mtserver/{{$s.ID}}">
-                    {{$s.Name}}
+                    <i class="fa fa-list"></i>
+                    {{$s.Name}} ({{$s.ID}})
+                </a>
+            </td>
+            <td>
+                <a href="{{BaseURL}}/nodes/{{$s.UserNodeID}}">
+                    <i class="fa fa-server"></i>
+                    {{$s.UserNodeID}}
                 </a>
             </td>
             <td>{{formattime $s.Created}}</td>
             <td>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 <a href="https://{{$s.DNSName}}.{{Config.HostingDomainSuffix}}" target="_new">
                     {{$s.DNSName}}.{{Config.HostingDomainSuffix}}
                 </a>
