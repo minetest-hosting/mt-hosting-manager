@@ -12,6 +12,7 @@ services:
    LOGLEVEL: debug
    WORLD_DIR: "/root/.minetest/worlds/world"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
+   DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/minetest.conf"
    DOCKER_MINETEST_PORT: {{.Port}}
    DOCKER_NETWORK: "network-{{.ServerShortID}}"
