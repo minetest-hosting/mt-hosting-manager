@@ -66,6 +66,11 @@ func Provision(client *ssh.Client) error {
 	}
 	defer sftp.Close()
 
+	err = core.SCPTemplateFile(sftp, Files, "daemon.json", "/etc/docker/daemon.json", 0644, nil)
+	if err != nil {
+		return err
+	}
+
 	err = core.SCPMkDir(sftp, "/provision")
 	if err != nil {
 		return err

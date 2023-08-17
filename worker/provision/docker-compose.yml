@@ -51,6 +51,22 @@ services:
    options:
     max-size: 50m
 
+ ipv6nat:
+  image: robbertkl/ipv6nat:0.4.4
+  restart: always
+  network_mode: host
+  cap_drop:
+   - ALL
+  cap_add:
+   - NET_RAW
+   - NET_ADMIN
+   - SYS_MODULE
+  volumes:
+   - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  logging:
+   options:
+    max-size: 50m
+
 networks:
  terminator:
   external: true
