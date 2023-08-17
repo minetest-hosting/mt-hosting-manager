@@ -1,4 +1,8 @@
 {{define "title"}}Order overview{{end}}
+{{define "title-icon"}}<i class="fa fa-shopping-cart"></i>{{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
 <form method="post">
     <table class="table">

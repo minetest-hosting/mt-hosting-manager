@@ -3,6 +3,7 @@ package usernode
 import (
 	"fmt"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 	"strconv"
 	"strings"
@@ -15,7 +16,8 @@ type NodeTypeInfo struct {
 }
 
 type SelectNewModel struct {
-	NodeTypes []*NodeTypeInfo
+	NodeTypes  []*NodeTypeInfo
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) SelectNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -36,6 +38,15 @@ func (ctx *Context) SelectNew(w http.ResponseWriter, r *http.Request, c *types.C
 
 	m := &SelectNewModel{
 		NodeTypes: make([]*NodeTypeInfo, len(ntl)),
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				components.HomeBreadcrumb,
+				components.NodesBreadcrumb, {
+					Name:   "Select new server",
+					FAIcon: "plus",
+				},
+			},
+		},
 	}
 
 	for i, nt := range ntl {

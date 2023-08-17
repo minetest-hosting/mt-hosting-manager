@@ -58,18 +58,10 @@ func (ctx *Context) Create(w http.ResponseWriter, r *http.Request, c *types.Clai
 		Port:    r.FormValue("Port"),
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name: "Nodes",
-					Link: "/nodes",
-				}, {
-					Name: fmt.Sprintf("Node '%s'", nodeid),
-					Link: fmt.Sprintf("/nodes/%s", nodeid),
-				}, {
+				components.HomeBreadcrumb,
+				components.ServersBreadcrumb, {
 					Name:   "Create server",
-					Active: true,
+					FAIcon: "plus",
 				},
 			},
 		},

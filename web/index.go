@@ -12,13 +12,7 @@ type StartModel struct {
 func (ctx *Context) Index(w http.ResponseWriter, r *http.Request) {
 	m := &StartModel{
 		Breadcrumb: &components.Breadcrumb{
-			Entries: []*components.BreadcrumbEntry{
-				{
-					Name:   "Home",
-					Link:   "/",
-					Active: true,
-				},
-			},
+			Entries: []*components.BreadcrumbEntry{components.HomeBreadcrumb},
 		},
 	}
 

@@ -71,16 +71,9 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		CanDelete: len(servers) == 0,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name: "Nodes",
-					Link: "/nodes",
-				}, {
-					Name: fmt.Sprintf("Node '%s'", node.Alias),
-					Link: fmt.Sprintf("/nodes/%s", node.ID),
-				},
+				components.HomeBreadcrumb,
+				components.NodesBreadcrumb,
+				components.NodeBreadcrumb(node),
 			},
 		},
 		Transactions:  tx_list,

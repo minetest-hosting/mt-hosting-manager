@@ -5,6 +5,7 @@ import (
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 	"strconv"
 	"time"
@@ -18,6 +19,7 @@ type OrderNewModel struct {
 	Days       int
 	TotalCost  string
 	Expiration int64
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -61,6 +63,13 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 			Days:       int(days),
 			TotalCost:  fmt.Sprintf("%.2f", total_cost),
 			Expiration: core.AddDays(time.Now(), int(days)).Unix(),
+			Breadcrumb: &components.Breadcrumb{
+				Entries: []*components.BreadcrumbEntry{
+					components.HomeBreadcrumb, {
+						Name:   "Order overview",
+						FAIcon: "shopping-cart",
+					}},
+			},
 		}
 
 		ctx.tu.ExecuteTemplate(w, r, "usernode/order_new.html", m)
@@ -82,7 +91,7 @@ func (ctx *Context) OrderNew(w http.ResponseWriter, r *http.Request, c *types.Cl
 		tx, err := ctx.wc.CreateTransaction(&wallee.TransactionRequest{
 			Currency:   "EUR",
 			LineItems:  []*wallee.LineItem{item},
-			SuccessURL: fmt.Sprintf("%s/nodes/pay-callback/%s", ctx.tu.BaseURL, payment_tx_id),
+			SuccessURL: fmt.Sprintf("%s/nodes/payment/%s", ctx.tu.BaseURL, payment_tx_id),
 			//TODO: failedURL
 		})
 		if err != nil {

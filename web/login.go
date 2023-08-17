@@ -18,14 +18,8 @@ func (ctx *Context) Login(w http.ResponseWriter, r *http.Request, c *types.Claim
 		GithubOauth: ctx.GithubOauth,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name:   "Login",
-					Link:   "/login",
-					Active: true,
-				},
+				components.HomeBreadcrumb,
+				components.LoginBreadcrumb,
 			},
 		},
 	}

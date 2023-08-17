@@ -43,11 +43,18 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	if r.Method == http.MethodPost {
 		switch r.FormValue("action") {
+		case "set-uiversion":
+			server.UIVersion = r.FormValue("UIVersion")
+			err = ctx.repos.MinetestServerRepo.Update(server)
+			if err != nil {
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not update server: %v", err))
+				return
+			}
 		case "update-deployment":
 			job = worker.SetupServerJob(node, server)
 			err = ctx.repos.JobRepo.Insert(job)
 			if err != nil {
-				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not schedule job: %s", err))
+				ctx.tu.RenderError(w, r, 500, fmt.Errorf("could not schedule job: %v", err))
 				return
 			}
 		}
@@ -67,20 +74,10 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		Node:   node,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name: "Nodes",
-					Link: "/nodes",
-				}, {
-					Name: fmt.Sprintf("Node '%s'", node.Alias),
-					Link: fmt.Sprintf("/nodes/%s", node.ID),
-				}, {
-					Name:   fmt.Sprintf("Server '%s'", server.DNSName),
-					Link:   fmt.Sprintf("/mtserver/%s", server.ID),
-					Active: true,
-				},
+				components.HomeBreadcrumb,
+				components.NodesBreadcrumb,
+				components.NodeBreadcrumb(node),
+				components.ServerBreadcrumb(server),
 			},
 		},
 		Job:         job,

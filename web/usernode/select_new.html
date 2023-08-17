@@ -1,4 +1,8 @@
 {{define "title"}}Select Node-Type{{end}}
+{{define "title-icon"}}<i class="fa fa-plus"></i>{{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
 {{define "content"}}
     {{range $nt := .NodeTypes}}
     <div class="card w-100">

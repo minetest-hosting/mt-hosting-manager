@@ -2,11 +2,13 @@ package web
 
 import (
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/web/components"
 	"net/http"
 )
 
 type ProfileModel struct {
-	User *types.User
+	User       *types.User
+	Breadcrumb *components.Breadcrumb
 }
 
 func (ctx *Context) Profile(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -19,6 +21,12 @@ func (ctx *Context) Profile(w http.ResponseWriter, r *http.Request, c *types.Cla
 
 	m := &ProfileModel{
 		User: user,
+		Breadcrumb: &components.Breadcrumb{
+			Entries: []*components.BreadcrumbEntry{
+				components.HomeBreadcrumb,
+				components.ProfileBreadcrumb,
+			},
+		},
 	}
 
 	ctx.tu.ExecuteTemplate(w, r, "profile.html", m)

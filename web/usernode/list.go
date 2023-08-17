@@ -21,7 +21,7 @@ type UserNodeInfo struct {
 
 // show all nodes by the user
 func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	nodes, err := ctx.repos.UserNodeRepo.GetByUserID(c.UserID)
+	nodes, err := ctx.repos.UserNodeRepo.GetByUserIDAndState(c.UserID, types.UserNodeStateRunning)
 	if err != nil {
 		ctx.tu.RenderError(w, r, 500, err)
 		return
@@ -58,15 +58,7 @@ func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims
 	model := &UserNodeListModel{
 		Nodes: nodeinfos,
 		Breadcrumb: &components.Breadcrumb{
-			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name: "Nodes",
-					Link: "/nodes",
-				},
-			},
+			Entries: []*components.BreadcrumbEntry{components.HomeBreadcrumb, components.NodesBreadcrumb},
 		},
 	}
 

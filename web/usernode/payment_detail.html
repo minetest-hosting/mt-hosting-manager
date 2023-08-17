@@ -1,0 +1,36 @@
+{{define "title"}}Payment details{{end}}
+{{define "title-icon"}}<i class="fa fa-money-bill"></i>{{end}}
+{{define "top-content"}}
+    {{block "breadcrumb" .Breadcrumb}}{{end}}
+{{end}}
+{{define "content"}}
+<table class="table">
+    <tr>
+        <td>ID</td>
+        <td>{{.Transaction.ID}}</td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td>{{block "transaction_state" .Transaction}}{{end}}</td>
+    </tr>
+    <tr>
+        <td>Start</td>
+        <td>{{formattime .Transaction.StartDate}}</td>
+    </tr>
+    <tr>
+        <td>End</td>
+        <td>{{formattime .Transaction.UntilDate}}</td>
+    </tr>
+    {{if .Node}}
+    <tr>
+        <td>Node</td>
+        <td>
+            <a href="{{BaseURL}}/nodes/{{.Node.ID}}">
+                <i class="fa fa-server"></i>
+                {{.Node.ID}}
+            </a>            
+        </td>
+    </tr>
+    {{end}}
+</table>
+{{end}}

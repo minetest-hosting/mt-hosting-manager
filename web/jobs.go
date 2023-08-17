@@ -47,13 +47,9 @@ func (ctx *Context) Jobs(w http.ResponseWriter, r *http.Request, c *types.Claims
 		Jobs: list,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name:   "Jobs",
-					Link:   "/jobs",
-					Active: true,
+				components.HomeBreadcrumb, {
+					Name: "Jobs",
+					Link: "/jobs",
 				},
 			},
 		},

@@ -23,14 +23,8 @@ func (ctx *Context) List(w http.ResponseWriter, r *http.Request, c *types.Claims
 		Servers: servers,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name:   "Servers",
-					Link:   "/mtserver",
-					Active: true,
-				},
+				components.HomeBreadcrumb,
+				components.ServersBreadcrumb,
 			},
 		},
 	}

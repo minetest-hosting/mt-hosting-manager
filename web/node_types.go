@@ -21,16 +21,7 @@ func (ctx *Context) NodeTypes(w http.ResponseWriter, r *http.Request, c *types.C
 	m := &NodeTypeModel{
 		NodeTypes: list,
 		Breadcrumb: &components.Breadcrumb{
-			Entries: []*components.BreadcrumbEntry{
-				{
-					Name: "Home",
-					Link: "/",
-				}, {
-					Name:   "Node types",
-					Link:   "/node_types",
-					Active: true,
-				},
-			},
+			Entries: []*components.BreadcrumbEntry{components.HomeBreadcrumb, components.NodeTypesBreadcrumb},
 		},
 	}
 
