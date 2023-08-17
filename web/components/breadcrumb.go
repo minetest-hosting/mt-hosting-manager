@@ -78,7 +78,7 @@ var ServersBreadcrumb = &BreadcrumbEntry{
 func ServerBreadcrumb(server *types.MinetestServer) *BreadcrumbEntry {
 	return &BreadcrumbEntry{
 		Name:   fmt.Sprintf("Server '%s'", server.Name),
-		Link:   fmt.Sprintf("mtservers/%s", server.ID),
+		Link:   fmt.Sprintf("/mtservers/%s", server.ID),
 		FAIcon: "list",
 	}
 }
