@@ -78,7 +78,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 			},
 		},
 		Job:         job,
-		IsDeploying: job != nil && job.Type == types.JobTypeServerSetup && job.State == types.JobStateRunning,
+		IsDeploying: job != nil && job.Type == types.JobTypeServerSetup && (job.State == types.JobStateRunning || job.State == types.JobStateCreated),
 		DeployError: job != nil && job.Type == types.JobTypeServerSetup && job.State == types.JobStateDoneFailure,
 	}
 

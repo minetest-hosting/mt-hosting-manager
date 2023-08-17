@@ -26,4 +26,5 @@ func (ctx *Context) Setup(r *mux.Router) {
 	r.HandleFunc("/mtserver", ctx.tu.Secure(ctx.List))
 	r.HandleFunc("/mtserver/create", ctx.tu.Secure(ctx.Create))
 	r.HandleFunc("/mtserver/{id}", ctx.tu.Secure(ctx.Detail))
+	r.HandleFunc("/mtserver/{id}/delete", ctx.tu.Secure(ctx.Delete))
 }

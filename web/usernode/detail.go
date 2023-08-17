@@ -16,6 +16,7 @@ type DetailModel struct {
 	Breadcrumb    *components.Breadcrumb
 	Transactions  []*types.PaymentTransaction
 	Servers       []*types.MinetestServer
+	CanDelete     bool
 	DiskPercent   int
 	DiskGBUsed    float64
 	DiskGBTotal   float64
@@ -67,6 +68,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		UserNode:  node,
 		LatestJob: job,
 		Servers:   servers,
+		CanDelete: len(servers) == 0,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
 				{
