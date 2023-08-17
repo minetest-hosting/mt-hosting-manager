@@ -62,5 +62,5 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		return fmt.Errorf("could not run remove data-dir '%s': %v", basedir, err)
 	}
 
-	return nil
+	return w.repos.MinetestServerRepo.Delete(server.ID)
 }
