@@ -64,7 +64,7 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	bytes_in_gb := 1024.0 * 1024.0 * 1024.0
+	bytes_in_gb := 1000.0 * 1000.0 * 1000.0
 	m := &DetailModel{
 		UserNode:       node,
 		LatestJob:      job,
