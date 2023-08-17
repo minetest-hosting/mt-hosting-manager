@@ -34,10 +34,14 @@ func main() {
 	repos := db.NewRepositories(db_)
 
 	// worker (optional)
-	if os.Getenv("ENABLE_WORKER") == "true" {
+	if cfg.EnableWorker {
 		logrus.Info("Starting worker")
 		w := worker.NewWorker(repos, cfg)
 		go w.Run()
+	}
+	if cfg.EnableDummyWorker {
+		logrus.Info("Starting dummy worker")
+		go worker.DummyWorker(repos, cfg)
 	}
 
 	// web (always on)
