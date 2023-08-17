@@ -11,5 +11,5 @@ test -f "APT_STAGE1" ||{
     touch "APT_STAGE1"
 }
 
-docker network create terminator || true
+docker network create --ipv6 --subnet "fd00:dead:beef::/48" terminator || true
 docker-compose up -d
