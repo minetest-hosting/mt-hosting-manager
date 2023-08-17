@@ -79,6 +79,18 @@ func (w *Worker) Run() {
 func (w *Worker) ExecuteJob(job *types.Job) {
 	logrus.WithFields(job.LogrusFields()).Debug("Executing job")
 
+	if w.cfg.MockOrchestration {
+		logrus.WithFields(job.LogrusFields()).Debug("Dispatching job to dummy handler")
+		w.Dummy(job)
+		job.Finished = time.Now().Unix()
+		err := w.repos.JobRepo.Update(job)
+		if err != nil {
+			panic(err)
+		}
+		logrus.WithFields(job.LogrusFields()).Debug("Dummy job finished")
+		return
+	}
+
 	var err error
 	switch job.Type {
 	case types.JobTypeNodeDestroy:

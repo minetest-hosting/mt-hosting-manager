@@ -43,6 +43,7 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 * `LOGLEVEL` "debug" / "info"
 * `ENABLE_WORKER`
 * `STAGE` "prod" / "dev"
+* `MOCK_ORCHESTRATION` mock orchestration part if "true"
 
 * `CSRF_KEY`
 * `JWT_KEY`
