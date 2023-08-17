@@ -3,6 +3,7 @@
 <html style="height: 100%">
     <head>
         {{ block "header_common" .}}{{end}}
+        {{ block "header_custom" . }}{{end}}
         {{ block "header" . }}{{end}}
         <title>{{block "title" .}}{{end}} - Minetest hosting</title>
     </head>

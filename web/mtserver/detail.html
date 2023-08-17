@@ -3,6 +3,11 @@
 {{define "top-content"}}
     {{block "breadcrumb" .Breadcrumb}}{{end}}
 {{end}}
+{{define "header_custom"}}
+    {{if .IsDeploying}}
+    <meta http-equiv="refresh" content="2"/>
+    {{end}}
+{{end}}
 {{define "content"}}
 <h4>Status</h4>
 <table class="table">

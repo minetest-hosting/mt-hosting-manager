@@ -11,23 +11,24 @@ import (
 )
 
 type DetailModel struct {
-	UserNode      *types.UserNode
-	LatestJob     *types.Job
-	Breadcrumb    *components.Breadcrumb
-	Transactions  []*types.PaymentTransaction
-	Servers       []*types.MinetestServer
-	CanDelete     bool
-	DiskPercent   int
-	DiskGBUsed    float64
-	DiskGBTotal   float64
-	DiskWarn      bool
-	DiskDanger    bool
-	MemoryPercent int
-	MemoryGBUsed  float64
-	MemoryGBTotal float64
-	MemoryWarn    bool
-	MemoryDanger  bool
-	AliasUpdated  bool
+	UserNode       *types.UserNode
+	LatestJob      *types.Job
+	Breadcrumb     *components.Breadcrumb
+	IsProvisioning bool
+	Transactions   []*types.PaymentTransaction
+	Servers        []*types.MinetestServer
+	CanDelete      bool
+	DiskPercent    int
+	DiskGBUsed     float64
+	DiskGBTotal    float64
+	DiskWarn       bool
+	DiskDanger     bool
+	MemoryPercent  int
+	MemoryGBUsed   float64
+	MemoryGBTotal  float64
+	MemoryWarn     bool
+	MemoryDanger   bool
+	AliasUpdated   bool
 }
 
 // view details
@@ -65,10 +66,11 @@ func (ctx *Context) Detail(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	bytes_in_gb := 1024.0 * 1024.0 * 1024.0
 	m := &DetailModel{
-		UserNode:  node,
-		LatestJob: job,
-		Servers:   servers,
-		CanDelete: len(servers) == 0,
+		UserNode:       node,
+		LatestJob:      job,
+		Servers:        servers,
+		IsProvisioning: node.State == types.UserNodeStateProvisioning,
+		CanDelete:      len(servers) == 0,
 		Breadcrumb: &components.Breadcrumb{
 			Entries: []*components.BreadcrumbEntry{
 				components.HomeBreadcrumb,
