@@ -29,7 +29,7 @@ func GetBaseDir(server *types.MinetestServer) string {
 	return fmt.Sprintf("%s/%s", DataDir, server.ID)
 }
 
-func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServer) error {
+func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *types.MinetestServer) error {
 	session, err := client.NewSession()
 	if err != nil {
 		return fmt.Errorf("could not open session: %v", err)
@@ -56,7 +56,7 @@ func Setup(client *ssh.Client, node *types.UserNode, server *types.MinetestServe
 	m := &SetupModel{
 		BaseDir:       basedir,
 		MTUIVersion:   server.UIVersion,
-		Hostname:      server.DNSName,
+		Hostname:      fmt.Sprintf("%s.%s", cfg.BaseURL, server.DNSName),
 		ServerShortID: GetShortName(server.ID),
 		Port:          server.Port,
 	}

@@ -44,7 +44,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		return err
 	}
 
-	err = server_setup.Setup(client, node, server)
+	err = server_setup.Setup(client, w.cfg, node, server)
 	if err != nil {
 		return err
 	}
