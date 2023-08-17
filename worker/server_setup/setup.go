@@ -15,6 +15,7 @@ type SetupModel struct {
 	MTUIVersion   string
 	Hostname      string
 	Servername    string
+	Enginename    string
 	ServerShortID string
 	Port          int
 }
@@ -22,6 +23,10 @@ type SetupModel struct {
 func GetShortName(id string) string {
 	parts := strings.Split(id, "-")
 	return parts[0]
+}
+
+func GetEngineName(server *types.MinetestServer) string {
+	return fmt.Sprintf("%s_engine", GetShortName(server.ID))
 }
 
 const DataDir = "/data"
@@ -58,6 +63,7 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 		BaseDir:       basedir,
 		MTUIVersion:   server.UIVersion,
 		Hostname:      fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix),
+		Enginename:    GetEngineName(server),
 		Servername:    server.Name,
 		ServerShortID: GetShortName(server.ID),
 		Port:          server.Port,

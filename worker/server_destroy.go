@@ -45,6 +45,12 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		return err
 	}
 
+	// remove potentially running services
+	_, _, err = core.SSHExecute(client, fmt.Sprintf("docker rm -f %s || true", server_setup.GetEngineName(server)))
+	if err != nil {
+		return fmt.Errorf("could not stop running service: %v", err)
+	}
+
 	basedir := server_setup.GetBaseDir(server)
 	_, _, err = core.SSHExecute(client, fmt.Sprintf("cd %s && docker-compose down -v", basedir))
 	if err != nil {
