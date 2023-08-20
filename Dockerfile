@@ -12,7 +12,7 @@ COPY go.* ./
 RUN go mod download
 COPY . .
 COPY --from=node-app /public /data/public
-RUN go test ./... -vet=off && \
+RUN go test ./... && \
 	go build -ldflags="-s -w -extldflags=-static"
 
 FROM alpine:3.18.2
