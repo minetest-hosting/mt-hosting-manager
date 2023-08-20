@@ -18,7 +18,6 @@ jobs:
           fetch-depth: 0
 
       - name: Build docker image
-        if: success() && github.ref == 'refs/heads/master'
         run: |
           docker build . -t ghcr.io/minetest-hosting/mt-hosting-manager:latest
 
