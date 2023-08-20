@@ -1,9 +1,10 @@
-name: build
+name: docker
 
 on:
   push:
     branches:
       - 'master'
+  pull_request:
 
 jobs:
   build:
@@ -16,19 +17,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Build docker image
+        if: success() && github.ref == 'refs/heads/master'
+        run: |
+          docker build . -t ghcr.io/minetest-hosting/mt-hosting-manager:latest
+
       - name: Log in to the Container registry
+        if: success() && github.ref == 'refs/heads/master'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push latest docker image
+      - name: Push docker image
+        if: success() && github.ref == 'refs/heads/master'
         run: |
-          docker build . -t ghcr.io/minetest-hosting/mt-hosting-manager:latest
           docker push ghcr.io/minetest-hosting/mt-hosting-manager:latest
 
       - name: Trigger deployment on hosting.minetest.ch
+        if: success() && github.ref == 'refs/heads/master'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: deploy
