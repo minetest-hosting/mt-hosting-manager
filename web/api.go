@@ -33,10 +33,22 @@ func (api *Api) Setup() {
 	r.Use(middleware.PrometheusMiddleware)
 
 	// setup routes
+
+	// public
 	apir := r.PathPrefix("/api").Subrouter()
 	apir.HandleFunc("/info", api.GetInfo)
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
+
+	// user api
+	user_api := apir.NewRoute().Subrouter()
+	user_api.Use(SecureHandler(api.LoginCheck()))
+	//TODO
+
+	// admin api
+	admin_api := apir.NewRoute().Subrouter()
+	admin_api.Use(SecureHandler(api.RoleCheck(types.UserRoleAdmin)))
+	//TODO
 
 	if api.cfg.GithubOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
