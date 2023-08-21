@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -76,6 +77,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if user == nil {
 		user = &types.User{
+			ID:         uuid.NewString(),
 			Created:    time.Now().Unix(),
 			State:      types.UserStateActive,
 			Name:       info.Name,
@@ -122,6 +124,6 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	target := h.BaseURL + "/profile"
+	target := h.BaseURL + "/#/profile"
 	http.Redirect(w, r, target, http.StatusSeeOther)
 }

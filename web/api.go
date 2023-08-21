@@ -32,16 +32,11 @@ func (api *Api) Setup() {
 	r.Use(middleware.LoggingMiddleware)
 	r.Use(middleware.PrometheusMiddleware)
 
-	// static files
-	if os.Getenv("WEBDEV") == "true" {
-		logrus.WithFields(logrus.Fields{"dir": "public"}).Info("Using live mode")
-		fs := http.FileServer(http.FS(os.DirFS("public")))
-		r.PathPrefix("/").HandlerFunc(fs.ServeHTTP)
-
-	} else {
-		logrus.Info("Using embed mode")
-		r.PathPrefix("/").Handler(statigz.FileServer(public.Webapp, brotli.AddEncoding))
-	}
+	// setup routes
+	apir := r.PathPrefix("/api").Subrouter()
+	apir.HandleFunc("/info", api.GetInfo)
+	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
+	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
 
 	if api.cfg.GithubOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
@@ -52,10 +47,19 @@ func (api *Api) Setup() {
 			Type:     types.UserTypeGithub,
 			Callback: api.OauthCallback,
 		}
-		r.Handle("/oauth/callback", oauth_handler)
+		r.Handle("/oauth_callback/github", oauth_handler)
 	}
 
-	// TODO: setup routes
+	// static files
+	if os.Getenv("WEBDEV") == "true" {
+		logrus.WithFields(logrus.Fields{"dir": "public"}).Info("Using live mode")
+		fs := http.FileServer(http.FS(os.DirFS("public")))
+		r.PathPrefix("/").HandlerFunc(fs.ServeHTTP)
+
+	} else {
+		logrus.Info("Using embed mode")
+		r.PathPrefix("/").Handler(statigz.FileServer(public.Webapp, brotli.AddEncoding))
+	}
 
 	http.Handle("/", r)
 }

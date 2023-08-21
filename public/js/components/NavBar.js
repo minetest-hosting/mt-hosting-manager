@@ -30,7 +30,7 @@ export default {
 							<router-link to="/profile">
 								<i class="fas fa-user"></i>
 								<span>
-									Logged in as <b>{{login.claims.username}}</b>
+									Logged in as <b>{{login.claims.mail}}</b>
 								</span>
 							</router-link>
 						</button>
