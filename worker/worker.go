@@ -6,7 +6,6 @@ import (
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
-	"os"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -23,8 +22,8 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 	return &Worker{
 		repos: repos,
 		cfg:   cfg,
-		hcc:   hetzner_cloud.New(os.Getenv("HETZNER_CLOUD_KEY")),
-		hdc:   hetzner_dns.New(os.Getenv("HETZNER_API_KEY"), os.Getenv("HETZNER_API_ZONEID")),
+		hcc:   hetzner_cloud.New(cfg.HetznerCloudKey),
+		hdc:   hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
 	}
 }
 

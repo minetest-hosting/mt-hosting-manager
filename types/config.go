@@ -20,6 +20,9 @@ type Config struct {
 	CookieDomain        string
 	CookiePath          string
 	CookieSecure        bool
+	HetznerCloudKey     string
+	HetznerApiKey       string
+	HetznerApiZoneID    string
 	GithubOauthConfig   *OAuthConfig
 }
 
@@ -35,6 +38,9 @@ func NewConfig() *Config {
 		CookieDomain:        os.Getenv("COOKIE_DOMAIN"),
 		CookiePath:          os.Getenv("COOKIE_PATH"),
 		CookieSecure:        os.Getenv("COOKIE_SECURE") == "true",
+		HetznerCloudKey:     os.Getenv("HETZNER_CLOUD_KEY"),
+		HetznerApiKey:       os.Getenv("HETZNER_API_KEY"),
+		HetznerApiZoneID:    os.Getenv("HETZNER_API_ZONEID"),
 		GithubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("GITHUB_CLIENTID"),
 			Secret:   os.Getenv("GITHUB_SECRET"),
