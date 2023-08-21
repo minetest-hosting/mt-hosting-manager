@@ -14,7 +14,7 @@ import (
 type OauthHandler struct {
 	Impl     OauthImplementation
 	UserRepo *db.UserRepository
-	Config   *OAuthConfig
+	Config   *types.OAuthConfig
 	BaseURL  string
 	Type     types.UserType
 	Callback SuccessCallback

@@ -3,6 +3,7 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
+	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
 )
@@ -15,7 +16,7 @@ type MesehubUserResponse struct {
 
 type MesehubOauth struct{}
 
-func (o *MesehubOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig) (string, error) {
+func (o *MesehubOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuthConfig) (string, error) {
 	accessTokenReq := make(map[string]string)
 	accessTokenReq["client_id"] = cfg.ClientID
 	accessTokenReq["client_secret"] = cfg.Secret
@@ -50,7 +51,7 @@ func (o *MesehubOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig
 	return tokenData.AccessToken, nil
 }
 
-func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*OauthUserInfo, error) {
+func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfig) (*OauthUserInfo, error) {
 	req, err := http.NewRequest("GET", "https://git.minetest.land/api/v1/user", nil)
 	if err != nil {
 		return nil, nil

@@ -1,6 +1,13 @@
 package types
 
-import "os"
+import (
+	"os"
+)
+
+type OAuthConfig struct {
+	ClientID string
+	Secret   string
+}
 
 type Config struct {
 	BaseURL             string
@@ -13,6 +20,7 @@ type Config struct {
 	CookieDomain        string
 	CookiePath          string
 	CookieSecure        bool
+	GithubOauthConfig   *OAuthConfig
 }
 
 func NewConfig() *Config {
@@ -27,5 +35,9 @@ func NewConfig() *Config {
 		CookieDomain:        os.Getenv("COOKIE_DOMAIN"),
 		CookiePath:          os.Getenv("COOKIE_PATH"),
 		CookieSecure:        os.Getenv("COOKIE_SECURE") == "true",
+		GithubOauthConfig: &OAuthConfig{
+			ClientID: os.Getenv("GITHUB_CLIENTID"),
+			Secret:   os.Getenv("GITHUB_SECRET"),
+		},
 	}
 }

@@ -50,12 +50,9 @@ func (api *Api) Setup() {
 	oauth_handler := &oauth.OauthHandler{
 		Impl:     &oauth.GithubOauth{},
 		UserRepo: api.repos.UserRepo,
-		Config: &oauth.OAuthConfig{
-			ClientID: os.Getenv("GITHUB_CLIENTID"),
-			Secret:   os.Getenv("GITHUB_SECRET"),
-		},
-		BaseURL: api.cfg.BaseURL,
-		Type:    types.UserTypeGithub,
+		Config:   api.cfg.GithubOauthConfig,
+		BaseURL:  api.cfg.BaseURL,
+		Type:     types.UserTypeGithub,
 		Callback: func(w http.ResponseWriter, user *types.User, new_user bool) error {
 			if new_user {
 				notify.Send(&notify.NtfyNotification{

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"mt-hosting-manager/types"
 	"net/http"
 	"net/url"
 )
@@ -18,7 +19,7 @@ type DiscordResponse struct {
 
 type DiscordOauth struct{}
 
-func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig) (string, error) {
+func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuthConfig) (string, error) {
 	q := url.Values{}
 	q.Add("client_id", cfg.ClientID)
 	q.Add("client_secret", cfg.Secret)
@@ -53,7 +54,7 @@ func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig
 	return tokenData.AccessToken, nil
 }
 
-func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*OauthUserInfo, error) {
+func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfig) (*OauthUserInfo, error) {
 	req, err := http.NewRequest("GET", "https://discord.com/api/users/@me", nil)
 	if err != nil {
 		return nil, nil
