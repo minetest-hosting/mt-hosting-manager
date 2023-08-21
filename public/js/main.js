@@ -20,10 +20,14 @@ function start(){
 
 	// start vue
 	const app = Vue.createApp(App);
+	app.config.errorHandler = (err) => {
+		console.error(err);
+	};
 	app.use(router);
 	app.mount("#app");
 }
 
 fetch_info()
 .then(() => check_login())
-.then(() => start());
+.then(() => start())
+.catch(e => console.error(e));

@@ -1,16 +1,21 @@
 import { logout } from '../service/login.js';
 import login_store from '../store/login.js';
+import info_store from '../store/info.js';
+import { has_role, is_logged_in } from '../service/login.js';
 
 export default {
 	data: function() {
 		return {
-			login: login_store
+			login: login_store,
+			info: info_store
 		};
 	},
 	methods: {
 		logout: function(){
 			logout().then(() => this.$router.push("/login"));
-		}
+		},
+		is_logged_in: is_logged_in,
+		has_role: has_role
 	},
 	template: /*html*/`
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -22,9 +27,33 @@ export default {
 							<i class="fa fa-home"></i> Home
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="has_role('ADMIN')">
+						<router-link to="/node_types" class="nav-link">
+							<i class="fa fa-server"></i> Node-Types
+						</router-link>
+					</li>
+					<li class="nav-item" v-if="is_logged_in()">
+						<router-link to="/jobs" class="nav-link">
+							<i class="fa fa-play"></i> Jobs
+						</router-link>
+					</li>
+					{{end}}
+					<li class="nav-item" v-if="is_logged_in()">
+						<router-link to="/nodes" class="nav-link">
+							<i class="fa fa-server"></i> Nodes
+						</router-link>
+					</li>
+					<li class="nav-item" v-if="is_logged_in()">
+						<router-link to="/mtserver" class="nav-link">
+							<i class="fa fa-list"></i> Servers
+						</router-link>
+					</li>
 				</ul>
+				<div class="btn btn-warning" v-if="info.stage != 'PROD'">
+					<i class="fa-solid fa-triangle-exclamation"></i>
+					Stage: {{info.stage}}
+				</div>
 				<div class="d-flex">
-					<stats-display class="navbar-text" style="padding-right: 10px;"/>
 					<div class="btn-group">
 						<button class="btn btn-outline-secondary" v-if="login.claims">
 							<router-link to="/profile">
@@ -39,7 +68,7 @@ export default {
 							Logout
 						</button>
 					</div>
-				<div>
+				</div>
 			</div>
 		</nav>
 	`

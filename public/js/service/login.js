@@ -11,6 +11,8 @@ export const check_login = () => get_claims().then(c => {
     return c;
 });
 
+export const is_logged_in = () => login_store.claims;
+
 export const has_role = role => login_store.claims && login_store.claims.role == role;
 
 export const logout = () => {
