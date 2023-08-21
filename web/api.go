@@ -3,6 +3,7 @@ package web
 import (
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/public"
+	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/middleware"
 	"net/http"
 	"os"
@@ -15,11 +16,13 @@ import (
 
 type Api struct {
 	repos *db.Repositories
+	cfg   *types.Config
 }
 
-func NewApi(repos *db.Repositories) *Api {
+func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 	return &Api{
 		repos: repos,
+		cfg:   cfg,
 	}
 }
 

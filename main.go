@@ -49,7 +49,7 @@ func main() {
 	}
 
 	// create and setup web api
-	api := web.NewApi(repos)
+	api := web.NewApi(repos, cfg)
 	api.Setup()
 
 	server := &http.Server{Addr: ":8080", Handler: nil}
