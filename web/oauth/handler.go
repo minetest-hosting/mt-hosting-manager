@@ -2,11 +2,7 @@ package oauth
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
 	"mt-hosting-manager/db"
-	"mt-hosting-manager/notify"
-	"mt-hosting-manager/tmpl"
 	"mt-hosting-manager/types"
 	"net/http"
 	"os"
@@ -21,7 +17,7 @@ type OauthHandler struct {
 	Config   *OAuthConfig
 	BaseURL  string
 	Type     types.UserType
-	Tu       *tmpl.TemplateUtil
+	Callback SuccessCallback
 }
 
 func SendJson(w http.ResponseWriter, o any) {
@@ -30,10 +26,20 @@ func SendJson(w http.ResponseWriter, o any) {
 	json.NewEncoder(w).Encode(o)
 }
 
+func SendError(w http.ResponseWriter, code int, message string) {
+	logrus.WithFields(logrus.Fields{
+		"code":    code,
+		"message": message,
+	}).Error("http error")
+	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	w.WriteHeader(code)
+	w.Write([]byte(message))
+}
+
 func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	list := r.URL.Query()["code"]
 	if len(list) == 0 {
-		h.Tu.RenderError(w, r, 404, errors.New("no code found"))
+		SendError(w, 500, "no code found")
 		return
 	}
 
@@ -41,30 +47,30 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	access_token, err := h.Impl.RequestAccessToken(code, h.BaseURL, h.Config)
 	if err != nil {
-		h.Tu.RenderError(w, r, 500, err)
+		SendError(w, 500, err.Error())
 		return
 	}
 
 	info, err := h.Impl.RequestUserInfo(access_token, h.Config)
 	if err != nil {
-		h.Tu.RenderError(w, r, 500, err)
+		SendError(w, 500, err.Error())
 		return
 	}
 
 	if info.Email == "" {
-		h.Tu.RenderError(w, r, 500, errors.New("empty email"))
+		SendError(w, 500, "empty email")
 		return
 	}
 
 	if info.ExternalID == "" {
-		h.Tu.RenderError(w, r, 500, errors.New("empty external_id"))
+		SendError(w, 500, "empty external_id")
 		return
 	}
 
 	// check if there is already a user by that name
 	user, err := h.UserRepo.GetByMail(info.Email)
 	if err != nil {
-		h.Tu.RenderError(w, r, 500, err)
+		SendError(w, 500, err.Error())
 		return
 	}
 
@@ -86,13 +92,13 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		if os.Getenv("DISABLE_SIGNUP") == "true" && user.Role != types.UserRoleAdmin {
 			// not an admin and signup disabled
-			h.Tu.RenderError(w, r, 405, errors.New("signup disabled for non-admins"))
+			SendError(w, 405, "signup disabled for non-admins")
 			return
 		}
 
 		err = h.UserRepo.Insert(user)
 		if err != nil {
-			h.Tu.RenderError(w, r, 500, err)
+			SendError(w, 500, err.Error())
 			return
 		}
 		logrus.WithFields(logrus.Fields{
@@ -102,27 +108,19 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"external_id": user.ExternalID,
 		}).Debug("created new user")
 
-		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
-			Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
-			Priority: 3,
-		}, true)
-	}
+		err = h.Callback(w, user, true)
+		if err != nil {
+			SendError(w, 500, err.Error())
+			return
+		}
 
-	dur := time.Duration(24 * 180 * time.Hour)
-	claims := &types.Claims{
-		Mail:   user.Mail,
-		Role:   user.Role,
-		UserID: user.ID,
+	} else {
+		err = h.Callback(w, user, false)
+		if err != nil {
+			SendError(w, 500, err.Error())
+			return
+		}
 	}
-
-	token, err := h.Tu.CreateToken(claims, dur)
-	if err != nil {
-		h.Tu.RenderError(w, r, 500, err)
-		return
-	}
-
-	h.Tu.SetToken(w, token, dur)
 
 	target := h.BaseURL + "/profile"
 	http.Redirect(w, r, target, http.StatusSeeOther)

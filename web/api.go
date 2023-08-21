@@ -1,13 +1,18 @@
 package web
 
 import (
+	"fmt"
 	"mt-hosting-manager/db"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/public"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/middleware"
+	"mt-hosting-manager/web/oauth"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"github.com/vearutop/statigz"
@@ -41,6 +46,38 @@ func (api *Api) Setup() {
 		logrus.Info("Using embed mode")
 		r.PathPrefix("/").Handler(statigz.FileServer(public.Webapp, brotli.AddEncoding))
 	}
+
+	oauth_handler := &oauth.OauthHandler{
+		Impl:     &oauth.GithubOauth{},
+		UserRepo: api.repos.UserRepo,
+		Config: &oauth.OAuthConfig{
+			ClientID: os.Getenv("GITHUB_CLIENTID"),
+			Secret:   os.Getenv("GITHUB_SECRET"),
+		},
+		BaseURL: api.cfg.BaseURL,
+		Type:    types.UserTypeGithub,
+		Callback: func(w http.ResponseWriter, user *types.User, new_user bool) error {
+			if new_user {
+				notify.Send(&notify.NtfyNotification{
+					Title:    fmt.Sprintf("New user signed up: %s", user.Name),
+					Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
+					Priority: 3,
+				}, true)
+			}
+			dur := time.Duration(24 * 180 * time.Hour)
+			claims := &types.Claims{
+				Mail:   user.Mail,
+				Role:   user.Role,
+				UserID: user.ID,
+				RegisteredClaims: &jwt.RegisteredClaims{
+					ExpiresAt: jwt.NewNumericDate(time.Now().Add(dur)),
+				},
+			}
+
+			return api.SetClaims(w, claims)
+		},
+	}
+	r.Handle("/oauth/callback", oauth_handler)
 
 	// TODO: setup routes
 
