@@ -1,0 +1,42 @@
+package web
+
+import (
+	"encoding/json"
+	"mt-hosting-manager/types"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+func (a *Api) GetNodeTypes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	list, err := a.repos.NodeTypeRepo.GetAll()
+	Send(w, list, err)
+}
+
+func (a *Api) CreateNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	nt := &types.NodeType{}
+	err := json.NewDecoder(r.Body).Decode(nt)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	err = a.repos.NodeTypeRepo.Insert(nt)
+	Send(w, nt, err)
+}
+
+func (a *Api) UpdateNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	nt := &types.NodeType{}
+	err := json.NewDecoder(r.Body).Decode(nt)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	err = a.repos.NodeTypeRepo.Update(nt)
+	Send(w, nt, err)
+}
+
+func (a *Api) DeleteNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	err := a.repos.NodeTypeRepo.Delete(vars["id"])
+	Send(w, true, err)
+}
