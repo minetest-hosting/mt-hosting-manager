@@ -37,7 +37,6 @@ export default {
 							<i class="fa fa-play"></i> Jobs
 						</router-link>
 					</li>
-					{{end}}
 					<li class="nav-item" v-if="is_logged_in()">
 						<router-link to="/nodes" class="nav-link">
 							<i class="fa fa-server"></i> Nodes
