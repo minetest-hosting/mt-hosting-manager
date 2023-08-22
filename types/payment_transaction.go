@@ -15,6 +15,8 @@ type PaymentTransaction struct {
 	TransactionID string           `json:"transaction_id"`
 	Created       int64            `json:"created"`
 	UserID        string           `json:"user_id"`
+	Currency      string           `json:"currency"`
+	Amount        float64          `json:"amount"`
 	State         PaymentStateType `json:"state"`
 }
 
@@ -24,6 +26,8 @@ func (m *PaymentTransaction) Columns(action string) []string {
 		"transaction_id",
 		"created",
 		"user_id",
+		"currency",
+		"amount",
 		"state",
 	}
 }
@@ -33,9 +37,9 @@ func (m *PaymentTransaction) Table() string {
 }
 
 func (m *PaymentTransaction) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.TransactionID, &m.Created, &m.UserID, &m.State)
+	return r(&m.ID, &m.TransactionID, &m.Created, &m.UserID, &m.Currency, &m.Amount, &m.State)
 }
 
 func (m *PaymentTransaction) Values(action string) []any {
-	return []any{m.ID, m.TransactionID, m.Created, m.UserID, m.State}
+	return []any{m.ID, m.TransactionID, m.Created, m.UserID, m.Currency, m.Amount, m.State}
 }
