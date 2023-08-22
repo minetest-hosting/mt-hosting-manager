@@ -24,9 +24,9 @@ export default [{
 	path: "/jobs", component: Jobs,
 	meta: { requiredRole: "ADMIN" }
 },{
-	path: "/nodetypes", component: NodeTypes,
+	path: "/node_types", component: NodeTypes,
 	meta: { requiredRole: "ADMIN" }
 },{
-	path: "/nodetypes/:id", component: NodeTypeDetail,
+	path: "/node_types/:id", component: NodeTypeDetail,
 	meta: { requiredRole: "ADMIN" }
 }];

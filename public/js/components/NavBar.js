@@ -44,7 +44,7 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="is_logged_in()">
-						<router-link to="/mtserver" class="nav-link">
+						<router-link to="/mtservers" class="nav-link">
 							<i class="fa fa-list"></i> Servers
 						</router-link>
 					</li>
