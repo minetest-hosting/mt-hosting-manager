@@ -27,8 +27,8 @@ func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransac
 	return nt, err
 }
 
-func (r *PaymentTransactionRepository) GetByNodeID(id string) ([]*types.PaymentTransaction, error) {
-	return r.dbu.SelectMulti("where node_id = %s", id)
+func (r *PaymentTransactionRepository) GetByUserID(user_id string) ([]*types.PaymentTransaction, error) {
+	return r.dbu.SelectMulti("where user_id = %s", user_id)
 }
 
 func (r *PaymentTransactionRepository) Update(tx *types.PaymentTransaction) error {

@@ -47,6 +47,8 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.DeleteNode)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.UpdateNode)).Methods(http.MethodPost)
+	user_api.HandleFunc("/transaction/create", api.Secure(api.CreateTransaction)).Methods(http.MethodPost)
+	user_api.HandleFunc("/transaction/callback", api.Secure(api.TransactionCallback)).Methods(http.MethodGet)
 
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()

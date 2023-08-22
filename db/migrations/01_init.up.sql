@@ -86,11 +86,8 @@ create table payment_transaction(
     id varchar(36) primary key not null, -- uuid
     transaction_id varchar not null, -- external tx id
     created bigint not null, -- creation time in `time.Now().Unix()`
-    node_type_id varchar(36) not null references node_type(id) on delete restrict, -- node-type to set up
-    node_id varchar(36) not null default '', -- set-up node after successful playment
-    start_date bigint not null, -- start time in `time.Now().Unix()`
-    until_date bigint not null, -- end time in `time.Now().Unix()`
+    user_id varchar(36) not null references user(id) on delete restrict,
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
 
-create index payment_transaction_node_id on payment_transaction(node_id);
+create index payment_transaction_user_id on payment_transaction(user_id);

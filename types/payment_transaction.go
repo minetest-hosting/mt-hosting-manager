@@ -14,10 +14,7 @@ type PaymentTransaction struct {
 	ID            string           `json:"id"`
 	TransactionID string           `json:"transaction_id"`
 	Created       int64            `json:"created"`
-	NodeTypeID    string           `json:"node_type_id"`
-	NodeID        string           `json:"node_id"`
-	StartDate     int64            `json:"start_date"`
-	UntilDate     int64            `json:"until_date"`
+	UserID        string           `json:"user_id"`
 	State         PaymentStateType `json:"state"`
 }
 
@@ -26,10 +23,7 @@ func (m *PaymentTransaction) Columns(action string) []string {
 		"id",
 		"transaction_id",
 		"created",
-		"node_type_id",
-		"node_id",
-		"start_date",
-		"until_date",
+		"user_id",
 		"state",
 	}
 }
@@ -39,9 +33,9 @@ func (m *PaymentTransaction) Table() string {
 }
 
 func (m *PaymentTransaction) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.TransactionID, &m.Created, &m.NodeTypeID, &m.NodeID, &m.StartDate, &m.UntilDate, &m.State)
+	return r(&m.ID, &m.TransactionID, &m.Created, &m.UserID, &m.State)
 }
 
 func (m *PaymentTransaction) Values(action string) []any {
-	return []any{m.ID, m.TransactionID, m.Created, m.NodeTypeID, m.NodeID, m.StartDate, m.UntilDate, m.State}
+	return []any{m.ID, m.TransactionID, m.Created, m.UserID, m.State}
 }
