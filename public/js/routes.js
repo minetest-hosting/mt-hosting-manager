@@ -14,15 +14,20 @@ export default [{
 },{
 	path: "/login", component: Login
 },{
-	path: "/profile", component: Profile
+	path: "/profile", component: Profile,
+	meta: { loggedIn: true }
 },{
-	path: "/nodes", component: UserNodes
+	path: "/nodes", component: UserNodes,
+	meta: { loggedIn: true }
 },{
-	path: "/nodes/:id", component: UserNodesDetail
+	path: "/nodes/:id", component: UserNodesDetail,
+	meta: { loggedIn: true }
 },{
-	path: "/mtservers", component: MTServers
+	path: "/mtservers", component: MTServers,
+	meta: { loggedIn: true }
 },{
-	path: "/mtservers/:id", component: MTServerDetail
+	path: "/mtservers/:id", component: MTServerDetail,
+	meta: { loggedIn: true }
 },{
 	path: "/jobs", component: Jobs,
 	meta: { requiredRole: "ADMIN" }
