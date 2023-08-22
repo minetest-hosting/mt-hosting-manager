@@ -43,12 +43,19 @@ func (api *Api) Setup() {
 	// user api
 	user_api := apir.NewRoute().Subrouter()
 	user_api.Use(SecureHandler(api.LoginCheck()))
+	user_api.HandleFunc("/profile", api.Secure(api.GetUserProfile)).Methods(http.MethodGet)
+	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node", api.Secure(api.GetNodes)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.DeleteNode)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.UpdateNode)).Methods(http.MethodPost)
+	user_api.HandleFunc("/mtserver", api.Secure(api.GetMTServers)).Methods(http.MethodGet)
+	user_api.HandleFunc("/mtserver", api.Secure(api.CreateMTServer)).Methods(http.MethodPost)
+	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.UpdateMTServer)).Methods(http.MethodPost)
+	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.DeleteMTServer)).Methods(http.MethodDelete)
+	user_api.HandleFunc("/transaction", api.Secure(api.GetTransactions)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/create", api.Secure(api.CreateTransaction)).Methods(http.MethodPost)
-	user_api.HandleFunc("/transaction/callback", api.Secure(api.TransactionCallback)).Methods(http.MethodGet)
+	user_api.HandleFunc("/transaction/callback", api.Secure(api.TransactionCallback)).Methods(http.MethodPost)
 
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()

@@ -79,9 +79,29 @@ func SecureHandler(checks ...Check) func(http.Handler) http.Handler {
 	}
 }
 
-func (a *Api) CanModifyUserNode(node *types.UserNode, c *types.Claims) bool {
-	if node.UserID != c.UserID {
-		return false
+func (a *Api) CheckedGetUserNode(user_node_id string, c *types.Claims) (*types.UserNode, int, error) {
+	node, err := a.repos.UserNodeRepo.GetByID(user_node_id)
+	if err != nil {
+		return nil, 500, fmt.Errorf("fetch node error: %v", err)
 	}
-	return true
+	if node == nil {
+		return nil, 404, fmt.Errorf("node not found '%s'", user_node_id)
+	}
+	if node.UserID != c.UserID {
+		return nil, 403, fmt.Errorf("not authorized to access node '%s'", user_node_id)
+	}
+	return node, 0, nil
+}
+
+func (a *Api) CheckedGetMTServer(mt_server_id string, c *types.Claims) (*types.UserNode, *types.MinetestServer, int, error) {
+	mtserver, err := a.repos.MinetestServerRepo.GetByID(mt_server_id)
+	if err != nil {
+		return nil, nil, 500, fmt.Errorf("fetch mtserver error: %v", err)
+	}
+	if mtserver == nil {
+		return nil, nil, 404, fmt.Errorf("mtserver not found '%s'", mt_server_id)
+	}
+
+	node, status, err := a.CheckedGetUserNode(mtserver.UserNodeID, c)
+	return node, mtserver, status, err
 }

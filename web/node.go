@@ -2,7 +2,6 @@ package web
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
@@ -23,13 +22,9 @@ func (a *Api) GetNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) 
 func (a *Api) UpdateNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	node, err := a.repos.UserNodeRepo.GetByID(id)
+	node, status, err := a.CheckedGetUserNode(id, c)
 	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if a.CanModifyUserNode(node, c) {
-		SendError(w, 403, errors.New("not allowed"))
+		SendError(w, status, err)
 		return
 	}
 
@@ -50,13 +45,9 @@ func (a *Api) UpdateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 func (a *Api) DeleteNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	node, err := a.repos.UserNodeRepo.GetByID(id)
+	node, status, err := a.CheckedGetUserNode(id, c)
 	if err != nil {
-		SendError(w, 500, fmt.Errorf("usernode fetch error: %v", err))
-		return
-	}
-	if a.CanModifyUserNode(node, c) {
-		SendError(w, 403, errors.New("not allowed"))
+		SendError(w, status, err)
 		return
 	}
 
