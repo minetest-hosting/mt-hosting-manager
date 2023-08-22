@@ -20,9 +20,6 @@ function start(){
 
 	// start vue
 	const app = Vue.createApp(App);
-	app.config.errorHandler = (err) => {
-		console.error(err);
-	};
 	app.use(router);
 	app.mount("#app");
 }
