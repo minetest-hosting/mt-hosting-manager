@@ -9,7 +9,7 @@ export default {
 				Minetest hosting
 			</h3>
 		</div>
-		<a :href="'https://github.com/login/oauth/authorize?client_id=' + GithubClientID + '&scope=user:email'" class="btn btn-secondary">
+		<a :href="'https://github.com/login/oauth/authorize?client_id=' + github_client_id + '&scope=user:email'" class="btn btn-secondary">
             <i class="fab fa-github"></i>
             Login with Github
         </a>

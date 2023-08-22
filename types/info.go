@@ -1,10 +1,10 @@
 package types
 
 type Info struct {
-	BaseURL             string
-	HostingDomainSuffix string
-	Stage               string
-	GithubClientID      string
+	BaseURL             string `json:"baseurl"`
+	HostingDomainSuffix string `json:"hostingdomain_suffix"`
+	Stage               string `json:"stage"`
+	GithubClientID      string `json:"github_client_id"`
 }
 
 func NewInfo(cfg *Config) *Info {
