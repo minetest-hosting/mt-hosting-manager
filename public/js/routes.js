@@ -1,5 +1,6 @@
 import Start from './components/pages/Start.js';
 import Profile from './components/pages/Profile.js';
+import Login from './components/pages/Login.js';
 import NodeTypes from './components/pages/NodeTypes.js';
 import NodeTypeDetail from './components/pages/NodeTypeDetail.js';
 import MTServers from './components/pages/MTServers.js';
@@ -10,6 +11,8 @@ import Jobs from './components/pages/Jobs.js';
 
 export default [{
 	path: "/", component: Start
+},{
+	path: "/login", component: Login
 },{
 	path: "/profile", component: Profile
 },{

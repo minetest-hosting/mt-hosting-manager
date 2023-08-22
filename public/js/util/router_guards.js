@@ -5,7 +5,7 @@ const LoginPath = { path: "/login" };
 export default function(router) {
     router.beforeEach((to) => {
         if (to.meta.loggedIn && !login_store.loggedIn) {
-            return { path: '/login' };
+            return LoginPath;
         }
 
         if (to.meta.requiredRole) {
