@@ -5,6 +5,8 @@ create table user(
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
     created bigint not null, -- creation time in `time.Now().Unix()`
+    currency varchar(16) not null default 'EUR', -- user preferred currency
+    balance_euro float not null default 0, -- current balance in euros
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER
@@ -22,16 +24,15 @@ create table node_type(
     location varchar(32) not null, -- location name/id
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
-    daily_cost varchar not null default '0.4', -- "0.40"
-    max_days int not null default 30, -- 30
+    daily_cost float not null default 0.4,
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
 
 -- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',120,2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets','0.8',60,3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads','1.2',30,5,10);
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers',0.4,2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets',0.8,3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads',1.2,5,10);
 
 -- a node set up by a user
 create table user_node(
