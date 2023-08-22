@@ -82,7 +82,7 @@ func (api *Api) Setup() {
 	}
 
 	// static files
-	if os.Getenv("WEBDEV") == "true" {
+	if api.cfg.Webdev {
 		logrus.WithFields(logrus.Fields{"dir": "public"}).Info("Using live mode")
 		fs := http.FileServer(http.FS(os.DirFS("public")))
 		r.PathPrefix("/").HandlerFunc(fs.ServeHTTP)

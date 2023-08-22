@@ -13,6 +13,7 @@ type Config struct {
 	BaseURL             string
 	HostingDomainSuffix string
 	Stage               string
+	Webdev              bool
 	EnableWorker        bool
 	EnableDummyWorker   bool
 	JWTKey              string
@@ -31,6 +32,7 @@ func NewConfig() *Config {
 		BaseURL:             os.Getenv("BASEURL"),
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
 		Stage:               os.Getenv("STAGE"),
+		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		EnableDummyWorker:   os.Getenv("ENABLE_DUMMY_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),

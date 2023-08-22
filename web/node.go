@@ -7,7 +7,6 @@ import (
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -101,7 +100,7 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		NodeTypeID: create_node.NodeTypeID,
 		Created:    time.Now().Unix(),
 		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s-%s", os.Getenv("STAGE"), randstr),
+		Name:       fmt.Sprintf("node-%s-%s", a.cfg.Stage, randstr),
 		Alias:      create_node.Alias,
 	}
 	err = a.repos.UserNodeRepo.Insert(node)
