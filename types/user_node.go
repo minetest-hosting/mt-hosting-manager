@@ -26,7 +26,6 @@ type UserNode struct {
 	NodeTypeID  string        `json:"node_type_id"`
 	ExternalID  string        `json:"external_id"`
 	Created     int64         `json:"created"`
-	Expires     int64         `json:"expires"`
 	State       UserNodeState `json:"state"`
 	Name        string        `json:"name"`
 	Alias       string        `json:"alias"`
@@ -47,7 +46,6 @@ func (m *UserNode) Columns(action string) []string {
 		"node_type_id",
 		"external_id",
 		"created",
-		"expires",
 		"state",
 		"name",
 		"alias",
@@ -73,7 +71,6 @@ func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
 		&m.NodeTypeID,
 		&m.ExternalID,
 		&m.Created,
-		&m.Expires,
 		&m.State,
 		&m.Name,
 		&m.Alias,
@@ -95,7 +92,6 @@ func (m *UserNode) Values(action string) []any {
 		m.NodeTypeID,
 		m.ExternalID,
 		m.Created,
-		m.Expires,
 		m.State,
 		m.Name,
 		m.Alias,
@@ -108,8 +104,4 @@ func (m *UserNode) Values(action string) []any {
 		m.MemorySize,
 		m.MemoryUsed,
 	}
-}
-
-func (m *UserNode) ExpirationWarning() bool {
-	return time.Unix(m.Expires, 0).Add(-ExpirationWarnThreshold).Before(time.Now())
 }

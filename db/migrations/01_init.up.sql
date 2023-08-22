@@ -41,7 +41,6 @@ create table user_node(
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
     external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
-    expires bigint not null, -- expiration time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     alias varchar(256) not null, -- internal name, user-specified
