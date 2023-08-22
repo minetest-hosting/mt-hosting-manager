@@ -89,7 +89,7 @@ create table payment_transaction(
     created bigint not null, -- creation time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict,
     currency varchar(16) not null default 'EUR', -- user preferred currency
-    amount float not null default 0, -- currency amount
+    amount varchar(16) not null default '0', -- currency amount
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
 

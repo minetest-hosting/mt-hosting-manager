@@ -16,7 +16,7 @@ type PaymentTransaction struct {
 	Created       int64            `json:"created"`
 	UserID        string           `json:"user_id"`
 	Currency      string           `json:"currency"`
-	Amount        float64          `json:"amount"`
+	Amount        string           `json:"amount"`
 	State         PaymentStateType `json:"state"`
 }
 
