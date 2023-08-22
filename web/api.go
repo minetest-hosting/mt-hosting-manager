@@ -52,7 +52,11 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/nodetype", api.Secure(api.CreateNodeType)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.UpdateNodeType)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.DeleteNodeType)).Methods(http.MethodDelete)
+	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)
+	admin_api.HandleFunc("/job/{id}", api.Secure(api.DeleteJob)).Methods(http.MethodDelete)
+	admin_api.HandleFunc("/job/{id}", api.Secure(api.RetryJob)).Methods(http.MethodPost)
 
+	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
 			Impl:     &oauth.GithubOauth{},
