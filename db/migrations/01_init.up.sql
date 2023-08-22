@@ -24,15 +24,15 @@ create table node_type(
     location varchar(32) not null, -- location name/id
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
-    daily_cost float not null default 0.4,
+    daily_cost varchar(16) not null default '0.4', -- daily cost in euros
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
 
 -- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers',0.4,2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets',0.8,3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads',1.2,5,10);
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets','0.8',3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads','1.2',5,10);
 
 -- a node set up by a user
 create table user_node(
@@ -41,6 +41,7 @@ create table user_node(
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
     external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
+    last_collected_time bigint not null, -- time of last balance collection in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     alias varchar(256) not null, -- internal name, user-specified
