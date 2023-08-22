@@ -43,7 +43,10 @@ func (api *Api) Setup() {
 	// user api
 	user_api := apir.NewRoute().Subrouter()
 	user_api.Use(SecureHandler(api.LoginCheck()))
-	//TODO
+	user_api.HandleFunc("/node", api.Secure(api.GetNodes)).Methods(http.MethodGet)
+	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
+	user_api.HandleFunc("/node/{id}", api.Secure(api.DeleteNode)).Methods(http.MethodDelete)
+	user_api.HandleFunc("/node/{id}", api.Secure(api.UpdateNode)).Methods(http.MethodPost)
 
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()

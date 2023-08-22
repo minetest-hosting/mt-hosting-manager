@@ -17,18 +17,18 @@ const (
 func NodeTypeProvider() *NodeType { return &NodeType{} }
 
 type NodeType struct {
-	ID                      string       `json:"id"`
-	State                   string       `json:"state"`
-	OrderID                 int          `json:"order_id"`
-	Provider                ProviderType `json:"provider"`
-	ServerType              string       `json:"server_type"`
-	Location                string       `json:"location"`
-	Name                    string       `json:"name"`
-	Description             string       `json:"description"`
-	DailyCost               string       `json:"daily_cost"`
-	MaxDays                 int          `json:"max_days"`
-	MaxRecommendedInstances int          `json:"max_recommended_instances"`
-	MaxInstances            int          `json:"max_instances"`
+	ID                      string        `json:"id"`
+	State                   NodeTypeState `json:"state"`
+	OrderID                 int           `json:"order_id"`
+	Provider                ProviderType  `json:"provider"`
+	ServerType              string        `json:"server_type"`
+	Location                string        `json:"location"`
+	Name                    string        `json:"name"`
+	Description             string        `json:"description"`
+	DailyCost               string        `json:"daily_cost"`
+	MaxDays                 int           `json:"max_days"`
+	MaxRecommendedInstances int           `json:"max_recommended_instances"`
+	MaxInstances            int           `json:"max_instances"`
 }
 
 func (m *NodeType) Columns(action string) []string {

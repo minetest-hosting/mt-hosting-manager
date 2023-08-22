@@ -78,3 +78,10 @@ func SecureHandler(checks ...Check) func(http.Handler) http.Handler {
 		return SecureHandlerImpl{checks: checks, handler: h}
 	}
 }
+
+func (a *Api) CanModifyUserNode(node *types.UserNode, c *types.Claims) bool {
+	if node.UserID != c.UserID {
+		return false
+	}
+	return true
+}
