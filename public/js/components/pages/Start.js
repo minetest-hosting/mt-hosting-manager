@@ -10,9 +10,9 @@ export default {
 			<i class="fa fa-home"></i> Start
 		</template>
 		<div class="text-center">
-			<h3>
-				Minetest hosting
-			</h3>
+			<h4>Minetest hosting</h4>
+			<hr/>
+			<img src="assets/minetest-hosting-600px.png" class="img img-rounded"/>
 		</div>
 	</card-layout>
 	`

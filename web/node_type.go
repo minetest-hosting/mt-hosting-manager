@@ -13,6 +13,12 @@ func (a *Api) GetNodeTypes(w http.ResponseWriter, r *http.Request, c *types.Clai
 	Send(w, list, err)
 }
 
+func (a *Api) GetNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	nt, err := a.repos.NodeTypeRepo.GetByID(vars["id"])
+	Send(w, nt, err)
+}
+
 func (a *Api) CreateNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	nt := &types.NodeType{}
 	err := json.NewDecoder(r.Body).Decode(nt)
