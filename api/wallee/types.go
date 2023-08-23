@@ -56,3 +56,11 @@ type TransactionSearchFilter struct {
 type TransactionSearchRequest struct {
 	Filter *TransactionSearchFilter `json:"filter"`
 }
+
+type CreateRefundRequest struct {
+	//TODO
+}
+
+type CreateRefundResponse struct {
+	//TODO
+}
