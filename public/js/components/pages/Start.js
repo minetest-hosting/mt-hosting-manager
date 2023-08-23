@@ -7,7 +7,7 @@ export default {
 	template: /*html*/`
 	<card-layout>
 		<template #title>
-			<i class="fa fa-home"></i> Start
+			<i class="fa fa-home"></i> Home
 		</template>
 		<div class="text-center">
 			<h4>Minetest hosting</h4>

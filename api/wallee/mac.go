@@ -55,6 +55,10 @@ func (c *WalleeClient) jsonRequest(path, method string, req_obj, resp_obj any) e
 	}
 
 	req, err := c.request(path, method, bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := c.client.Do(req)

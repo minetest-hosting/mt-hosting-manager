@@ -21,6 +21,16 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
+	user, err := a.repos.UserRepo.GetByMail(c.Mail)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if user == nil {
+		SendError(w, 404, fmt.Errorf("user not found: '%s'", c.Mail))
+		return
+	}
+
 	payment_tx_id := uuid.NewString()
 
 	amount, err := strconv.ParseFloat(create_tx_req.Amount, 64)
@@ -44,7 +54,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 	)
 
 	tx, err := wc.CreateTransaction(&wallee.TransactionRequest{
-		Currency:   create_tx_req.Currency,
+		Currency:   user.Currency,
 		LineItems:  []*wallee.LineItem{item},
 		SuccessURL: fmt.Sprintf("%s/transactions/%s", a.cfg.BaseURL, payment_tx_id),
 	})
@@ -65,7 +75,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		Created:       time.Now().Unix(),
 		UserID:        c.UserID,
 		Amount:        create_tx_req.Amount,
-		Currency:      create_tx_req.Currency,
+		Currency:      user.Currency,
 		State:         types.PaymentStatePending,
 	}
 	err = a.repos.PaymentTransactionRepo.Insert(payment_tx)

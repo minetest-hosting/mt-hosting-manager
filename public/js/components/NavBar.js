@@ -27,6 +27,11 @@ export default {
 							<i class="fa fa-home"></i> Home
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="is_logged_in()">
+						<router-link to="/finance" class="nav-link">
+							<i class="fa-solid fa-money-bill"></i> Finance
+						</router-link>
+					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">
 						<router-link to="/node_types" class="nav-link">
 							<i class="fa fa-server"></i> Node-Types

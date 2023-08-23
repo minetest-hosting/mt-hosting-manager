@@ -90,7 +90,7 @@ create table payment_transaction(
     user_id varchar(36) not null references user(id) on delete restrict,
     currency varchar(16) not null default 'EUR', -- user preferred currency
     amount varchar(16) not null default '0', -- currency amount
-    refund_amount varchar(16) not null default '0', -- amount refunded from this transaction
+    amount_refunded varchar(16) not null default '0', -- amount refunded from this transaction
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
 

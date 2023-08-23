@@ -8,6 +8,7 @@ import MTServerDetail from './components/pages/MTServerDetail.js';
 import UserNodes from './components/pages/UserNodes.js';
 import UserNodesDetail from './components/pages/UserNodesDetail.js';
 import Jobs from './components/pages/Jobs.js';
+import Finance from './components/pages/Finance.js';
 
 export default [{
 	path: "/", component: Start
@@ -15,6 +16,9 @@ export default [{
 	path: "/login", component: Login
 },{
 	path: "/profile", component: Profile,
+	meta: { loggedIn: true }
+},{
+	path: "/finance", component: Finance,
 	meta: { loggedIn: true }
 },{
 	path: "/nodes", component: UserNodes,
