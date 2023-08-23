@@ -47,7 +47,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		UniqueID:           payment_tx_id,
 	}
 
-	back_url := fmt.Sprintf("%s/#/finance", a.cfg.BaseURL)
+	back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 	tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
 		Currency:   user.Currency,
 		LineItems:  []*wallee.LineItem{item},
@@ -117,7 +117,7 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 			return
 		}
 		if tx_list == nil || len(tx_list) != 1 {
-			SendError(w, 500, fmt.Errorf("transaction not found %s: %v", tx.ID, err))
+			SendError(w, 404, fmt.Errorf("transaction not found %s", tx.ID))
 			return
 		}
 		verfifed_tx := tx_list[0]
@@ -136,6 +136,25 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 
 func (a *Api) GetTransactions(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	list, err := a.repos.PaymentTransactionRepo.GetByUserID(c.UserID)
-	// TODO: only show needed fields
 	Send(w, list, err)
+}
+
+func (a *Api) GetTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	tx, err := a.repos.PaymentTransactionRepo.GetByID(id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err))
+		return
+	}
+	if tx == nil {
+		SendError(w, 404, fmt.Errorf("transaction not found %s", id))
+		return
+	}
+	if tx.UserID != c.UserID {
+		SendError(w, 403, fmt.Errorf("not authorized to fetch %s", id))
+		return
+	}
+
+	Send(w, tx, err)
 }

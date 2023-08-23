@@ -10,7 +10,6 @@ export default {
     data: function() {
         return {
             amount: 5,
-            payment_url: "",
             transactions: [],
             user: user_store
         };
@@ -21,12 +20,8 @@ export default {
     methods: {
         format_time: format_time,
         new_payment: function() {
-            create({
-                amount: ""+this.amount
-            })
-            .then(r => {
-                this.payment_url = r.url;
-            });
+            create({ amount: ""+this.amount })
+            .then(r => window.location = r.url);
         },
         update_payments: function() {
             get_all().then(p => this.transactions = p);
@@ -55,10 +50,6 @@ export default {
                             <i class="fa-solid fa-plus"></i> Create new payment
                         </a>
                     </div>
-                    <a class="btn btn-success" v-if="payment_url" :href="payment_url">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        Open payment page
-                    </a>
                 </td>
             </tr>
         </table>
@@ -74,7 +65,11 @@ export default {
             </thead>
             <tbody>
                 <tr v-for="tx in transactions">
-                    <td>{{format_time(tx.created)}}</td>
+                    <td>
+                        <router-link :to="'/finance/detail/'+tx.id">
+                            {{format_time(tx.created)}}
+                        </router-link>
+                    </td>
                     <td>{{tx.currency}} {{tx.amount}}</td>
                     <td>{{tx.state}}</td>
                 </tr>
