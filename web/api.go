@@ -1,6 +1,7 @@
 package web
 
 import (
+	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/public"
 	"mt-hosting-manager/types"
@@ -18,12 +19,18 @@ import (
 type Api struct {
 	repos *db.Repositories
 	cfg   *types.Config
+	wc    *wallee.WalleeClient
 }
 
 func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 	return &Api{
 		repos: repos,
 		cfg:   cfg,
+		wc: wallee.New(
+			os.Getenv("WALLEE_USERID"),
+			os.Getenv("WALLEE_SPACEID"),
+			os.Getenv("WALLEE_KEY"),
+		),
 	}
 }
 
@@ -55,7 +62,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.DeleteMTServer)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/transaction", api.Secure(api.GetTransactions)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/create", api.Secure(api.CreateTransaction)).Methods(http.MethodPost)
-	user_api.HandleFunc("/transaction/callback", api.Secure(api.TransactionCallback)).Methods(http.MethodPost)
+	user_api.HandleFunc("/transaction/{id}/check", api.Secure(api.CheckTransaction)).Methods(http.MethodGet)
 
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()

@@ -7,7 +7,4 @@ export const create = data => protected_fetch(`api/transaction/create`, {
     body: JSON.stringify(data)
 });
 
-export const callback = data => protected_fetch(`api/transaction/callback`, {
-    method: "POST",
-    body: JSON.stringify(data)
-});
+export const check = tx => protected_fetch(`api/transaction/${tx.id}/check`);

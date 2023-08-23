@@ -6,11 +6,11 @@ import (
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/types"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 )
 
 func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -47,23 +47,19 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		UniqueID:           payment_tx_id,
 	}
 
-	wc := wallee.New(
-		os.Getenv("WALLEE_USERID"),
-		os.Getenv("WALLEE_SPACEID"),
-		os.Getenv("WALLEE_KEY"),
-	)
-
-	tx, err := wc.CreateTransaction(&wallee.TransactionRequest{
+	back_url := fmt.Sprintf("%s/#/finance", a.cfg.BaseURL)
+	tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
 		Currency:   user.Currency,
 		LineItems:  []*wallee.LineItem{item},
-		SuccessURL: fmt.Sprintf("%s/transactions/%s", a.cfg.BaseURL, payment_tx_id),
+		SuccessURL: back_url,
+		FailedURL:  back_url,
 	})
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("create transaction failed: %v", err))
 		return
 	}
 
-	url, err := wc.CreatePaymentPageURL(tx.ID)
+	url, err := a.wc.CreatePaymentPageURL(tx.ID)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("create payment url failed: %v", err))
 		return
@@ -91,8 +87,51 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 	Send(w, create_tx_resp, nil)
 }
 
-func (a *Api) TransactionCallback(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	//TODO convert amount in EUR currency
+func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	tx, err := a.repos.PaymentTransactionRepo.GetByID(id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("fetch payment tx failed: %v", err))
+		return
+	}
+	if tx == nil {
+		SendError(w, 404, fmt.Errorf("payment tx not found: %s", id))
+		return
+	}
+
+	if tx.State == types.PaymentStatePending {
+		// verify tx success
+		txr := &wallee.TransactionSearchRequest{
+			Filter: &wallee.TransactionSearchFilter{
+				FieldName: "id",
+				Operator:  wallee.FilterOperatorEquals,
+				Type:      wallee.FilterTypeLeaf,
+				Value:     tx.TransactionID,
+			},
+		}
+		tx_list, err := a.wc.SearchTransaction(txr)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err))
+			return
+		}
+		if tx_list == nil || len(tx_list) != 1 {
+			SendError(w, 500, fmt.Errorf("transaction not found %s: %v", tx.ID, err))
+			return
+		}
+		verfifed_tx := tx_list[0]
+		if verfifed_tx.State == wallee.TransactionStateFulfilled {
+			tx.State = types.PaymentStateSuccess
+			err = a.repos.PaymentTransactionRepo.Update(tx)
+			if err != nil {
+				SendError(w, 500, fmt.Errorf("failed to save transaction: %v", err))
+				return
+			}
+		}
+	}
+
+	Send(w, tx, nil)
 }
 
 func (a *Api) GetTransactions(w http.ResponseWriter, r *http.Request, c *types.Claims) {

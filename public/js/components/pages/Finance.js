@@ -1,5 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_all, create } from "../../api/transaction.js";
+import format_time from "../../util/format_time.js";
+import user_store from "../../store/user.js";
 
 export default {
 	components: {
@@ -9,13 +11,15 @@ export default {
         return {
             amount: 5,
             payment_url: "",
-            payments: []
+            transactions: [],
+            user: user_store
         };
     },
     mounted: function() {
         this.update_payments();
     },
     methods: {
+        format_time: format_time,
         new_payment: function() {
             create({
                 amount: ""+this.amount
@@ -25,7 +29,7 @@ export default {
             });
         },
         update_payments: function() {
-            get_all().then(p => this.payments = p);
+            get_all().then(p => this.transactions = p);
         }
     },
 	template: /*html*/`
@@ -37,13 +41,15 @@ export default {
         <table class="table table-condensed">
             <tr>
                 <td>Balance</td>
-                <td>&euro; 10.0</td>
+                <td v-if="user">
+                    {{user.currency}} {{user.balance}}
+                </td>
             </tr>
             <tr>
                 <td>Actions</td>
                 <td>
                     <div class="input-group">
-                        <span class="input-group-text">$</span>
+                        <span class="input-group-text" v-if="user">{{user.currency}}</span>
                         <input class="form-control" type="number" min="0" max="100" v-model="amount"/>
                         <a class="btn btn-outline-primary" v-on:click="new_payment()">
                             <i class="fa-solid fa-plus"></i> Create new payment
@@ -67,10 +73,10 @@ export default {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr v-for="tx in transactions">
+                    <td>{{format_time(tx.created)}}</td>
+                    <td>{{tx.currency}} {{tx.amount}}</td>
+                    <td>{{tx.state}}</td>
                 </tr>
             </tbody>
         </table>

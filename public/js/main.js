@@ -4,6 +4,7 @@ import { check_login } from './service/login.js';
 import { fetch_info } from './service/info.js';
 import router_guards from './util/router_guards.js';
 import events, { EVENT_STARTUP } from './events.js';
+import "./service/user.js";
 
 function start(){
 	// create router instance

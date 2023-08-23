@@ -1,5 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { get_profile, update_profile } from "../../api/user.js";
+import { update_profile } from "../../api/user.js";
+import user_store from "../../store/user.js";
 import format_time from "../../util/format_time.js";
 
 export default {
@@ -8,11 +9,8 @@ export default {
 	},
 	data: function() {
 		return {
-			profile: null
+			profile: user_store
 		};
-	},
-	mounted: function() {
-		get_profile().then(p => this.profile = p);
 	},
 	methods: {
 		format_time: format_time,
