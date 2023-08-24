@@ -95,3 +95,14 @@ create table payment_transaction(
 );
 
 create index payment_transaction_user_id on payment_transaction(user_id);
+
+-- exchange rates with EUR as base
+create table exchange_rate(
+    currency varchar(16) primary key not null,
+    rate varchar(32) not null,
+    display_name varchar(128) not null,
+    display_prefix varchar(32) not null
+);
+
+insert into exchange_rate(currency, rate, display_name, display_prefix) values('EUR','1.0', 'Euro', '€');
+insert into exchange_rate(currency, rate, display_name, display_prefix) values('USD','1.2', 'US Dollar', '$');

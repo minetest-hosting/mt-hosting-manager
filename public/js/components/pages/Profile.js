@@ -2,10 +2,12 @@ import CardLayout from "../layouts/CardLayout.js";
 import { update_profile } from "../../api/user.js";
 import user_store from "../../store/user.js";
 import format_time from "../../util/format_time.js";
+import CurrencySelector from "../CurrencySelector.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"currency-selector": CurrencySelector
 	},
 	data: function() {
 		return {
@@ -45,10 +47,7 @@ export default {
 			<tr>
 				<td>Currency</td>
 				<td>
-					<select class="form-control" v-model="profile.currency">
-						<option value="EUR">Euro</option>
-						<option value="USD">US Dollar</option>
-					</select>
+					<currency-selector v-model="profile.currency"/>
 				</td>
 			</tr>
 			<tr>
