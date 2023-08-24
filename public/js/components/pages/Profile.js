@@ -1,5 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { update_profile } from "../../api/user.js";
+import { update } from "../../service/user.js";
 import user_store from "../../store/user.js";
 import format_time from "../../util/format_time.js";
 import CurrencySelector from "../CurrencySelector.js";
@@ -17,7 +17,7 @@ export default {
 	methods: {
 		format_time: format_time,
 		save: function() {
-			update_profile(this.profile);
+			update(this.profile);
 		}
 	},
 	template: /*html*/`
@@ -48,6 +48,12 @@ export default {
 				<td>Currency</td>
 				<td>
 					<currency-selector v-model="profile.currency"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Balance</td>
+				<td>
+					{{profile.balance}}
 				</td>
 			</tr>
 			<tr>
