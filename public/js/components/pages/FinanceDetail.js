@@ -1,7 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { check, get_by_id } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
-import { update as update_user } from "../../service/user.js";
 
 export default {
 	components: {
