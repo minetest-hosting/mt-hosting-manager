@@ -1,5 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { get_all } from "../../api/nodetype.js";
+import store from "../../store/nodetype.js";
 
 export default {
 	components: {
@@ -7,11 +7,8 @@ export default {
 	},
 	data: function() {
 		return {
-			list: []
+			store: store
 		};
-	},
-	mounted: function() {
-		get_all().then(l => this.list = l);
 	},
 	template: /*html*/`
 	<card-layout>
@@ -28,7 +25,7 @@ export default {
 				<th>Actions</th>
 			</thead>
 			<tbody>
-				<tr v-for="nt in list">
+				<tr v-for="nt in store.nodetypes">
 					<td>
 						{{nt.id}}
 						<span v-if="nt.state == 'ACTIVE'" class="badge text-bg-success">Active</span>

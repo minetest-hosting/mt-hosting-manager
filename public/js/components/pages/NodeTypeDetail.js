@@ -1,5 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_by_id, add, update, remove } from "../../api/nodetype.js";
+import { fetch_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
@@ -24,16 +25,20 @@ export default {
 	},
 	methods: {
 		remove: function() {
-			remove(this.nt).then(() => this.$router.push("/node_types"));
+			remove(this.nt)
+			.then(() => fetch_nodetypes())
+			.then(() => this.$router.push("/node_types"));
 		},
 		save: function() {
 			if (this.nt.id == "") {
 				// create new
 				add(this.nt).then(nt => Object.assign(this.nt, nt))
+				.then(() => fetch_nodetypes())
 				.then(() => this.$router.push("/node_types"));
 			} else {
 				// update existing
 				update(this.nt)
+				.then(() => fetch_nodetypes())
 				.then(() => this.$router.push("/node_types"));
 			}
 		}

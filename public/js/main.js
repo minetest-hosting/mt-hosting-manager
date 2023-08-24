@@ -4,6 +4,7 @@ import { check_login } from './service/login.js';
 import { fetch_info } from './service/info.js';
 import router_guards from './util/router_guards.js';
 import events, { EVENT_STARTUP } from './events.js';
+import { fetch_nodetypes } from './service/nodetype.js';
 import "./service/user.js";
 
 function start(){
@@ -26,6 +27,6 @@ function start(){
 }
 
 fetch_info()
-.then(() => check_login())
+.then(() => Promise.all([check_login(), fetch_nodetypes()]))
 .then(() => start())
 .catch(e => console.error(e));
