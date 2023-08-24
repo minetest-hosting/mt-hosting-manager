@@ -50,7 +50,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 
 	back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 	tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
-		Currency:   user.Currency,
+		Currency:   types.DEFAULT_CURRENCY,
 		LineItems:  []*wallee.LineItem{item},
 		SuccessURL: back_url,
 		FailedURL:  back_url,
@@ -72,7 +72,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		Created:       time.Now().Unix(),
 		UserID:        c.UserID,
 		Amount:        create_tx_req.Amount,
-		Currency:      user.Currency,
+		Currency:      types.DEFAULT_CURRENCY,
 		State:         types.PaymentStatePending,
 	}
 	err = a.repos.PaymentTransactionRepo.Insert(payment_tx)

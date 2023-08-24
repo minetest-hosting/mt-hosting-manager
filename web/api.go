@@ -46,7 +46,6 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/info", api.GetInfo)
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
-	apir.HandleFunc("/exchange_rate", api.GetExchangeRates).Methods(http.MethodGet)
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()

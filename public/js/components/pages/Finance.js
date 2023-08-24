@@ -37,14 +37,14 @@ export default {
             <tr>
                 <td>Balance</td>
                 <td v-if="user">
-                    {{user.currency}} {{user.balance}}
+                    {{user.balance}} &euro;
                 </td>
             </tr>
             <tr>
                 <td>Actions</td>
                 <td>
                     <div class="input-group">
-                        <span class="input-group-text" v-if="user">{{user.currency}}</span>
+                        <span class="input-group-text" v-if="user">&euro;</span>
                         <input class="form-control" type="number" min="0" max="100" v-model="amount"/>
                         <a class="btn btn-outline-primary" v-on:click="new_payment()">
                             <i class="fa-solid fa-plus"></i> Create new payment

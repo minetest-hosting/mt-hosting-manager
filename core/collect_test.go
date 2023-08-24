@@ -31,12 +31,11 @@ func TestCollect(t *testing.T) {
 	now := time.Now()
 
 	user := &types.User{
-		ID:       uuid.NewString(),
-		State:    types.UserStateActive,
-		Name:     "testuser",
-		Mail:     "test@user",
-		Currency: "EUR",
-		Balance:  "0",
+		ID:      uuid.NewString(),
+		State:   types.UserStateActive,
+		Name:    "testuser",
+		Mail:    "test@user",
+		Balance: "0",
 	}
 	assert.NoError(t, repos.UserRepo.Insert(user))
 

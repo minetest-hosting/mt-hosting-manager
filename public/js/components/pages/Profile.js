@@ -2,12 +2,10 @@ import CardLayout from "../layouts/CardLayout.js";
 import { update } from "../../service/user.js";
 import user_store from "../../store/user.js";
 import format_time from "../../util/format_time.js";
-import CurrencySelector from "../CurrencySelector.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout,
-		"currency-selector": CurrencySelector
+		"card-layout": CardLayout
 	},
 	data: function() {
 		return {
@@ -42,12 +40,6 @@ export default {
 				<td>Created</td>
 				<td>
 					{{format_time(profile.created)}}
-				</td>
-			</tr>
-			<tr>
-				<td>Currency</td>
-				<td>
-					<currency-selector v-model="profile.currency"/>
 				</td>
 			</tr>
 			<tr>

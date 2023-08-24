@@ -31,11 +31,7 @@ func (a *Api) UpdateUserProfile(w http.ResponseWriter, r *http.Request, c *types
 	}
 
 	// update allowed fields
-	if user.Currency != updated_user.Currency {
-
-	}
-
-	user.Currency = updated_user.Currency
+	//TODO
 
 	err = a.repos.UserRepo.Update(user)
 	Send(w, user, err)

@@ -84,7 +84,6 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			Mail:       info.Email,
 			ExternalID: info.ExternalID,
 			Type:       h.Type,
-			Currency:   types.DEFAULT_CURRENCY,
 			Balance:    "0",
 			Role:       types.UserRoleUser,
 		}
