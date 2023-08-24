@@ -5,7 +5,6 @@ create table user(
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
     created bigint not null, -- creation time in `time.Now().Unix()`
-    currency varchar(16) not null default 'EUR', -- user currency
     balance varchar(16) not null default '0', -- current balance
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
@@ -88,7 +87,6 @@ create table payment_transaction(
     transaction_id varchar not null, -- external tx id
     created bigint not null, -- creation time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict,
-    currency varchar(16) not null default 'EUR', -- user preferred currency
     amount varchar(16) not null default '0', -- currency amount
     amount_refunded varchar(16) not null default '0', -- amount refunded from this transaction
     state varchar(32) not null default 'PENDING' -- state of the transaction

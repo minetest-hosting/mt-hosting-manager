@@ -37,7 +37,7 @@ export default {
             <tr>
                 <td>Balance</td>
                 <td v-if="user">
-                    {{user.balance}} &euro;
+                    &euro; {{user.balance}}
                 </td>
             </tr>
             <tr>
@@ -70,8 +70,14 @@ export default {
                             {{format_time(tx.created)}}
                         </router-link>
                     </td>
-                    <td>{{tx.currency}} {{tx.amount}}</td>
-                    <td>{{tx.state}}</td>
+                    <td>&euro; {{tx.amount}}</td>
+                    <td>
+                        {{tx.state}}
+                        <span class="badge bg-warning" v-if="tx.amount_refunded != '0'">
+                            <i class="fa-solid fa-recycle"></i>
+                            Refunded
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -67,13 +67,13 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 	}
 
 	payment_tx := &types.PaymentTransaction{
-		ID:            payment_tx_id,
-		TransactionID: fmt.Sprintf("%d", tx.ID),
-		Created:       time.Now().Unix(),
-		UserID:        c.UserID,
-		Amount:        create_tx_req.Amount,
-		Currency:      types.DEFAULT_CURRENCY,
-		State:         types.PaymentStatePending,
+		ID:             payment_tx_id,
+		TransactionID:  fmt.Sprintf("%d", tx.ID),
+		Created:        time.Now().Unix(),
+		UserID:         c.UserID,
+		Amount:         create_tx_req.Amount,
+		AmountRefunded: "0",
+		State:          types.PaymentStatePending,
 	}
 	err = a.repos.PaymentTransactionRepo.Insert(payment_tx)
 	if err != nil {
@@ -93,6 +93,14 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 	id := vars["id"]
 
 	tx, err := core.CheckTransaction(a.repos, a.wc, id)
+	Send(w, tx, err)
+}
+
+func (a *Api) RefundTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	tx, err := core.RefundTransaction(a.repos, a.wc, id)
 	Send(w, tx, err)
 }
 

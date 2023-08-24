@@ -10,3 +10,7 @@ export const create = data => protected_fetch(`api/transaction/create`, {
 });
 
 export const check = tx => protected_fetch(`api/transaction/${tx.id}/check`);
+
+export const refund = tx => protected_fetch(`api/transaction/${tx.id}/refund`, {
+    method: "POST"
+});

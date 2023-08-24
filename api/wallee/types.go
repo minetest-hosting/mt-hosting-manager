@@ -82,6 +82,6 @@ type CreateRefundRequest struct {
 }
 
 type CreateRefundResponse struct {
-	Amount string            `json:"amount"`
+	Amount float64           `json:"amount"`
 	State  CreateRefundState `json:"state"`
 }
