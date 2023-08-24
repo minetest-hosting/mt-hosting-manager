@@ -13,7 +13,7 @@ export default {
 		};
 	},
 	mounted: function() {
-		this.update()
+		this.update();
 	},
 	methods: {
 		format_time: format_time,
@@ -50,6 +50,10 @@ export default {
 				</tr>
 			</tbody>
 		</table>
+		<router-link class="btn btn-success" to="/nodes/create">
+			<i class="fa fa-plus"></i>
+			Create node
+		</router-link>
 	</card-layout>
 	`
 };

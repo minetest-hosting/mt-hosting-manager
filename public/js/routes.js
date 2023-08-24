@@ -10,6 +10,7 @@ import UserNodesDetail from './components/pages/UserNodesDetail.js';
 import Jobs from './components/pages/Jobs.js';
 import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
+import CreateNode from './components/pages/CreateNode.js';
 
 export default [{
 	path: "/", component: Start
@@ -26,6 +27,9 @@ export default [{
 	meta: { loggedIn: true }
 },{
 	path: "/nodes", component: UserNodes,
+	meta: { loggedIn: true }
+},{
+	path: "/nodes/create", component: CreateNode,
 	meta: { loggedIn: true }
 },{
 	path: "/nodes/:id", component: UserNodesDetail,
