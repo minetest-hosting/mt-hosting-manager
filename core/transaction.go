@@ -5,6 +5,8 @@ import (
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
+
+	"github.com/bojanz/currency"
 )
 
 func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string) (*types.PaymentTransaction, error) {
@@ -41,7 +43,34 @@ func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string
 				return nil, fmt.Errorf("failed to save transaction: %v", err)
 			}
 
-			//TODO: add amount to user balance
+			user, err := repos.UserRepo.GetByID(tx.UserID)
+			if err != nil {
+				return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
+			}
+			if user == nil {
+				return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
+			}
+
+			a, err := currency.NewAmount(user.Balance, types.DEFAULT_CURRENCY)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse balance '%s': %v", user.Balance, err)
+			}
+
+			tx_amount, err := currency.NewAmount(tx.Amount, types.DEFAULT_CURRENCY)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse tx amount '%s': %v", tx.Amount, err)
+			}
+
+			new_amount, err := a.Add(tx_amount)
+			if err != nil {
+				return nil, fmt.Errorf("could not add amounts: %v", err)
+			}
+
+			user.Balance = new_amount.String()
+			err = repos.UserRepo.Update(user)
+			if err != nil {
+				return nil, fmt.Errorf("could not update user: %v", err)
+			}
 		}
 	}
 
