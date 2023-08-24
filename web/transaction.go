@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
@@ -91,47 +92,8 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	tx, err := a.repos.PaymentTransactionRepo.GetByID(id)
-	if err != nil {
-		SendError(w, 500, fmt.Errorf("fetch payment tx failed: %v", err))
-		return
-	}
-	if tx == nil {
-		SendError(w, 404, fmt.Errorf("payment tx not found: %s", id))
-		return
-	}
-
-	if tx.State == types.PaymentStatePending {
-		// verify tx success
-		txr := &wallee.TransactionSearchRequest{
-			Filter: &wallee.TransactionSearchFilter{
-				FieldName: "id",
-				Operator:  wallee.FilterOperatorEquals,
-				Type:      wallee.FilterTypeLeaf,
-				Value:     tx.TransactionID,
-			},
-		}
-		tx_list, err := a.wc.SearchTransaction(txr)
-		if err != nil {
-			SendError(w, 500, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err))
-			return
-		}
-		if tx_list == nil || len(tx_list) != 1 {
-			SendError(w, 404, fmt.Errorf("transaction not found %s", tx.ID))
-			return
-		}
-		verfifed_tx := tx_list[0]
-		if verfifed_tx.State == wallee.TransactionStateFulfilled {
-			tx.State = types.PaymentStateSuccess
-			err = a.repos.PaymentTransactionRepo.Update(tx)
-			if err != nil {
-				SendError(w, 500, fmt.Errorf("failed to save transaction: %v", err))
-				return
-			}
-		}
-	}
-
-	Send(w, tx, nil)
+	tx, err := core.CheckTransaction(a.repos, a.wc, id)
+	Send(w, tx, err)
 }
 
 func (a *Api) GetTransactions(w http.ResponseWriter, r *http.Request, c *types.Claims) {
