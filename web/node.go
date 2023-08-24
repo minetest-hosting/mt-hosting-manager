@@ -18,6 +18,13 @@ func (a *Api) GetNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) 
 	Send(w, list, err)
 }
 
+func (a *Api) GetNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	node, _, err := a.CheckedGetUserNode(id, c)
+	Send(w, node, err)
+}
+
 func (a *Api) UpdateNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
