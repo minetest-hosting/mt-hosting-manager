@@ -19,6 +19,19 @@ func (r *UserRepository) Insert(u *types.User) error {
 	return r.dbu.Insert(u)
 }
 
+func (r *UserRepository) Update(u *types.User) error {
+	return r.dbu.Update(u, "where mail =%s", u.Mail)
+}
+
+func (r *UserRepository) GetByID(id string) (*types.User, error) {
+	u, err := r.dbu.Select("where id = %s", id)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else {
+		return u, err
+	}
+}
+
 func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
 	u, err := r.dbu.Select("where mail = %s", mail)
 	if err == sql.ErrNoRows {

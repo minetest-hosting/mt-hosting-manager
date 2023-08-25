@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
 )
@@ -28,7 +29,7 @@ type GithubUserMail struct {
 
 type GithubOauth struct{}
 
-func (o *GithubOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig) (string, error) {
+func (o *GithubOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuthConfig) (string, error) {
 	accessTokenReq := GithubAccessTokenRequest{
 		ClientID:     cfg.ClientID,
 		ClientSecret: cfg.Secret,
@@ -62,7 +63,7 @@ func (o *GithubOauth) RequestAccessToken(code, baseurl string, cfg *OAuthConfig)
 	return tokenData.AccessToken, nil
 }
 
-func (o *GithubOauth) RequestUserInfo(access_token string, cfg *OAuthConfig) (*OauthUserInfo, error) {
+func (o *GithubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfig) (*OauthUserInfo, error) {
 	// fetch user data
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if err != nil {

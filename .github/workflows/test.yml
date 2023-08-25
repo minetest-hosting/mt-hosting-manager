@@ -12,6 +12,10 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Install npm modules
+      run: |
+        cd public && npm ci && npm run jshint && npm run bundle
+
     - name: Install Go
       uses: actions/setup-go@v4
       with:

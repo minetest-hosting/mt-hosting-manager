@@ -7,7 +7,6 @@ import (
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/provision"
-	"os"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -46,7 +45,7 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 			Image: "ubuntu-22.04",
 			Labels: map[string]string{
 				"node_id": node.ID,
-				"stage":   os.Getenv("STAGE"),
+				"stage":   w.cfg.Stage,
 			},
 			Location: hetzner_cloud.LocationType(nodetype.Location),
 			Name:     node.Name,

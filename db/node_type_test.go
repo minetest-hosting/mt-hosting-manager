@@ -8,7 +8,7 @@ import (
 )
 
 func TestNodeRepository(t *testing.T) {
-	repos := setupRepos(t)
+	repos := SetupRepos(t)
 
 	assert.NoError(t, repos.NodeTypeRepo.Insert(&types.NodeType{
 		Provider:   types.ProviderHetzner,

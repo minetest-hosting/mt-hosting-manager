@@ -56,3 +56,32 @@ type TransactionSearchFilter struct {
 type TransactionSearchRequest struct {
 	Filter *TransactionSearchFilter `json:"filter"`
 }
+
+type CreateRefundType string
+
+const (
+	RefundMerchantInitiatedOnline CreateRefundType = "MERCHANT_INITIATED_ONLINE"
+	RefundCustomerInitiatedManual CreateRefundType = "CUSTOMER_INITIATED_MANUAL"
+)
+
+type CreateRefundState string
+
+const (
+	CreateRefundSuccessful CreateRefundState = "SUCCESSFUL"
+)
+
+type CreateRefundRequestTransaction struct {
+	ID int64 `json:"id"`
+}
+
+type CreateRefundRequest struct {
+	Amount      string                          `json:"amount"`
+	ExternalID  string                          `json:"externalId"`
+	Transaction *CreateRefundRequestTransaction `json:"transaction"`
+	Type        CreateRefundType                `json:"type"`
+}
+
+type CreateRefundResponse struct {
+	Amount float64           `json:"amount"`
+	State  CreateRefundState `json:"state"`
+}

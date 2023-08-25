@@ -9,7 +9,7 @@ import (
 )
 
 func TestUserRepository(t *testing.T) {
-	repos := setupRepos(t)
+	repos := SetupRepos(t)
 
 	assert.NoError(t, repos.UserRepo.Insert(&types.User{
 		Name:       "Some dude",
