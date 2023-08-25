@@ -46,6 +46,8 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/info", api.GetInfo)
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
+	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
+	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()
@@ -70,9 +72,7 @@ func (api *Api) Setup() {
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()
 	admin_api.Use(SecureHandler(api.RoleCheck(types.UserRoleAdmin)))
-	admin_api.HandleFunc("/nodetype", api.Secure(api.GetNodeTypes)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/nodetype", api.Secure(api.CreateNodeType)).Methods(http.MethodPost)
-	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.GetNodeType)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.UpdateNodeType)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.DeleteNodeType)).Methods(http.MethodDelete)
 	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)

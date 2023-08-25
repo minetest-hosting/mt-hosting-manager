@@ -8,12 +8,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (a *Api) GetNodeTypes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (a *Api) GetNodeTypes(w http.ResponseWriter, r *http.Request) {
 	list, err := a.repos.NodeTypeRepo.GetAll()
 	Send(w, list, err)
 }
 
-func (a *Api) GetNodeType(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+func (a *Api) GetNodeType(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	nt, err := a.repos.NodeTypeRepo.GetByID(vars["id"])
 	Send(w, nt, err)
