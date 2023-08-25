@@ -1,7 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { update } from "../../service/user.js";
-import user_store from "../../store/user.js";
 import format_time from "../../util/format_time.js";
+import { get_user_profile } from "../../service/user.js";
 
 export default {
 	components: {
@@ -9,7 +9,7 @@ export default {
 	},
 	data: function() {
 		return {
-			profile: user_store
+			profile: get_user_profile()
 		};
 	},
 	methods: {

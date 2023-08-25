@@ -1,13 +1,13 @@
 import { logout } from '../service/login.js';
 import login_store from '../store/login.js';
-import info_store from '../store/info.js';
+import { get_stage } from '../service/info.js';
 import { has_role, is_logged_in } from '../service/login.js';
 
 export default {
 	data: function() {
 		return {
 			login: login_store,
-			info: info_store
+			stage: get_stage()
 		};
 	},
 	methods: {
@@ -53,9 +53,9 @@ export default {
 						</router-link>
 					</li>
 				</ul>
-				<div class="btn btn-warning" v-if="info.stage != 'PROD'">
+				<div class="btn btn-warning" v-if="stage != 'PROD'">
 					<i class="fa-solid fa-triangle-exclamation"></i>
-					Stage: {{info.stage}}
+					Stage: {{stage}}
 				</div>
 				<div class="d-flex">
 					<div class="btn-group">

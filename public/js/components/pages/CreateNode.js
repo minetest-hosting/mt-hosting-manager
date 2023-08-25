@@ -1,6 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
-import store from "../../store/nodetype.js";
 import { create } from "../../api/node.js";
+import { get_nodetype, get_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
@@ -8,7 +8,7 @@ export default {
 	},
     data: function() {
         return {
-            nodetype_id: store.nodetypes[0].id,
+            nodetype_id: get_nodetypes()[0].id,
             alias: "",
             busy: false
         };
@@ -26,10 +26,10 @@ export default {
     },
     computed: {
         nodetype: function() {
-            return store.nodetypes.find(nt => nt.id == this.nodetype_id);
+            return get_nodetype(this.nodetype_id);
         },
         available_nodetypes: function() {
-            return store.nodetypes.filter(nt => nt.state == "ACTIVE");
+            return get_nodetypes().filter(nt => nt.state == "ACTIVE");
         }
     },
 	template: /*html*/`

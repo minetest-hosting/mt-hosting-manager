@@ -1,9 +1,9 @@
 
 import login_store from '../store/login.js';
-import { get_claims, logout as api_logout } from '../api/login.js';
+import { get_claims as fetch_claims, logout as api_logout } from '../api/login.js';
 import events, { EVENT_LOGGED_IN } from '../events.js';
 
-export const check_login = () => get_claims().then(c => {
+export const check_login = () => fetch_claims().then(c => {
     login_store.claims = c;
     if (c) {
         events.emit(EVENT_LOGGED_IN, c);

@@ -1,6 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_by_id, update as update_node } from "../../api/node.js";
-import info_store from "../../store/info.js";
+import { get_hostingdomain_suffix } from "../../service/info.js";
 
 const bytes_in_gb = 1000 * 1000 * 1000;
 
@@ -14,7 +14,7 @@ export default {
 	},
 	data: function() {
 		return {
-			info_store: info_store,
+			hostingdomain_suffix: get_hostingdomain_suffix(),
 			node: null,
 			disk_gb_total: 0,
 			disk_gb_used: 0,
@@ -63,7 +63,7 @@ export default {
 				</tr>
 				<tr>
 					<td>Hostname</td>
-					<td>{{node.name}}.{{info_store.hostingdomain_suffix}}</td>
+					<td>{{node.name}}.{{hostingdomain_suffix}}</td>
 				</tr>
 				<tr>
 					<td>IPv4</td>

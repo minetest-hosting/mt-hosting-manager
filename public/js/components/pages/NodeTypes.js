@@ -1,5 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
-import store from "../../store/nodetype.js";
+import { get_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
@@ -7,7 +7,7 @@ export default {
 	},
 	data: function() {
 		return {
-			store: store
+			nodetypes: get_nodetypes()
 		};
 	},
 	template: /*html*/`
@@ -25,7 +25,7 @@ export default {
 				<th>Actions</th>
 			</thead>
 			<tbody>
-				<tr v-for="nt in store.nodetypes">
+				<tr v-for="nt in nodetypes">
 					<td>
 						{{nt.id}}
 						<span v-if="nt.state == 'ACTIVE'" class="badge text-bg-success">Active</span>

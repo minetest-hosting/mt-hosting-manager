@@ -1,9 +1,13 @@
-import store from "../../store/info.js";
 import CardLayout from "../layouts/CardLayout.js";
 import { logout } from "../../api/login.js";
+import { get_github_client_id } from "../../service/info.js";
 
 export default {
-	data: () => store,
+	data: function() {
+		return {
+			github_client_id: get_github_client_id()
+		};
+	},
 	components: {
 		"card-layout": CardLayout
 	},

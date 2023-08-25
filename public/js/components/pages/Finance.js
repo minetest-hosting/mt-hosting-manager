@@ -1,7 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_all, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
-import user_store from "../../store/user.js";
+import { get_user_profile } from "../../service/user.js";
 
 export default {
 	components: {
@@ -11,7 +11,7 @@ export default {
         return {
             amount: 5,
             transactions: [],
-            user: user_store
+            user: get_user_profile()
         };
     },
     mounted: function() {
