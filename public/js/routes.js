@@ -5,12 +5,13 @@ import NodeTypes from './components/pages/NodeTypes.js';
 import NodeTypeDetail from './components/pages/NodeTypeDetail.js';
 import MTServers from './components/pages/MTServers.js';
 import MTServerDetail from './components/pages/MTServerDetail.js';
+import MTServerCreate from './components/pages/MTServerCreate.js';
 import UserNodes from './components/pages/UserNodes.js';
 import UserNodesDetail from './components/pages/UserNodesDetail.js';
+import UserNodeCreate from './components/pages/UserNodeCreate.js';
 import Jobs from './components/pages/Jobs.js';
 import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
-import CreateNode from './components/pages/CreateNode.js';
 
 export default [{
 	path: "/", component: Start
@@ -29,13 +30,16 @@ export default [{
 	path: "/nodes", component: UserNodes,
 	meta: { loggedIn: true }
 },{
-	path: "/nodes/create", component: CreateNode,
+	path: "/nodes/create", component: UserNodeCreate,
 	meta: { loggedIn: true }
 },{
 	path: "/nodes/:id", component: UserNodesDetail,
 	meta: { loggedIn: true }
 },{
 	path: "/mtservers", component: MTServers,
+	meta: { loggedIn: true }
+},{
+	path: "/mtservers/create", component: MTServerCreate,
 	meta: { loggedIn: true }
 },{
 	path: "/mtservers/:id", component: MTServerDetail,

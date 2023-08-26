@@ -146,6 +146,10 @@ export default {
 				</tr>
 			</tbody>
 		</table>
+		<router-link class="btn btn-success" to="/mtservers/create">
+			<i class="fa fa-plus"></i>
+			Create server
+		</router-link>
 	</card-layout>
 	`
 };
