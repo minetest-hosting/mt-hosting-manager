@@ -1,4 +1,4 @@
-import { protected_fetch } from "./util.js";
+import { protected_fetch } from "./protected_fetch.js";
 
 export const get_profile = () => protected_fetch(`api/profile`);
 

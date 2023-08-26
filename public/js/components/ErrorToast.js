@@ -1,5 +1,5 @@
 
-import store from "../store/error_toast.js";
+import { store } from "../api/protected_fetch.js";
 
 export default {
     data: () => store,

@@ -1,4 +1,4 @@
-import { protected_fetch } from "./util.js";
+import { protected_fetch } from "./protected_fetch.js";
 
 export const get_all = () => protected_fetch(`api/nodetype`);
 

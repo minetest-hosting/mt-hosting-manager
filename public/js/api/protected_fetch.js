@@ -1,4 +1,10 @@
-import error_toast_store from "../store/error_toast.js";
+
+export const store = Vue.reactive({
+    title: "",
+    message: "",
+    url: "",
+    status: 0
+});
 
 export const protected_fetch = (url, opts) => fetch(url, opts)
     .then(r => {
@@ -11,8 +17,8 @@ export const protected_fetch = (url, opts) => fetch(url, opts)
          }
     })
     .catch(err => {
-        error_toast_store.title = `HTTP fetch error`;
-        error_toast_store.url = url;
-        error_toast_store.status = err.code;
-        error_toast_store.message = err.message;
+        store.title = `HTTP fetch error`;
+        store.url = url;
+        store.status = err.code;
+        store.message = err.message;
     });
