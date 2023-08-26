@@ -53,7 +53,7 @@ export default {
 						</router-link>
 					</li>
 				</ul>
-				<div class="btn btn-warning" v-if="stage != 'PROD'">
+				<div class="btn btn-warning" v-if="stage != 'prod'">
 					<i class="fa-solid fa-triangle-exclamation"></i>
 					Stage: {{stage}}
 				</div>
