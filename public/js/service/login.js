@@ -1,23 +1,24 @@
 
-import login_store from '../store/login.js';
 import { get_claims as fetch_claims, logout as api_logout } from '../api/login.js';
 import events, { EVENT_LOGGED_IN } from '../events.js';
 
+const store = Vue.reactive({
+    claims: null
+});
+
 export const check_login = () => fetch_claims().then(c => {
-    login_store.claims = c;
+    store.claims = c;
     if (c) {
         events.emit(EVENT_LOGGED_IN, c);
     }
     return c;
 });
 
-export const is_logged_in = () => login_store.claims;
-
-export const has_role = role => login_store.claims && login_store.claims.role == role;
-
 export const logout = () => {
     return api_logout()
-    .then(() => {
-        login_store.claims = null;
-    });
+    .then(() => store.claims = null);
 };
+
+export const get_claims = () => store.claims;
+export const is_logged_in = () => store.claims;
+export const has_role = role => store.claims && store.claims.role == role;

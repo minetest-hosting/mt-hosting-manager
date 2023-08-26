@@ -1,23 +1,16 @@
-import login_store from '../store/login.js';
+import { has_role, is_logged_in } from '../service/login.js';
 
 const LoginPath = { path: "/login" };
 
 export default function(router) {
     router.beforeEach((to) => {
-        if (to.meta.loggedIn && !login_store.loggedIn) {
+        if (to.meta.loggedIn && !is_logged_in()) {
             return LoginPath;
         }
 
-        if (to.meta.requiredRole) {
-            if (!login_store.loggedIn) {
-                // quick login check
-                return LoginPath;
-            }
-
-            if (login_store.claims.role != to.meta.requiredRole){
-                // check required role
-                return LoginPath;
-            }
+        if (to.meta.requiredRole && !has_role(to.meta.requiredRole)){
+            // check required role
+            return LoginPath;
         }
     });   
 }

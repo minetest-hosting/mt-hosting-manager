@@ -1,5 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { logout } from "../../api/login.js";
+import { logout, is_logged_in } from "../../service/login.js";
 import { get_github_client_id } from "../../service/info.js";
 
 export default {
@@ -14,16 +14,19 @@ export default {
 	methods: {
 		logout: logout
 	},
+	computed: {
+		is_logged_in: is_logged_in
+	},
 	template: /*html*/`
 	<card-layout>
 		<template #title>
 			<i class="fa fa-user"></i> Login
 		</template>
-		<a :href="'https://github.com/login/oauth/authorize?client_id=' + github_client_id + '&scope=user:email'" class="btn btn-secondary">
+		<a :href="'https://github.com/login/oauth/authorize?client_id=' + github_client_id + '&scope=user:email'" class="btn btn-secondary" v-if="!is_logged_in">
 			<i class="fab fa-github"></i>
 			Login with Github
 		</a>
-		<a class="btn btn-primary" v-on:click="logout">
+		<a class="btn btn-primary" v-on:click="logout" v-if="is_logged_in">
 			Logout
 		</a>
 	</card-layout>
