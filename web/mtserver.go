@@ -17,6 +17,13 @@ func (a *Api) GetMTServers(w http.ResponseWriter, r *http.Request, c *types.Clai
 	Send(w, list, err)
 }
 
+func (a *Api) GetMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	_, server, _, err := a.CheckedGetMTServer(id, c)
+	Send(w, server, err)
+}
+
 func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	create_mtserver := &types.MinetestServer{}
 	err := json.NewDecoder(r.Body).Decode(create_mtserver)
@@ -71,6 +78,8 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
 		return
 	}
+
+	Send(w, node, nil)
 }
 
 func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {

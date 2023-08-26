@@ -1,6 +1,8 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_by_id, update as update_node } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
+import { get_all as get_all_servers } from "../../api/mtserver.js";
+import format_time from "../../util/format_time.js";
 
 const bytes_in_gb = 1000 * 1000 * 1000;
 
@@ -15,6 +17,7 @@ export default {
 	data: function() {
 		return {
 			hostingdomain_suffix: get_hostingdomain_suffix(),
+			servers: [],
 			node: null,
 			disk_gb_total: 0,
 			disk_gb_used: 0,
@@ -27,11 +30,16 @@ export default {
 	mounted: function() {
 		this.update();
 		this.handle = setInterval(() => this.update(), 5000);
+
+		get_all_servers()
+		.then(list => list.filter(s => s.user_node_id == this.$route.params.id))
+		.then(list => this.servers = list);
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
 	},
 	methods: {
+		format_time: format_time,
 		update: function() {
 			get_by_id(this.$route.params.id)
 			.then(n => this.node = n)
@@ -76,6 +84,15 @@ export default {
 				<tr>
 					<td>State</td>
 					<td>{{node.state}}</td>
+				</tr>
+				<tr v-if="servers.length == 0 && node.state == 'RUNNING'">
+					<td>Actions</td>
+					<td>
+						<router-link class="btn btn-xs btn-danger" :to="'/nodes/' + node.id + '/delete'">
+							<i class="fa fa-trash"></i>
+							Delete
+						</router-link>
+					</td>
 				</tr>
 				<tr>
 					<td>Alias</td>
@@ -122,34 +139,36 @@ export default {
 				</tr>
 			</tbody>
 		</table>
-		<h4>Servers</h4>
-		<table class="table">
-			<thead>
-				<th>Name</th>
-				<th>Created</th>
-				<th>State</th>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<a href="todo">
-							<i class="fa fa-list"></i>
-							my-server
-						</a>
-					</td>
-					<td>
-						20xx-yy-zz
-					</td>
-					<td>
-						state
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<router-link class="btn btn-success" to="/mtservers/create">
-			<i class="fa fa-plus"></i>
-			Create server
-		</router-link>
+		<div v-if="this.node && this.node.state == 'RUNNING'">
+			<h4>Servers</h4>
+			<table class="table">
+				<thead>
+					<th>Name</th>
+					<th>Created</th>
+					<th>State</th>
+				</thead>
+				<tbody>
+					<tr v-for="server in servers">
+						<td>
+							<router-link :to="'/mtservers/' + server.id">
+								<i class="fa fa-list"></i>
+								{{server.name}}
+							</router-link>
+						</td>
+						<td>
+							{{format_time(server.created)}}
+						</td>
+						<td>
+							{{server.state}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<router-link class="btn btn-success" to="/mtservers/create">
+				<i class="fa fa-plus"></i>
+				Create server
+			</router-link>
+		</div>
 	</card-layout>
 	`
 };

@@ -45,7 +45,7 @@ export default {
 					<td>{{node.state}}</td>
 					<td>{{format_time(node.created)}}</td>
 					<td>
-						{{get_nodetype(node.nodetype_id)}}
+						{{get_nodetype(node.node_type_id).name}}
 					</td>
 				</tr>
 			</tbody>

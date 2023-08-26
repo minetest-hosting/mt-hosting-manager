@@ -14,10 +14,8 @@ export const check_login = () => fetch_claims().then(c => {
     return c;
 });
 
-export const logout = () => {
-    return api_logout()
+export const logout = () => api_logout()
     .then(() => store.claims = null);
-};
 
 export const get_claims = () => store.claims;
 export const is_logged_in = () => store.claims;
