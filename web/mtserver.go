@@ -124,3 +124,30 @@ func (a *Api) UpdateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 	err = a.repos.MinetestServerRepo.Update(mtserver)
 	Send(w, node, err)
 }
+
+func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	node, mtserver, status, err := a.CheckedGetMTServer(id, c)
+	if err != nil {
+		SendError(w, status, err)
+		return
+	}
+
+	job := worker.SetupServerJob(node, mtserver)
+	err = a.repos.JobRepo.Insert(job)
+	Send(w, job, err)
+}
+
+func (a *Api) GetLatestMTServerJob(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	_, mtserver, status, err := a.CheckedGetMTServer(id, c)
+	if err != nil {
+		SendError(w, status, err)
+		return
+	}
+
+	job, err := a.repos.JobRepo.GetLatestByMinetestServerID(mtserver.ID)
+	Send(w, job, err)
+}

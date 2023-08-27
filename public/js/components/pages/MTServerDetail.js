@@ -1,5 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { get_by_id } from "../../api/mtserver.js";
+import { get_by_id, setup, get_latest_job } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 
 export default {
@@ -7,12 +7,12 @@ export default {
 		"card-layout": CardLayout
 	},
 	mounted: function() {
-		get_by_id(this.$route.params.id)
-		.then(s => this.server = s);
+		this.update();
 	},
 	data: function(){
 		return {
 			server: null,
+			job: null,
 			dns_suffix: get_hostingdomain_suffix(),
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
@@ -22,6 +22,18 @@ export default {
 				icon: "list", name: "Server detail", link: `/mtservers/${this.$route.params.id}`
 			}]
 		};
+	},
+	methods: {
+		update: function() {
+			get_by_id(this.$route.params.id)
+			.then(s => this.server = s);
+
+			get_latest_job(this.$route.params.id)
+			.then(j => this.job = j);
+		},
+		setup: function() {
+			setup(this.server);
+		}
 	},
 	template: /*html*/`
 	<card-layout title="Server details" icon="list" :breadcrumb="breadcrumb">
@@ -59,7 +71,7 @@ export default {
 				<td>Actions</td>
 				<td>
 					<div class="btn-group">
-						<a class="btn btn-xs btn-outline-secondary">
+						<a class="btn btn-xs btn-outline-secondary" v-on:click="setup">
 							Run setup
 						</a>
 					</div>
