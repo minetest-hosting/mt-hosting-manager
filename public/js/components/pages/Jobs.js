@@ -2,6 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
 import { get_all, retry, remove } from "../../api/job.js";
+import format_time from '../../util/format_time.js';
 
 export default {
 	components: {
@@ -28,6 +29,7 @@ export default {
 		clearInterval(this.handle);
 	},
 	methods: {
+		format_time: format_time,
 		update: function() {
 			get_all().then(j => this.jobs = j);
 		},
@@ -41,12 +43,13 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Jobs" icon="play" :breadcrumb="breadcrumb">
+	<card-layout title="Jobs" icon="play" :breadcrumb="breadcrumb" :fullwidth="true">
 		<table class="table table-condensed">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>Type</th>
+					<th>Started</th>
 					<th>State</th>
 					<th>Links</th>
 					<th>Message</th>
@@ -57,6 +60,7 @@ export default {
 				<tr v-for="job in jobs">
 					<td>{{job.id}}</td>
 					<td>{{job.type}}</td>
+					<td>{{format_time(job.started)}}</td>
 					<td>{{job.state}}</td>
 					<td>
 						<node-link :id="job.user_node_id" v-if="job.user_node_id"/>
