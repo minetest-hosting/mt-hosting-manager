@@ -14,8 +14,13 @@ import (
 )
 
 func (a *Api) GetNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	list, err := a.repos.UserNodeRepo.GetByUserID(c.UserID)
-	Send(w, list, err)
+	if c.Role == types.UserRoleAdmin {
+		list, err := a.repos.UserNodeRepo.GetAll()
+		Send(w, list, err)
+	} else {
+		list, err := a.repos.UserNodeRepo.GetByUserID(c.UserID)
+		Send(w, list, err)
+	}
 }
 
 func (a *Api) GetNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {

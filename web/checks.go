@@ -87,7 +87,7 @@ func (a *Api) CheckedGetUserNode(user_node_id string, c *types.Claims) (*types.U
 	if node == nil {
 		return nil, 404, fmt.Errorf("node not found '%s'", user_node_id)
 	}
-	if node.UserID != c.UserID {
+	if c.Role != types.UserRoleAdmin && node.UserID != c.UserID {
 		return nil, 403, fmt.Errorf("not authorized to access node '%s'", user_node_id)
 	}
 	return node, 0, nil

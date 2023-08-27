@@ -13,8 +13,13 @@ import (
 )
 
 func (a *Api) GetMTServers(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	list, err := a.repos.MinetestServerRepo.GetByUserID(c.UserID)
-	Send(w, list, err)
+	if c.Role == types.UserRoleAdmin {
+		list, err := a.repos.MinetestServerRepo.GetAll()
+		Send(w, list, err)
+	} else {
+		list, err := a.repos.MinetestServerRepo.GetByUserID(c.UserID)
+		Send(w, list, err)
+	}
 }
 
 func (a *Api) GetMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
