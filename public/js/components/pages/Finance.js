@@ -11,7 +11,12 @@ export default {
         return {
             amount: 5,
             transactions: [],
-            user: get_user_profile()
+            user: get_user_profile(),
+            breadcrumb: [{
+                icon: "home", name: "Home", link: "/"
+            },{
+                icon: "money-bill", name: "Finance", link: "/finance"
+            }]
         };
     },
     mounted: function() {
@@ -28,10 +33,7 @@ export default {
         }
     },
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-money-bill"></i> Finance
-		</template>
+	<card-layout title="Finance" icon="money-bill" :breadcrumb="breadcrumb">
         <h4>Current balance</h4>
         <table class="table table-condensed">
             <tr>

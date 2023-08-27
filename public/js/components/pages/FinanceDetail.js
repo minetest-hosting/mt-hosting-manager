@@ -9,7 +9,14 @@ export default {
 	},
     data: function() {
         return {
-            transaction: null
+            transaction: null,
+            breadcrumb: [{
+                icon: "home", name: "Home", link: "/"
+            },{
+                icon: "money-bill", name: "Finance", link: "/finance"
+            },{
+                icon: "money-bill", name: "Transaction detail", link: `/finance/${this.$route.params.id}`
+            }]
         };
     },
     mounted: function() {
@@ -35,10 +42,7 @@ export default {
         }
     },
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-money-bill"></i> Finance details
-		</template>
+	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
         <table class="table table-condensed" v-if="transaction">
             <tr>
                 <td>State</td>

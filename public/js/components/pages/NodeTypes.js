@@ -11,10 +11,7 @@ export default {
 		};
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i> Nodetypes
-		</template>
+	<card-layout title="Nodetype" icon="server">
 		<table class="table">
 			<thead>
 				<th>ID</th>

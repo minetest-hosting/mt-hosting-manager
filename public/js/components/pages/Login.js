@@ -18,10 +18,7 @@ export default {
 		is_logged_in: is_logged_in
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-user"></i> Login
-		</template>
+	<card-layout title="Login" icon="user">
 		<a :href="'https://github.com/login/oauth/authorize?client_id=' + github_client_id + '&scope=user:email'" class="btn btn-secondary" v-if="!is_logged_in">
 			<i class="fab fa-github"></i>
 			Login with Github

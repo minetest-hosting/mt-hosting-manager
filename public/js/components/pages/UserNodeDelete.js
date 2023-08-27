@@ -22,12 +22,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i>
-			<i class="fa fa-trash"></i>
-			Confirm node deletion
-		</template>
+	<card-layout title="Confirm node deletion" icon="trash">
 		<table class="table" v-if="node">
 			<tbody>
 				<tr>

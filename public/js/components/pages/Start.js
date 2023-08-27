@@ -1,14 +1,18 @@
 import CardLayout from "../layouts/CardLayout.js";
+import Breadcrumb from "../Breadcrumb.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"bread-crumb": Breadcrumb
+	},
+	data: function() {
+		return {
+			breadcrumb: [{icon: "home", name: "Home", link: "/"}]
+		};
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-home"></i> Home
-		</template>
+	<card-layout title="Home" icon="home" :breadcrumb="breadcrumb">
 		<div class="text-center">
 			<h4>Minetest hosting</h4>
 			<hr/>

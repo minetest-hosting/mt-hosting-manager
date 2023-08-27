@@ -62,10 +62,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i> Node details
-		</template>
+	<card-layout title="Node details" icon="server">
 		<h4>Details</h4>
 		<table class="table" v-if="node">
 			<tbody>

@@ -19,10 +19,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-user"></i> Profile
-		</template>
+	<card-layout title="Profile" icon="user">
 		<table class="table" v-if="profile">
 			<tr>
 				<td>Mail</td>

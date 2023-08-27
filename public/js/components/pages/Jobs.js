@@ -12,6 +12,11 @@ export default {
 	data: function() {
 		return {
 			jobs: [],
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "play", name: "Jobs", link: "/jobs"
+			}],
 			handle: null
 		};
 	},
@@ -36,10 +41,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-play"></i> Jobs
-		</template>
+	<card-layout title="Jobs" icon="play" :breadcrumb="breadcrumb">
 		<table class="table table-condensed">
 			<thead>
 				<tr>

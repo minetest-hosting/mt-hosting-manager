@@ -33,12 +33,7 @@ export default {
         }
     },
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i>
-            <i class="fa fa-plus"></i>
-            Create node
-		</template>
+	<card-layout title="Create node" icon="plus">
         <div class="row">
             <div class="col-12">
                 <select v-model="nodetype_id" class="form-control" :disabled="busy">

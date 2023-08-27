@@ -17,10 +17,7 @@ export default {
 		};
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-list"></i> Server details
-		</template>
+	<card-layout title="Server details" icon="list">
 		<table class="table" v-if="server">
 			<tr>
 				<td>ID</td>

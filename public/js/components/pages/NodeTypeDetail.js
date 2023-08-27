@@ -44,10 +44,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i> Nodetype
-		</template>
+	<card-layout title="Nodetype" icon="server">
 		<table class="table" v-if="nt">
 			<tr>
 				<td>ID</td>

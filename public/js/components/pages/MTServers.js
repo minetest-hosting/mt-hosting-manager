@@ -5,10 +5,7 @@ export default {
 		"card-layout": CardLayout
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-list"></i> Servers
-		</template>
+	<card-layout title="Servers" icon="list">
 	</card-layout>
 	`
 };

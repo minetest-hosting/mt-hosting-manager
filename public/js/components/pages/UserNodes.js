@@ -25,10 +25,7 @@ export default {
 		get_nodetype: get_nodetype
 	},
 	template: /*html*/`
-	<card-layout>
-		<template #title>
-			<i class="fa fa-server"></i> Nodes
-		</template>
+	<card-layout title="Nodes" icon="server">
 		<table class="table">
 			<thead>
 				<th>Name</th>
