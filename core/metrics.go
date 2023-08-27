@@ -11,11 +11,11 @@ import (
 )
 
 type NodeExporterMetrics struct {
-	LoadPercent int
-	DiskSize    int64
-	DiskUsed    int64
-	MemorySize  int64
-	MemoryUsed  int64
+	LoadPercent int   `json:"load_percent"`
+	DiskSize    int64 `json:"disk_size"`
+	DiskUsed    int64 `json:"disk_used"`
+	MemorySize  int64 `json:"memory_size"`
+	MemoryUsed  int64 `json:"memory_used"`
 }
 
 func ParseNodeExporterMetrics(data []byte) (*NodeExporterMetrics, error) {

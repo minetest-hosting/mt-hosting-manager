@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker"
@@ -28,6 +29,31 @@ func (a *Api) GetNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	id := vars["id"]
 	node, _, err := a.CheckedGetUserNode(id, c)
 	Send(w, node, err)
+}
+
+func (a *Api) GetNodeStats(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	node, _, err := a.CheckedGetUserNode(id, c)
+	metrics := &core.NodeExporterMetrics{}
+
+	if node.State != types.UserNodeStateRunning {
+		SendError(w, 500, fmt.Errorf("node not in running state"))
+		return
+	}
+
+	if a.cfg.EnableDummyWorker {
+		metrics.DiskSize = 1000 * 1000 * 1000 * 10
+		metrics.DiskUsed = 1000 * 1000 * 1000 * 2.5
+		metrics.MemorySize = 1000 * 1000 * 1000 * 2
+		metrics.MemoryUsed = 1000 * 1000 * 1000 * 0.2
+		metrics.LoadPercent = rand.Intn(20)
+
+	} else {
+		metrics, err = core.FetchMetrics(node.IPv4)
+	}
+
+	Send(w, metrics, err)
 }
 
 func (a *Api) UpdateNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {

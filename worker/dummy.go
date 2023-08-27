@@ -1,7 +1,6 @@
 package worker
 
 import (
-	"math/rand"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"time"
@@ -123,27 +122,6 @@ func DummyWorker(repos *db.Repositories, cfg *types.Config) {
 
 		for _, job := range jobs {
 			executeDummyJob(repos, job)
-		}
-
-		nodes, err := repos.UserNodeRepo.GetAll()
-		if err != nil {
-			panic(err)
-		}
-
-		for _, node := range nodes {
-			if node.State != types.UserNodeStateRunning {
-				continue
-			}
-
-			node.DiskSize = 1000 * 1000 * 1000 * 10
-			node.DiskUsed = 1000 * 1000 * 1000 * 2.5
-			node.MemorySize = 1000 * 1000 * 1000 * 2
-			node.MemoryUsed = 1000 * 1000 * 1000 * 0.2
-			node.LoadPercent = rand.Intn(20)
-			err = repos.UserNodeRepo.Update(node)
-			if err != nil {
-				panic(err)
-			}
 		}
 
 		time.Sleep(1 * time.Second)

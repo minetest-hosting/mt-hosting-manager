@@ -28,10 +28,6 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 }
 
 func (w *Worker) Run() {
-
-	// start background jobs
-	go w.MetricsCollector()
-
 	// execute previously running jobs
 	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {

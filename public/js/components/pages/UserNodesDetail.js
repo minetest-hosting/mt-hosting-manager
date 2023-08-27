@@ -1,7 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerLink from "../ServerLink.js";
 
-import { get_by_id, update as update_node } from "../../api/node.js";
+import { get_by_id, get_stats, update as update_node } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_all as get_all_servers } from "../../api/mtserver.js";
 
@@ -23,6 +23,7 @@ export default {
 			hostingdomain_suffix: get_hostingdomain_suffix(),
 			servers: [],
 			node: null,
+			load_percent: 0,
 			disk_gb_total: 0,
 			disk_gb_used: 0,
 			disk_percent: 0,
@@ -32,8 +33,11 @@ export default {
 		};
 	},
 	mounted: function() {
-		this.update();
-		this.handle = setInterval(() => this.update(), 5000);
+		get_by_id(this.$route.params.id)
+		.then(n => this.node = n);
+
+		this.update_stats();
+		this.handle = setInterval(() => this.update_stats(), 5000);
 
 		get_all_servers()
 		.then(list => list.filter(s => s.user_node_id == this.$route.params.id))
@@ -44,21 +48,20 @@ export default {
 	},
 	methods: {
 		format_time: format_time,
-		update: function() {
-			get_by_id(this.$route.params.id)
-			.then(n => this.node = n)
-			.then(() => {
-				this.disk_gb_total = get_gb_rounded(this.node.disk_size);
-				this.disk_gb_used = get_gb_rounded(this.node.disk_used);
+		update_stats: function() {
+			get_stats(this.$route.params.id)
+			.then(stats => {
+				this.load_percent = stats.load_percent;
+				this.disk_gb_total = get_gb_rounded(stats.disk_size);
+				this.disk_gb_used = get_gb_rounded(stats.disk_used);
 				this.disk_percent = parseInt(this.disk_gb_used / this.disk_gb_total * 100);
-				this.memory_gb_total = get_gb_rounded(this.node.memory_size);
-				this.memory_gb_used = get_gb_rounded(this.node.memory_used);
+				this.memory_gb_total = get_gb_rounded(stats.memory_size);
+				this.memory_gb_used = get_gb_rounded(stats.memory_used);
 				this.memory_percent = parseInt(this.memory_gb_used / this.memory_gb_total * 100);
 			});
 		},
 		save: function() {
-			update_node(this.node)
-			.then(() => this.update());
+			update_node(this.node);
 		}
 	},
 	template: /*html*/`
@@ -110,8 +113,8 @@ export default {
 					<td>CPU Usage</td>
 					<td>
 						<div class="progress">
-							<div class="progress-bar" v-bind:style="{ width: node.load_percent + '%' }">
-								{{node.load_percent}}%
+							<div class="progress-bar" v-bind:style="{ width: load_percent + '%' }">
+								{{load_percent}}%
 							</div>
 						</div>
 					</td>

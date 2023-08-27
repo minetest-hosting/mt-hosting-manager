@@ -27,11 +27,6 @@ type UserNode struct {
 	IPv4              string        `json:"ipv4"`
 	IPv6              string        `json:"ipv6"`
 	Fingerprint       string        `json:"fingerprint"`
-	LoadPercent       int           `json:"load_percent"`
-	DiskSize          int64         `json:"disk_size"`
-	DiskUsed          int64         `json:"disk_used"`
-	MemorySize        int64         `json:"memory_size"`
-	MemoryUsed        int64         `json:"memory_used"`
 }
 
 func (m *UserNode) Columns(action string) []string {
@@ -48,11 +43,6 @@ func (m *UserNode) Columns(action string) []string {
 		"ipv4",
 		"ipv6",
 		"fingerprint",
-		"load_percent",
-		"disk_size",
-		"disk_used",
-		"memory_size",
-		"memory_used",
 	}
 }
 
@@ -74,11 +64,6 @@ func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
 		&m.IPv4,
 		&m.IPv6,
 		&m.Fingerprint,
-		&m.LoadPercent,
-		&m.DiskSize,
-		&m.DiskUsed,
-		&m.MemorySize,
-		&m.MemoryUsed,
 	)
 }
 
@@ -96,10 +81,5 @@ func (m *UserNode) Values(action string) []any {
 		m.IPv4,
 		m.IPv6,
 		m.Fingerprint,
-		m.LoadPercent,
-		m.DiskSize,
-		m.DiskUsed,
-		m.MemorySize,
-		m.MemoryUsed,
 	}
 }
