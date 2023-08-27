@@ -1,7 +1,10 @@
 import CardLayout from "../layouts/CardLayout.js";
+import ServerLink from "../ServerLink.js";
+
 import { get_by_id, update as update_node } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_all as get_all_servers } from "../../api/mtserver.js";
+
 import format_time from "../../util/format_time.js";
 
 const bytes_in_gb = 1000 * 1000 * 1000;
@@ -12,7 +15,8 @@ function get_gb_rounded(bytes) {
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"server-link": ServerLink
 	},
 	data: function() {
 		return {
@@ -150,10 +154,7 @@ export default {
 				<tbody>
 					<tr v-for="server in servers">
 						<td>
-							<router-link :to="'/mtservers/' + server.id">
-								<i class="fa fa-list"></i>
-								{{server.name}}
-							</router-link>
+							<server-link :server="server"/>
 						</td>
 						<td>
 							{{format_time(server.created)}}

@@ -2,10 +2,12 @@ import CardLayout from "../layouts/CardLayout.js";
 import { get_all } from "../../api/node.js";
 import format_time from "../../util/format_time.js";
 import { get_nodetype } from "../../service/nodetype.js";
+import NodeLink from "../NodeLink.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"node-link": NodeLink
 	},
 	data: function() {
 		return {
@@ -37,10 +39,7 @@ export default {
 			<tbody>
 				<tr v-for="node in nodes">
 					<td>
-						<router-link :to="'/nodes/' + node.id">
-							<i class="fa fa-server"></i>
-							{{node.alias}} ({{node.name}})
-						</router-link>
+						<node-link :node="node"/>
 					</td>
 					<td>{{node.state}}</td>
 					<td>{{format_time(node.created)}}</td>
