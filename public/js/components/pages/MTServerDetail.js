@@ -13,11 +13,18 @@ export default {
 	data: function(){
 		return {
 			server: null,
-			dns_suffix: get_hostingdomain_suffix()
+			dns_suffix: get_hostingdomain_suffix(),
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "list", name: "Servers", link: "/mtservers"
+			},{
+				icon: "list", name: "Server detail", link: `/mtservers/${this.$route.params.id}`
+			}]
 		};
 	},
 	template: /*html*/`
-	<card-layout title="Server details" icon="list">
+	<card-layout title="Server details" icon="list" :breadcrumb="breadcrumb">
 		<table class="table" v-if="server">
 			<tr>
 				<td>ID</td>
@@ -36,6 +43,26 @@ export default {
 				<td>
 					<i class="fa-solid fa-arrow-up-right-from-square"></i>
 					<a :href="'https://' + server.dns_name + '.' + dns_suffix">{{server.dns_name}}.{{dns_suffix}}</a>
+				</td>
+			</tr>
+			<tr>
+				<td>UI Version</td>
+				<td>
+					<input type="text" class="form-control" v-model="server.ui_version"/>
+				</td>
+			</tr>
+			<tr>
+				<td>State</td>
+				<td>{{server.state}}</td>
+			</tr>
+			<tr>
+				<td>Actions</td>
+				<td>
+					<div class="btn-group">
+						<a class="btn btn-xs btn-outline-secondary">
+							Run setup
+						</a>
+					</div>
 				</td>
 			</tr>
 		</table>
