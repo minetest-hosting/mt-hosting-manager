@@ -1,7 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
-import ServerLink from "../ServerLink.js";
 import NodeState from "../NodeState.js";
-import ServerState from "../ServerState.js";
+import ServerList from "../ServerList.js";
 
 import { get_by_id, get_stats, update as update_node } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -18,9 +17,8 @@ function get_gb_rounded(bytes) {
 export default {
 	components: {
 		"card-layout": CardLayout,
-		"server-link": ServerLink,
 		"node-state": NodeState,
-		"server-state": ServerState
+		"server-list": ServerList
 	},
 	data: function() {
 		return {
@@ -65,7 +63,9 @@ export default {
 			});
 		},
 		save: function() {
-			update_node(this.node);
+			if (this.node && this.node.state == "RUNNING") {
+				update_node(this.node);
+			}
 		}
 	},
 	template: /*html*/`
@@ -151,26 +151,7 @@ export default {
 		</table>
 		<div v-if="this.node && this.node.state == 'RUNNING'">
 			<h4>Servers</h4>
-			<table class="table">
-				<thead>
-					<th>Name</th>
-					<th>Created</th>
-					<th>State</th>
-				</thead>
-				<tbody>
-					<tr v-for="server in servers">
-						<td>
-							<server-link :server="server"/>
-						</td>
-						<td>
-							{{format_time(server.created)}}
-						</td>
-						<td>
-							<server-state :state="server.state"/>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<server-list :list="servers"/>
 			<router-link class="btn btn-success" to="/mtservers/create">
 				<i class="fa fa-plus"></i>
 				Create server
