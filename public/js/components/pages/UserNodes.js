@@ -11,7 +11,12 @@ export default {
 	},
 	data: function() {
 		return {
-			nodes: []
+			nodes: [],
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "server", name: "Nodes", link: "/nodes"
+			}]
 		};
 	},
 	mounted: function() {
@@ -25,7 +30,7 @@ export default {
 		get_nodetype: get_nodetype
 	},
 	template: /*html*/`
-	<card-layout title="Nodes" icon="server">
+	<card-layout title="Nodes" icon="server" :breadcrumb="breadcrumb">
 		<table class="table">
 			<thead>
 				<th>Name</th>

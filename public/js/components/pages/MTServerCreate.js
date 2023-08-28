@@ -14,7 +14,14 @@ export default {
 			port: 30000,
 			name: "",
 			dns_name: "",
-			dns_suffix: get_hostingdomain_suffix()
+			dns_suffix: get_hostingdomain_suffix(),
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "list", name: "Servers", link: "/mtservers"
+			},{
+				icon: "plus", name: "Create server", link: "/mtservers/create"
+			}]
 		};
 	},
 	mounted: function() {
@@ -41,7 +48,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Create server" icon="plus">
+	<card-layout title="Create server" icon="plus" :breadcrumb="breadcrumb">
 		<table class="table">
 			<tbody>
 				<tr>

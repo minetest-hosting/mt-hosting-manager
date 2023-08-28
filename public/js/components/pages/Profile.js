@@ -9,7 +9,12 @@ export default {
 	},
 	data: function() {
 		return {
-			profile: get_user_profile()
+			profile: get_user_profile(),
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "user", name: "Profile", link: "/profile"
+			}]
 		};
 	},
 	methods: {
@@ -19,7 +24,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Profile" icon="user">
+	<card-layout title="Profile" icon="user" :breadcrumb="breadcrumb">
 		<table class="table" v-if="profile">
 			<tr>
 				<td>Mail</td>

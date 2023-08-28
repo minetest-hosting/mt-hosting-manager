@@ -7,11 +7,16 @@ export default {
 	},
 	data: function() {
 		return {
-			nodetypes: get_nodetypes()
+			nodetypes: get_nodetypes(),
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "server", name: "Nodetypes", link: "/node_types"
+			}]
 		};
 	},
 	template: /*html*/`
-	<card-layout title="Nodetype" icon="server">
+	<card-layout title="Nodetype" icon="server" :breadcrumb="breadcrumb">
 		<table class="table">
 			<thead>
 				<th>ID</th>

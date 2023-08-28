@@ -8,7 +8,14 @@ export default {
 	},
 	data: function() {
 		return {
-			nt: null
+			nt: null,
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "server", name: "Nodetypes", link: "/node_types"
+			},{
+				icon: "server", name: "Nodetype detail", link: `/node_types/${this.$route.params.id}`
+			}]
 		};
 	},
 	mounted: function() {
@@ -44,7 +51,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Nodetype" icon="server">
+	<card-layout title="Nodetype detail" icon="server" :breadcrumb="breadcrumb">
 		<table class="table" v-if="nt">
 			<tr>
 				<td>ID</td>
