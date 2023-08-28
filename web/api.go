@@ -26,11 +26,7 @@ func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 	return &Api{
 		repos: repos,
 		cfg:   cfg,
-		wc: wallee.New(
-			os.Getenv("WALLEE_USERID"),
-			os.Getenv("WALLEE_SPACEID"),
-			os.Getenv("WALLEE_KEY"),
-		),
+		wc:    wallee.New(),
 	}
 }
 

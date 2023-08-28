@@ -1,6 +1,9 @@
 package wallee
 
-import "net/http"
+import (
+	"net/http"
+	"os"
+)
 
 type WalleeClient struct {
 	UserID  string
@@ -9,11 +12,11 @@ type WalleeClient struct {
 	client  http.Client
 }
 
-func New(userID, spaceID, key string) *WalleeClient {
+func New() *WalleeClient {
 	return &WalleeClient{
-		UserID:  userID,
-		SpaceID: spaceID,
-		Key:     key,
+		UserID:  os.Getenv("WALLEE_USERID"),
+		SpaceID: os.Getenv("WALLEE_SPACEID"),
+		Key:     os.Getenv("WALLEE_KEY"),
 		client:  http.Client{},
 	}
 }
