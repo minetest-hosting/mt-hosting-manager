@@ -1,10 +1,13 @@
 import CardLayout from "../layouts/CardLayout.js";
+import ServerState from "../ServerState.js";
+
 import { get_by_id, setup, get_latest_job } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"server-state": ServerState
 	},
 	mounted: function() {
 		this.update();
@@ -65,7 +68,9 @@ export default {
 			</tr>
 			<tr>
 				<td>State</td>
-				<td>{{server.state}}</td>
+				<td>
+					<server-state :state="server.state"/>
+				</td>
 			</tr>
 			<tr>
 				<td>Actions</td>

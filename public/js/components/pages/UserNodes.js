@@ -1,13 +1,16 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { get_all } from "../../api/node.js";
-import format_time from "../../util/format_time.js";
-import { get_nodetype } from "../../service/nodetype.js";
 import NodeLink from "../NodeLink.js";
+import NodeState from "../NodeState.js";
+
+import { get_all } from "../../api/node.js";
+import { get_nodetype } from "../../service/nodetype.js";
+import format_time from "../../util/format_time.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
-		"node-link": NodeLink
+		"node-link": NodeLink,
+		"node-state": NodeState
 	},
 	data: function() {
 		return {
@@ -43,7 +46,9 @@ export default {
 					<td>
 						<node-link :node="node"/>
 					</td>
-					<td>{{node.state}}</td>
+					<td>
+						<node-state :state="node.state"/>
+					</td>
 					<td>{{format_time(node.created)}}</td>
 					<td>
 						{{get_nodetype(node.node_type_id).name}}

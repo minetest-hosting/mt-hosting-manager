@@ -1,5 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerLink from "../ServerLink.js";
+import NodeState from "../NodeState.js";
+import ServerState from "../ServerState.js";
 
 import { get_by_id, get_stats, update as update_node } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -16,7 +18,9 @@ function get_gb_rounded(bytes) {
 export default {
 	components: {
 		"card-layout": CardLayout,
-		"server-link": ServerLink
+		"server-link": ServerLink,
+		"node-state": NodeState,
+		"server-state": ServerState
 	},
 	data: function() {
 		return {
@@ -87,7 +91,9 @@ export default {
 				</tr>
 				<tr>
 					<td>State</td>
-					<td>{{node.state}}</td>
+					<td>
+						<node-state :state="node.state"/>
+					</td>
 				</tr>
 				<tr v-if="servers.length == 0 && node.state == 'RUNNING'">
 					<td>Actions</td>
@@ -160,7 +166,7 @@ export default {
 							{{format_time(server.created)}}
 						</td>
 						<td>
-							{{server.state}}
+							<server-state :state="server.state"/>
 						</td>
 					</tr>
 				</tbody>
