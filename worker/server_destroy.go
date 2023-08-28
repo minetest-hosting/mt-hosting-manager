@@ -2,7 +2,6 @@ package worker
 
 import (
 	"fmt"
-	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/server_setup"
@@ -30,14 +29,11 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
-	records, err := w.hdc.GetRecords()
-	if err != nil {
-		return fmt.Errorf("fetch records error: %v", err)
-	}
-
-	err = w.RemoveDNSRecord(records, hetzner_dns.RecordCNAME, server.DNSName)
-	if err != nil {
-		return err
+	if server.ExternalCNAMEDNSID != "" {
+		err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
+		if err != nil {
+			return fmt.Errorf("could not remove CNAME: %v", err)
+		}
 	}
 
 	client, err := TrySSHConnection(node)

@@ -29,14 +29,13 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
-	records, err := w.hdc.GetRecords()
-	if err != nil {
-		return fmt.Errorf("fetch records error: %v", err)
-	}
-
-	err = w.UpdateDNSRecord(records, hetzner_dns.RecordCNAME, server.DNSName, node.Name)
-	if err != nil {
-		return err
+	if server.ExternalCNAMEDNSID == "" {
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, server.DNSName, node.Name)
+		if err != nil {
+			return fmt.Errorf("could not create CNAME record: %v", err)
+		}
+		server.ExternalCNAMEDNSID = record.ID
+		//TODO: update CNAME
 	}
 
 	client, err := TrySSHConnection(node)

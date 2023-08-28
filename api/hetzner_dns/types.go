@@ -22,3 +22,7 @@ type Record struct {
 type RecordsResponse struct {
 	Records []*Record `json:"records"`
 }
+
+type RecordResponse struct {
+	Record *Record `json:"record"`
+}

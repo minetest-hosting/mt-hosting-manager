@@ -3,7 +3,6 @@ package worker
 import (
 	"errors"
 	"fmt"
-	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 
 	"github.com/sirupsen/logrus"
@@ -25,19 +24,18 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		}).Warn("Server instance not found, not deleting anything")
 	}
 
-	records, err := w.hdc.GetRecords()
-	if err != nil {
-		return fmt.Errorf("fetch records error: %v", err)
+	if node.ExternalIPv4DNSID != "" {
+		err = w.RemoveDNSRecord(node.ExternalIPv4DNSID)
+		if err != nil {
+			return fmt.Errorf("could not remove A-record: %v", err)
+		}
 	}
 
-	err = w.RemoveDNSRecord(records, hetzner_dns.RecordA, node.Name)
-	if err != nil {
-		return err
-	}
-
-	err = w.RemoveDNSRecord(records, hetzner_dns.RecordAAAA, node.Name)
-	if err != nil {
-		return err
+	if node.ExternalIPv6DNSID != "" {
+		err = w.RemoveDNSRecord(node.ExternalIPv6DNSID)
+		if err != nil {
+			return fmt.Errorf("could not remove AAAA-record: %v", err)
+		}
 	}
 
 	return w.repos.UserNodeRepo.Delete(node.ID)

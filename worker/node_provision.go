@@ -78,19 +78,20 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		}
 	}
 
-	records, err := w.hdc.GetRecords()
-	if err != nil {
-		return fmt.Errorf("fetch records error: %v", err)
+	if node.ExternalIPv4DNSID == "" {
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordA, node.Name, node.IPv4)
+		if err != nil {
+			return fmt.Errorf("could not create A-record: %v", err)
+		}
+		node.ExternalIPv4DNSID = record.ID
 	}
 
-	err = w.UpdateDNSRecord(records, hetzner_dns.RecordA, node.Name, node.IPv4)
-	if err != nil {
-		return err
-	}
-
-	err = w.UpdateDNSRecord(records, hetzner_dns.RecordAAAA, node.Name, node.IPv6)
-	if err != nil {
-		return err
+	if node.ExternalIPv6DNSID == "" {
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordAAAA, node.Name, node.IPv6)
+		if err != nil {
+			return fmt.Errorf("could not create AAAA-record: %v", err)
+		}
+		node.ExternalIPv6DNSID = record.ID
 	}
 
 	logrus.WithFields(logrus.Fields{
