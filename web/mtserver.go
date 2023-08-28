@@ -84,7 +84,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	Send(w, node, nil)
+	Send(w, mtserver, nil)
 }
 
 func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
@@ -105,7 +105,7 @@ func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 func (a *Api) UpdateMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	node, mtserver, status, err := a.CheckedGetMTServer(id, c)
+	_, mtserver, status, err := a.CheckedGetMTServer(id, c)
 	if err != nil {
 		SendError(w, status, err)
 		return
@@ -122,7 +122,7 @@ func (a *Api) UpdateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 	mtserver.Name = updated_mtserver.Name
 
 	err = a.repos.MinetestServerRepo.Update(mtserver)
-	Send(w, node, err)
+	Send(w, mtserver, err)
 }
 
 func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {

@@ -24,6 +24,10 @@ export default {
 	},
 	mounted: function() {
 		this.update();
+		this.handle = setInterval(() => this.update(), 2000);
+	},
+	beforeUnmount: function() {
+		clearInterval(this.handle);
 	},
 	methods: {
 		format_time: format_time,
@@ -42,7 +46,7 @@ export default {
 				<th>Node-Type</th>
 			</thead>
 			<tbody>
-				<tr v-for="node in nodes">
+				<tr v-for="node in nodes" :key="node.id">
 					<td>
 						<node-link :node="node"/>
 					</td>

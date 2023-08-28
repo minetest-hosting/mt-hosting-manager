@@ -36,10 +36,11 @@ export default {
 	},
 	mounted: function() {
 		get_by_id(this.$route.params.id)
-		.then(n => this.node = n);
-
-		this.update_stats();
-		this.handle = setInterval(() => this.update_stats(), 5000);
+		.then(n => this.node = n)
+		.then(() => {
+			this.update_stats();
+			this.handle = setInterval(() => this.update_stats(), 2000);	
+		});
 
 		get_all_servers()
 		.then(list => list.filter(s => s.user_node_id == this.$route.params.id))
@@ -51,6 +52,12 @@ export default {
 	methods: {
 		format_time: format_time,
 		update_stats: function() {
+			if (this.node.state != "RUNNING") {
+				get_by_id(this.$route.params.id)
+				.then(n => this.node = n);
+				return;
+			}
+
 			get_stats(this.$route.params.id)
 			.then(stats => {
 				this.load_percent = stats.load_percent;
@@ -63,9 +70,7 @@ export default {
 			});
 		},
 		save: function() {
-			if (this.node && this.node.state == "RUNNING") {
-				update_node(this.node);
-			}
+			update_node(this.node);
 		}
 	},
 	template: /*html*/`
