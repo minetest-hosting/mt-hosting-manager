@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
+import JobState from "../JobState.js";
 import { get_all, retry, remove } from "../../api/job.js";
 import format_time from '../../util/format_time.js';
 
@@ -8,7 +9,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
 		"node-link": NodeLink,
-		"server-link": ServerLink
+		"server-link": ServerLink,
+		"job-state": JobState
 	},
 	data: function() {
 		return {
@@ -61,7 +63,9 @@ export default {
 					<td>{{job.id}}</td>
 					<td>{{job.type}}</td>
 					<td>{{format_time(job.started)}}</td>
-					<td>{{job.state}}</td>
+					<td>
+						<job-state :state="job.state"/>
+					</td>
 					<td>
 						<node-link :id="job.user_node_id" v-if="job.user_node_id"/>
 						<br>
