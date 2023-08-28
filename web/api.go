@@ -54,6 +54,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.GetNode)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node/{id}/stats", api.Secure(api.GetNodeStats)).Methods(http.MethodGet)
+	user_api.HandleFunc("/node/{id}/job", api.Secure(api.GetLatestNodeJob)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.DeleteNode)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.UpdateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver", api.Secure(api.GetMTServers)).Methods(http.MethodGet)

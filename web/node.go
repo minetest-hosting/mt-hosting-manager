@@ -31,6 +31,18 @@ func (a *Api) GetNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	Send(w, node, err)
 }
 
+func (a *Api) GetLatestNodeJob(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	node, _, err := a.CheckedGetUserNode(id, c)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	job, err := a.repos.JobRepo.GetLatestByUserNodeID(node.ID)
+	Send(w, job, err)
+}
+
 func (a *Api) GetNodeStats(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]

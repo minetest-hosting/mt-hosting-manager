@@ -4,6 +4,8 @@ export const get_all = () => protected_fetch(`api/node`);
 
 export const get_by_id = id => protected_fetch(`api/node/${id}`);
 
+export const get_latest_job = id => protected_fetch(`api/node/${id}/job`);
+
 export const get_stats = id => protected_fetch(`api/node/${id}/stats`);
 
 export const create = n => protected_fetch(`api/node`, {
