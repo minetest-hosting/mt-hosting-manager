@@ -134,6 +134,7 @@ func FetchMetrics(hostname string) (*NodeExporterMetrics, error) {
 	if err != nil {
 		return nil, fmt.Errorf("request error: %v", err)
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}

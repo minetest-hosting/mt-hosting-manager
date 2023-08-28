@@ -49,10 +49,11 @@ func Send(nn *NtfyNotification, cache bool) error {
 	}
 
 	client := &http.Client{}
-	_, err = client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	return nil
 }

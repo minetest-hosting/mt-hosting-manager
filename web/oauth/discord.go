@@ -44,6 +44,7 @@ func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuth
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
 
 	tokenData := AccessTokenResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&tokenData)
@@ -68,6 +69,7 @@ func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	userData := DiscordResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&userData)

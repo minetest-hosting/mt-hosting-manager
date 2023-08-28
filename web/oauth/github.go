@@ -53,6 +53,7 @@ func (o *GithubOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuthC
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
 
 	tokenData := AccessTokenResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&tokenData)
@@ -78,6 +79,7 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfi
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	userData := GithubUserResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&userData)
@@ -98,6 +100,7 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfi
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	mails := []GithubUserMail{}
 	err = json.NewDecoder(resp.Body).Decode(&mails)
