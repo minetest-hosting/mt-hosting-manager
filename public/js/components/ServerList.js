@@ -19,7 +19,7 @@ export default {
             <th>State</th>
         </thead>
         <tbody>
-            <tr v-for="server in list">
+            <tr v-for="server in list" :key="server.id">
                 <td>
                     <server-link :server="server"/>
                 </td>

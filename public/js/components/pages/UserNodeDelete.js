@@ -8,7 +8,16 @@ export default {
 	data: function() {
 		return {
 			node: null,
-			confirm_alias: ""
+			confirm_alias: "",
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "server", name: "Nodes", link: "/nodes"
+			},{
+				icon: "server", name: "Node detail", link: `/nodes/${this.$route.params.id}`
+			},{
+				icon: "trash", name: "Delete", link: `/nodes/${this.$route.params.id}/delete`
+			}]
 		};
 	},
 	mounted: function() {
@@ -22,7 +31,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Confirm node deletion" icon="trash">
+	<card-layout title="Confirm node deletion" icon="trash" :breadcrumb="breadcrumb">
 		<table class="table" v-if="node">
 			<tbody>
 				<tr>

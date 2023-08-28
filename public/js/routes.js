@@ -6,6 +6,7 @@ import NodeTypeDetail from './components/pages/NodeTypeDetail.js';
 import MTServers from './components/pages/MTServers.js';
 import MTServerDetail from './components/pages/MTServerDetail.js';
 import MTServerCreate from './components/pages/MTServerCreate.js';
+import MTServerDelete from './components/pages/MTServerDelete.js';
 import UserNodes from './components/pages/UserNodes.js';
 import UserNodesDetail from './components/pages/UserNodesDetail.js';
 import UserNodeCreate from './components/pages/UserNodeCreate.js';
@@ -47,6 +48,9 @@ export default [{
 	meta: { loggedIn: true }
 },{
 	path: "/mtservers/:id", component: MTServerDetail,
+	meta: { loggedIn: true }
+},{
+	path: "/mtservers/:id/delete", component: MTServerDelete,
 	meta: { loggedIn: true }
 },{
 	path: "/jobs", component: Jobs,

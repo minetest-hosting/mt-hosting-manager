@@ -134,6 +134,18 @@ func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Cla
 		return
 	}
 
+	// check for current execution
+	latest_job, err := a.repos.JobRepo.GetLatestByMinetestServerID(mtserver.ID)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("could not fetch latest job: %v", err))
+		return
+	}
+	if latest_job != nil && (latest_job.State == types.JobStateCreated || latest_job.State == types.JobStateRunning) {
+		// already running or created
+		SendError(w, 500, fmt.Errorf("job already scheduled: %s", latest_job.ID))
+		return
+	}
+
 	job := worker.SetupServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
 	Send(w, job, err)

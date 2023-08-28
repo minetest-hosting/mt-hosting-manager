@@ -2,9 +2,8 @@ import CardLayout from "../layouts/CardLayout.js";
 import NodeState from "../NodeState.js";
 import ServerList from "../ServerList.js";
 
-import { get_by_id, get_stats, update as update_node } from "../../api/node.js";
+import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
-import { get_all as get_all_servers } from "../../api/mtserver.js";
 
 import format_time from "../../util/format_time.js";
 
@@ -25,6 +24,13 @@ export default {
 			hostingdomain_suffix: get_hostingdomain_suffix(),
 			servers: [],
 			node: null,
+			breadcrumb: [{
+				icon: "home", name: "Home", link: "/"
+			},{
+				icon: "server", name: "Nodes", link: "/nodes"
+			},{
+				icon: "server", name: "Node detail", link: `/nodes/${this.$route.params.id}`
+			}],
 			load_percent: 0,
 			disk_gb_total: 0,
 			disk_gb_used: 0,
@@ -35,16 +41,13 @@ export default {
 		};
 	},
 	mounted: function() {
-		get_by_id(this.$route.params.id)
+		const nodeid = this.$route.params.id;
+		get_by_id(nodeid)
 		.then(n => this.node = n)
 		.then(() => {
 			this.update_stats();
 			this.handle = setInterval(() => this.update_stats(), 2000);	
 		});
-
-		get_all_servers()
-		.then(list => list.filter(s => s.user_node_id == this.$route.params.id))
-		.then(list => this.servers = list);
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
@@ -52,13 +55,17 @@ export default {
 	methods: {
 		format_time: format_time,
 		update_stats: function() {
+			const nodeid = this.$route.params.id;
 			if (this.node.state != "RUNNING") {
-				get_by_id(this.$route.params.id)
+				get_by_id(nodeid)
 				.then(n => this.node = n);
 				return;
 			}
 
-			get_stats(this.$route.params.id)
+			get_mtservers_by_nodeid(nodeid)
+			.then(list => this.servers = list);
+	
+			get_stats(nodeid)
 			.then(stats => {
 				this.load_percent = stats.load_percent;
 				this.disk_gb_total = get_gb_rounded(stats.disk_size);
@@ -74,7 +81,7 @@ export default {
 		}
 	},
 	template: /*html*/`
-	<card-layout title="Node details" icon="server">
+	<card-layout title="Node details" icon="server" :breadcrumb="breadcrumb">
 		<h4>Details</h4>
 		<table class="table" v-if="node">
 			<tbody>

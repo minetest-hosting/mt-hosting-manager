@@ -1,6 +1,8 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerState from "../ServerState.js";
 
+import defer from "../../util/defer.js";
+
 import { get_by_id, setup, get_latest_job } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 
@@ -10,7 +12,14 @@ export default {
 		"server-state": ServerState
 	},
 	mounted: function() {
-		this.update();
+		const server_id = this.$route.params.id;
+		get_by_id(server_id)
+		.then(s => this.server = s);
+
+		this.handle = setInterval(() => this.update(), 2000);
+	},
+	beforeUnmount: function() {
+		clearInterval(this.handle);
 	},
 	data: function(){
 		return {
@@ -28,14 +37,24 @@ export default {
 	},
 	methods: {
 		update: function() {
-			get_by_id(this.$route.params.id)
-			.then(s => this.server = s);
+			const server_id = this.$route.params.id;
 
-			get_latest_job(this.$route.params.id)
+			get_latest_job(server_id)
 			.then(j => this.job = j);
+
+			// update state
+			get_by_id(server_id)
+			.then(s => this.server.state = s.state);
 		},
 		setup: function() {
-			setup(this.server);
+			setup(this.server)
+			.then(() => defer(500))
+			.then(() => this.update());
+		}
+	},
+	computed: {
+		setup_running: function() {
+			return (this.job && this.job.state == "RUNNING");
 		}
 	},
 	template: /*html*/`
@@ -77,9 +96,15 @@ export default {
 					<td>Actions</td>
 					<td>
 						<div class="btn-group">
-							<a class="btn btn-xs btn-outline-secondary" v-on:click="setup">
+							<button class="btn btn-xs btn-outline-secondary" v-on:click="setup" :disabled="setup_running">
+								<i class="fa fa-cog"></i>
 								Run setup
-							</a>
+								<i class="fa fa-spinner fa-spin" v-if="setup_running"></i>
+							</button>
+							<router-link class="btn btn-xs btn-danger" :to="'/mtservers/' + server.id + '/delete'">
+								<i class="fa fa-trash"></i>
+								Delete
+							</router-link>
 						</div>
 					</td>
 				</tr>
