@@ -32,6 +32,7 @@ func (c *WalleeClient) CreatePaymentPageURL(transactionID int64) (string, error)
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
 
 	resp_bytes, err := io.ReadAll(resp.Body)
 	if err != nil {

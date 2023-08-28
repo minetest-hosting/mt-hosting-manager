@@ -27,6 +27,7 @@ func (c *HetznerCloudClient) CreateServer(csr *CreateServerRequest) (*CreateServ
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	resp_bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -55,6 +56,7 @@ func (c *HetznerCloudClient) GetServer(id string) (*CreateServerResponse, error)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}
@@ -78,6 +80,7 @@ func (c *HetznerCloudClient) PowerOffServer(id string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode == 423 {
 		return ErrStillInPowerCycle
 	}
@@ -99,6 +102,7 @@ func (c *HetznerCloudClient) PowerOnServer(id string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode == 423 {
 		return ErrStillInPowerCycle
 	}
@@ -122,6 +126,7 @@ func (c *HetznerCloudClient) DeleteServer(id string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}

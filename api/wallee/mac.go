@@ -65,6 +65,7 @@ func (c *WalleeClient) jsonRequest(path, method string, req_obj, resp_obj any) e
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	resp_bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
