@@ -30,12 +30,31 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	}
 
 	if server.ExternalCNAMEDNSID == "" {
+		// create new record
 		record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, server.DNSName, node.Name)
 		if err != nil {
 			return fmt.Errorf("could not create CNAME record: %v", err)
 		}
 		server.ExternalCNAMEDNSID = record.ID
-		//TODO: update CNAME
+
+	} else {
+		// check if record matches config
+		record, err := w.hdc.GetRecord(server.ExternalCNAMEDNSID)
+		if err != nil {
+			return fmt.Errorf("could not fetch current cname with id: '%s': %v", server.ExternalCNAMEDNSID, err)
+		}
+		if record.Record.Name != server.DNSName || record.Record.Value != node.Name {
+			// values changed, remove and recreate
+			err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
+			if err != nil {
+				return fmt.Errorf("could not remove record with id '%s', %v", server.ExternalCNAMEDNSID, err)
+			}
+			created_record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, server.DNSName, node.Name)
+			if err != nil {
+				return fmt.Errorf("could not re-create CNAME record: %v", err)
+			}
+			server.ExternalCNAMEDNSID = created_record.ID
+		}
 	}
 
 	client, err := TrySSHConnection(node)
