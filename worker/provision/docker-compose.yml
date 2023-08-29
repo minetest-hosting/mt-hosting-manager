@@ -63,6 +63,7 @@ services:
    - SYS_MODULE
   volumes:
    - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  command: "-debug"
   logging:
    options:
     max-size: 50m
