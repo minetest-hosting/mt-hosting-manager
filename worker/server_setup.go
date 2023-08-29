@@ -59,7 +59,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	}
 
 	// dns propagation time (LE has issues with really _fresh_ records)
-	time.Sleep(30 * time.Second)
+	time.Sleep(10 * time.Second)
 
 	client, err := TrySSHConnection(node)
 	if err != nil {

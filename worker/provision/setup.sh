@@ -7,11 +7,9 @@ cd `dirname $0`
 test -f "APT_STAGE1" ||{
     apt-get update
     apt-get install -y docker docker-compose net-tools iptables-persistent
-    ip6tables-restore /etc/iptables/rules.v6
     docker network create --ipv6 --subnet "fd00:dead:beef::/48" terminator || true
-    systemctl restart docker
-
     touch "APT_STAGE1"
 }
 
 docker-compose up -d
+docker-compose restart ipv6nat
