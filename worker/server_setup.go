@@ -5,6 +5,7 @@ import (
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/server_setup"
+	"time"
 )
 
 func (w *Worker) ServerSetup(job *types.Job) error {
@@ -56,6 +57,9 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			server.ExternalCNAMEDNSID = created_record.ID
 		}
 	}
+
+	// dns propagation time (LE has issues with really _fresh_ records)
+	time.Sleep(30 * time.Second)
 
 	client, err := TrySSHConnection(node)
 	if err != nil {
