@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const TOKEN_COOKIE_NAME = "mtui"
+const TOKEN_COOKIE_NAME = "mt-hosting-manager"
 
 var err_unauthorized = errors.New("unauthorized")
 
@@ -22,6 +22,7 @@ func (api *Api) createCookie(value string, expires time.Time) *http.Cookie {
 		Domain:   api.cfg.CookieDomain,
 		HttpOnly: true,
 		Secure:   api.cfg.CookieSecure,
+		SameSite: http.SameSiteStrictMode,
 	}
 }
 
