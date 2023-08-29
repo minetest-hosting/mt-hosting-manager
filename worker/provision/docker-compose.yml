@@ -19,6 +19,8 @@ services:
  traefik:
   image: traefik:v3.0
   restart: always
+  depends_on:
+   - ipv6nat
   ports:
    - "80:80"
    - "443:443"

@@ -12,4 +12,3 @@ test -f "APT_STAGE1" ||{
 }
 
 docker-compose up -d
-docker-compose restart ipv6nat
