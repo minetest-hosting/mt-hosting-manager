@@ -13,6 +13,7 @@ services:
    WORLD_DIR: "/root/.minetest/worlds/world"
    SERVER_NAME: "{{.Servername}}"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
+   MINETEST_CONFIG: "/minetest.conf"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/minetest.conf"
    DOCKER_MINETEST_PORT: {{.Port}}
@@ -21,6 +22,7 @@ services:
    DOCKER_MINETEST_CONTAINER: "{{.Enginename}}"
   volumes:
    - "./world:/root/.minetest/worlds/world"
+   - "./minetest.conf:/minetest.conf"
    - "/var/run/docker.sock:/var/run/docker.sock:ro"
   labels:
     - "promtail=true"
