@@ -11,24 +11,6 @@
 
 State: **WIP**
 
-## Roadmap
-
-* [ ] Login options
-  * [x] github (MVP)
-  * [ ] discord
-  * [ ] mesehub
-  * [ ] gitlab
-* [ ] Payment options
-  * [x] Wallee (MVP)
-  * [ ] Stripe
-  * [ ] Coinbase crypto
-* [ ] Host creation
-  * [x] Hetzner (MVP)
-  * [ ] Contabo
-* [x] Host provisioning (MVP)
-* [ ] Instance setup
-* [ ] Backups?
-
 # Dev
 
 ```sh
