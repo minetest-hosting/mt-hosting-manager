@@ -6,6 +6,9 @@ cd `dirname $0`
 test -f "minetest.conf" ||{
     echo "server_name = {{.Servername}}" > "minetest.conf"
     echo "ipv6_server = true" >> "minetest.conf"
+    echo "server_address = {{.Hostname}}" >> "minetest.conf"
+    echo "server_url = https://{{.Hostname}}" >> "minetest.conf"
+    echo "port = {{.Port}}" >> "minetest.conf"
 }
 
 docker network create "network-{{.ServerShortID}}" || true
