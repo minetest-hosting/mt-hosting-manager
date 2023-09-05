@@ -2,13 +2,17 @@
 set -e
 cd `dirname $0`
 
+test -d world || mkdir world
+
+CFG="world/minetest.conf"
+
 # initialize minetest config if it does not exist
-test -f "minetest.conf" ||{
-    echo "server_name = {{.Servername}}" > "minetest.conf"
-    echo "ipv6_server = true" >> "minetest.conf"
-    echo "server_address = {{.Hostname}}" >> "minetest.conf"
-    echo "server_url = https://{{.Hostname}}" >> "minetest.conf"
-    echo "port = {{.Port}}" >> "minetest.conf"
+test -f ${CFG} ||{
+    echo "server_name = {{.Servername}}" > ${CFG}
+    echo "ipv6_server = true" >> ${CFG}
+    echo "server_address = {{.Hostname}}" >> ${CFG}
+    echo "server_url = https://{{.Hostname}}" >> ${CFG}
+    echo "port = {{.Port}}" >> ${CFG}
 }
 
 docker network create "network-{{.ServerShortID}}" || true

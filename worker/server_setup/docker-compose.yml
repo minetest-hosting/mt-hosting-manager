@@ -22,7 +22,7 @@ services:
    DOCKER_MINETEST_CONTAINER: "{{.Enginename}}"
   volumes:
    - "./world:/root/.minetest/worlds/world"
-   - "./minetest.conf:/minetest.conf"
+   - "./world/minetest.conf:/minetest.conf"
    - "/var/run/docker.sock:/var/run/docker.sock:ro"
   labels:
     - "promtail=true"
