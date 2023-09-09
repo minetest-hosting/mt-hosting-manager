@@ -25,6 +25,9 @@ type Config struct {
 	HetznerApiKey       string
 	HetznerApiZoneID    string
 	GithubOauthConfig   *OAuthConfig
+	MailHost            string
+	MailAddress         string
+	MailPassword        string
 }
 
 func NewConfig() *Config {
@@ -47,5 +50,8 @@ func NewConfig() *Config {
 			ClientID: os.Getenv("GITHUB_CLIENTID"),
 			Secret:   os.Getenv("GITHUB_SECRET"),
 		},
+		MailHost:     os.Getenv("MAIL_HOST"),
+		MailAddress:  os.Getenv("MAIL_ADDRESS"),
+		MailPassword: os.Getenv("MAIL_PASSWORD"),
 	}
 }
