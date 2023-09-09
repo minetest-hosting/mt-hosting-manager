@@ -80,6 +80,15 @@ create table job(
 
 create index job_type_state_started on job(type, state, started);
 
+create table mail_queue(
+    id varchar(36) primary key not null, -- uuid
+    state varchar(32) not null default 'CREATED', -- CREATED, PENDING, DONE_SUCCESS, DONE_FAILURE
+    timestamp bigint not null, -- last changed time in `time.Now().Unix()`
+    receiver varchar(256) not null,
+    subject varchar(256) not null,
+    content varchar not null
+);
+
 create table payment_transaction(
     id varchar(36) primary key not null, -- uuid
     transaction_id varchar not null, -- external tx id
