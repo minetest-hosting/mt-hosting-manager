@@ -38,10 +38,11 @@ func main() {
 	repos := db.NewRepositories(db_)
 
 	// worker (optional)
+	var w *worker.Worker
 	if cfg.EnableWorker {
 		logrus.Info("Starting worker")
-		w := worker.NewWorker(repos, cfg)
-		go w.Run()
+		w = worker.NewWorker(repos, cfg)
+		w.Start()
 	}
 	if cfg.EnableDummyWorker {
 		logrus.Info("Starting dummy worker")
@@ -65,5 +66,11 @@ func main() {
 	var captureSignal = make(chan os.Signal, 1)
 	signal.Notify(captureSignal, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-captureSignal
+	if w != nil {
+		//shut down worker
+		logrus.Info("Shutting down worker")
+		w.Stop()
+	}
+	logrus.Info("Exiting")
 	server.Shutdown(context.Background())
 }

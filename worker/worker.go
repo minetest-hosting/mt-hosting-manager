@@ -5,24 +5,37 @@ import (
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
+	"sync/atomic"
 	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
 type Worker struct {
-	repos *db.Repositories
-	cfg   *types.Config
-	hcc   *hetzner_cloud.HetznerCloudClient
-	hdc   *hetzner_dns.HetznerDNSClient
+	repos   *db.Repositories
+	cfg     *types.Config
+	hcc     *hetzner_cloud.HetznerCloudClient
+	hdc     *hetzner_dns.HetznerDNSClient
+	running *atomic.Bool
 }
 
 func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 	return &Worker{
-		repos: repos,
-		cfg:   cfg,
-		hcc:   hetzner_cloud.New(cfg.HetznerCloudKey),
-		hdc:   hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
+		repos:   repos,
+		cfg:     cfg,
+		hcc:     hetzner_cloud.New(cfg.HetznerCloudKey),
+		hdc:     hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
+		running: &atomic.Bool{},
+	}
+}
+
+func (w *Worker) Stop() {
+	w.running.Store(false)
+}
+
+func (w *Worker) Start() {
+	if w.running.CompareAndSwap(false, true) {
+		go w.Run()
 	}
 }
 
@@ -39,7 +52,7 @@ func (w *Worker) Run() {
 		go w.ExecuteJob(job)
 	}
 
-	for {
+	for w.running.Load() {
 		//Execute pending (created) jobs
 		jobs, err := w.repos.JobRepo.GetByState(types.JobStateCreated)
 		if err != nil {
