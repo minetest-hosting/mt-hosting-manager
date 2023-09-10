@@ -40,6 +40,7 @@ func (api *Api) Setup() {
 	// public
 	apir := r.PathPrefix("/api").Subrouter()
 	apir.HandleFunc("/info", api.GetInfo)
+	apir.HandleFunc("/healthcheck", api.Healthcheck)
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
