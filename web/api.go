@@ -9,6 +9,7 @@ import (
 	"mt-hosting-manager/web/oauth"
 	"net/http"
 	"os"
+	"sync/atomic"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -17,20 +18,24 @@ import (
 )
 
 type Api struct {
-	repos *db.Repositories
-	cfg   *types.Config
-	wc    *wallee.WalleeClient
+	repos   *db.Repositories
+	cfg     *types.Config
+	wc      *wallee.WalleeClient
+	running *atomic.Bool
 }
 
 func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 	return &Api{
-		repos: repos,
-		cfg:   cfg,
-		wc:    wallee.New(),
+		repos:   repos,
+		cfg:     cfg,
+		wc:      wallee.New(),
+		running: &atomic.Bool{},
 	}
 }
 
 func (api *Api) Setup() {
+	api.running.Store(true)
+
 	r := mux.NewRouter()
 	r.Use(middleware.LoggingMiddleware)
 	r.Use(middleware.PrometheusMiddleware)
@@ -107,4 +112,8 @@ func (api *Api) Setup() {
 	}
 
 	http.Handle("/", r)
+}
+
+func (api *Api) Stop() {
+	api.running.Store(false)
 }

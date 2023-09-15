@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
@@ -66,11 +67,15 @@ func main() {
 	var captureSignal = make(chan os.Signal, 1)
 	signal.Notify(captureSignal, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-captureSignal
+	logrus.Info("Preparing shutdown")
 	if w != nil {
 		//shut down worker
 		logrus.Info("Shutting down worker")
 		w.Stop()
 	}
-	logrus.Info("Exiting")
+	//stop api
+	api.Stop()
+	time.Sleep(5 * time.Second)
+	logrus.Info("Shutdown complete")
 	server.Shutdown(context.Background())
 }
