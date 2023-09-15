@@ -2,6 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import { get_by_id, remove } from "../../api/node.js";
 
 export default {
+	props: ["id"],
 	components: {
 		"card-layout": CardLayout
 	},
@@ -14,14 +15,14 @@ export default {
 			},{
 				icon: "server", name: "Nodes", link: "/nodes"
 			},{
-				icon: "server", name: "Node detail", link: `/nodes/${this.$route.params.id}`
+				icon: "server", name: "Node detail", link: `/nodes/${this.id}`
 			},{
-				icon: "trash", name: "Delete", link: `/nodes/${this.$route.params.id}/delete`
+				icon: "trash", name: "Delete", link: `/nodes/${this.id}/delete`
 			}]
 		};
 	},
 	mounted: function() {
-		get_by_id(this.$route.params.id)
+		get_by_id(this.id)
 		.then(n => this.node = n);
 	},
 	methods: {

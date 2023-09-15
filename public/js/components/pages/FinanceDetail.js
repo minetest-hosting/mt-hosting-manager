@@ -4,6 +4,7 @@ import format_time from "../../util/format_time.js";
 import { fetch_profile } from "../../service/user.js";
 
 export default {
+    props: ["id"],
 	components: {
 		"card-layout": CardLayout
 	},
@@ -15,7 +16,7 @@ export default {
             },{
                 icon: "money-bill", name: "Finance", link: "/finance"
             },{
-                icon: "money-bill", name: "Transaction detail", link: `/finance/${this.$route.params.id}`
+                icon: "money-bill", name: "Transaction detail", link: `/finance/${this.id}`
             }]
         };
     },
@@ -25,7 +26,7 @@ export default {
     methods: {
         format_time: format_time,
         update: function() {
-            get_by_id(this.$route.params.id)
+            get_by_id(this.id)
             .then(tx => this.transaction = tx)
             .then(() => {
                 if (this.transaction.state != "SUCCESS") {

@@ -7,12 +7,13 @@ import { get_by_id, setup, get_latest_job } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 
 export default {
+	props: ["id"],
 	components: {
 		"card-layout": CardLayout,
 		"server-state": ServerState
 	},
 	mounted: function() {
-		const server_id = this.$route.params.id;
+		const server_id = this.id;
 		get_by_id(server_id)
 		.then(s => this.server = s);
 
@@ -31,13 +32,13 @@ export default {
 			},{
 				icon: "list", name: "Servers", link: "/mtservers"
 			},{
-				icon: "list", name: "Server detail", link: `/mtservers/${this.$route.params.id}`
+				icon: "list", name: "Server detail", link: `/mtservers/${this.id}`
 			}]
 		};
 	},
 	methods: {
 		update: function() {
-			const server_id = this.$route.params.id;
+			const server_id = this.id;
 
 			get_latest_job(server_id)
 			.then(j => this.job = j);

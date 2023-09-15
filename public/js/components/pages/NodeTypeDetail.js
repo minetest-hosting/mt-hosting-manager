@@ -3,6 +3,7 @@ import { get_by_id, add, update, remove } from "../../api/nodetype.js";
 import { fetch_nodetypes } from "../../service/nodetype.js";
 
 export default {
+	props: ["id"],
 	components: {
 		"card-layout": CardLayout
 	},
@@ -14,14 +15,14 @@ export default {
 			},{
 				icon: "server", name: "Nodetypes", link: "/node_types"
 			},{
-				icon: "server", name: "Nodetype detail", link: `/node_types/${this.$route.params.id}`
+				icon: "server", name: "Nodetype detail", link: `/node_types/${this.id}`
 			}]
 		};
 	},
 	mounted: function() {
-		const id = this.$route.params.id;
+		const id = this.id;
 		if (id != "new") {
-			get_by_id(this.$route.params.id).then(nt => this.nt = nt);
+			get_by_id(this.id).then(nt => this.nt = nt);
 		} else {
 			this.nt = {
 				id: "",

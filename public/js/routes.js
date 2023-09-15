@@ -26,7 +26,7 @@ export default [{
 	path: "/finance", component: Finance,
 	meta: { loggedIn: true }
 },{
-	path: "/finance/detail/:id", component: FinanceDetail,
+	path: "/finance/detail/:id", component: FinanceDetail, props: true,
 	meta: { loggedIn: true }
 },{
 	path: "/nodes", component: UserNodes,
@@ -35,10 +35,10 @@ export default [{
 	path: "/nodes/create", component: UserNodeCreate,
 	meta: { loggedIn: true }
 },{
-	path: "/nodes/:id", component: UserNodesDetail,
+	path: "/nodes/:id", component: UserNodesDetail, props: true,
 	meta: { loggedIn: true }
 },{
-	path: "/nodes/:id/delete", component: UserNodeDelete,
+	path: "/nodes/:id/delete", component: UserNodeDelete, props: true,
 	meta: { loggedIn: true }
 },{
 	path: "/mtservers", component: MTServers,
@@ -47,10 +47,10 @@ export default [{
 	path: "/mtservers/create", component: MTServerCreate,
 	meta: { loggedIn: true }
 },{
-	path: "/mtservers/:id", component: MTServerDetail,
+	path: "/mtservers/:id", component: MTServerDetail, props: true,
 	meta: { loggedIn: true }
 },{
-	path: "/mtservers/:id/delete", component: MTServerDelete,
+	path: "/mtservers/:id/delete", component: MTServerDelete, props: true,
 	meta: { loggedIn: true }
 },{
 	path: "/jobs", component: Jobs,
@@ -59,6 +59,6 @@ export default [{
 	path: "/node_types", component: NodeTypes,
 	meta: { requiredRole: "ADMIN" }
 },{
-	path: "/node_types/:id", component: NodeTypeDetail,
+	path: "/node_types/:id", component: NodeTypeDetail, props: true,
 	meta: { requiredRole: "ADMIN" }
 }];

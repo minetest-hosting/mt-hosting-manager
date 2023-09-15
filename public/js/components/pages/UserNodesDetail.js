@@ -14,6 +14,7 @@ function get_gb_rounded(bytes) {
 }
 
 export default {
+	props: ["id"],
 	components: {
 		"card-layout": CardLayout,
 		"node-state": NodeState,
@@ -29,7 +30,7 @@ export default {
 			},{
 				icon: "server", name: "Nodes", link: "/nodes"
 			},{
-				icon: "server", name: "Node detail", link: `/nodes/${this.$route.params.id}`
+				icon: "server", name: "Node detail", link: `/nodes/${this.id}`
 			}],
 			load_percent: 0,
 			disk_gb_total: 0,
@@ -41,7 +42,7 @@ export default {
 		};
 	},
 	mounted: function() {
-		const nodeid = this.$route.params.id;
+		const nodeid = this.id;
 		get_by_id(nodeid)
 		.then(n => this.node = n)
 		.then(() => {
@@ -55,7 +56,7 @@ export default {
 	methods: {
 		format_time: format_time,
 		update_stats: function() {
-			const nodeid = this.$route.params.id;
+			const nodeid = this.id;
 			if (this.node.state != "RUNNING") {
 				get_by_id(nodeid)
 				.then(n => this.node = n);

@@ -2,6 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import { get_by_id, remove } from "../../api/mtserver.js";
 
 export default {
+	props: ["id"],
 	components: {
 		"card-layout": CardLayout
 	},
@@ -14,14 +15,14 @@ export default {
 			},{
 				icon: "list", name: "Servers", link: "/mtservers"
 			},{
-				icon: "list", name: "Server detail", link: `/mtservers/${this.$route.params.id}`
+				icon: "list", name: "Server detail", link: `/mtservers/${this.id}`
 			},{
-				icon: "trash", name: "Server detail", link: `/mtservers/${this.$route.params.id}/delete`
+				icon: "trash", name: "Server detail", link: `/mtservers/${this.id}/delete`
 			}]
 		};
 	},
 	mounted: function() {
-		get_by_id(this.$route.params.id)
+		get_by_id(this.id)
 		.then(s => this.server = s);
 	},
 	methods: {
