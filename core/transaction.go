@@ -3,15 +3,14 @@ package core
 import (
 	"fmt"
 	"mt-hosting-manager/api/wallee"
-	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"strconv"
 
 	"github.com/bojanz/currency"
 )
 
-func RefundTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string) (*types.PaymentTransaction, error) {
-	tx, err := repos.PaymentTransactionRepo.GetByID(id)
+func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
+	tx, err := c.repos.PaymentTransactionRepo.GetByID(id)
 	if err != nil {
 		return nil, fmt.Errorf("fetch payment tx failed: %v", err)
 	}
@@ -25,7 +24,7 @@ func RefundTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id strin
 		return nil, fmt.Errorf("already refunded: '%s'", tx.AmountRefunded)
 	}
 
-	user, err := repos.UserRepo.GetByID(tx.UserID)
+	user, err := c.repos.UserRepo.GetByID(tx.UserID)
 	if err != nil {
 		return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
 	}
@@ -70,7 +69,7 @@ func RefundTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id strin
 		return nil, fmt.Errorf("could not parse tx id: %v", err)
 	}
 
-	refund_resp, err := wc.CreateRefund(&wallee.CreateRefundRequest{
+	refund_resp, err := c.wc.CreateRefund(&wallee.CreateRefundRequest{
 		Amount:     refund_amount.Number(),
 		ExternalID: tx.ID,
 		Transaction: &wallee.CreateRefundRequestTransaction{
@@ -86,7 +85,7 @@ func RefundTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id strin
 	}
 
 	tx.AmountRefunded = refund_amount.Number()
-	err = repos.PaymentTransactionRepo.Update(tx)
+	err = c.repos.PaymentTransactionRepo.Update(tx)
 	if err != nil {
 		return nil, fmt.Errorf("could not update tx: %v", err)
 	}
@@ -97,16 +96,25 @@ func RefundTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id strin
 	}
 
 	user.Balance = remaining_amount.Number()
-	err = repos.UserRepo.Update(user)
+	err = c.repos.UserRepo.Update(user)
 	if err != nil {
 		return nil, fmt.Errorf("could not update user balance: %v", err)
 	}
 
+	currency := types.DEFAULT_CURRENCY
+	c.AddAuditLog(&types.AuditLog{
+		Type:                 types.AuditLogPaymentRefunded,
+		UserID:               tx.UserID,
+		PaymentTransactionID: &tx.ID,
+		Amount:               &tx.AmountRefunded,
+		Currency:             &currency,
+	})
+
 	return tx, nil
 }
 
-func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string) (*types.PaymentTransaction, error) {
-	tx, err := repos.PaymentTransactionRepo.GetByID(id)
+func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
+	tx, err := c.repos.PaymentTransactionRepo.GetByID(id)
 	if err != nil {
 		return nil, fmt.Errorf("fetch payment tx failed: %v", err)
 	}
@@ -124,7 +132,7 @@ func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string
 				Value:     tx.TransactionID,
 			},
 		}
-		tx_list, err := wc.SearchTransaction(txr)
+		tx_list, err := c.wc.SearchTransaction(txr)
 		if err != nil {
 			return nil, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err)
 		}
@@ -134,12 +142,12 @@ func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string
 		verfifed_tx := tx_list[0]
 		if verfifed_tx.State == wallee.TransactionStateFulfilled {
 			tx.State = types.PaymentStateSuccess
-			err = repos.PaymentTransactionRepo.Update(tx)
+			err = c.repos.PaymentTransactionRepo.Update(tx)
 			if err != nil {
 				return nil, fmt.Errorf("failed to save transaction: %v", err)
 			}
 
-			user, err := repos.UserRepo.GetByID(tx.UserID)
+			user, err := c.repos.UserRepo.GetByID(tx.UserID)
 			if err != nil {
 				return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
 			}
@@ -163,10 +171,19 @@ func CheckTransaction(repos *db.Repositories, wc *wallee.WalleeClient, id string
 			}
 
 			user.Balance = new_amount.Number()
-			err = repos.UserRepo.Update(user)
+			err = c.repos.UserRepo.Update(user)
 			if err != nil {
 				return nil, fmt.Errorf("could not update user: %v", err)
 			}
+
+			currency := types.DEFAULT_CURRENCY
+			c.AddAuditLog(&types.AuditLog{
+				Type:                 types.AuditLogPaymentReceived,
+				UserID:               tx.UserID,
+				PaymentTransactionID: &tx.ID,
+				Amount:               &tx.Amount,
+				Currency:             &currency,
+			})
 		}
 	}
 

@@ -3,6 +3,7 @@ package worker
 import (
 	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/api/hetzner_dns"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"sync/atomic"
@@ -17,6 +18,7 @@ type Worker struct {
 	hcc     *hetzner_cloud.HetznerCloudClient
 	hdc     *hetzner_dns.HetznerDNSClient
 	running *atomic.Bool
+	core    *core.Core
 }
 
 func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
@@ -26,6 +28,7 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 		hcc:     hetzner_cloud.New(cfg.HetznerCloudKey),
 		hdc:     hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
 		running: &atomic.Bool{},
+		core:    core.New(repos, cfg),
 	}
 }
 

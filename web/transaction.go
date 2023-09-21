@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"mt-hosting-manager/api/wallee"
-	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
@@ -85,6 +84,15 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		URL: url,
 	}
 
+	currency := types.DEFAULT_CURRENCY
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:                 types.AuditLogPaymentCreated,
+		UserID:               c.UserID,
+		PaymentTransactionID: &payment_tx_id,
+		Amount:               &create_tx_req.Amount,
+		Currency:             &currency,
+	})
+
 	Send(w, create_tx_resp, nil)
 }
 
@@ -92,7 +100,7 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	tx, err := core.CheckTransaction(a.repos, a.wc, id)
+	tx, err := a.core.CheckTransaction(id)
 	Send(w, tx, err)
 }
 
@@ -100,7 +108,7 @@ func (a *Api) RefundTransaction(w http.ResponseWriter, r *http.Request, c *types
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	tx, err := core.RefundTransaction(a.repos, a.wc, id)
+	tx, err := a.core.RefundTransaction(id)
 	Send(w, tx, err)
 }
 

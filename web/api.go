@@ -2,6 +2,7 @@ package web
 
 import (
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/public"
 	"mt-hosting-manager/types"
@@ -20,6 +21,7 @@ import (
 type Api struct {
 	repos   *db.Repositories
 	cfg     *types.Config
+	core    *core.Core
 	wc      *wallee.WalleeClient
 	running *atomic.Bool
 }
@@ -30,6 +32,7 @@ func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 		cfg:     cfg,
 		wc:      wallee.New(),
 		running: &atomic.Bool{},
+		core:    core.New(repos, cfg),
 	}
 }
 
@@ -56,6 +59,7 @@ func (api *Api) Setup() {
 	user_api.Use(SecureHandler(api.LoginCheck()))
 	user_api.HandleFunc("/profile", api.Secure(api.GetUserProfile)).Methods(http.MethodGet)
 	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
+	user_api.HandleFunc("/audit_log", api.Secure(api.SearchAuditLog)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node", api.Secure(api.GetNodes)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.GetNode)).Methods(http.MethodGet)

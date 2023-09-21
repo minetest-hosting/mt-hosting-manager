@@ -17,6 +17,11 @@ func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user 
 			Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
 			Priority: 3,
 		}, true)
+
+		api.core.AddAuditLog(&types.AuditLog{
+			Type:   types.AuditLogUserCreated,
+			UserID: user.ID,
+		})
 	}
 	dur := time.Duration(24 * 180 * time.Hour)
 	claims := &types.Claims{
@@ -27,6 +32,11 @@ func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user 
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(dur)),
 		},
 	}
+
+	api.core.AddAuditLog(&types.AuditLog{
+		Type:   types.AuditLogUserLoggedIn,
+		UserID: claims.UserID,
+	})
 
 	return api.SetClaims(w, claims)
 }

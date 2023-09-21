@@ -1,10 +1,8 @@
 import CardLayout from "../layouts/CardLayout.js";
-import Breadcrumb from "../Breadcrumb.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout,
-		"bread-crumb": Breadcrumb
+		"card-layout": CardLayout
 	},
 	data: function() {
 		return {
@@ -12,10 +10,7 @@ export default {
 		};
 	},
 	template: /*html*/`
-	<card-layout title="Template" icon="home">
-		<template #breadcrumb>
-			<bread-crumb :items="breadcrumb"/>
-		</template>
+	<card-layout title="Template" icon="home" :breadcrumb="breadcrumb">
 	</card-layout>
 	`
 };

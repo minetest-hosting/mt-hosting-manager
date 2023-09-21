@@ -24,6 +24,14 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	if server == nil {
 		return fmt.Errorf("server not found: %s", *job.MinetestServerID)
 	}
+
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerSetupStarted,
+		UserID:           node.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+	})
+
 	server.State = types.MinetestServerStateProvisioning
 	err = w.repos.MinetestServerRepo.Update(server)
 	if err != nil {
@@ -76,6 +84,13 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	if err != nil {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
+
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerSetupFinished,
+		UserID:           node.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+	})
 
 	return nil
 }

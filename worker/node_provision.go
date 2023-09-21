@@ -21,6 +21,12 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		return errors.New("node not found")
 	}
 
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:       types.AuditLogNodeProvisioningStarted,
+		UserID:     node.UserID,
+		UserNodeID: &node.ID,
+	})
+
 	node.State = types.UserNodeStateProvisioning
 	err = w.repos.UserNodeRepo.Update(node)
 	if err != nil {
@@ -115,5 +121,12 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 	}
 
 	node.State = types.UserNodeStateRunning
+
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:       types.AuditLogNodeProvisioningFinished,
+		UserID:     node.UserID,
+		UserNodeID: &node.ID,
+	})
+
 	return w.repos.UserNodeRepo.Update(node)
 }

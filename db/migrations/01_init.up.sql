@@ -100,3 +100,17 @@ create table payment_transaction(
 );
 
 create index payment_transaction_user_id on payment_transaction(user_id);
+
+create table audit_log(
+    id varchar(36) primary key not null, -- uuid
+    type varchar(64) not null, -- type of audit log
+    timestamp bigint not null, -- time in `time.Now().Unix()`
+    user_id varchar(36) not null references user(id) on delete restrict, -- user
+    user_node_id varchar(36), -- node (optional)
+    minetest_server_id varchar(36), -- server (optional)
+    payment_transaction_id varchar(36), -- payment (optional)
+    amount varchar(16), -- currency amount
+    currency varchar(32) -- currency
+);
+
+create index audit_log_search on audit_log(type, timestamp, user_id);

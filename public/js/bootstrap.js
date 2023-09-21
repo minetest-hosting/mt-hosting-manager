@@ -25,8 +25,12 @@ if (location.hostname == "localhost") {
     scripts.push(script);
 }
 
-// local code
 let script = document.createElement("script");
+script.src = "node_modules/@vuepic/vue-datepicker/dist/vue-datepicker.iife.js";
+scripts.push(script);
+
+// local code
+script = document.createElement("script");
 script.src = "js/bundle.js";
 script.onerror = function() {
     // dev/module fallback if bundle is not found
