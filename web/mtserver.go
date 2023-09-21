@@ -99,6 +99,14 @@ func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 
 	job := worker.RemoveServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
+
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerRemoved,
+		UserID:           c.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &mtserver.ID,
+	})
+
 	Send(w, true, err)
 }
 
@@ -148,6 +156,14 @@ func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Cla
 
 	job := worker.SetupServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
+
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerCreated,
+		UserID:           c.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &mtserver.ID,
+	})
+
 	Send(w, job, err)
 }
 

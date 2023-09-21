@@ -108,7 +108,9 @@ create table audit_log(
     user_id varchar(36) not null references user(id) on delete restrict, -- user
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
-    payment_transaction_id varchar(36) -- payment (optional)
+    payment_transaction_id varchar(36), -- payment (optional)
+    amount varchar(16), -- currency amount
+    currency varchar(32) -- currency
 );
 
 create index audit_log_search on audit_log(type, timestamp, user_id);

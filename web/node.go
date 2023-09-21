@@ -129,6 +129,12 @@ func (a *Api) DeleteNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:       types.AuditLogNodeRemoved,
+		UserID:     c.UserID,
+		UserNodeID: &node.ID,
+	})
+
 	Send(w, true, nil)
 }
 
@@ -177,6 +183,12 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
 		return
 	}
+
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:       types.AuditLogNodeCreated,
+		UserID:     c.UserID,
+		UserNodeID: &node.ID,
+	})
 
 	Send(w, node, nil)
 }
