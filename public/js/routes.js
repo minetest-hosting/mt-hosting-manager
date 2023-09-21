@@ -14,6 +14,7 @@ import UserNodeDelete from './components/pages/UserNodeDelete.js';
 import Jobs from './components/pages/Jobs.js';
 import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
+import AuditLogs from './components/pages/AuditLogs.js';
 
 export default [{
 	path: "/", component: Start
@@ -21,6 +22,9 @@ export default [{
 	path: "/login", component: Login
 },{
 	path: "/profile", component: Profile,
+	meta: { loggedIn: true }
+},{
+	path: "/audit-logs", component: AuditLogs,
 	meta: { loggedIn: true }
 },{
 	path: "/finance", component: Finance,

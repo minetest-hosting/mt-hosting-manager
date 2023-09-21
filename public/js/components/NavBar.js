@@ -57,6 +57,11 @@ export default {
 							<i class="fa fa-list"></i> Servers
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="is_logged_in">
+						<router-link to="/audit-logs" class="nav-link">
+							<i class="fa fa-rectangle-list"></i> Audit-logs
+						</router-link>
+					</li>
 				</ul>
 				<div class="btn btn-warning" v-if="stage != 'prod'">
 					<i class="fa-solid fa-triangle-exclamation"></i>

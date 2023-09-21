@@ -5,19 +5,31 @@ func AuditLogProvider() *AuditLog { return &AuditLog{} }
 type AuditLogType string
 
 const (
-	AuditLogUserCreated              AuditLogType = "user_created"
-	AuditLogUserLoggedIn             AuditLogType = "user_logged_in"
-	AuditLogNodeCreated              AuditLogType = "node_created"
-	AuditLogNodeRemoved              AuditLogType = "node_removed"
+	AuditLogUserCreated  AuditLogType = "user_created"
+	AuditLogUserLoggedIn AuditLogType = "user_logged_in"
+
+	AuditLogNodeCreated AuditLogType = "node_created"
+	AuditLogNodeRemoved AuditLogType = "node_removed"
+
 	AuditLogNodeProvisioningStarted  AuditLogType = "node_provisioning_started"
 	AuditLogNodeProvisioningFinished AuditLogType = "node_provisioning_finished"
-	AuditLogServerCreated            AuditLogType = "server_created"
-	AuditLogServerRemoved            AuditLogType = "server_removed"
-	AuditLogServerSetupStarted       AuditLogType = "server_setup_started"
-	AuditLogServerSetupFinished      AuditLogType = "server_setup_finished"
-	AuditLogPaymentReceived          AuditLogType = "payment_received"
-	AuditLogPaymentRefunded          AuditLogType = "payment_refunded"
+
+	AuditLogServerCreated       AuditLogType = "server_created"
+	AuditLogServerRemoved       AuditLogType = "server_removed"
+	AuditLogServerSetupStarted  AuditLogType = "server_setup_started"
+	AuditLogServerSetupFinished AuditLogType = "server_setup_finished"
+
+	AuditLogPaymentCreated  AuditLogType = "payment_created"
+	AuditLogPaymentReceived AuditLogType = "payment_received"
+	AuditLogPaymentRefunded AuditLogType = "payment_refunded"
 )
+
+type AuditLogSearch struct {
+	FromTimestamp int64         `json:"from_timestamp"`
+	ToTimestamp   int64         `json:"to_timestamp"`
+	Type          *AuditLogType `json:"type"`
+	UserID        *string       `json:"user_id"`
+}
 
 type AuditLog struct {
 	ID                   string       `json:"id"`
