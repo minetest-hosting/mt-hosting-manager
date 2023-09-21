@@ -37,5 +37,7 @@ func (r *AuditLogRepository) Search(s *types.AuditLogSearch) ([]*types.AuditLog,
 		params = append(params, *s.UserID)
 	}
 
+	q += " order by timestamp desc limit 1000"
+
 	return r.dbu.SelectMulti(q, params...)
 }
