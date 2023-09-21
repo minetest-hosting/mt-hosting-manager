@@ -5,7 +5,8 @@ func AuditLogProvider() *AuditLog { return &AuditLog{} }
 type AuditLogType string
 
 const (
-	AuditLogUserCreated AuditLogType = "user_created"
+	AuditLogUserCreated  AuditLogType = "user_created"
+	AuditLogUserLoggedIn AuditLogType = "user_logged_in"
 )
 
 type AuditLog struct {
@@ -16,11 +17,10 @@ type AuditLog struct {
 	UserNodeID           *string      `json:"user_node_id"`
 	MinetestServerID     *string      `json:"minetest_server_id"`
 	PaymentTransactionID *string      `json:"payment_transaction_id"`
-	Message              string       `json:"message"`
 }
 
 func (m *AuditLog) Columns(action string) []string {
-	return []string{"id", "type", "timestamp", "user_id", "user_node_id", "minetest_server_id", "payment_transaction_id", "message"}
+	return []string{"id", "type", "timestamp", "user_id", "user_node_id", "minetest_server_id", "payment_transaction_id"}
 }
 
 func (m *AuditLog) Table() string {
@@ -28,9 +28,9 @@ func (m *AuditLog) Table() string {
 }
 
 func (m *AuditLog) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.Type, &m.Timestamp, &m.UserID, &m.UserNodeID, &m.MinetestServerID, &m.PaymentTransactionID, &m.Message)
+	return r(&m.ID, &m.Type, &m.Timestamp, &m.UserID, &m.UserNodeID, &m.MinetestServerID, &m.PaymentTransactionID)
 }
 
 func (m *AuditLog) Values(action string) []any {
-	return []any{m.ID, m.Type, m.Timestamp, m.UserID, m.UserNodeID, m.MinetestServerID, m.PaymentTransactionID, m.Message}
+	return []any{m.ID, m.Type, m.Timestamp, m.UserID, m.UserNodeID, m.MinetestServerID, m.PaymentTransactionID}
 }

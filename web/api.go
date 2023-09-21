@@ -2,6 +2,7 @@ package web
 
 import (
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/public"
 	"mt-hosting-manager/types"
@@ -20,6 +21,7 @@ import (
 type Api struct {
 	repos   *db.Repositories
 	cfg     *types.Config
+	core    *core.Core
 	wc      *wallee.WalleeClient
 	running *atomic.Bool
 }
@@ -30,6 +32,7 @@ func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 		cfg:     cfg,
 		wc:      wallee.New(),
 		running: &atomic.Bool{},
+		core:    core.New(repos, cfg),
 	}
 }
 

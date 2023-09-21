@@ -13,6 +13,7 @@ type Repositories struct {
 	MinetestServerRepo     *MinetestServerRepository
 	JobRepo                *JobRepository
 	PaymentTransactionRepo *PaymentTransactionRepository
+	AuditLogRepo           *AuditLogRepository
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
@@ -24,5 +25,6 @@ func NewRepositories(db dbutil.DBTx) *Repositories {
 		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},
 		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dialect, types.JobProvider)},
 		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dialect, types.PaymentTransactionProvider)},
+		AuditLogRepo:           &AuditLogRepository{dbu: dbutil.New[*types.AuditLog](db, dialect, types.AuditLogProvider)},
 	}
 }

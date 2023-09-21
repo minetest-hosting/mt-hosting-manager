@@ -41,6 +41,11 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 			Role:   claims.Role,
 		}
 
+		a.core.AddAuditLog(&types.AuditLog{
+			Type:   types.AuditLogUserLoggedIn,
+			UserID: claims.UserID,
+		})
+
 		err = a.SetClaims(w, claims)
 		Send(w, new_claims, err)
 	}
