@@ -17,6 +17,7 @@ export default {
 	<card-layout title="Audit-Logs" icon="rectangle-list" :breadcrumb="breadcrumb" fullwidth="true">
 		<div class="row">
 			<div class="col-2">
+				<vue-datepicker/>
 			</div>
 			<div class="col-2">
 			</div>

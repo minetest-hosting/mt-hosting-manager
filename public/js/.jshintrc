@@ -6,6 +6,7 @@
   "globals": {
     "Vue": true,
     "VueRouter": true,
+    "VueDatePicker": true,
     "console": true
   }
 }
