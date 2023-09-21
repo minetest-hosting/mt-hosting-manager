@@ -84,6 +84,13 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerCreated,
+		UserID:           c.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &mtserver.ID,
+	})
+
 	Send(w, mtserver, nil)
 }
 
@@ -156,13 +163,6 @@ func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Cla
 
 	job := worker.SetupServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
-
-	a.core.AddAuditLog(&types.AuditLog{
-		Type:             types.AuditLogServerCreated,
-		UserID:           c.UserID,
-		UserNodeID:       &node.ID,
-		MinetestServerID: &mtserver.ID,
-	})
 
 	Send(w, job, err)
 }
