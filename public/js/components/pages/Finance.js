@@ -1,11 +1,14 @@
 import CardLayout from "../layouts/CardLayout.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
+
 import { get_all, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { get_user_profile } from "../../service/user.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+        "currency-display": CurrencyDisplay
 	},
     data: function() {
         return {
@@ -25,7 +28,7 @@ export default {
     methods: {
         format_time: format_time,
         new_payment: function() {
-            create({ amount: ""+this.amount })
+            create({ amount: Math.round(this.amount*100) })
             .then(r => window.location = r.url);
         },
         update_payments: function() {
@@ -39,7 +42,7 @@ export default {
             <tr>
                 <td>Balance</td>
                 <td v-if="user">
-                    &euro; {{user.balance}}
+                    <currency-display :eurocents="user.balance"/>
                 </td>
             </tr>
             <tr>
@@ -72,7 +75,9 @@ export default {
                             {{format_time(tx.created)}}
                         </router-link>
                     </td>
-                    <td>&euro; {{tx.amount}}</td>
+                    <td>
+                        <currency-display :eurocents="tx.amount"/>
+                    </td>
                     <td>
                         {{tx.state}}
                         <span class="badge bg-warning" v-if="tx.amount_refunded != '0'">

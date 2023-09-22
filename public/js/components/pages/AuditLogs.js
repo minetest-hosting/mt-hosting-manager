@@ -1,9 +1,11 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { search_audit_logs } from "../../api/audit_log.js";
-import format_time from "../../util/format_time.js";
 import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
 import PaymentLink from "../PaymentLink.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
+
+import { search_audit_logs } from "../../api/audit_log.js";
+import format_time from "../../util/format_time.js";
 
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
@@ -22,7 +24,8 @@ export default {
 		"card-layout": CardLayout,
 		"node-link": NodeLink,
 		"server-link": ServerLink,
-		"payment-link": PaymentLink
+		"payment-link": PaymentLink,
+		"currency-display": CurrencyDisplay
 	},
 	data: () => store,
 	methods: {
@@ -87,7 +90,7 @@ export default {
 						<server-link :id="log.minetest_server_id" v-if="log.minetest_server_id"/>
 						<payment-link :id="log.payment_transaction_id" v-if="log.payment_transaction_id"/>
 						<span v-if="log.amount" class="badge bg-success">
-							{{log.currency}} {{log.amount}}
+							<currency-display :eurocents="log.amount"/>
 						</span>
 					</td>
 				</tr>

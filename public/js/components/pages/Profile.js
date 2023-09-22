@@ -47,7 +47,7 @@ export default {
 			<tr>
 				<td>Balance</td>
 				<td>
-					&euro; {{profile.balance}}
+					&euro; {{profile.balance/100}}
 				</td>
 			</tr>
 			<tr>
