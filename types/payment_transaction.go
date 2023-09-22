@@ -15,8 +15,8 @@ type PaymentTransaction struct {
 	TransactionID  string           `json:"transaction_id"`
 	Created        int64            `json:"created"`
 	UserID         string           `json:"user_id"`
-	Amount         string           `json:"amount"`
-	AmountRefunded string           `json:"amount_refunded"`
+	Amount         int64            `json:"amount"`
+	AmountRefunded int64            `json:"amount_refunded"`
 	State          PaymentStateType `json:"state"`
 }
 

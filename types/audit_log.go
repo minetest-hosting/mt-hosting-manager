@@ -40,7 +40,7 @@ type AuditLog struct {
 	UserNodeID           *string      `json:"user_node_id"`
 	MinetestServerID     *string      `json:"minetest_server_id"`
 	PaymentTransactionID *string      `json:"payment_transaction_id"`
-	Amount               *string      `json:"amount"`
+	Amount               *int64       `json:"amount"`
 }
 
 func (m *AuditLog) Columns(action string) []string {

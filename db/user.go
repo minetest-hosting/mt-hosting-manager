@@ -10,6 +10,7 @@ import (
 
 type UserRepository struct {
 	dbu *dbutil.DBUtil[*types.User]
+	db  dbutil.DBTx
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
@@ -47,4 +48,9 @@ func (r *UserRepository) GetAll() ([]*types.User, error) {
 
 func (r *UserRepository) Delete(user_id string) error {
 	return r.dbu.Delete("where id = %s", user_id)
+}
+
+func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
+	_, err := r.db.Exec("update user set balance = balance + $1", eurocents)
+	return err
 }

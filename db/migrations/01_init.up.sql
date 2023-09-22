@@ -94,8 +94,8 @@ create table payment_transaction(
     transaction_id varchar not null, -- external tx id
     created bigint not null, -- creation time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict,
-    amount varchar(16) not null default '0', -- currency amount
-    amount_refunded varchar(16) not null default '0', -- amount refunded from this transaction
+    amount bigint not null default 0, -- currency amount in eurocents
+    amount_refunded bigint not null default 0, -- amount refunded from this transaction in eurocents
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
 
@@ -109,7 +109,7 @@ create table audit_log(
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
     payment_transaction_id varchar(36), -- payment (optional)
-    amount varchar(16) -- currency amount in euro-cent
+    amount bigint -- currency amount in euro-cent
 );
 
 create index audit_log_search on audit_log(type, timestamp, user_id);

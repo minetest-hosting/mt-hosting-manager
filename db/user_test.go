@@ -27,6 +27,19 @@ func TestUserRepository(t *testing.T) {
 	assert.NotNil(t, u)
 	assert.Equal(t, types.UserStateActive, u.State)
 
+	// balance
+	assert.Equal(t, int64(0), u.Balance)
+	// add
+	assert.NoError(t, repos.UserRepo.AddBalance(u.ID, 100))
+	u, err = repos.UserRepo.GetByID(u.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(100), u.Balance)
+	// subtract
+	assert.NoError(t, repos.UserRepo.AddBalance(u.ID, -100))
+	u, err = repos.UserRepo.GetByID(u.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(0), u.Balance)
+
 	// non existent user
 	u, err = repos.UserRepo.GetByMail("non@existent")
 	assert.NoError(t, err)

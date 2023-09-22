@@ -1,7 +1,7 @@
 package types
 
 type CreateTransactionRequest struct {
-	Amount string `json:"amount"`
+	Amount int64 `json:"amount"`
 }
 
 type CreateTransactionResponse struct {

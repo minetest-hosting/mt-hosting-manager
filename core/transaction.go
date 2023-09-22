@@ -17,8 +17,8 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 	if tx.State != types.PaymentStateSuccess {
 		return nil, fmt.Errorf("payment state invalid: %s", tx.State)
 	}
-	if tx.AmountRefunded != "0" {
-		return nil, fmt.Errorf("already refunded: '%s'", tx.AmountRefunded)
+	if tx.AmountRefunded > 0 {
+		return nil, fmt.Errorf("already refunded: '%d'", tx.AmountRefunded)
 	}
 
 	user, err := c.repos.UserRepo.GetByID(tx.UserID)
@@ -76,7 +76,10 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 				return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
 			}
 
-			//TODO: add to balance
+			err = c.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
+			if err != nil {
+				return nil, fmt.Errorf("could not add balance '%d' to user '%s': %v", tx.Amount, tx.UserID, err)
+			}
 		}
 	}
 
