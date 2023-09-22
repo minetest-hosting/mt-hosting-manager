@@ -19,7 +19,7 @@ export default {
             },{
                 icon: "money-bill", name: "Finance", link: "/finance"
             },{
-                icon: "money-bill", name: "Transaction detail", link: `/finance/${this.id}`
+                icon: "money-bill", name: "Transaction detail", link: `/finance/detail/${this.id}`
             }]
         };
     },

@@ -78,7 +78,7 @@ export default {
 				<tr>
 					<th>Time</th>
 					<th>Type</th>
-					<th>Action</th>
+					<th>Info</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,12 +86,18 @@ export default {
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
 					<td>
-						<node-link :id="log.user_node_id" v-if="log.user_node_id"/>
-						<server-link :id="log.minetest_server_id" v-if="log.minetest_server_id"/>
-						<payment-link :id="log.payment_transaction_id" v-if="log.payment_transaction_id"/>
-						<span v-if="log.amount" class="badge bg-success">
+						<div v-if="log.user_node_id">
+							<node-link :id="log.user_node_id"/>
+						</div>
+						<div v-if="log.minetest_server_id">
+							<server-link :id="log.minetest_server_id"/>
+						</div>
+						<div v-if="log.payment_transaction_id">
+							<payment-link :id="log.payment_transaction_id"/>
+						</div>
+						<div v-if="log.amount">
 							<currency-display :eurocents="log.amount"/>
-						</span>
+						</div>
 					</td>
 				</tr>
 			</tbody>
