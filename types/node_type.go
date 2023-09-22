@@ -25,7 +25,7 @@ type NodeType struct {
 	Location                string        `json:"location"`
 	Name                    string        `json:"name"`
 	Description             string        `json:"description"`
-	DailyCost               string        `json:"daily_cost"`
+	DailyCost               int64         `json:"daily_cost"`
 	MaxRecommendedInstances int           `json:"max_recommended_instances"`
 	MaxInstances            int           `json:"max_instances"`
 }

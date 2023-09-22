@@ -43,6 +43,9 @@ func (w *Worker) Start() {
 }
 
 func (w *Worker) Run() {
+	// start collector job
+	go w.CollectJob()
+
 	// execute previously running jobs
 	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {

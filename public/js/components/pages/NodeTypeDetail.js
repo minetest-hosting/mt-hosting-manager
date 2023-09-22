@@ -109,9 +109,9 @@ export default {
 				</td>
 			</tr>
 			<tr>
-				<td>Daily cost [&euro;]</td>
+				<td>Daily cost [&euro;cents]</td>
 				<td>
-					<input type="text" class="form-control" v-model="nt.daily_cost"/>
+					<input type="number" min="0" class="form-control" v-model="nt.daily_cost"/>
 				</td>
 			</tr>
 			<tr>
