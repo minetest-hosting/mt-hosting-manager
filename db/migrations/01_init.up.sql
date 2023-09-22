@@ -5,7 +5,7 @@ create table user(
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
     created bigint not null, -- creation time in `time.Now().Unix()`
-    balance varchar(16) not null default '0', -- current balance
+    balance bigint not null default 0, -- current balance in euro-cent
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER
@@ -109,8 +109,7 @@ create table audit_log(
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
     payment_transaction_id varchar(36), -- payment (optional)
-    amount varchar(16), -- currency amount
-    currency varchar(32) -- currency
+    amount varchar(16) -- currency amount in euro-cent
 );
 
 create index audit_log_search on audit_log(type, timestamp, user_id);

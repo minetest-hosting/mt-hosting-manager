@@ -1,7 +1,5 @@
 package types
 
-const DEFAULT_CURRENCY = "EUR"
-
 type ProviderType string
 
 const (

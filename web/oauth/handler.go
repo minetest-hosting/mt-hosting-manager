@@ -84,7 +84,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			Mail:       info.Email,
 			ExternalID: info.ExternalID,
 			Type:       h.Type,
-			Balance:    "0",
+			Balance:    0,
 			Role:       types.UserRoleUser,
 		}
 

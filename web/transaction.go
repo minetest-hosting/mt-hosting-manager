@@ -49,7 +49,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 
 	back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 	tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
-		Currency:   types.DEFAULT_CURRENCY,
+		Currency:   "EUR",
 		LineItems:  []*wallee.LineItem{item},
 		SuccessURL: back_url,
 		FailedURL:  back_url,
@@ -84,13 +84,11 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		URL: url,
 	}
 
-	currency := types.DEFAULT_CURRENCY
 	a.core.AddAuditLog(&types.AuditLog{
 		Type:                 types.AuditLogPaymentCreated,
 		UserID:               c.UserID,
 		PaymentTransactionID: &payment_tx_id,
 		Amount:               &create_tx_req.Amount,
-		Currency:             &currency,
 	})
 
 	Send(w, create_tx_resp, nil)

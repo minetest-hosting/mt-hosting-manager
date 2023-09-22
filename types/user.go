@@ -28,7 +28,7 @@ type User struct {
 	Name       string    `json:"name"`
 	Mail       string    `json:"mail"`
 	Created    int64     `json:"created"`
-	Balance    string    `json:"balance"`
+	Balance    int64     `json:"balance"`
 	ExternalID string    `json:"external_id"`
 	Type       UserType  `json:"type"`
 	Role       UserRole  `json:"role"`
