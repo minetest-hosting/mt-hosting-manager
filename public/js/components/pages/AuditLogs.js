@@ -64,9 +64,11 @@ export default {
 				<label>To</label>
 				<vue-datepicker v-model="to"/>
 			</div>
-			<div class="col-2" v-if="has_role('ADMIN')">
-				<label>User</label>
-				<user-search v-model="user"/>
+			<div class="col-2">
+				<div v-if="has_role('ADMIN')">
+					<label>User</label>
+					<user-search v-model="user"/>
+				</div>
 			</div>
 			<div class="col-2">
 				<label>Search</label>

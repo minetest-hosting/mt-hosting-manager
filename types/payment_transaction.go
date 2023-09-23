@@ -20,6 +20,12 @@ type PaymentTransaction struct {
 	State          PaymentStateType `json:"state"`
 }
 
+type PaymentTransactionSearch struct {
+	FromTimestamp int64   `json:"from_timestamp"`
+	ToTimestamp   int64   `json:"to_timestamp"`
+	UserID        *string `json:"user_id"`
+}
+
 func (m *PaymentTransaction) Columns(action string) []string {
 	return []string{
 		"id",

@@ -77,6 +77,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.DeleteMTServer)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/transaction", api.Secure(api.GetTransactions)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/create", api.Secure(api.CreateTransaction)).Methods(http.MethodPost)
+	user_api.HandleFunc("/transaction/search", api.Secure(api.SearchTransaction)).Methods(http.MethodPost)
 	user_api.HandleFunc("/transaction/{id}", api.Secure(api.GetTransaction)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/{id}/check", api.Secure(api.CheckTransaction)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/{id}/refund", api.Secure(api.RefundTransaction)).Methods(http.MethodPost)

@@ -131,3 +131,20 @@ func (a *Api) GetTransaction(w http.ResponseWriter, r *http.Request, c *types.Cl
 
 	Send(w, tx, err)
 }
+
+func (a *Api) SearchTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	s := &types.PaymentTransactionSearch{}
+	err := json.NewDecoder(r.Body).Decode(s)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	if c.Role != types.UserRoleAdmin {
+		// non-admins can only search their own transactions
+		s.UserID = &c.UserID
+	}
+
+	list, err := a.repos.PaymentTransactionRepo.Search(s)
+	Send(w, list, err)
+}

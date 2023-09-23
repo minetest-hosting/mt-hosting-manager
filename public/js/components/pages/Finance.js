@@ -1,22 +1,27 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import UserSearch from "../UserSearch.js";
 
-import { get_all, create } from "../../api/transaction.js";
+import { search_transaction, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
-import { get_user_profile } from "../../service/user.js";
 import { get_max_balance } from "../../service/info.js";
 import { get_balance } from "../../service/user.js";
+import { has_role } from "../../service/login.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
-        "currency-display": CurrencyDisplay
+        "currency-display": CurrencyDisplay,
+        "user-search": UserSearch
 	},
     data: function() {
         return {
             amount: 5,
+            busy: false,
             transactions: [],
-            user: get_user_profile(),
+            user: null,
+            from: new Date(Date.now() - (3600*1000*24*30)),
+            to: new Date(Date.now() + (3600*1000*1)),        
             breadcrumb: [{
                 icon: "home", name: "Home", link: "/"
             },{
@@ -25,20 +30,29 @@ export default {
         };
     },
     mounted: function() {
-        this.update_payments();
+        this.search();
     },
     methods: {
         format_time: format_time,
         get_max_balance: get_max_balance,
+        has_role: has_role,
         new_payment: function() {
             create({ amount: Math.round(this.amount*100) })
             .then(r => window.location = r.url);
         },
-        update_payments: function() {
-            get_all().then(p => this.transactions = p);
+        search: function() {
+            this.busy = true;
+            search_transaction({
+                from_timestamp: Math.floor(+this.from/1000),
+				to_timestamp: Math.floor(+this.to/1000),
+				user_id: this.user ? this.user.id : null
+            })
+            .then(p => this.transactions = p)
+            .finally(() => this.busy = false);
         }
     },
     computed: {
+        balance: get_balance,
         amount_sum_valid: function() {
             return get_balance() + (this.amount*100) <= get_max_balance();
         },
@@ -52,15 +66,15 @@ export default {
         <table class="table table-condensed">
             <tr>
                 <td>Balance</td>
-                <td v-if="user">
-                    <currency-display :eurocents="user.balance"/>
+                <td>
+                    <currency-display :eurocents="balance"/>
                 </td>
             </tr>
             <tr>
                 <td>Actions</td>
                 <td>
                     <div class="input-group">
-                        <span class="input-group-text" v-if="user">&euro;</span>
+                        <span class="input-group-text">&euro;</span>
                         <input class="form-control" type="number" min="0" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid}"/>
                         <button class="btn btn-outline-primary" v-on:click="new_payment()" :disabled="!amount_valid">
                             <i class="fa-solid fa-plus"></i> Create new payment
@@ -74,6 +88,31 @@ export default {
         </table>
         <hr>
         <h4>Payments</h4>
+        <div class="row">
+			<div class="col-4">
+				<label>From</label>
+				<vue-datepicker v-model="from"/>
+			</div>
+			<div class="col-4">
+				<label>To</label>
+				<vue-datepicker v-model="to"/>
+			</div>
+			<div class="col-2">
+                <div v-if="has_role('ADMIN')">
+                    <label>User</label>
+                    <user-search v-model="user"/>
+                </div>
+			</div>
+			<div class="col-2">
+				<label>Search</label>
+				<button class="btn btn-primary w-100" v-on:click="search">
+					<i class="fa fa-magnifying-glass"></i>
+					Search
+					<i class="fa fa-spinner fa-spin" v-if="busy"></i>
+				</button>
+			</div>
+		</div>
+		<hr>
         <table class="table table-condensed">
             <thead>
                 <tr>
