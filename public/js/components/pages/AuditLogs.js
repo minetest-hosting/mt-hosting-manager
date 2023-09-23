@@ -3,6 +3,7 @@ import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
 import PaymentLink from "../PaymentLink.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import UserSearch from "../UserSearch.js";
 
 import { search_audit_logs } from "../../api/audit_log.js";
 import format_time from "../../util/format_time.js";
@@ -10,6 +11,7 @@ import format_time from "../../util/format_time.js";
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
     to: new Date(Date.now() + (3600*1000*1)),
+	user_id: "",
 	breadcrumb: [{
 		icon: "home", name: "Home", link: "/"
 	}, {
@@ -25,7 +27,8 @@ export default {
 		"node-link": NodeLink,
 		"server-link": ServerLink,
 		"payment-link": PaymentLink,
-		"currency-display": CurrencyDisplay
+		"currency-display": CurrencyDisplay,
+		"user-search": UserSearch
 	},
 	data: () => store,
 	methods: {
@@ -34,7 +37,8 @@ export default {
 			this.busy = true;
 			search_audit_logs({
 				from_timestamp: Math.floor(+this.from/1000),
-				to_timestamp: Math.floor(+this.to/1000)
+				to_timestamp: Math.floor(+this.to/1000),
+				user_id: this.user_id != "" ? this.user_id : null
 			})
 			.then(l => this.list = l)
 			.finally(() => this.busy = false);
@@ -50,13 +54,17 @@ export default {
 	template: /*html*/`
 	<card-layout title="Audit-Logs" icon="rectangle-list" :breadcrumb="breadcrumb" fullwidth="true">
 		<div class="row">
-			<div class="col-5">
+			<div class="col-4">
 				<label>From</label>
 				<vue-datepicker v-model="from"/>
 			</div>
-			<div class="col-5">
+			<div class="col-4">
 				<label>To</label>
 				<vue-datepicker v-model="to"/>
+			</div>
+			<div class="col-2">
+				<label>User</label>
+				<user-search v-model="user_id"/>
 			</div>
 			<div class="col-2">
 				<label>Search</label>

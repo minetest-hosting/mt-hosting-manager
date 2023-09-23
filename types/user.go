@@ -34,6 +34,11 @@ type User struct {
 	Role       UserRole  `json:"role"`
 }
 
+type UserSearch struct {
+	MailLike *string `json:"mail_like"`
+	Limit    *int    `json:"limit"`
+}
+
 func (m *User) Columns(action string) []string {
 	return []string{"id", "state", "name", "mail", "created", "balance", "external_id", "type", "role"}
 }

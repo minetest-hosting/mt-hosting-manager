@@ -1,5 +1,5 @@
 
-import { get_profile, update_profile } from "../api/user.js";
+import { get_profile, update_profile } from "../api/profile.js";
 import events, { EVENT_LOGGED_IN } from '../events.js';
 
 const store = Vue.reactive({});
