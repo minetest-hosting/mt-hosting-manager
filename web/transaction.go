@@ -6,7 +6,6 @@ import (
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/types"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -31,25 +30,23 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	payment_tx_id := uuid.NewString()
-
-	amount, err := strconv.ParseFloat(create_tx_req.Amount, 64)
-	if err != nil {
-		SendError(w, 500, fmt.Errorf("parse amount failed: %v", err))
-		return
+	if user.Balance+create_tx_req.Amount > int64(a.cfg.MaxBalance) {
+		SendError(w, 405, fmt.Errorf("max balance of %d exceeded", a.cfg.MaxBalance))
 	}
+
+	payment_tx_id := uuid.NewString()
 
 	item := &wallee.LineItem{
 		Name:               "Minetest hosting credits",
 		Quantity:           1,
-		AmountIncludingTax: amount,
+		AmountIncludingTax: float64(create_tx_req.Amount) / 100,
 		Type:               wallee.LineItemTypeProduct,
 		UniqueID:           payment_tx_id,
 	}
 
 	back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 	tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
-		Currency:   types.DEFAULT_CURRENCY,
+		Currency:   "EUR",
 		LineItems:  []*wallee.LineItem{item},
 		SuccessURL: back_url,
 		FailedURL:  back_url,
@@ -71,7 +68,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		Created:        time.Now().Unix(),
 		UserID:         c.UserID,
 		Amount:         create_tx_req.Amount,
-		AmountRefunded: "0",
+		AmountRefunded: 0,
 		State:          types.PaymentStatePending,
 	}
 	err = a.repos.PaymentTransactionRepo.Insert(payment_tx)
@@ -84,13 +81,11 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		URL: url,
 	}
 
-	currency := types.DEFAULT_CURRENCY
 	a.core.AddAuditLog(&types.AuditLog{
 		Type:                 types.AuditLogPaymentCreated,
 		UserID:               c.UserID,
 		PaymentTransactionID: &payment_tx_id,
 		Amount:               &create_tx_req.Amount,
-		Currency:             &currency,
 	})
 
 	Send(w, create_tx_resp, nil)
@@ -135,4 +130,21 @@ func (a *Api) GetTransaction(w http.ResponseWriter, r *http.Request, c *types.Cl
 	}
 
 	Send(w, tx, err)
+}
+
+func (a *Api) SearchTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	s := &types.PaymentTransactionSearch{}
+	err := json.NewDecoder(r.Body).Decode(s)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	if c.Role != types.UserRoleAdmin {
+		// non-admins can only search their own transactions
+		s.UserID = &c.UserID
+	}
+
+	list, err := a.repos.PaymentTransactionRepo.Search(s)
+	Send(w, list, err)
 }

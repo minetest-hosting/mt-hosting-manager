@@ -1,13 +1,18 @@
 import CardLayout from "../layouts/CardLayout.js";
-import { search_audit_logs } from "../../api/audit_log.js";
-import format_time from "../../util/format_time.js";
 import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
 import PaymentLink from "../PaymentLink.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
+import UserSearch from "../UserSearch.js";
+
+import { search_audit_logs } from "../../api/audit_log.js";
+import format_time from "../../util/format_time.js";
+import { has_role } from "../../service/login.js";
 
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
     to: new Date(Date.now() + (3600*1000*1)),
+	user: null,
 	breadcrumb: [{
 		icon: "home", name: "Home", link: "/"
 	}, {
@@ -22,7 +27,9 @@ export default {
 		"card-layout": CardLayout,
 		"node-link": NodeLink,
 		"server-link": ServerLink,
-		"payment-link": PaymentLink
+		"payment-link": PaymentLink,
+		"currency-display": CurrencyDisplay,
+		"user-search": UserSearch
 	},
 	data: () => store,
 	methods: {
@@ -31,11 +38,13 @@ export default {
 			this.busy = true;
 			search_audit_logs({
 				from_timestamp: Math.floor(+this.from/1000),
-				to_timestamp: Math.floor(+this.to/1000)
+				to_timestamp: Math.floor(+this.to/1000),
+				user_id: this.user ? this.user.id : null
 			})
 			.then(l => this.list = l)
 			.finally(() => this.busy = false);
 		},
+		has_role: has_role
 	},
 	watch: {
 		"from": "search",
@@ -47,13 +56,19 @@ export default {
 	template: /*html*/`
 	<card-layout title="Audit-Logs" icon="rectangle-list" :breadcrumb="breadcrumb" fullwidth="true">
 		<div class="row">
-			<div class="col-5">
+			<div class="col-4">
 				<label>From</label>
 				<vue-datepicker v-model="from"/>
 			</div>
-			<div class="col-5">
+			<div class="col-4">
 				<label>To</label>
 				<vue-datepicker v-model="to"/>
+			</div>
+			<div class="col-2">
+				<div v-if="has_role('ADMIN')">
+					<label>User</label>
+					<user-search v-model="user"/>
+				</div>
 			</div>
 			<div class="col-2">
 				<label>Search</label>
@@ -75,7 +90,7 @@ export default {
 				<tr>
 					<th>Time</th>
 					<th>Type</th>
-					<th>Action</th>
+					<th>Info</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -83,12 +98,18 @@ export default {
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
 					<td>
-						<node-link :id="log.user_node_id" v-if="log.user_node_id"/>
-						<server-link :id="log.minetest_server_id" v-if="log.minetest_server_id"/>
-						<payment-link :id="log.payment_transaction_id" v-if="log.payment_transaction_id"/>
-						<span v-if="log.amount" class="badge bg-success">
-							{{log.currency}} {{log.amount}}
-						</span>
+						<div v-if="log.user_node_id">
+							<node-link :id="log.user_node_id"/>
+						</div>
+						<div v-if="log.minetest_server_id">
+							<server-link :id="log.minetest_server_id"/>
+						</div>
+						<div v-if="log.payment_transaction_id">
+							<payment-link :id="log.payment_transaction_id"/>
+						</div>
+						<div v-if="log.amount">
+							<currency-display :eurocents="log.amount"/>
+						</div>
 					</td>
 				</tr>
 			</tbody>

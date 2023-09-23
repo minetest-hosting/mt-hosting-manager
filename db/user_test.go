@@ -11,7 +11,7 @@ import (
 func TestUserRepository(t *testing.T) {
 	repos := SetupRepos(t)
 
-	assert.NoError(t, repos.UserRepo.Insert(&types.User{
+	user := &types.User{
 		Name:       "Some dude",
 		State:      types.UserStateActive,
 		Mail:       "x@y.ch",
@@ -19,13 +19,27 @@ func TestUserRepository(t *testing.T) {
 		ExternalID: "abc",
 		Type:       types.UserTypeGithub,
 		Role:       types.UserRoleUser,
-	}))
+	}
+	assert.NoError(t, repos.UserRepo.Insert(user))
 
 	// existing user
 	u, err := repos.UserRepo.GetByMail("x@y.ch")
 	assert.NoError(t, err)
 	assert.NotNil(t, u)
 	assert.Equal(t, types.UserStateActive, u.State)
+
+	// balance
+	assert.Equal(t, int64(0), u.Balance)
+	// add
+	assert.NoError(t, repos.UserRepo.AddBalance(u.ID, 100))
+	u, err = repos.UserRepo.GetByID(u.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(100), u.Balance)
+	// subtract
+	assert.NoError(t, repos.UserRepo.AddBalance(u.ID, -100))
+	u, err = repos.UserRepo.GetByID(u.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(0), u.Balance)
 
 	// non existent user
 	u, err = repos.UserRepo.GetByMail("non@existent")
@@ -38,6 +52,21 @@ func TestUserRepository(t *testing.T) {
 	assert.NotNil(t, list)
 	assert.Equal(t, 1, len(list))
 
+	// search existing
+	limit := 10
+	mail_like := "%.ch%"
+	list, err = repos.UserRepo.Search(&types.UserSearch{MailLike: &mail_like, Limit: &limit})
+	assert.NoError(t, err)
+	assert.NotNil(t, list)
+	assert.Equal(t, 1, len(list))
+
+	// search non-existing
+	mail_like = "%.de%"
+	list, err = repos.UserRepo.Search(&types.UserSearch{MailLike: &mail_like})
+	assert.NoError(t, err)
+	assert.NotNil(t, list)
+	assert.Equal(t, 0, len(list))
+
 	// delete
-	assert.NoError(t, repos.UserRepo.Delete(list[0].ID))
+	assert.NoError(t, repos.UserRepo.Delete(user.ID))
 }

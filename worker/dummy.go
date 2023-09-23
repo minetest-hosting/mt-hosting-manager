@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"time"
@@ -104,6 +105,17 @@ func executeDummyJob(repos *db.Repositories, job *types.Job) {
 }
 
 func DummyWorker(repos *db.Repositories, cfg *types.Config) {
+
+	c := core.New(repos, cfg)
+	go func() {
+		ts := time.Now().Unix()
+		err := c.Collect(ts - core.SECONDS_IN_A_DAY)
+		if err != nil {
+			logrus.WithError(err).Error("collect error")
+		}
+
+		time.Sleep(time.Minute)
+	}()
 
 	jobs, err := repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {

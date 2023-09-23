@@ -5,7 +5,7 @@ create table user(
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
     created bigint not null, -- creation time in `time.Now().Unix()`
-    balance varchar(16) not null default '0', -- current balance
+    balance bigint not null default 0, -- current balance in euro-cent
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER
@@ -23,15 +23,15 @@ create table node_type(
     location varchar(32) not null, -- location name/id
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
-    daily_cost varchar(16) not null default '0.4', -- daily cost in euros
+    daily_cost bigint not null default 0, -- daily cost in eurocents
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
 
 -- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers','0.4',2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets','0.8',3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads','1.2',5,10);
+INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers',40,2,4);
+INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets',80,3,6);
+INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads',120,5,10);
 
 -- a node set up by a user
 create table user_node(
@@ -94,8 +94,8 @@ create table payment_transaction(
     transaction_id varchar not null, -- external tx id
     created bigint not null, -- creation time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict,
-    amount varchar(16) not null default '0', -- currency amount
-    amount_refunded varchar(16) not null default '0', -- amount refunded from this transaction
+    amount bigint not null default 0, -- currency amount in eurocents
+    amount_refunded bigint not null default 0, -- amount refunded from this transaction in eurocents
     state varchar(32) not null default 'PENDING' -- state of the transaction
 );
 
@@ -109,8 +109,7 @@ create table audit_log(
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
     payment_transaction_id varchar(36), -- payment (optional)
-    amount varchar(16), -- currency amount
-    currency varchar(32) -- currency
+    amount bigint -- currency amount in euro-cent
 );
 
 create index audit_log_search on audit_log(type, timestamp, user_id);

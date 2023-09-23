@@ -1,8 +1,6 @@
 import { protected_fetch } from "./protected_fetch.js";
 
-export const get_profile = () => protected_fetch(`api/profile`);
-
-export const update_profile = u => protected_fetch(`api/profile`, {
+export const search_user = s => protected_fetch(`api/user/search`, {
     method: "POST",
-    body: JSON.stringify(u)
+    body: JSON.stringify(s)
 });

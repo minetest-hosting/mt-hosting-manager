@@ -14,3 +14,8 @@ export const check = tx => protected_fetch(`api/transaction/${tx.id}/check`);
 export const refund = tx => protected_fetch(`api/transaction/${tx.id}/refund`, {
     method: "POST"
 });
+
+export const search_transaction = s => protected_fetch(`api/transaction/search`, {
+    method: "POST",
+    body: JSON.stringify(s)
+});

@@ -1,4 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
+
 import { check, get_by_id, refund } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { fetch_profile } from "../../service/user.js";
@@ -6,7 +8,8 @@ import { fetch_profile } from "../../service/user.js";
 export default {
     props: ["id"],
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+        "currency-display": CurrencyDisplay
 	},
     data: function() {
         return {
@@ -16,7 +19,7 @@ export default {
             },{
                 icon: "money-bill", name: "Finance", link: "/finance"
             },{
-                icon: "money-bill", name: "Transaction detail", link: `/finance/${this.id}`
+                icon: "money-bill", name: "Transaction detail", link: `/finance/detail/${this.id}`
             }]
         };
     },
@@ -51,16 +54,20 @@ export default {
             </tr>
             <tr>
                 <td>Amount</td>
-                <td>&euro; {{transaction.amount}}</td>
+                <td>
+                    <currency-display :eurocents="transaction.amount"/>
+                </td>
             </tr>
             <tr>
                 <td>Refunded amount</td>
-                <td>&euro; {{transaction.amount_refunded}}</td>
+                <td>
+                    <currency-display :eurocents="transaction.amount_refunded"/>
+                </td>
             </tr>
             <tr>
                 <td>Actions</td>
                 <td>
-                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded != '0'">
+                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0">
                         <i class="fa-solid fa-recycle"></i>
                         Refund
                     </button>

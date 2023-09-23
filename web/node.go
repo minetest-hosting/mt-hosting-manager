@@ -163,13 +163,14 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 	randstr := core.RandStringRunes(7)
 
 	node := &types.UserNode{
-		ID:         uuid.NewString(),
-		UserID:     c.UserID,
-		NodeTypeID: create_node.NodeTypeID,
-		Created:    time.Now().Unix(),
-		State:      types.UserNodeStateCreated,
-		Name:       fmt.Sprintf("node-%s-%s", a.cfg.Stage, randstr),
-		Alias:      create_node.Alias,
+		ID:                uuid.NewString(),
+		UserID:            c.UserID,
+		NodeTypeID:        create_node.NodeTypeID,
+		Created:           time.Now().Unix(),
+		LastCollectedTime: time.Now().Unix(),
+		State:             types.UserNodeStateCreated,
+		Name:              fmt.Sprintf("node-%s-%s", a.cfg.Stage, randstr),
+		Alias:             create_node.Alias,
 	}
 	err = a.repos.UserNodeRepo.Insert(node)
 	if err != nil {
@@ -181,6 +182,12 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
+		return
+	}
+
+	err = a.repos.UserRepo.AddBalance(c.UserID, nt.DailyCost*-1)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("balance update error: %v", err))
 		return
 	}
 

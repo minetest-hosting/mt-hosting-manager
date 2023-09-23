@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,61 +27,29 @@ func SetupRepos(t *testing.T) *db.Repositories {
 
 func TestCollect(t *testing.T) {
 	repos := SetupRepos(t)
-	now := time.Now()
+	c := core.New(repos, types.NewConfig())
 
 	user := &types.User{
-		ID:      uuid.NewString(),
-		State:   types.UserStateActive,
-		Name:    "testuser",
-		Mail:    "test@user",
-		Balance: "0",
+		Balance: 100,
 	}
 	assert.NoError(t, repos.UserRepo.Insert(user))
 
-	nt := &types.NodeType{
-		ID:         uuid.NewString(),
-		State:      types.NodeTypeStateActive,
-		Provider:   types.ProviderHetzner,
-		ServerType: "test",
-		DailyCost:  "0.4",
-	}
+	nt := &types.NodeType{DailyCost: 20}
 	assert.NoError(t, repos.NodeTypeRepo.Insert(nt))
 
-	node := &types.UserNode{
-		ID:                uuid.NewString(),
+	ts := time.Now().Unix()
+
+	un := &types.UserNode{
 		UserID:            user.ID,
 		NodeTypeID:        nt.ID,
-		LastCollectedTime: now.Unix(),
-		State:             types.UserNodeStateRunning,
+		LastCollectedTime: ts - (core.SECONDS_IN_A_DAY * 2),
 	}
-	assert.NoError(t, repos.UserNodeRepo.Insert(node))
+	assert.NoError(t, repos.UserNodeRepo.Insert(un))
 
-	// 1 day later
-	then := now.Add(time.Hour * 25)
-	a, err := core.Collect(repos, user.ID, then)
+	assert.NoError(t, c.Collect(ts-core.SECONDS_IN_A_DAY))
+
+	user, err := repos.UserRepo.GetByID(user.ID)
 	assert.NoError(t, err)
-	assert.NotNil(t, a)
-	assert.Equal(t, types.DEFAULT_CURRENCY, a.CurrencyCode())
-	assert.Equal(t, "0.4", a.Number())
 
-	// 1 day and an hour
-	then = now.Add(time.Hour * 26)
-	a, err = core.Collect(repos, user.ID, then)
-	assert.NoError(t, err)
-	assert.Nil(t, a)
-
-	// 2 days and an hour
-	then = now.Add(time.Hour * 49)
-	a, err = core.Collect(repos, user.ID, then)
-	assert.NoError(t, err)
-	assert.NotNil(t, a)
-	assert.Equal(t, "0.4", a.Number())
-
-	// 1 week and an hour
-	then = now.Add(time.Hour * ((24 * 7) + 1))
-	a, err = core.Collect(repos, user.ID, then)
-	assert.NoError(t, err)
-	assert.NotNil(t, a)
-	assert.Equal(t, "2.0", a.Number())
-
+	assert.Equal(t, int64(60), user.Balance)
 }

@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
@@ -10,6 +11,7 @@ import (
 
 type UserRepository struct {
 	dbu *dbutil.DBUtil[*types.User]
+	db  dbutil.DBTx
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
@@ -47,4 +49,27 @@ func (r *UserRepository) GetAll() ([]*types.User, error) {
 
 func (r *UserRepository) Delete(user_id string) error {
 	return r.dbu.Delete("where id = %s", user_id)
+}
+
+func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
+	_, err := r.db.Exec("update user set balance = balance + $1", eurocents)
+	return err
+}
+
+func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
+	q := "where true=true"
+	params := []any{}
+
+	if s.MailLike != nil {
+		q += " and mail like %s"
+		params = append(params, *s.MailLike)
+	}
+
+	if s.Limit != nil && *s.Limit > 0 && *s.Limit < 100 {
+		q += fmt.Sprintf("limit %d", *s.Limit)
+	} else {
+		q += " limit 100"
+	}
+
+	return r.dbu.SelectMulti(q, params...)
 }

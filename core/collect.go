@@ -2,80 +2,73 @@ package core
 
 import (
 	"fmt"
-	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"time"
 
-	"github.com/bojanz/currency"
+	"github.com/sirupsen/logrus"
 )
 
-func Collect(repos *db.Repositories, userID string, now time.Time) (*currency.Amount, error) {
-	nodes, err := repos.UserNodeRepo.GetByUserIDAndState(userID, types.UserNodeStateRunning)
+const SECONDS_IN_A_DAY = 3600 * 24
+
+func (c *Core) Collect(last_collected_time int64) error {
+	now := time.Now().Unix()
+	list, err := c.repos.UserNodeRepo.GetByLastCollectedTime(last_collected_time)
 	if err != nil {
-		return nil, fmt.Errorf("usernode fetch failed: %v", err)
+		return fmt.Errorf("could not fetch usernodes: %v", err)
+	}
+	if len(list) == 0 {
+		// nothing to do
+		return nil
 	}
 
-	if len(nodes) == 0 {
-		return nil, nil
-	}
-
-	cost_eur, err := currency.NewAmount("0", types.DEFAULT_CURRENCY)
+	// cache nodetypes
+	nts, err := c.repos.NodeTypeRepo.GetAll()
 	if err != nil {
-		return nil, fmt.Errorf("currency parse failed: %v", err)
+		return fmt.Errorf("could not fetch nodetypes: %v", err)
+	}
+	nt_map := map[string]*types.NodeType{}
+	for _, nt := range nts {
+		nt_map[nt.ID] = nt
 	}
 
-	cost_changed := false
-
-	for _, node := range nodes {
-		last_collected := time.Unix(node.LastCollectedTime, 0)
-		dur := now.Sub(last_collected)
-		hours := dur.Hours()
-
-		if hours <= 24 {
-			// running less than a day, skip collection
-			continue
-		}
-
-		// at least one node collected
-		cost_changed = true
-
-		nt, err := repos.NodeTypeRepo.GetByID(node.NodeTypeID)
-		if err != nil {
-			return nil, fmt.Errorf("nodetype fetch failed: %v", err)
-		}
-		if nt == nil {
-			return nil, fmt.Errorf("nodetype not found for node '%s'", node.NodeTypeID)
-		}
-
-		dailycost, err := currency.NewAmount(nt.DailyCost, types.DEFAULT_CURRENCY)
-		if err != nil {
-			return nil, fmt.Errorf("currency parse failed: %v", err)
-		}
-
-		for hours > 24 {
-			cost_eur, err = cost_eur.Add(dailycost)
-			if err != nil {
-				return nil, fmt.Errorf("currency add failed: %v", err)
+	for _, node := range list {
+		delta := now - node.LastCollectedTime
+		delta_days := delta / SECONDS_IN_A_DAY
+		if delta_days > 0 {
+			nt := nt_map[node.NodeTypeID]
+			if nt == nil {
+				return fmt.Errorf("nodetype not found: %s", node.NodeTypeID)
 			}
 
-			hours -= 24
+			// cost in eurocents
+			cost := nt.DailyCost * delta_days
+			err = c.repos.UserRepo.AddBalance(node.UserID, cost*-1)
+			if err != nil {
+				return fmt.Errorf("could not subtract cost '%d' from user '%s': %v", cost, node.UserID, err)
+			}
+
+			c.AddAuditLog(&types.AuditLog{
+				Type:       types.AuditLogNodeBilled,
+				UserID:     node.UserID,
+				UserNodeID: &node.ID,
+				Amount:     &cost,
+			})
+
+			logrus.WithFields(logrus.Fields{
+				"UserID":   node.UserID,
+				"UserNode": node.ID,
+				"Cost":     cost,
+				"Days":     delta_days,
+			}).Debug("Usernode collected")
+
+			// update last collected time
+			node.LastCollectedTime += (SECONDS_IN_A_DAY * delta_days)
+			err = c.repos.UserNodeRepo.Update(node)
+			if err != nil {
+				return fmt.Errorf("could not update usernode '%s': %v", node.ID, err)
+			}
 		}
-
-		// reset last collected time
-		node.LastCollectedTime = now.Unix()
 	}
 
-	if !cost_changed {
-		// nothing changed
-		return nil, nil
-	}
-
-	for _, node := range nodes {
-		err = repos.UserNodeRepo.Update(node)
-		if err != nil {
-			return nil, fmt.Errorf("node update failed for '%s': %v", node.ID, err)
-		}
-	}
-
-	return &cost_eur, nil
+	return nil
 }
