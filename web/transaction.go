@@ -30,6 +30,10 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
+	if user.Balance+create_tx_req.Amount > int64(a.cfg.MaxBalance) {
+		SendError(w, 405, fmt.Errorf("max balance of %d exceeded", a.cfg.MaxBalance))
+	}
+
 	payment_tx_id := uuid.NewString()
 
 	item := &wallee.LineItem{

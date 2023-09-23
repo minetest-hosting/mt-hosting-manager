@@ -28,6 +28,7 @@ type Config struct {
 	MailHost            string
 	MailAddress         string
 	MailPassword        string
+	MaxBalance          int //max balance in eurocents
 }
 
 func NewConfig() *Config {
@@ -53,5 +54,6 @@ func NewConfig() *Config {
 		MailHost:     os.Getenv("MAIL_HOST"),
 		MailAddress:  os.Getenv("MAIL_ADDRESS"),
 		MailPassword: os.Getenv("MAIL_PASSWORD"),
+		MaxBalance:   100 * 100,
 	}
 }

@@ -4,6 +4,8 @@ import CurrencyDisplay from "../CurrencyDisplay.js";
 import { get_all, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { get_user_profile } from "../../service/user.js";
+import { get_max_balance } from "../../service/info.js";
+import { get_balance } from "../../service/user.js";
 
 export default {
 	components: {
@@ -27,12 +29,21 @@ export default {
     },
     methods: {
         format_time: format_time,
+        get_max_balance: get_max_balance,
         new_payment: function() {
             create({ amount: Math.round(this.amount*100) })
             .then(r => window.location = r.url);
         },
         update_payments: function() {
             get_all().then(p => this.transactions = p);
+        }
+    },
+    computed: {
+        amount_sum_valid: function() {
+            return get_balance() + (this.amount*100) <= get_max_balance();
+        },
+        amount_valid: function() {
+            return this.amount_sum_valid && this.amount > 0;
         }
     },
 	template: /*html*/`
@@ -50,10 +61,13 @@ export default {
                 <td>
                     <div class="input-group">
                         <span class="input-group-text" v-if="user">&euro;</span>
-                        <input class="form-control" type="number" min="0" max="100" v-model="amount"/>
-                        <a class="btn btn-outline-primary" v-on:click="new_payment()">
+                        <input class="form-control" type="number" min="0" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid}"/>
+                        <button class="btn btn-outline-primary" v-on:click="new_payment()" :disabled="!amount_valid">
                             <i class="fa-solid fa-plus"></i> Create new payment
-                        </a>
+                        </button>
+                        <div class="invalid-feedback" v-if="!amount_sum_valid">
+                            User-balance can't exceed <currency-display :eurocents="get_max_balance()"/>
+                        </div>
                     </div>
                 </td>
             </tr>

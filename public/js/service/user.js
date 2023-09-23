@@ -13,3 +13,4 @@ export const update = user => update_profile(user).then(p => Object.assign(store
 export const fetch_profile = () => get_profile().then(p => Object.assign(store, p));
 
 export const get_user_profile = () => store;
+export const get_balance = () => store.balance;
