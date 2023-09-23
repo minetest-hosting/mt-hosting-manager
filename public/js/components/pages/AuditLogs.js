@@ -12,7 +12,7 @@ import { has_role } from "../../service/login.js";
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
     to: new Date(Date.now() + (3600*1000*1)),
-	user_id: "",
+	user: null,
 	breadcrumb: [{
 		icon: "home", name: "Home", link: "/"
 	}, {
@@ -39,7 +39,7 @@ export default {
 			search_audit_logs({
 				from_timestamp: Math.floor(+this.from/1000),
 				to_timestamp: Math.floor(+this.to/1000),
-				user_id: this.user_id != "" ? this.user_id : null
+				user_id: this.user ? this.user.id : null
 			})
 			.then(l => this.list = l)
 			.finally(() => this.busy = false);
@@ -66,7 +66,7 @@ export default {
 			</div>
 			<div class="col-2" v-if="has_role('ADMIN')">
 				<label>User</label>
-				<user-search v-model="user_id"/>
+				<user-search v-model="user"/>
 			</div>
 			<div class="col-2">
 				<label>Search</label>

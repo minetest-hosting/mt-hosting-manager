@@ -2,15 +2,25 @@ import { search_user } from "../api/user.js";
 import debounce from "../util/debounce.js";
 
 export default {
+    props: ["modelValue"],
     data: function() {
         return {
             show_modal: false,
-            mail_like: "",
+            mail_like: this.modelValue ? this.modelValue.mail : "",
             busy: false,
-            users: []
+            users: [],
+            user: null
         };
     },
+    created: function() {
+        this.search();
+    },
     methods: {
+        select_user: function(user) {
+            this.$emit("update:modelValue", user);
+            this.user = user;
+            this.show_modal = false;
+        },
         search: debounce(function() {
             if (this.mail_like == "") {
                 this.users = [];
@@ -33,7 +43,10 @@ export default {
     template: /*html*/`
     <div>
         <div class="input-group">
-            <input class="form-control"/>
+            <input class="form-control" readonly="true" :value="user && user.mail"/>
+            <button class="btn btn-outline-secondary" v-on:click="select_user(null)">
+                <i class="fa fa-trash"></i>
+            </button>
             <button class="btn btn-outline-secondary" v-on:click="show_modal = true">
                 <i class="fa fa-user"></i>
             </button>
@@ -55,12 +68,16 @@ export default {
                                 <tr>
                                     <th>Name</th>
                                     <th>Mail</th>
+                                    <th>Select</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users" :key="user.id">
+                                <tr v-for="user in users" :key="user.id" v-bind:class="{'table-success':modelValue && modelValue.id == user.id}">
                                     <td>{{user.name}}</td>
                                     <td>{{user.mail}}</td>
+                                    <td>
+                                        <i class="fa-regular fa-square-check" v-on:click="select_user(user)"></i>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
