@@ -7,6 +7,7 @@ import UserSearch from "../UserSearch.js";
 
 import { search_audit_logs } from "../../api/audit_log.js";
 import format_time from "../../util/format_time.js";
+import { has_role } from "../../service/login.js";
 
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
@@ -43,6 +44,7 @@ export default {
 			.then(l => this.list = l)
 			.finally(() => this.busy = false);
 		},
+		has_role: has_role
 	},
 	watch: {
 		"from": "search",
@@ -62,7 +64,7 @@ export default {
 				<label>To</label>
 				<vue-datepicker v-model="to"/>
 			</div>
-			<div class="col-2">
+			<div class="col-2" v-if="has_role('ADMIN')">
 				<label>User</label>
 				<user-search v-model="user_id"/>
 			</div>
