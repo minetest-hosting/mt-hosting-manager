@@ -61,7 +61,7 @@ func ParseNodeExporterMetrics(data []byte) (*NodeExporterMetrics, error) {
 	}
 	for _, m := range mf.Metric {
 		for _, v := range m.GetLabel() {
-			if v.GetName() == "mountpoint" && v.GetValue() == "/" {
+			if v.GetName() == "mountpoint" && v.GetValue() == "/data" {
 				metrics.DiskSize = int64(m.Gauge.GetValue())
 				break
 			}
@@ -75,7 +75,7 @@ func ParseNodeExporterMetrics(data []byte) (*NodeExporterMetrics, error) {
 	}
 	for _, m := range mf.Metric {
 		for _, v := range m.GetLabel() {
-			if v.GetName() == "mountpoint" && v.GetValue() == "/" {
+			if v.GetName() == "mountpoint" && v.GetValue() == "/data" {
 				metrics.DiskUsed = metrics.DiskSize - int64(m.Gauge.GetValue())
 				break
 			}

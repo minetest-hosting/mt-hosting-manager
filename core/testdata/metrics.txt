@@ -1,60 +1,60 @@
 # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
 # TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 1.8431e-05
-go_gc_duration_seconds{quantile="0.25"} 4.0961e-05
-go_gc_duration_seconds{quantile="0.5"} 5.0871e-05
-go_gc_duration_seconds{quantile="0.75"} 7.0311e-05
-go_gc_duration_seconds{quantile="1"} 0.000167186
-go_gc_duration_seconds_sum 23.316781381
-go_gc_duration_seconds_count 323453
+go_gc_duration_seconds{quantile="0"} 3.7406e-05
+go_gc_duration_seconds{quantile="0.25"} 5.7744e-05
+go_gc_duration_seconds{quantile="0.5"} 8.9089e-05
+go_gc_duration_seconds{quantile="0.75"} 0.000162644
+go_gc_duration_seconds{quantile="1"} 0.003743573
+go_gc_duration_seconds_sum 0.085066287
+go_gc_duration_seconds_count 579
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
-go_goroutines 9
+go_goroutines 10
 # HELP go_info Information about the Go environment.
 # TYPE go_info gauge
 go_info{version="go1.20.6"} 1
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
-go_memstats_alloc_bytes 2.38808e+06
+go_memstats_alloc_bytes 2.27372e+06
 # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
 # TYPE go_memstats_alloc_bytes_total counter
-go_memstats_alloc_bytes_total 6.26037005832e+11
+go_memstats_alloc_bytes_total 9.85274032e+08
 # HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
 # TYPE go_memstats_buck_hash_sys_bytes gauge
-go_memstats_buck_hash_sys_bytes 2.09856e+06
+go_memstats_buck_hash_sys_bytes 1.582432e+06
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
-go_memstats_frees_total 8.379785092e+09
+go_memstats_frees_total 1.4568597e+07
 # HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
 # TYPE go_memstats_gc_sys_bytes gauge
-go_memstats_gc_sys_bytes 8.597544e+06
+go_memstats_gc_sys_bytes 8.480376e+06
 # HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
 # TYPE go_memstats_heap_alloc_bytes gauge
-go_memstats_heap_alloc_bytes 2.38808e+06
+go_memstats_heap_alloc_bytes 2.27372e+06
 # HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
 # TYPE go_memstats_heap_idle_bytes gauge
-go_memstats_heap_idle_bytes 8.15104e+06
+go_memstats_heap_idle_bytes 4.210688e+06
 # HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
 # TYPE go_memstats_heap_inuse_bytes gauge
-go_memstats_heap_inuse_bytes 3.743744e+06
+go_memstats_heap_inuse_bytes 3.719168e+06
 # HELP go_memstats_heap_objects Number of allocated objects.
 # TYPE go_memstats_heap_objects gauge
-go_memstats_heap_objects 30833
+go_memstats_heap_objects 16270
 # HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
 # TYPE go_memstats_heap_released_bytes gauge
-go_memstats_heap_released_bytes 7.102464e+06
+go_memstats_heap_released_bytes 3.252224e+06
 # HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
 # TYPE go_memstats_heap_sys_bytes gauge
-go_memstats_heap_sys_bytes 1.1894784e+07
+go_memstats_heap_sys_bytes 7.929856e+06
 # HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
 # TYPE go_memstats_last_gc_time_seconds gauge
-go_memstats_last_gc_time_seconds 1.6910468273850985e+09
+go_memstats_last_gc_time_seconds 1.6955629190328145e+09
 # HELP go_memstats_lookups_total Total number of pointer lookups.
 # TYPE go_memstats_lookups_total counter
 go_memstats_lookups_total 0
 # HELP go_memstats_mallocs_total Total number of mallocs.
 # TYPE go_memstats_mallocs_total counter
-go_memstats_mallocs_total 8.379815925e+09
+go_memstats_mallocs_total 1.4584867e+07
 # HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
 # TYPE go_memstats_mcache_inuse_bytes gauge
 go_memstats_mcache_inuse_bytes 1200
@@ -63,372 +63,300 @@ go_memstats_mcache_inuse_bytes 1200
 go_memstats_mcache_sys_bytes 15600
 # HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
 # TYPE go_memstats_mspan_inuse_bytes gauge
-go_memstats_mspan_inuse_bytes 69440
+go_memstats_mspan_inuse_bytes 62560
 # HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
 # TYPE go_memstats_mspan_sys_bytes gauge
-go_memstats_mspan_sys_bytes 114240
+go_memstats_mspan_sys_bytes 81600
 # HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
 # TYPE go_memstats_next_gc_bytes gauge
 go_memstats_next_gc_bytes 4.194304e+06
 # HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
 # TYPE go_memstats_other_sys_bytes gauge
-go_memstats_other_sys_bytes 574512
+go_memstats_other_sys_bytes 454016
 # HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
 # TYPE go_memstats_stack_inuse_bytes gauge
-go_memstats_stack_inuse_bytes 688128
+go_memstats_stack_inuse_bytes 458752
 # HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
 # TYPE go_memstats_stack_sys_bytes gauge
-go_memstats_stack_sys_bytes 688128
+go_memstats_stack_sys_bytes 458752
 # HELP go_memstats_sys_bytes Number of bytes obtained from system.
 # TYPE go_memstats_sys_bytes gauge
-go_memstats_sys_bytes 2.3983368e+07
+go_memstats_sys_bytes 1.9002632e+07
 # HELP go_threads Number of OS threads created.
 # TYPE go_threads gauge
-go_threads 8
+go_threads 4
 # HELP node_arp_entries ARP entries by device
 # TYPE node_arp_entries gauge
-node_arp_entries{device="br-0b3831161cf7"} 1
-node_arp_entries{device="br-0d007144137d"} 1
-node_arp_entries{device="br-4dea6d1426f4"} 7
-node_arp_entries{device="br-8410c26e61e6"} 4
-node_arp_entries{device="br-93ec4e5de303"} 2
-node_arp_entries{device="br-fdf0fd580b92"} 1
+node_arp_entries{device="br-b74749ee92fc"} 2
 node_arp_entries{device="eth0"} 1
 # HELP node_boot_time_seconds Node boot time, in unixtime.
 # TYPE node_boot_time_seconds gauge
-node_boot_time_seconds 1.656829974e+09
+node_boot_time_seconds 1.69555451e+09
+# HELP node_btrfs_allocation_ratio Data allocation ratio for a layout/data type
+# TYPE node_btrfs_allocation_ratio gauge
+node_btrfs_allocation_ratio{block_group_type="data",mode="single",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 1
+node_btrfs_allocation_ratio{block_group_type="metadata",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 2
+node_btrfs_allocation_ratio{block_group_type="system",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 2
+# HELP node_btrfs_device_errors_total Errors reported for the device
+# TYPE node_btrfs_device_errors_total counter
+node_btrfs_device_errors_total{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",type="corruption",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_device_errors_total{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",type="flush",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_device_errors_total{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",type="generation",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_device_errors_total{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",type="read",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_device_errors_total{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",type="write",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+# HELP node_btrfs_device_size_bytes Size of a device that is part of the filesystem.
+# TYPE node_btrfs_device_size_bytes gauge
+node_btrfs_device_size_bytes{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 1.4058868736e+10
+# HELP node_btrfs_device_unused_bytes Unused bytes unused on a device that is part of the filesystem.
+# TYPE node_btrfs_device_unused_bytes gauge
+node_btrfs_device_unused_bytes{btrfs_dev_uuid="aba46066-4b6a-44c2-9c16-eef2c261ed84",device="loop0",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 1.3496832e+10
+# HELP node_btrfs_global_rsv_size_bytes Size of global reserve.
+# TYPE node_btrfs_global_rsv_size_bytes gauge
+node_btrfs_global_rsv_size_bytes{uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 3.407872e+06
+# HELP node_btrfs_info Filesystem information
+# TYPE node_btrfs_info gauge
+node_btrfs_info{label="",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 1
+# HELP node_btrfs_reserved_bytes Amount of space reserved for a data type
+# TYPE node_btrfs_reserved_bytes gauge
+node_btrfs_reserved_bytes{block_group_type="data",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_reserved_bytes{block_group_type="metadata",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_reserved_bytes{block_group_type="system",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+# HELP node_btrfs_size_bytes Amount of space allocated for a layout/data type
+# TYPE node_btrfs_size_bytes gauge
+node_btrfs_size_bytes{block_group_type="data",mode="single",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 8.388608e+06
+node_btrfs_size_bytes{block_group_type="metadata",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 2.68435456e+08
+node_btrfs_size_bytes{block_group_type="system",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 8.388608e+06
+# HELP node_btrfs_used_bytes Amount of used space by a layout/data type
+# TYPE node_btrfs_used_bytes gauge
+node_btrfs_used_bytes{block_group_type="data",mode="single",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 0
+node_btrfs_used_bytes{block_group_type="metadata",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 131072
+node_btrfs_used_bytes{block_group_type="system",mode="dup",uuid="5d17460a-412a-4266-b87e-b18fa8d41f92"} 16384
 # HELP node_context_switches_total Total number of context switches.
 # TYPE node_context_switches_total counter
-node_context_switches_total 4.173157965e+11
+node_context_switches_total 2.818788e+06
 # HELP node_cooling_device_cur_state Current throttle state of the cooling device
 # TYPE node_cooling_device_cur_state gauge
 node_cooling_device_cur_state{name="0",type="Processor"} 0
-node_cooling_device_cur_state{name="1",type="Processor"} 0
-node_cooling_device_cur_state{name="2",type="Processor"} 0
-node_cooling_device_cur_state{name="3",type="Processor"} 0
-node_cooling_device_cur_state{name="4",type="Processor"} 0
-node_cooling_device_cur_state{name="5",type="Processor"} 0
 # HELP node_cooling_device_max_state Maximum throttle state of the cooling device
 # TYPE node_cooling_device_max_state gauge
 node_cooling_device_max_state{name="0",type="Processor"} 0
-node_cooling_device_max_state{name="1",type="Processor"} 0
-node_cooling_device_max_state{name="2",type="Processor"} 0
-node_cooling_device_max_state{name="3",type="Processor"} 0
-node_cooling_device_max_state{name="4",type="Processor"} 0
-node_cooling_device_max_state{name="5",type="Processor"} 0
 # HELP node_cpu_guest_seconds_total Seconds the CPUs spent in guests (VMs) for each mode.
 # TYPE node_cpu_guest_seconds_total counter
 node_cpu_guest_seconds_total{cpu="0",mode="nice"} 0
 node_cpu_guest_seconds_total{cpu="0",mode="user"} 0
-node_cpu_guest_seconds_total{cpu="1",mode="nice"} 0
-node_cpu_guest_seconds_total{cpu="1",mode="user"} 0
-node_cpu_guest_seconds_total{cpu="2",mode="nice"} 0
-node_cpu_guest_seconds_total{cpu="2",mode="user"} 0
-node_cpu_guest_seconds_total{cpu="3",mode="nice"} 0
-node_cpu_guest_seconds_total{cpu="3",mode="user"} 0
-node_cpu_guest_seconds_total{cpu="4",mode="nice"} 0
-node_cpu_guest_seconds_total{cpu="4",mode="user"} 0
-node_cpu_guest_seconds_total{cpu="5",mode="nice"} 0
-node_cpu_guest_seconds_total{cpu="5",mode="user"} 0
 # HELP node_cpu_seconds_total Seconds the CPUs spent in each mode.
 # TYPE node_cpu_seconds_total counter
-node_cpu_seconds_total{cpu="0",mode="idle"} 2.79114626e+07
-node_cpu_seconds_total{cpu="0",mode="iowait"} 32839.88
+node_cpu_seconds_total{cpu="0",mode="idle"} 8055.96
+node_cpu_seconds_total{cpu="0",mode="iowait"} 5.69
 node_cpu_seconds_total{cpu="0",mode="irq"} 0
-node_cpu_seconds_total{cpu="0",mode="nice"} 128.64
-node_cpu_seconds_total{cpu="0",mode="softirq"} 338374.13
-node_cpu_seconds_total{cpu="0",mode="steal"} 78316.69
-node_cpu_seconds_total{cpu="0",mode="system"} 1.07336601e+06
-node_cpu_seconds_total{cpu="0",mode="user"} 4.70490614e+06
-node_cpu_seconds_total{cpu="1",mode="idle"} 2.451999067e+07
-node_cpu_seconds_total{cpu="1",mode="iowait"} 54374.12
-node_cpu_seconds_total{cpu="1",mode="irq"} 0
-node_cpu_seconds_total{cpu="1",mode="nice"} 229.28
-node_cpu_seconds_total{cpu="1",mode="softirq"} 579575.69
-node_cpu_seconds_total{cpu="1",mode="steal"} 93624.27
-node_cpu_seconds_total{cpu="1",mode="system"} 1.66076967e+06
-node_cpu_seconds_total{cpu="1",mode="user"} 6.90889522e+06
-node_cpu_seconds_total{cpu="2",mode="idle"} 2.812755176e+07
-node_cpu_seconds_total{cpu="2",mode="iowait"} 25625.73
-node_cpu_seconds_total{cpu="2",mode="irq"} 0
-node_cpu_seconds_total{cpu="2",mode="nice"} 122.73
-node_cpu_seconds_total{cpu="2",mode="softirq"} 237421.62
-node_cpu_seconds_total{cpu="2",mode="steal"} 70654.76
-node_cpu_seconds_total{cpu="2",mode="system"} 1.08342866e+06
-node_cpu_seconds_total{cpu="2",mode="user"} 4.54237742e+06
-node_cpu_seconds_total{cpu="3",mode="idle"} 2.654463666e+07
-node_cpu_seconds_total{cpu="3",mode="iowait"} 35744.67
-node_cpu_seconds_total{cpu="3",mode="irq"} 0
-node_cpu_seconds_total{cpu="3",mode="nice"} 172.08
-node_cpu_seconds_total{cpu="3",mode="softirq"} 330309.79
-node_cpu_seconds_total{cpu="3",mode="steal"} 90736.5
-node_cpu_seconds_total{cpu="3",mode="system"} 1.3588098e+06
-node_cpu_seconds_total{cpu="3",mode="user"} 5.64662338e+06
-node_cpu_seconds_total{cpu="4",mode="idle"} 2.861954753e+07
-node_cpu_seconds_total{cpu="4",mode="iowait"} 21690.8
-node_cpu_seconds_total{cpu="4",mode="irq"} 0
-node_cpu_seconds_total{cpu="4",mode="nice"} 116.38
-node_cpu_seconds_total{cpu="4",mode="softirq"} 176142.53
-node_cpu_seconds_total{cpu="4",mode="steal"} 64650.4
-node_cpu_seconds_total{cpu="4",mode="system"} 1.01605258e+06
-node_cpu_seconds_total{cpu="4",mode="user"} 4.16663058e+06
-node_cpu_seconds_total{cpu="5",mode="idle"} 2.6093197e+07
-node_cpu_seconds_total{cpu="5",mode="iowait"} 1.02059533e+06
-node_cpu_seconds_total{cpu="5",mode="irq"} 0
-node_cpu_seconds_total{cpu="5",mode="nice"} 286.33
-node_cpu_seconds_total{cpu="5",mode="softirq"} 242319.18
-node_cpu_seconds_total{cpu="5",mode="steal"} 77728.77
-node_cpu_seconds_total{cpu="5",mode="system"} 1.36333132e+06
-node_cpu_seconds_total{cpu="5",mode="user"} 5.210362e+06
+node_cpu_seconds_total{cpu="0",mode="nice"} 4.9
+node_cpu_seconds_total{cpu="0",mode="softirq"} 5.4
+node_cpu_seconds_total{cpu="0",mode="steal"} 0
+node_cpu_seconds_total{cpu="0",mode="system"} 78.26
+node_cpu_seconds_total{cpu="0",mode="user"} 210.13
 # HELP node_disk_discard_time_seconds_total This is the total number of seconds spent by all discards.
 # TYPE node_disk_discard_time_seconds_total counter
-node_disk_discard_time_seconds_total{device="dm-0"} 2422.792
-node_disk_discard_time_seconds_total{device="dm-1"} 0
-node_disk_discard_time_seconds_total{device="sda"} 2699.082
+node_disk_discard_time_seconds_total{device="sda"} 0
+node_disk_discard_time_seconds_total{device="sr0"} 0
 # HELP node_disk_discarded_sectors_total The total number of sectors discarded successfully.
 # TYPE node_disk_discarded_sectors_total counter
-node_disk_discarded_sectors_total{device="dm-0"} 1.7166237536e+10
-node_disk_discarded_sectors_total{device="dm-1"} 0
-node_disk_discarded_sectors_total{device="sda"} 3.6849959264e+10
+node_disk_discarded_sectors_total{device="sda"} 0
+node_disk_discarded_sectors_total{device="sr0"} 0
 # HELP node_disk_discards_completed_total The total number of discards completed successfully.
 # TYPE node_disk_discards_completed_total counter
-node_disk_discards_completed_total{device="dm-0"} 1.7326229e+07
-node_disk_discards_completed_total{device="dm-1"} 0
-node_disk_discards_completed_total{device="sda"} 1.8508923e+07
+node_disk_discards_completed_total{device="sda"} 0
+node_disk_discards_completed_total{device="sr0"} 0
 # HELP node_disk_discards_merged_total The total number of discards merged.
 # TYPE node_disk_discards_merged_total counter
-node_disk_discards_merged_total{device="dm-0"} 0
-node_disk_discards_merged_total{device="dm-1"} 0
 node_disk_discards_merged_total{device="sda"} 0
+node_disk_discards_merged_total{device="sr0"} 0
+# HELP node_disk_flush_requests_time_seconds_total This is the total number of seconds spent by all flush requests.
+# TYPE node_disk_flush_requests_time_seconds_total counter
+node_disk_flush_requests_time_seconds_total{device="sda"} 1.385
+node_disk_flush_requests_time_seconds_total{device="sr0"} 0
+# HELP node_disk_flush_requests_total The total number of flush requests completed successfully
+# TYPE node_disk_flush_requests_total counter
+node_disk_flush_requests_total{device="sda"} 5246
+node_disk_flush_requests_total{device="sr0"} 0
 # HELP node_disk_info Info of /sys/block/<block_device>.
 # TYPE node_disk_info gauge
-node_disk_info{device="dm-0",major="253",minor="0",model="",path="",revision="",serial="",wwn=""} 1
-node_disk_info{device="dm-1",major="253",minor="1",model="",path="",revision="",serial="",wwn=""} 1
 node_disk_info{device="sda",major="8",minor="0",model="",path="",revision="",serial="",wwn=""} 1
+node_disk_info{device="sr0",major="11",minor="0",model="",path="",revision="",serial="",wwn=""} 1
 # HELP node_disk_io_now The number of I/Os currently in progress.
 # TYPE node_disk_io_now gauge
-node_disk_io_now{device="dm-0"} 0
-node_disk_io_now{device="dm-1"} 0
 node_disk_io_now{device="sda"} 0
+node_disk_io_now{device="sr0"} 0
 # HELP node_disk_io_time_seconds_total Total seconds spent doing I/Os.
 # TYPE node_disk_io_time_seconds_total counter
-node_disk_io_time_seconds_total{device="dm-0"} 83789.56
-node_disk_io_time_seconds_total{device="dm-1"} 22300.012
-node_disk_io_time_seconds_total{device="sda"} 319851.94800000003
+node_disk_io_time_seconds_total{device="sda"} 24.152
+node_disk_io_time_seconds_total{device="sr0"} 0.008
 # HELP node_disk_io_time_weighted_seconds_total The weighted # of seconds spent doing I/Os.
 # TYPE node_disk_io_time_weighted_seconds_total counter
-node_disk_io_time_weighted_seconds_total{device="dm-0"} 307207.764
-node_disk_io_time_weighted_seconds_total{device="dm-1"} 181540.584
-node_disk_io_time_weighted_seconds_total{device="sda"} 2.22180664e+06
+node_disk_io_time_weighted_seconds_total{device="sda"} 41.154
+node_disk_io_time_weighted_seconds_total{device="sr0"} 0
 # HELP node_disk_read_bytes_total The total number of bytes read successfully.
 # TYPE node_disk_read_bytes_total counter
-node_disk_read_bytes_total{device="dm-0"} 3.439670075904e+13
-node_disk_read_bytes_total{device="dm-1"} 6.679744512e+10
-node_disk_read_bytes_total{device="sda"} 6.2429982982144e+13
+node_disk_read_bytes_total{device="sda"} 2.2749696e+08
+node_disk_read_bytes_total{device="sr0"} 512
 # HELP node_disk_read_time_seconds_total The total number of seconds spent by all reads.
 # TYPE node_disk_read_time_seconds_total counter
-node_disk_read_time_seconds_total{device="dm-0"} 1.9888982680000002e+06
-node_disk_read_time_seconds_total{device="dm-1"} 8010.396
-node_disk_read_time_seconds_total{device="sda"} 2.0533210150000001e+06
+node_disk_read_time_seconds_total{device="sda"} 2.817
+node_disk_read_time_seconds_total{device="sr0"} 0
 # HELP node_disk_reads_completed_total The total number of reads completed successfully.
 # TYPE node_disk_reads_completed_total counter
-node_disk_reads_completed_total{device="dm-0"} 2.887480074e+09
-node_disk_reads_completed_total{device="dm-1"} 1.6307513e+07
-node_disk_reads_completed_total{device="sda"} 2.800486404e+09
+node_disk_reads_completed_total{device="sda"} 8722
+node_disk_reads_completed_total{device="sr0"} 4
 # HELP node_disk_reads_merged_total The total number of reads merged.
 # TYPE node_disk_reads_merged_total counter
-node_disk_reads_merged_total{device="dm-0"} 0
-node_disk_reads_merged_total{device="dm-1"} 0
-node_disk_reads_merged_total{device="sda"} 6.609092328e+09
+node_disk_reads_merged_total{device="sda"} 5634
+node_disk_reads_merged_total{device="sr0"} 0
 # HELP node_disk_write_time_seconds_total This is the total number of seconds spent by all writes.
 # TYPE node_disk_write_time_seconds_total counter
-node_disk_write_time_seconds_total{device="dm-0"} 2.610854e+06
-node_disk_write_time_seconds_total{device="dm-1"} 173530.188
-node_disk_write_time_seconds_total{device="sda"} 3.397620157e+06
+node_disk_write_time_seconds_total{device="sda"} 36.951
+node_disk_write_time_seconds_total{device="sr0"} 0
 # HELP node_disk_writes_completed_total The total number of writes completed successfully.
 # TYPE node_disk_writes_completed_total counter
-node_disk_writes_completed_total{device="dm-0"} 3.778430521e+09
-node_disk_writes_completed_total{device="dm-1"} 1.7142013e+07
-node_disk_writes_completed_total{device="sda"} 3.046152911e+09
+node_disk_writes_completed_total{device="sda"} 35565
+node_disk_writes_completed_total{device="sr0"} 0
 # HELP node_disk_writes_merged_total The number of writes merged.
 # TYPE node_disk_writes_merged_total counter
-node_disk_writes_merged_total{device="dm-0"} 0
-node_disk_writes_merged_total{device="dm-1"} 0
-node_disk_writes_merged_total{device="sda"} 1.349182036e+09
+node_disk_writes_merged_total{device="sda"} 36615
+node_disk_writes_merged_total{device="sr0"} 0
 # HELP node_disk_written_bytes_total The total number of bytes written successfully.
 # TYPE node_disk_written_bytes_total counter
-node_disk_written_bytes_total{device="dm-0"} 4.6151588114432e+13
-node_disk_written_bytes_total{device="dm-1"} 7.0213685248e+10
-node_disk_written_bytes_total{device="sda"} 5.0463106932736e+13
+node_disk_written_bytes_total{device="sda"} 1.881125888e+09
+node_disk_written_bytes_total{device="sr0"} 0
 # HELP node_dmi_info A metric with a constant '1' value labeled by bios_date, bios_release, bios_vendor, bios_version, board_asset_tag, board_name, board_serial, board_vendor, board_version, chassis_asset_tag, chassis_serial, chassis_vendor, chassis_version, product_family, product_name, product_serial, product_sku, product_uuid, product_version, system_vendor if provided by DMI.
 # TYPE node_dmi_info gauge
-node_dmi_info{bios_date="04/01/2014",bios_vendor="SeaBIOS",bios_version="rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org",chassis_asset_tag="",chassis_vendor="QEMU",chassis_version="pc-i440fx-4.1",product_family="",product_name="Standard PC (i440FX + PIIX, 1996)",product_sku="",product_version="pc-i440fx-4.1",system_vendor="QEMU"} 1
+node_dmi_info{bios_date="11/11/2017",bios_release="1.0",bios_vendor="Hetzner",bios_version="20171111",board_asset_tag="",board_name="Standard PC (i440FX + PIIX, 1996)",board_vendor="KVM",board_version="pc-i440fx-6.2",chassis_asset_tag="",chassis_vendor="QEMU",chassis_version="NotSpecified",product_family="Hetzner_vServer",product_name="vServer",product_sku="TM",product_version="20171111",system_vendor="Hetzner"} 1
 # HELP node_entropy_available_bits Bits of available entropy.
 # TYPE node_entropy_available_bits gauge
-node_entropy_available_bits 3866
+node_entropy_available_bits 256
 # HELP node_entropy_pool_size_bits Bits of entropy pool.
 # TYPE node_entropy_pool_size_bits gauge
-node_entropy_pool_size_bits 4096
+node_entropy_pool_size_bits 256
 # HELP node_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, goversion from which node_exporter was built, and the goos and goarch for the build.
 # TYPE node_exporter_build_info gauge
 node_exporter_build_info{branch="HEAD",goarch="amd64",goos="linux",goversion="go1.20.6",revision="4a1b77600c1873a8233f3ffb55afcedbb63b8d84",tags="netgo osusergo static_build",version="1.6.1"} 1
 # HELP node_filefd_allocated File descriptor statistics: allocated.
 # TYPE node_filefd_allocated gauge
-node_filefd_allocated 3104
+node_filefd_allocated 992
 # HELP node_filefd_maximum File descriptor statistics: maximum.
 # TYPE node_filefd_maximum gauge
 node_filefd_maximum 9.223372036854776e+18
 # HELP node_filesystem_avail_bytes Filesystem space available to non-root users in bytes.
 # TYPE node_filesystem_avail_bytes gauge
-node_filesystem_avail_bytes{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 1.80359962624e+11
-node_filesystem_avail_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 8.19580928e+08
-node_filesystem_avail_bytes{device="/dev/sda2",fstype="ext4",mountpoint="/"} 3.3094914048e+10
-node_filesystem_avail_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 1.676521472e+09
+node_filesystem_avail_bytes{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 1.3504151552e+10
+node_filesystem_avail_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/"} 1.936707584e+09
+node_filesystem_avail_bytes{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 2.64136192e+08
+node_filesystem_avail_bytes{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
+node_filesystem_avail_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 1.99876608e+08
 node_filesystem_avail_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 5.24288e+06
-node_filesystem_avail_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 1.679110144e+09
-node_filesystem_avail_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 1.679110144e+09
 # HELP node_filesystem_device_error Whether an error occurred while getting statistics for the given device.
 # TYPE node_filesystem_device_error gauge
-node_filesystem_device_error{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 0
-node_filesystem_device_error{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 0
-node_filesystem_device_error{device="/dev/sda2",fstype="ext4",mountpoint="/"} 0
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/0ec0dd94e136f687892879bd54fb372089f96db6641074a0871998cd0ca1e317/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/0ee1616272b7d6f5606a332745e8362f07edc27c17e8f7659019ed28ded18d19/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/17804e671b51baedbb362c66946489d94c36a073cacaf74a0d18029f9000bf4a/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/1f581322141f4d55b1b7cb1bbcad3a7ca710b21aa66cfeb00348af843ce203f1/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/2536f199b06dcbe053203b0061e41a633513d4c0db26128c5f16f83588122a9a/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/3876df25235283363af3b9cea5e33b4f07435f4750911e4e9d69254d52f12bcc/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/416d6e17f4ce1d3a67e03e70097fe3c3e234b6e6b622a32ee317c4f24ee3deae/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/54d1f5154fe37db9496abc639d169b039246039c0551dbbddac78e6562002afe/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/6199cb869015ba2bb8c6d25cdef7087989bab84e23fb3e0de2c1717608d16824/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/7afd3ca46e81c193096e66d3cc9a6aa93ab92d5413f549f277bcebb23613abbb/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/8490841c74b87aeb8b70bd847e5bc569b493f65d519bbbf91e604deb0943a4b6/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/8dfc0b9b0df61da1cc16714b7d137f0399bf039603be2b53605a9e62d4ca7915/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/98d62bf0f330de3ee4ce99ecc9542fc56fff26993bef9d093ccef2cb360511e2/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/99fe9f74cf148cede9afea43e28703dac40efde7fc93b20236a9eb3b29b766f4/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/a172c8f80f84a4f61b720421a506e068708668a904223ac501017cf058dfc353/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/a7dcf48b35eb380d4d403602e7d56ccb281b600a76e116cb9430fc13b024075c/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/aa69d43e70b5b009dcb7b5e2bc12231dc8e0e4dc6941117e90f3a59a9bfb9f7d/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/bff639425ead00c813c6a485ddde3f95cf7f6e186bce78cdb6b7e992a2ee897a/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/ca03ec053ab9f29b4e7a112d58d276f787f09ce1b6868878a46f775c5fc5ce8a/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/cbaf33513852baa2fcab805dc20d0eade08c661e6ac657e3d9432a46029e7b69/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/e0c4a4c23f7f4dcbdd258ca507da321895f2724d845ded41b57b14fdfe0110ed/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/e98c74b783408b616039f0a0e9af46dc3fb62037db45a293d38f72fadd41a410/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/f34f9538c3ff96b925b8ff8b58772dc9666eb2475ca5edcaef4931e4d9e5ec0e/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/f49c99ed638a79a5df9f4e3774ab4d95b4796ce4ee5f985c6879c0d53f2a4e7f/mounts/shm"} 1
-node_filesystem_device_error{device="shm",fstype="tmpfs",mountpoint="/var/lib/docker/containers/f8fc3353798a59a9731355b6489817cc46c75768d8721123664dcfd07e653e7c/mounts/shm"} 1
+node_filesystem_device_error{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 0
+node_filesystem_device_error{device="/dev/sda1",fstype="ext4",mountpoint="/"} 0
+node_filesystem_device_error{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 0
+node_filesystem_device_error{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
 node_filesystem_device_error{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 0
 node_filesystem_device_error{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 0
-node_filesystem_device_error{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 0
-node_filesystem_device_error{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 0
 # HELP node_filesystem_files Filesystem total file nodes.
 # TYPE node_filesystem_files gauge
-node_filesystem_files{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 2.097152e+07
-node_filesystem_files{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 61056
-node_filesystem_files{device="/dev/sda2",fstype="ext4",mountpoint="/"} 3.203072e+06
-node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 2.049697e+06
-node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 2.049697e+06
-node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 2.049697e+06
-node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 2.049697e+06
+node_filesystem_files{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 0
+node_filesystem_files{device="/dev/sda1",fstype="ext4",mountpoint="/"} 1.205584e+06
+node_filesystem_files{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 0
+node_filesystem_files{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
+node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 245251
+node_filesystem_files{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 245251
 # HELP node_filesystem_files_free Filesystem total free file nodes.
 # TYPE node_filesystem_files_free gauge
-node_filesystem_files_free{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 1.8504726e+07
-node_filesystem_files_free{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 60744
-node_filesystem_files_free{device="/dev/sda2",fstype="ext4",mountpoint="/"} 2.996249e+06
-node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 2.048621e+06
-node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 2.049694e+06
-node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 2.049679e+06
-node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 2.049679e+06
+node_filesystem_files_free{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 0
+node_filesystem_files_free{device="/dev/sda1",fstype="ext4",mountpoint="/"} 1.148095e+06
+node_filesystem_files_free{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 0
+node_filesystem_files_free{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
+node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 244494
+node_filesystem_files_free{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 245248
 # HELP node_filesystem_free_bytes Filesystem free space in bytes.
 # TYPE node_filesystem_free_bytes gauge
-node_filesystem_free_bytes{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 1.97556609024e+11
-node_filesystem_free_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 8.86321152e+08
-node_filesystem_free_bytes{device="/dev/sda2",fstype="ext4",mountpoint="/"} 3.5733131264e+10
-node_filesystem_free_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 1.676521472e+09
+node_filesystem_free_bytes{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 1.4055165952e+10
+node_filesystem_free_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/"} 2.801688576e+09
+node_filesystem_free_bytes{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 2.64136192e+08
+node_filesystem_free_bytes{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
+node_filesystem_free_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 1.99876608e+08
 node_filesystem_free_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 5.24288e+06
-node_filesystem_free_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 1.679110144e+09
-node_filesystem_free_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 1.679110144e+09
 # HELP node_filesystem_readonly Filesystem read-only status.
 # TYPE node_filesystem_readonly gauge
-node_filesystem_readonly{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 0
-node_filesystem_readonly{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 0
-node_filesystem_readonly{device="/dev/sda2",fstype="ext4",mountpoint="/"} 0
+node_filesystem_readonly{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 0
+node_filesystem_readonly{device="/dev/sda1",fstype="ext4",mountpoint="/"} 0
+node_filesystem_readonly{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 0
+node_filesystem_readonly{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 1
 node_filesystem_readonly{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 0
 node_filesystem_readonly{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 0
-node_filesystem_readonly{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 0
-node_filesystem_readonly{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 0
 # HELP node_filesystem_size_bytes Filesystem size in bytes.
 # TYPE node_filesystem_size_bytes gauge
-node_filesystem_size_bytes{device="/dev/mapper/main-lvol0",fstype="ext4",mountpoint="/data"} 3.37131106304e+11
-node_filesystem_size_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/boot"} 9.6677888e+08
-node_filesystem_size_bytes{device="/dev/sda2",fstype="ext4",mountpoint="/"} 5.0531442688e+10
-node_filesystem_size_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 1.67911424e+09
+node_filesystem_size_bytes{device="/dev/loop0",fstype="btrfs",mountpoint="/data"} 1.4058868736e+10
+node_filesystem_size_bytes{device="/dev/sda1",fstype="ext4",mountpoint="/"} 1.9809288192e+10
+node_filesystem_size_bytes{device="/dev/sda15",fstype="vfat",mountpoint="/boot/efi"} 2.64281088e+08
+node_filesystem_size_bytes{device="none",fstype="ramfs",mountpoint="/run/credentials/systemd-sysusers.service"} 0
+node_filesystem_size_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run"} 2.00912896e+08
 node_filesystem_size_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/lock"} 5.24288e+06
-node_filesystem_size_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/0"} 1.679110144e+09
-node_filesystem_size_bytes{device="tmpfs",fstype="tmpfs",mountpoint="/run/user/1000"} 1.679110144e+09
 # HELP node_forks_total Total number of forks.
 # TYPE node_forks_total counter
-node_forks_total 6.76359985e+08
+node_forks_total 5271
 # HELP node_intr_total Total number of interrupts serviced.
 # TYPE node_intr_total counter
-node_intr_total 4.5793272594e+10
+node_intr_total 1.553943e+06
 # HELP node_load1 1m load average.
 # TYPE node_load1 gauge
-node_load1 0.93
+node_load1 0
 # HELP node_load15 15m load average.
 # TYPE node_load15 gauge
-node_load15 0.97
+node_load15 0
 # HELP node_load5 5m load average.
 # TYPE node_load5 gauge
-node_load5 0.93
+node_load5 0
 # HELP node_memory_Active_anon_bytes Memory information field Active_anon_bytes.
 # TYPE node_memory_Active_anon_bytes gauge
-node_memory_Active_anon_bytes 6.969454592e+09
+node_memory_Active_anon_bytes 753664
 # HELP node_memory_Active_bytes Memory information field Active_bytes.
 # TYPE node_memory_Active_bytes gauge
-node_memory_Active_bytes 8.023539712e+09
+node_memory_Active_bytes 4.43215872e+08
 # HELP node_memory_Active_file_bytes Memory information field Active_file_bytes.
 # TYPE node_memory_Active_file_bytes gauge
-node_memory_Active_file_bytes 1.05408512e+09
+node_memory_Active_file_bytes 4.42462208e+08
 # HELP node_memory_AnonHugePages_bytes Memory information field AnonHugePages_bytes.
 # TYPE node_memory_AnonHugePages_bytes gauge
-node_memory_AnonHugePages_bytes 6.291456e+06
+node_memory_AnonHugePages_bytes 0
 # HELP node_memory_AnonPages_bytes Memory information field AnonPages_bytes.
 # TYPE node_memory_AnonPages_bytes gauge
-node_memory_AnonPages_bytes 4.158181376e+09
+node_memory_AnonPages_bytes 1.52588288e+08
 # HELP node_memory_Bounce_bytes Memory information field Bounce_bytes.
 # TYPE node_memory_Bounce_bytes gauge
 node_memory_Bounce_bytes 0
 # HELP node_memory_Buffers_bytes Memory information field Buffers_bytes.
 # TYPE node_memory_Buffers_bytes gauge
-node_memory_Buffers_bytes 3.39206144e+08
+node_memory_Buffers_bytes 4.5723648e+07
 # HELP node_memory_Cached_bytes Memory information field Cached_bytes.
 # TYPE node_memory_Cached_bytes gauge
-node_memory_Cached_bytes 6.823686144e+09
-# HELP node_memory_CmaFree_bytes Memory information field CmaFree_bytes.
-# TYPE node_memory_CmaFree_bytes gauge
-node_memory_CmaFree_bytes 0
-# HELP node_memory_CmaTotal_bytes Memory information field CmaTotal_bytes.
-# TYPE node_memory_CmaTotal_bytes gauge
-node_memory_CmaTotal_bytes 0
+node_memory_Cached_bytes 7.7596672e+08
 # HELP node_memory_CommitLimit_bytes Memory information field CommitLimit_bytes.
 # TYPE node_memory_CommitLimit_bytes gauge
-node_memory_CommitLimit_bytes 1.9132973056e+10
+node_memory_CommitLimit_bytes 1.004548096e+09
 # HELP node_memory_Committed_AS_bytes Memory information field Committed_AS_bytes.
 # TYPE node_memory_Committed_AS_bytes gauge
-node_memory_Committed_AS_bytes 2.22262272e+10
+node_memory_Committed_AS_bytes 9.61130496e+08
 # HELP node_memory_DirectMap1G_bytes Memory information field DirectMap1G_bytes.
 # TYPE node_memory_DirectMap1G_bytes gauge
-node_memory_DirectMap1G_bytes 2.147483648e+09
+node_memory_DirectMap1G_bytes 0
 # HELP node_memory_DirectMap2M_bytes Memory information field DirectMap2M_bytes.
 # TYPE node_memory_DirectMap2M_bytes gauge
-node_memory_DirectMap2M_bytes 5.370806272e+09
+node_memory_DirectMap2M_bytes 1.986002944e+09
 # HELP node_memory_DirectMap4k_bytes Memory information field DirectMap4k_bytes.
 # TYPE node_memory_DirectMap4k_bytes gauge
-node_memory_DirectMap4k_bytes 1.180891136e+10
+node_memory_DirectMap4k_bytes 1.110016e+08
 # HELP node_memory_Dirty_bytes Memory information field Dirty_bytes.
 # TYPE node_memory_Dirty_bytes gauge
-node_memory_Dirty_bytes 1.41312e+06
+node_memory_Dirty_bytes 176128
 # HELP node_memory_FileHugePages_bytes Memory information field FileHugePages_bytes.
 # TYPE node_memory_FileHugePages_bytes gauge
 node_memory_FileHugePages_bytes 0
@@ -458,49 +386,49 @@ node_memory_Hugepagesize_bytes 2.097152e+06
 node_memory_Hugetlb_bytes 0
 # HELP node_memory_Inactive_anon_bytes Memory information field Inactive_anon_bytes.
 # TYPE node_memory_Inactive_anon_bytes gauge
-node_memory_Inactive_anon_bytes 1.487409152e+09
+node_memory_Inactive_anon_bytes 1.33840896e+08
 # HELP node_memory_Inactive_bytes Memory information field Inactive_bytes.
 # TYPE node_memory_Inactive_bytes gauge
-node_memory_Inactive_bytes 3.315277824e+09
+node_memory_Inactive_bytes 5.02751232e+08
 # HELP node_memory_Inactive_file_bytes Memory information field Inactive_file_bytes.
 # TYPE node_memory_Inactive_file_bytes gauge
-node_memory_Inactive_file_bytes 1.827868672e+09
+node_memory_Inactive_file_bytes 3.68910336e+08
 # HELP node_memory_KReclaimable_bytes Memory information field KReclaimable_bytes.
 # TYPE node_memory_KReclaimable_bytes gauge
-node_memory_KReclaimable_bytes 3.66829568e+08
+node_memory_KReclaimable_bytes 7.2916992e+07
 # HELP node_memory_KernelStack_bytes Memory information field KernelStack_bytes.
 # TYPE node_memory_KernelStack_bytes gauge
-node_memory_KernelStack_bytes 1.429504e+07
+node_memory_KernelStack_bytes 3.178496e+06
 # HELP node_memory_Mapped_bytes Memory information field Mapped_bytes.
 # TYPE node_memory_Mapped_bytes gauge
-node_memory_Mapped_bytes 4.69907456e+09
+node_memory_Mapped_bytes 2.47955456e+08
 # HELP node_memory_MemAvailable_bytes Memory information field MemAvailable_bytes.
 # TYPE node_memory_MemAvailable_bytes gauge
-node_memory_MemAvailable_bytes 7.524458496e+09
+node_memory_MemAvailable_bytes 1.5604736e+09
 # HELP node_memory_MemFree_bytes Memory information field MemFree_bytes.
 # TYPE node_memory_MemFree_bytes gauge
-node_memory_MemFree_bytes 4.621901824e+09
+node_memory_MemFree_bytes 8.4709376e+08
 # HELP node_memory_MemTotal_bytes Memory information field MemTotal_bytes.
 # TYPE node_memory_MemTotal_bytes gauge
-node_memory_MemTotal_bytes 1.6791117824e+10
+node_memory_MemTotal_bytes 2.009100288e+09
 # HELP node_memory_Mlocked_bytes Memory information field Mlocked_bytes.
 # TYPE node_memory_Mlocked_bytes gauge
-node_memory_Mlocked_bytes 0
+node_memory_Mlocked_bytes 2.8311552e+07
 # HELP node_memory_NFS_Unstable_bytes Memory information field NFS_Unstable_bytes.
 # TYPE node_memory_NFS_Unstable_bytes gauge
 node_memory_NFS_Unstable_bytes 0
 # HELP node_memory_PageTables_bytes Memory information field PageTables_bytes.
 # TYPE node_memory_PageTables_bytes gauge
-node_memory_PageTables_bytes 9.969664e+07
+node_memory_PageTables_bytes 3.108864e+06
 # HELP node_memory_Percpu_bytes Memory information field Percpu_bytes.
 # TYPE node_memory_Percpu_bytes gauge
-node_memory_Percpu_bytes 1.048576e+07
+node_memory_Percpu_bytes 626688
 # HELP node_memory_SReclaimable_bytes Memory information field SReclaimable_bytes.
 # TYPE node_memory_SReclaimable_bytes gauge
-node_memory_SReclaimable_bytes 3.66829568e+08
+node_memory_SReclaimable_bytes 7.2916992e+07
 # HELP node_memory_SUnreclaim_bytes Memory information field SUnreclaim_bytes.
 # TYPE node_memory_SUnreclaim_bytes gauge
-node_memory_SUnreclaim_bytes 2.7758592e+08
+node_memory_SUnreclaim_bytes 3.7146624e+07
 # HELP node_memory_ShmemHugePages_bytes Memory information field ShmemHugePages_bytes.
 # TYPE node_memory_ShmemHugePages_bytes gauge
 node_memory_ShmemHugePages_bytes 0
@@ -509,22 +437,22 @@ node_memory_ShmemHugePages_bytes 0
 node_memory_ShmemPmdMapped_bytes 0
 # HELP node_memory_Shmem_bytes Memory information field Shmem_bytes.
 # TYPE node_memory_Shmem_bytes gauge
-node_memory_Shmem_bytes 4.455149568e+09
+node_memory_Shmem_bytes 1.036288e+06
 # HELP node_memory_Slab_bytes Memory information field Slab_bytes.
 # TYPE node_memory_Slab_bytes gauge
-node_memory_Slab_bytes 6.44415488e+08
+node_memory_Slab_bytes 1.10063616e+08
 # HELP node_memory_SwapCached_bytes Memory information field SwapCached_bytes.
 # TYPE node_memory_SwapCached_bytes gauge
-node_memory_SwapCached_bytes 3.4172928e+07
+node_memory_SwapCached_bytes 0
 # HELP node_memory_SwapFree_bytes Memory information field SwapFree_bytes.
 # TYPE node_memory_SwapFree_bytes gauge
-node_memory_SwapFree_bytes 1.017458688e+10
+node_memory_SwapFree_bytes 0
 # HELP node_memory_SwapTotal_bytes Memory information field SwapTotal_bytes.
 # TYPE node_memory_SwapTotal_bytes gauge
-node_memory_SwapTotal_bytes 1.0737414144e+10
+node_memory_SwapTotal_bytes 0
 # HELP node_memory_Unevictable_bytes Memory information field Unevictable_bytes.
 # TYPE node_memory_Unevictable_bytes gauge
-node_memory_Unevictable_bytes 0
+node_memory_Unevictable_bytes 2.8311552e+07
 # HELP node_memory_VmallocChunk_bytes Memory information field VmallocChunk_bytes.
 # TYPE node_memory_VmallocChunk_bytes gauge
 node_memory_VmallocChunk_bytes 0
@@ -533,7 +461,7 @@ node_memory_VmallocChunk_bytes 0
 node_memory_VmallocTotal_bytes 3.5184372087808e+13
 # HELP node_memory_VmallocUsed_bytes Memory information field VmallocUsed_bytes.
 # TYPE node_memory_VmallocUsed_bytes gauge
-node_memory_VmallocUsed_bytes 2.2810624e+07
+node_memory_VmallocUsed_bytes 1.5532032e+07
 # HELP node_memory_WritebackTmp_bytes Memory information field WritebackTmp_bytes.
 # TYPE node_memory_WritebackTmp_bytes gauge
 node_memory_WritebackTmp_bytes 0
@@ -542,94 +470,94 @@ node_memory_WritebackTmp_bytes 0
 node_memory_Writeback_bytes 0
 # HELP node_netstat_Icmp6_InErrors Statistic Icmp6InErrors.
 # TYPE node_netstat_Icmp6_InErrors untyped
-node_netstat_Icmp6_InErrors 7732
+node_netstat_Icmp6_InErrors 0
 # HELP node_netstat_Icmp6_InMsgs Statistic Icmp6InMsgs.
 # TYPE node_netstat_Icmp6_InMsgs untyped
-node_netstat_Icmp6_InMsgs 7.979576e+06
+node_netstat_Icmp6_InMsgs 80
 # HELP node_netstat_Icmp6_OutMsgs Statistic Icmp6OutMsgs.
 # TYPE node_netstat_Icmp6_OutMsgs untyped
-node_netstat_Icmp6_OutMsgs 7.968254e+06
+node_netstat_Icmp6_OutMsgs 144
 # HELP node_netstat_Icmp_InErrors Statistic IcmpInErrors.
 # TYPE node_netstat_Icmp_InErrors untyped
-node_netstat_Icmp_InErrors 875125
+node_netstat_Icmp_InErrors 0
 # HELP node_netstat_Icmp_InMsgs Statistic IcmpInMsgs.
 # TYPE node_netstat_Icmp_InMsgs untyped
-node_netstat_Icmp_InMsgs 6.252883e+06
+node_netstat_Icmp_InMsgs 46
 # HELP node_netstat_Icmp_OutMsgs Statistic IcmpOutMsgs.
 # TYPE node_netstat_Icmp_OutMsgs untyped
-node_netstat_Icmp_OutMsgs 9.779465e+06
+node_netstat_Icmp_OutMsgs 86
 # HELP node_netstat_Ip6_InOctets Statistic Ip6InOctets.
 # TYPE node_netstat_Ip6_InOctets untyped
-node_netstat_Ip6_InOctets 4.699427389962e+12
+node_netstat_Ip6_InOctets 1.73390089e+08
 # HELP node_netstat_Ip6_OutOctets Statistic Ip6OutOctets.
 # TYPE node_netstat_Ip6_OutOctets untyped
-node_netstat_Ip6_OutOctets 4.698669650368e+12
+node_netstat_Ip6_OutOctets 461492
 # HELP node_netstat_IpExt_InOctets Statistic IpExtInOctets.
 # TYPE node_netstat_IpExt_InOctets untyped
-node_netstat_IpExt_InOctets 1.2997659034703e+13
+node_netstat_IpExt_InOctets 2.3325034e+08
 # HELP node_netstat_IpExt_OutOctets Statistic IpExtOutOctets.
 # TYPE node_netstat_IpExt_OutOctets untyped
-node_netstat_IpExt_OutOctets 3.3231765683316e+13
+node_netstat_IpExt_OutOctets 3.97917925e+08
 # HELP node_netstat_Ip_Forwarding Statistic IpForwarding.
 # TYPE node_netstat_Ip_Forwarding untyped
 node_netstat_Ip_Forwarding 1
 # HELP node_netstat_TcpExt_ListenDrops Statistic TcpExtListenDrops.
 # TYPE node_netstat_TcpExt_ListenDrops untyped
-node_netstat_TcpExt_ListenDrops 70
+node_netstat_TcpExt_ListenDrops 0
 # HELP node_netstat_TcpExt_ListenOverflows Statistic TcpExtListenOverflows.
 # TYPE node_netstat_TcpExt_ListenOverflows untyped
 node_netstat_TcpExt_ListenOverflows 0
 # HELP node_netstat_TcpExt_SyncookiesFailed Statistic TcpExtSyncookiesFailed.
 # TYPE node_netstat_TcpExt_SyncookiesFailed untyped
-node_netstat_TcpExt_SyncookiesFailed 333
+node_netstat_TcpExt_SyncookiesFailed 0
 # HELP node_netstat_TcpExt_SyncookiesRecv Statistic TcpExtSyncookiesRecv.
 # TYPE node_netstat_TcpExt_SyncookiesRecv untyped
-node_netstat_TcpExt_SyncookiesRecv 186
+node_netstat_TcpExt_SyncookiesRecv 0
 # HELP node_netstat_TcpExt_SyncookiesSent Statistic TcpExtSyncookiesSent.
 # TYPE node_netstat_TcpExt_SyncookiesSent untyped
-node_netstat_TcpExt_SyncookiesSent 277
+node_netstat_TcpExt_SyncookiesSent 0
 # HELP node_netstat_TcpExt_TCPSynRetrans Statistic TcpExtTCPSynRetrans.
 # TYPE node_netstat_TcpExt_TCPSynRetrans untyped
-node_netstat_TcpExt_TCPSynRetrans 394944
+node_netstat_TcpExt_TCPSynRetrans 136
 # HELP node_netstat_TcpExt_TCPTimeouts Statistic TcpExtTCPTimeouts.
 # TYPE node_netstat_TcpExt_TCPTimeouts untyped
-node_netstat_TcpExt_TCPTimeouts 761313
+node_netstat_TcpExt_TCPTimeouts 421
 # HELP node_netstat_Tcp_ActiveOpens Statistic TcpActiveOpens.
 # TYPE node_netstat_Tcp_ActiveOpens untyped
-node_netstat_Tcp_ActiveOpens 15340
+node_netstat_Tcp_ActiveOpens 83
 # HELP node_netstat_Tcp_CurrEstab Statistic TcpCurrEstab.
 # TYPE node_netstat_Tcp_CurrEstab untyped
-node_netstat_Tcp_CurrEstab 5
+node_netstat_Tcp_CurrEstab 4
 # HELP node_netstat_Tcp_InErrs Statistic TcpInErrs.
 # TYPE node_netstat_Tcp_InErrs untyped
-node_netstat_Tcp_InErrs 229529
+node_netstat_Tcp_InErrs 126
 # HELP node_netstat_Tcp_InSegs Statistic TcpInSegs.
 # TYPE node_netstat_Tcp_InSegs untyped
-node_netstat_Tcp_InSegs 4.38341525e+08
+node_netstat_Tcp_InSegs 27327
 # HELP node_netstat_Tcp_OutRsts Statistic TcpOutRsts.
 # TYPE node_netstat_Tcp_OutRsts untyped
-node_netstat_Tcp_OutRsts 6.697198e+06
+node_netstat_Tcp_OutRsts 1701
 # HELP node_netstat_Tcp_OutSegs Statistic TcpOutSegs.
 # TYPE node_netstat_Tcp_OutSegs untyped
-node_netstat_Tcp_OutSegs 5.346992529e+09
+node_netstat_Tcp_OutSegs 24920
 # HELP node_netstat_Tcp_PassiveOpens Statistic TcpPassiveOpens.
 # TYPE node_netstat_Tcp_PassiveOpens untyped
-node_netstat_Tcp_PassiveOpens 2.810997e+06
+node_netstat_Tcp_PassiveOpens 682
 # HELP node_netstat_Tcp_RetransSegs Statistic TcpRetransSegs.
 # TYPE node_netstat_Tcp_RetransSegs untyped
-node_netstat_Tcp_RetransSegs 5.208382e+06
+node_netstat_Tcp_RetransSegs 633
 # HELP node_netstat_Udp6_InDatagrams Statistic Udp6InDatagrams.
 # TYPE node_netstat_Udp6_InDatagrams untyped
-node_netstat_Udp6_InDatagrams 29821
+node_netstat_Udp6_InDatagrams 98
 # HELP node_netstat_Udp6_InErrors Statistic Udp6InErrors.
 # TYPE node_netstat_Udp6_InErrors untyped
-node_netstat_Udp6_InErrors 241
+node_netstat_Udp6_InErrors 0
 # HELP node_netstat_Udp6_NoPorts Statistic Udp6NoPorts.
 # TYPE node_netstat_Udp6_NoPorts untyped
-node_netstat_Udp6_NoPorts 6427
+node_netstat_Udp6_NoPorts 0
 # HELP node_netstat_Udp6_OutDatagrams Statistic Udp6OutDatagrams.
 # TYPE node_netstat_Udp6_OutDatagrams untyped
-node_netstat_Udp6_OutDatagrams 30014
+node_netstat_Udp6_OutDatagrams 98
 # HELP node_netstat_Udp6_RcvbufErrors Statistic Udp6RcvbufErrors.
 # TYPE node_netstat_Udp6_RcvbufErrors untyped
 node_netstat_Udp6_RcvbufErrors 0
@@ -644,1442 +572,372 @@ node_netstat_UdpLite6_InErrors 0
 node_netstat_UdpLite_InErrors 0
 # HELP node_netstat_Udp_InDatagrams Statistic UdpInDatagrams.
 # TYPE node_netstat_Udp_InDatagrams untyped
-node_netstat_Udp_InDatagrams 99012
+node_netstat_Udp_InDatagrams 400
 # HELP node_netstat_Udp_InErrors Statistic UdpInErrors.
 # TYPE node_netstat_Udp_InErrors untyped
-node_netstat_Udp_InErrors 559161
+node_netstat_Udp_InErrors 0
 # HELP node_netstat_Udp_NoPorts Statistic UdpNoPorts.
 # TYPE node_netstat_Udp_NoPorts untyped
-node_netstat_Udp_NoPorts 4.430132e+06
+node_netstat_Udp_NoPorts 80
 # HELP node_netstat_Udp_OutDatagrams Statistic UdpOutDatagrams.
 # TYPE node_netstat_Udp_OutDatagrams untyped
-node_netstat_Udp_OutDatagrams 98507
+node_netstat_Udp_OutDatagrams 440
 # HELP node_netstat_Udp_RcvbufErrors Statistic UdpRcvbufErrors.
 # TYPE node_netstat_Udp_RcvbufErrors untyped
-node_netstat_Udp_RcvbufErrors 554752
+node_netstat_Udp_RcvbufErrors 0
 # HELP node_netstat_Udp_SndbufErrors Statistic UdpSndbufErrors.
 # TYPE node_netstat_Udp_SndbufErrors untyped
 node_netstat_Udp_SndbufErrors 0
 # HELP node_network_address_assign_type Network device property: address_assign_type
 # TYPE node_network_address_assign_type gauge
-node_network_address_assign_type{device="br-0b3831161cf7"} 3
-node_network_address_assign_type{device="br-0d007144137d"} 3
-node_network_address_assign_type{device="br-4dea6d1426f4"} 3
-node_network_address_assign_type{device="br-804926c487e9"} 3
-node_network_address_assign_type{device="br-8410c26e61e6"} 3
-node_network_address_assign_type{device="br-93ec4e5de303"} 3
-node_network_address_assign_type{device="br-fdf0fd580b92"} 3
+node_network_address_assign_type{device="br-9fe3bbaef917"} 3
+node_network_address_assign_type{device="br-a08a0ec8f10a"} 3
+node_network_address_assign_type{device="br-b74749ee92fc"} 3
 node_network_address_assign_type{device="docker0"} 3
 node_network_address_assign_type{device="eth0"} 0
 node_network_address_assign_type{device="lo"} 0
-node_network_address_assign_type{device="veth067cbb9"} 1
-node_network_address_assign_type{device="veth0c46f9c"} 1
-node_network_address_assign_type{device="veth172b0e8"} 1
-node_network_address_assign_type{device="veth1b5046f"} 1
-node_network_address_assign_type{device="veth1cc7faf"} 1
-node_network_address_assign_type{device="veth20c7ef1"} 1
-node_network_address_assign_type{device="veth2627759"} 1
-node_network_address_assign_type{device="veth299e88a"} 1
-node_network_address_assign_type{device="veth3454f15"} 1
-node_network_address_assign_type{device="veth42b9fcf"} 1
-node_network_address_assign_type{device="veth47f7380"} 1
-node_network_address_assign_type{device="veth4943c51"} 1
-node_network_address_assign_type{device="veth4b4fa8b"} 1
-node_network_address_assign_type{device="veth75ea39d"} 1
-node_network_address_assign_type{device="veth7ba5026"} 1
-node_network_address_assign_type{device="veth8981bcf"} 1
-node_network_address_assign_type{device="veth8bf3774"} 1
-node_network_address_assign_type{device="veth95ee2ad"} 1
-node_network_address_assign_type{device="veth96761db"} 1
-node_network_address_assign_type{device="vethb5e4ecb"} 1
-node_network_address_assign_type{device="vethc53ac98"} 1
-node_network_address_assign_type{device="vethc8108b1"} 1
-node_network_address_assign_type{device="vethce0b8ca"} 1
-node_network_address_assign_type{device="vethd118ce1"} 1
-node_network_address_assign_type{device="vethd6944c2"} 1
-node_network_address_assign_type{device="vetheb6145e"} 1
-node_network_address_assign_type{device="vethfffdc4a"} 1
+node_network_address_assign_type{device="vetha602b83"} 3
 # HELP node_network_carrier Network device property: carrier
 # TYPE node_network_carrier gauge
-node_network_carrier{device="br-0b3831161cf7"} 1
-node_network_carrier{device="br-0d007144137d"} 1
-node_network_carrier{device="br-4dea6d1426f4"} 1
-node_network_carrier{device="br-804926c487e9"} 1
-node_network_carrier{device="br-8410c26e61e6"} 1
-node_network_carrier{device="br-93ec4e5de303"} 1
-node_network_carrier{device="br-fdf0fd580b92"} 1
+node_network_carrier{device="br-9fe3bbaef917"} 0
+node_network_carrier{device="br-a08a0ec8f10a"} 0
+node_network_carrier{device="br-b74749ee92fc"} 1
 node_network_carrier{device="docker0"} 0
 node_network_carrier{device="eth0"} 1
 node_network_carrier{device="lo"} 1
-node_network_carrier{device="veth067cbb9"} 1
-node_network_carrier{device="veth0c46f9c"} 1
-node_network_carrier{device="veth172b0e8"} 1
-node_network_carrier{device="veth1b5046f"} 1
-node_network_carrier{device="veth1cc7faf"} 1
-node_network_carrier{device="veth20c7ef1"} 1
-node_network_carrier{device="veth2627759"} 1
-node_network_carrier{device="veth299e88a"} 1
-node_network_carrier{device="veth3454f15"} 1
-node_network_carrier{device="veth42b9fcf"} 1
-node_network_carrier{device="veth47f7380"} 1
-node_network_carrier{device="veth4943c51"} 1
-node_network_carrier{device="veth4b4fa8b"} 1
-node_network_carrier{device="veth75ea39d"} 1
-node_network_carrier{device="veth7ba5026"} 1
-node_network_carrier{device="veth8981bcf"} 1
-node_network_carrier{device="veth8bf3774"} 1
-node_network_carrier{device="veth95ee2ad"} 1
-node_network_carrier{device="veth96761db"} 1
-node_network_carrier{device="vethb5e4ecb"} 1
-node_network_carrier{device="vethc53ac98"} 1
-node_network_carrier{device="vethc8108b1"} 1
-node_network_carrier{device="vethce0b8ca"} 1
-node_network_carrier{device="vethd118ce1"} 1
-node_network_carrier{device="vethd6944c2"} 1
-node_network_carrier{device="vetheb6145e"} 1
-node_network_carrier{device="vethfffdc4a"} 1
+node_network_carrier{device="vetha602b83"} 1
 # HELP node_network_carrier_changes_total Network device property: carrier_changes_total
 # TYPE node_network_carrier_changes_total counter
-node_network_carrier_changes_total{device="br-0b3831161cf7"} 36
-node_network_carrier_changes_total{device="br-0d007144137d"} 42
-node_network_carrier_changes_total{device="br-4dea6d1426f4"} 12
-node_network_carrier_changes_total{device="br-804926c487e9"} 2
-node_network_carrier_changes_total{device="br-8410c26e61e6"} 12
-node_network_carrier_changes_total{device="br-93ec4e5de303"} 4
-node_network_carrier_changes_total{device="br-fdf0fd580b92"} 6
-node_network_carrier_changes_total{device="docker0"} 15
+node_network_carrier_changes_total{device="br-9fe3bbaef917"} 3
+node_network_carrier_changes_total{device="br-a08a0ec8f10a"} 3
+node_network_carrier_changes_total{device="br-b74749ee92fc"} 2
+node_network_carrier_changes_total{device="docker0"} 3
 node_network_carrier_changes_total{device="eth0"} 2
 node_network_carrier_changes_total{device="lo"} 0
-node_network_carrier_changes_total{device="veth067cbb9"} 2
-node_network_carrier_changes_total{device="veth0c46f9c"} 2
-node_network_carrier_changes_total{device="veth172b0e8"} 2
-node_network_carrier_changes_total{device="veth1b5046f"} 2
-node_network_carrier_changes_total{device="veth1cc7faf"} 2
-node_network_carrier_changes_total{device="veth20c7ef1"} 2
-node_network_carrier_changes_total{device="veth2627759"} 2
-node_network_carrier_changes_total{device="veth299e88a"} 2
-node_network_carrier_changes_total{device="veth3454f15"} 2
-node_network_carrier_changes_total{device="veth42b9fcf"} 2
-node_network_carrier_changes_total{device="veth47f7380"} 2
-node_network_carrier_changes_total{device="veth4943c51"} 2
-node_network_carrier_changes_total{device="veth4b4fa8b"} 2
-node_network_carrier_changes_total{device="veth75ea39d"} 2
-node_network_carrier_changes_total{device="veth7ba5026"} 2
-node_network_carrier_changes_total{device="veth8981bcf"} 2
-node_network_carrier_changes_total{device="veth8bf3774"} 2
-node_network_carrier_changes_total{device="veth95ee2ad"} 2
-node_network_carrier_changes_total{device="veth96761db"} 2
-node_network_carrier_changes_total{device="vethb5e4ecb"} 2
-node_network_carrier_changes_total{device="vethc53ac98"} 2
-node_network_carrier_changes_total{device="vethc8108b1"} 2
-node_network_carrier_changes_total{device="vethce0b8ca"} 2
-node_network_carrier_changes_total{device="vethd118ce1"} 2
-node_network_carrier_changes_total{device="vethd6944c2"} 2
-node_network_carrier_changes_total{device="vetheb6145e"} 2
-node_network_carrier_changes_total{device="vethfffdc4a"} 2
+node_network_carrier_changes_total{device="vetha602b83"} 2
 # HELP node_network_carrier_down_changes_total Network device property: carrier_down_changes_total
 # TYPE node_network_carrier_down_changes_total counter
-node_network_carrier_down_changes_total{device="br-0b3831161cf7"} 18
-node_network_carrier_down_changes_total{device="br-0d007144137d"} 21
-node_network_carrier_down_changes_total{device="br-4dea6d1426f4"} 6
-node_network_carrier_down_changes_total{device="br-804926c487e9"} 1
-node_network_carrier_down_changes_total{device="br-8410c26e61e6"} 6
-node_network_carrier_down_changes_total{device="br-93ec4e5de303"} 2
-node_network_carrier_down_changes_total{device="br-fdf0fd580b92"} 3
-node_network_carrier_down_changes_total{device="docker0"} 8
+node_network_carrier_down_changes_total{device="br-9fe3bbaef917"} 2
+node_network_carrier_down_changes_total{device="br-a08a0ec8f10a"} 2
+node_network_carrier_down_changes_total{device="br-b74749ee92fc"} 1
+node_network_carrier_down_changes_total{device="docker0"} 2
 node_network_carrier_down_changes_total{device="eth0"} 1
 node_network_carrier_down_changes_total{device="lo"} 0
-node_network_carrier_down_changes_total{device="veth067cbb9"} 1
-node_network_carrier_down_changes_total{device="veth0c46f9c"} 1
-node_network_carrier_down_changes_total{device="veth172b0e8"} 1
-node_network_carrier_down_changes_total{device="veth1b5046f"} 1
-node_network_carrier_down_changes_total{device="veth1cc7faf"} 1
-node_network_carrier_down_changes_total{device="veth20c7ef1"} 1
-node_network_carrier_down_changes_total{device="veth2627759"} 1
-node_network_carrier_down_changes_total{device="veth299e88a"} 1
-node_network_carrier_down_changes_total{device="veth3454f15"} 1
-node_network_carrier_down_changes_total{device="veth42b9fcf"} 1
-node_network_carrier_down_changes_total{device="veth47f7380"} 1
-node_network_carrier_down_changes_total{device="veth4943c51"} 1
-node_network_carrier_down_changes_total{device="veth4b4fa8b"} 1
-node_network_carrier_down_changes_total{device="veth75ea39d"} 1
-node_network_carrier_down_changes_total{device="veth7ba5026"} 1
-node_network_carrier_down_changes_total{device="veth8981bcf"} 1
-node_network_carrier_down_changes_total{device="veth8bf3774"} 1
-node_network_carrier_down_changes_total{device="veth95ee2ad"} 1
-node_network_carrier_down_changes_total{device="veth96761db"} 1
-node_network_carrier_down_changes_total{device="vethb5e4ecb"} 1
-node_network_carrier_down_changes_total{device="vethc53ac98"} 1
-node_network_carrier_down_changes_total{device="vethc8108b1"} 1
-node_network_carrier_down_changes_total{device="vethce0b8ca"} 1
-node_network_carrier_down_changes_total{device="vethd118ce1"} 1
-node_network_carrier_down_changes_total{device="vethd6944c2"} 1
-node_network_carrier_down_changes_total{device="vetheb6145e"} 1
-node_network_carrier_down_changes_total{device="vethfffdc4a"} 1
+node_network_carrier_down_changes_total{device="vetha602b83"} 1
 # HELP node_network_carrier_up_changes_total Network device property: carrier_up_changes_total
 # TYPE node_network_carrier_up_changes_total counter
-node_network_carrier_up_changes_total{device="br-0b3831161cf7"} 18
-node_network_carrier_up_changes_total{device="br-0d007144137d"} 21
-node_network_carrier_up_changes_total{device="br-4dea6d1426f4"} 6
-node_network_carrier_up_changes_total{device="br-804926c487e9"} 1
-node_network_carrier_up_changes_total{device="br-8410c26e61e6"} 6
-node_network_carrier_up_changes_total{device="br-93ec4e5de303"} 2
-node_network_carrier_up_changes_total{device="br-fdf0fd580b92"} 3
-node_network_carrier_up_changes_total{device="docker0"} 7
+node_network_carrier_up_changes_total{device="br-9fe3bbaef917"} 1
+node_network_carrier_up_changes_total{device="br-a08a0ec8f10a"} 1
+node_network_carrier_up_changes_total{device="br-b74749ee92fc"} 1
+node_network_carrier_up_changes_total{device="docker0"} 1
 node_network_carrier_up_changes_total{device="eth0"} 1
 node_network_carrier_up_changes_total{device="lo"} 0
-node_network_carrier_up_changes_total{device="veth067cbb9"} 1
-node_network_carrier_up_changes_total{device="veth0c46f9c"} 1
-node_network_carrier_up_changes_total{device="veth172b0e8"} 1
-node_network_carrier_up_changes_total{device="veth1b5046f"} 1
-node_network_carrier_up_changes_total{device="veth1cc7faf"} 1
-node_network_carrier_up_changes_total{device="veth20c7ef1"} 1
-node_network_carrier_up_changes_total{device="veth2627759"} 1
-node_network_carrier_up_changes_total{device="veth299e88a"} 1
-node_network_carrier_up_changes_total{device="veth3454f15"} 1
-node_network_carrier_up_changes_total{device="veth42b9fcf"} 1
-node_network_carrier_up_changes_total{device="veth47f7380"} 1
-node_network_carrier_up_changes_total{device="veth4943c51"} 1
-node_network_carrier_up_changes_total{device="veth4b4fa8b"} 1
-node_network_carrier_up_changes_total{device="veth75ea39d"} 1
-node_network_carrier_up_changes_total{device="veth7ba5026"} 1
-node_network_carrier_up_changes_total{device="veth8981bcf"} 1
-node_network_carrier_up_changes_total{device="veth8bf3774"} 1
-node_network_carrier_up_changes_total{device="veth95ee2ad"} 1
-node_network_carrier_up_changes_total{device="veth96761db"} 1
-node_network_carrier_up_changes_total{device="vethb5e4ecb"} 1
-node_network_carrier_up_changes_total{device="vethc53ac98"} 1
-node_network_carrier_up_changes_total{device="vethc8108b1"} 1
-node_network_carrier_up_changes_total{device="vethce0b8ca"} 1
-node_network_carrier_up_changes_total{device="vethd118ce1"} 1
-node_network_carrier_up_changes_total{device="vethd6944c2"} 1
-node_network_carrier_up_changes_total{device="vetheb6145e"} 1
-node_network_carrier_up_changes_total{device="vethfffdc4a"} 1
+node_network_carrier_up_changes_total{device="vetha602b83"} 1
 # HELP node_network_device_id Network device property: device_id
 # TYPE node_network_device_id gauge
-node_network_device_id{device="br-0b3831161cf7"} 0
-node_network_device_id{device="br-0d007144137d"} 0
-node_network_device_id{device="br-4dea6d1426f4"} 0
-node_network_device_id{device="br-804926c487e9"} 0
-node_network_device_id{device="br-8410c26e61e6"} 0
-node_network_device_id{device="br-93ec4e5de303"} 0
-node_network_device_id{device="br-fdf0fd580b92"} 0
+node_network_device_id{device="br-9fe3bbaef917"} 0
+node_network_device_id{device="br-a08a0ec8f10a"} 0
+node_network_device_id{device="br-b74749ee92fc"} 0
 node_network_device_id{device="docker0"} 0
 node_network_device_id{device="eth0"} 0
 node_network_device_id{device="lo"} 0
-node_network_device_id{device="veth067cbb9"} 0
-node_network_device_id{device="veth0c46f9c"} 0
-node_network_device_id{device="veth172b0e8"} 0
-node_network_device_id{device="veth1b5046f"} 0
-node_network_device_id{device="veth1cc7faf"} 0
-node_network_device_id{device="veth20c7ef1"} 0
-node_network_device_id{device="veth2627759"} 0
-node_network_device_id{device="veth299e88a"} 0
-node_network_device_id{device="veth3454f15"} 0
-node_network_device_id{device="veth42b9fcf"} 0
-node_network_device_id{device="veth47f7380"} 0
-node_network_device_id{device="veth4943c51"} 0
-node_network_device_id{device="veth4b4fa8b"} 0
-node_network_device_id{device="veth75ea39d"} 0
-node_network_device_id{device="veth7ba5026"} 0
-node_network_device_id{device="veth8981bcf"} 0
-node_network_device_id{device="veth8bf3774"} 0
-node_network_device_id{device="veth95ee2ad"} 0
-node_network_device_id{device="veth96761db"} 0
-node_network_device_id{device="vethb5e4ecb"} 0
-node_network_device_id{device="vethc53ac98"} 0
-node_network_device_id{device="vethc8108b1"} 0
-node_network_device_id{device="vethce0b8ca"} 0
-node_network_device_id{device="vethd118ce1"} 0
-node_network_device_id{device="vethd6944c2"} 0
-node_network_device_id{device="vetheb6145e"} 0
-node_network_device_id{device="vethfffdc4a"} 0
+node_network_device_id{device="vetha602b83"} 0
 # HELP node_network_dormant Network device property: dormant
 # TYPE node_network_dormant gauge
-node_network_dormant{device="br-0b3831161cf7"} 0
-node_network_dormant{device="br-0d007144137d"} 0
-node_network_dormant{device="br-4dea6d1426f4"} 0
-node_network_dormant{device="br-804926c487e9"} 0
-node_network_dormant{device="br-8410c26e61e6"} 0
-node_network_dormant{device="br-93ec4e5de303"} 0
-node_network_dormant{device="br-fdf0fd580b92"} 0
+node_network_dormant{device="br-9fe3bbaef917"} 0
+node_network_dormant{device="br-a08a0ec8f10a"} 0
+node_network_dormant{device="br-b74749ee92fc"} 0
 node_network_dormant{device="docker0"} 0
 node_network_dormant{device="eth0"} 0
 node_network_dormant{device="lo"} 0
-node_network_dormant{device="veth067cbb9"} 0
-node_network_dormant{device="veth0c46f9c"} 0
-node_network_dormant{device="veth172b0e8"} 0
-node_network_dormant{device="veth1b5046f"} 0
-node_network_dormant{device="veth1cc7faf"} 0
-node_network_dormant{device="veth20c7ef1"} 0
-node_network_dormant{device="veth2627759"} 0
-node_network_dormant{device="veth299e88a"} 0
-node_network_dormant{device="veth3454f15"} 0
-node_network_dormant{device="veth42b9fcf"} 0
-node_network_dormant{device="veth47f7380"} 0
-node_network_dormant{device="veth4943c51"} 0
-node_network_dormant{device="veth4b4fa8b"} 0
-node_network_dormant{device="veth75ea39d"} 0
-node_network_dormant{device="veth7ba5026"} 0
-node_network_dormant{device="veth8981bcf"} 0
-node_network_dormant{device="veth8bf3774"} 0
-node_network_dormant{device="veth95ee2ad"} 0
-node_network_dormant{device="veth96761db"} 0
-node_network_dormant{device="vethb5e4ecb"} 0
-node_network_dormant{device="vethc53ac98"} 0
-node_network_dormant{device="vethc8108b1"} 0
-node_network_dormant{device="vethce0b8ca"} 0
-node_network_dormant{device="vethd118ce1"} 0
-node_network_dormant{device="vethd6944c2"} 0
-node_network_dormant{device="vetheb6145e"} 0
-node_network_dormant{device="vethfffdc4a"} 0
+node_network_dormant{device="vetha602b83"} 0
 # HELP node_network_flags Network device property: flags
 # TYPE node_network_flags gauge
-node_network_flags{device="br-0b3831161cf7"} 4099
-node_network_flags{device="br-0d007144137d"} 4099
-node_network_flags{device="br-4dea6d1426f4"} 4099
-node_network_flags{device="br-804926c487e9"} 4099
-node_network_flags{device="br-8410c26e61e6"} 4099
-node_network_flags{device="br-93ec4e5de303"} 4099
-node_network_flags{device="br-fdf0fd580b92"} 4099
+node_network_flags{device="br-9fe3bbaef917"} 4099
+node_network_flags{device="br-a08a0ec8f10a"} 4099
+node_network_flags{device="br-b74749ee92fc"} 4099
 node_network_flags{device="docker0"} 4099
 node_network_flags{device="eth0"} 4099
 node_network_flags{device="lo"} 9
-node_network_flags{device="veth067cbb9"} 4867
-node_network_flags{device="veth0c46f9c"} 4867
-node_network_flags{device="veth172b0e8"} 4867
-node_network_flags{device="veth1b5046f"} 4867
-node_network_flags{device="veth1cc7faf"} 4867
-node_network_flags{device="veth20c7ef1"} 4867
-node_network_flags{device="veth2627759"} 4867
-node_network_flags{device="veth299e88a"} 4867
-node_network_flags{device="veth3454f15"} 4867
-node_network_flags{device="veth42b9fcf"} 4867
-node_network_flags{device="veth47f7380"} 4867
-node_network_flags{device="veth4943c51"} 4867
-node_network_flags{device="veth4b4fa8b"} 4867
-node_network_flags{device="veth75ea39d"} 4867
-node_network_flags{device="veth7ba5026"} 4867
-node_network_flags{device="veth8981bcf"} 4867
-node_network_flags{device="veth8bf3774"} 4867
-node_network_flags{device="veth95ee2ad"} 4867
-node_network_flags{device="veth96761db"} 4867
-node_network_flags{device="vethb5e4ecb"} 4867
-node_network_flags{device="vethc53ac98"} 4867
-node_network_flags{device="vethc8108b1"} 4867
-node_network_flags{device="vethce0b8ca"} 4867
-node_network_flags{device="vethd118ce1"} 4867
-node_network_flags{device="vethd6944c2"} 4867
-node_network_flags{device="vetheb6145e"} 4867
-node_network_flags{device="vethfffdc4a"} 4867
+node_network_flags{device="vetha602b83"} 4867
 # HELP node_network_iface_id Network device property: iface_id
 # TYPE node_network_iface_id gauge
-node_network_iface_id{device="br-0b3831161cf7"} 519
-node_network_iface_id{device="br-0d007144137d"} 4
-node_network_iface_id{device="br-4dea6d1426f4"} 6
-node_network_iface_id{device="br-804926c487e9"} 3057
-node_network_iface_id{device="br-8410c26e61e6"} 7
-node_network_iface_id{device="br-93ec4e5de303"} 656
-node_network_iface_id{device="br-fdf0fd580b92"} 3392
+node_network_iface_id{device="br-9fe3bbaef917"} 18
+node_network_iface_id{device="br-a08a0ec8f10a"} 7
+node_network_iface_id{device="br-b74749ee92fc"} 4
 node_network_iface_id{device="docker0"} 3
 node_network_iface_id{device="eth0"} 2
 node_network_iface_id{device="lo"} 1
-node_network_iface_id{device="veth067cbb9"} 3059
-node_network_iface_id{device="veth0c46f9c"} 3464
-node_network_iface_id{device="veth172b0e8"} 3412
-node_network_iface_id{device="veth1b5046f"} 3205
-node_network_iface_id{device="veth1cc7faf"} 34
-node_network_iface_id{device="veth20c7ef1"} 2770
-node_network_iface_id{device="veth2627759"} 3452
-node_network_iface_id{device="veth299e88a"} 48
-node_network_iface_id{device="veth3454f15"} 3450
-node_network_iface_id{device="veth42b9fcf"} 3462
-node_network_iface_id{device="veth47f7380"} 3466
-node_network_iface_id{device="veth4943c51"} 3444
-node_network_iface_id{device="veth4b4fa8b"} 2968
-node_network_iface_id{device="veth75ea39d"} 3422
-node_network_iface_id{device="veth7ba5026"} 3337
-node_network_iface_id{device="veth8981bcf"} 3428
-node_network_iface_id{device="veth8bf3774"} 3227
-node_network_iface_id{device="veth95ee2ad"} 3430
-node_network_iface_id{device="veth96761db"} 82
-node_network_iface_id{device="vethb5e4ecb"} 3195
-node_network_iface_id{device="vethc53ac98"} 3454
-node_network_iface_id{device="vethc8108b1"} 2908
-node_network_iface_id{device="vethce0b8ca"} 3460
-node_network_iface_id{device="vethd118ce1"} 20
-node_network_iface_id{device="vethd6944c2"} 3181
-node_network_iface_id{device="vetheb6145e"} 3474
-node_network_iface_id{device="vethfffdc4a"} 3179
+node_network_iface_id{device="vetha602b83"} 6
 # HELP node_network_iface_link Network device property: iface_link
 # TYPE node_network_iface_link gauge
-node_network_iface_link{device="br-0b3831161cf7"} 519
-node_network_iface_link{device="br-0d007144137d"} 4
-node_network_iface_link{device="br-4dea6d1426f4"} 6
-node_network_iface_link{device="br-804926c487e9"} 3057
-node_network_iface_link{device="br-8410c26e61e6"} 7
-node_network_iface_link{device="br-93ec4e5de303"} 656
-node_network_iface_link{device="br-fdf0fd580b92"} 3392
+node_network_iface_link{device="br-9fe3bbaef917"} 18
+node_network_iface_link{device="br-a08a0ec8f10a"} 7
+node_network_iface_link{device="br-b74749ee92fc"} 4
 node_network_iface_link{device="docker0"} 3
 node_network_iface_link{device="eth0"} 2
 node_network_iface_link{device="lo"} 1
-node_network_iface_link{device="veth067cbb9"} 3058
-node_network_iface_link{device="veth0c46f9c"} 3463
-node_network_iface_link{device="veth172b0e8"} 3411
-node_network_iface_link{device="veth1b5046f"} 3204
-node_network_iface_link{device="veth1cc7faf"} 33
-node_network_iface_link{device="veth20c7ef1"} 2769
-node_network_iface_link{device="veth2627759"} 3451
-node_network_iface_link{device="veth299e88a"} 47
-node_network_iface_link{device="veth3454f15"} 3449
-node_network_iface_link{device="veth42b9fcf"} 3461
-node_network_iface_link{device="veth47f7380"} 3465
-node_network_iface_link{device="veth4943c51"} 3443
-node_network_iface_link{device="veth4b4fa8b"} 2967
-node_network_iface_link{device="veth75ea39d"} 3421
-node_network_iface_link{device="veth7ba5026"} 3336
-node_network_iface_link{device="veth8981bcf"} 3427
-node_network_iface_link{device="veth8bf3774"} 3226
-node_network_iface_link{device="veth95ee2ad"} 3429
-node_network_iface_link{device="veth96761db"} 81
-node_network_iface_link{device="vethb5e4ecb"} 3194
-node_network_iface_link{device="vethc53ac98"} 3453
-node_network_iface_link{device="vethc8108b1"} 2907
-node_network_iface_link{device="vethce0b8ca"} 3459
-node_network_iface_link{device="vethd118ce1"} 19
-node_network_iface_link{device="vethd6944c2"} 3180
-node_network_iface_link{device="vetheb6145e"} 3473
-node_network_iface_link{device="vethfffdc4a"} 3178
+node_network_iface_link{device="vetha602b83"} 5
 # HELP node_network_iface_link_mode Network device property: iface_link_mode
 # TYPE node_network_iface_link_mode gauge
-node_network_iface_link_mode{device="br-0b3831161cf7"} 0
-node_network_iface_link_mode{device="br-0d007144137d"} 0
-node_network_iface_link_mode{device="br-4dea6d1426f4"} 0
-node_network_iface_link_mode{device="br-804926c487e9"} 0
-node_network_iface_link_mode{device="br-8410c26e61e6"} 0
-node_network_iface_link_mode{device="br-93ec4e5de303"} 0
-node_network_iface_link_mode{device="br-fdf0fd580b92"} 0
+node_network_iface_link_mode{device="br-9fe3bbaef917"} 0
+node_network_iface_link_mode{device="br-a08a0ec8f10a"} 0
+node_network_iface_link_mode{device="br-b74749ee92fc"} 0
 node_network_iface_link_mode{device="docker0"} 0
 node_network_iface_link_mode{device="eth0"} 0
 node_network_iface_link_mode{device="lo"} 0
-node_network_iface_link_mode{device="veth067cbb9"} 0
-node_network_iface_link_mode{device="veth0c46f9c"} 0
-node_network_iface_link_mode{device="veth172b0e8"} 0
-node_network_iface_link_mode{device="veth1b5046f"} 0
-node_network_iface_link_mode{device="veth1cc7faf"} 0
-node_network_iface_link_mode{device="veth20c7ef1"} 0
-node_network_iface_link_mode{device="veth2627759"} 0
-node_network_iface_link_mode{device="veth299e88a"} 0
-node_network_iface_link_mode{device="veth3454f15"} 0
-node_network_iface_link_mode{device="veth42b9fcf"} 0
-node_network_iface_link_mode{device="veth47f7380"} 0
-node_network_iface_link_mode{device="veth4943c51"} 0
-node_network_iface_link_mode{device="veth4b4fa8b"} 0
-node_network_iface_link_mode{device="veth75ea39d"} 0
-node_network_iface_link_mode{device="veth7ba5026"} 0
-node_network_iface_link_mode{device="veth8981bcf"} 0
-node_network_iface_link_mode{device="veth8bf3774"} 0
-node_network_iface_link_mode{device="veth95ee2ad"} 0
-node_network_iface_link_mode{device="veth96761db"} 0
-node_network_iface_link_mode{device="vethb5e4ecb"} 0
-node_network_iface_link_mode{device="vethc53ac98"} 0
-node_network_iface_link_mode{device="vethc8108b1"} 0
-node_network_iface_link_mode{device="vethce0b8ca"} 0
-node_network_iface_link_mode{device="vethd118ce1"} 0
-node_network_iface_link_mode{device="vethd6944c2"} 0
-node_network_iface_link_mode{device="vetheb6145e"} 0
-node_network_iface_link_mode{device="vethfffdc4a"} 0
+node_network_iface_link_mode{device="vetha602b83"} 0
 # HELP node_network_info Non-numeric data from /sys/class/net/<iface>, value is always 1.
 # TYPE node_network_info gauge
 node_network_info{address="00:00:00:00:00:00",adminstate="up",broadcast="00:00:00:00:00:00",device="lo",duplex="",ifalias="",operstate="unknown"} 1
-node_network_info{address="00:50:56:41:8b:13",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="eth0",duplex="unknown",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:17:af:4e:c6",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-fdf0fd580b92",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:20:10:14:fc",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-4dea6d1426f4",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:35:70:e1:22",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-93ec4e5de303",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:ad:9c:6c:c1",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-0b3831161cf7",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:bd:6c:44:46",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-8410c26e61e6",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:c0:cb:2d:25",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-0d007144137d",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:42:d5:38:70:97",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="docker0",duplex="",ifalias="",operstate="down"} 1
-node_network_info{address="02:42:fa:f2:2e:7b",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-804926c487e9",duplex="",ifalias="",operstate="up"} 1
-node_network_info{address="02:b7:d2:3e:a6:dd",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth96761db",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="0a:29:82:e0:f7:b9",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth1b5046f",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="0e:27:14:ca:76:f3",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth1cc7faf",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="16:9b:89:7a:3e:7d",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethc53ac98",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="16:b4:c6:ca:1c:2b",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth4b4fa8b",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="1a:b0:a3:c1:63:a3",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethc8108b1",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="26:3d:0d:2d:ed:ce",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth7ba5026",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="32:fd:dd:65:e6:ad",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vetheb6145e",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="36:9c:8c:6e:74:e1",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethd6944c2",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="46:10:50:3a:7d:0c",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth299e88a",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="4a:cf:31:d7:ab:45",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth172b0e8",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="52:52:ca:ce:b0:55",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth20c7ef1",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="66:9e:48:89:9a:a6",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth8bf3774",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="6a:dc:b7:c9:0e:e6",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth4943c51",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="7a:af:66:f6:b1:57",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth47f7380",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="92:06:08:ef:e7:ca",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth0c46f9c",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="96:0e:48:4d:97:c9",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth067cbb9",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="9e:f3:6a:5b:35:6c",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth3454f15",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="c2:3b:a5:7e:fc:dd",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth95ee2ad",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="c2:db:6f:6f:18:9b",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth42b9fcf",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="d2:a4:da:92:b4:97",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethb5e4ecb",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="d6:2c:bd:13:80:56",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth75ea39d",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="d6:ab:fa:25:3c:19",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethfffdc4a",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="ea:72:e1:3e:0b:ef",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethd118ce1",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="f6:f6:6c:b3:af:1b",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth8981bcf",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="fa:d3:d6:ab:97:c6",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vethce0b8ca",duplex="full",ifalias="",operstate="up"} 1
-node_network_info{address="fe:19:de:bf:3a:ec",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="veth2627759",duplex="full",ifalias="",operstate="up"} 1
+node_network_info{address="02:42:6d:0f:5a:54",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-9fe3bbaef917",duplex="unknown",ifalias="",operstate="down"} 1
+node_network_info{address="02:42:93:b9:53:1e",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-b74749ee92fc",duplex="unknown",ifalias="",operstate="up"} 1
+node_network_info{address="02:42:ac:68:7c:a3",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="docker0",duplex="unknown",ifalias="",operstate="down"} 1
+node_network_info{address="02:42:cc:82:1c:8f",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="br-a08a0ec8f10a",duplex="unknown",ifalias="",operstate="down"} 1
+node_network_info{address="6a:a3:3b:82:05:27",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="vetha602b83",duplex="full",ifalias="",operstate="up"} 1
+node_network_info{address="96:00:02:91:28:49",adminstate="up",broadcast="ff:ff:ff:ff:ff:ff",device="eth0",duplex="unknown",ifalias="",operstate="up"} 1
 # HELP node_network_mtu_bytes Network device property: mtu_bytes
 # TYPE node_network_mtu_bytes gauge
-node_network_mtu_bytes{device="br-0b3831161cf7"} 1500
-node_network_mtu_bytes{device="br-0d007144137d"} 1500
-node_network_mtu_bytes{device="br-4dea6d1426f4"} 1500
-node_network_mtu_bytes{device="br-804926c487e9"} 1500
-node_network_mtu_bytes{device="br-8410c26e61e6"} 1500
-node_network_mtu_bytes{device="br-93ec4e5de303"} 1500
-node_network_mtu_bytes{device="br-fdf0fd580b92"} 1500
+node_network_mtu_bytes{device="br-9fe3bbaef917"} 1500
+node_network_mtu_bytes{device="br-a08a0ec8f10a"} 1500
+node_network_mtu_bytes{device="br-b74749ee92fc"} 1500
 node_network_mtu_bytes{device="docker0"} 1500
 node_network_mtu_bytes{device="eth0"} 1500
 node_network_mtu_bytes{device="lo"} 65536
-node_network_mtu_bytes{device="veth067cbb9"} 1500
-node_network_mtu_bytes{device="veth0c46f9c"} 1500
-node_network_mtu_bytes{device="veth172b0e8"} 1500
-node_network_mtu_bytes{device="veth1b5046f"} 1500
-node_network_mtu_bytes{device="veth1cc7faf"} 1500
-node_network_mtu_bytes{device="veth20c7ef1"} 1500
-node_network_mtu_bytes{device="veth2627759"} 1500
-node_network_mtu_bytes{device="veth299e88a"} 1500
-node_network_mtu_bytes{device="veth3454f15"} 1500
-node_network_mtu_bytes{device="veth42b9fcf"} 1500
-node_network_mtu_bytes{device="veth47f7380"} 1500
-node_network_mtu_bytes{device="veth4943c51"} 1500
-node_network_mtu_bytes{device="veth4b4fa8b"} 1500
-node_network_mtu_bytes{device="veth75ea39d"} 1500
-node_network_mtu_bytes{device="veth7ba5026"} 1500
-node_network_mtu_bytes{device="veth8981bcf"} 1500
-node_network_mtu_bytes{device="veth8bf3774"} 1500
-node_network_mtu_bytes{device="veth95ee2ad"} 1500
-node_network_mtu_bytes{device="veth96761db"} 1500
-node_network_mtu_bytes{device="vethb5e4ecb"} 1500
-node_network_mtu_bytes{device="vethc53ac98"} 1500
-node_network_mtu_bytes{device="vethc8108b1"} 1500
-node_network_mtu_bytes{device="vethce0b8ca"} 1500
-node_network_mtu_bytes{device="vethd118ce1"} 1500
-node_network_mtu_bytes{device="vethd6944c2"} 1500
-node_network_mtu_bytes{device="vetheb6145e"} 1500
-node_network_mtu_bytes{device="vethfffdc4a"} 1500
+node_network_mtu_bytes{device="vetha602b83"} 1500
 # HELP node_network_name_assign_type Network device property: name_assign_type
 # TYPE node_network_name_assign_type gauge
-node_network_name_assign_type{device="br-0b3831161cf7"} 3
-node_network_name_assign_type{device="br-0d007144137d"} 3
-node_network_name_assign_type{device="br-4dea6d1426f4"} 3
-node_network_name_assign_type{device="br-804926c487e9"} 3
-node_network_name_assign_type{device="br-8410c26e61e6"} 3
-node_network_name_assign_type{device="br-93ec4e5de303"} 3
-node_network_name_assign_type{device="br-fdf0fd580b92"} 3
+node_network_name_assign_type{device="br-9fe3bbaef917"} 3
+node_network_name_assign_type{device="br-a08a0ec8f10a"} 3
+node_network_name_assign_type{device="br-b74749ee92fc"} 3
 node_network_name_assign_type{device="docker0"} 3
-node_network_name_assign_type{device="veth067cbb9"} 3
-node_network_name_assign_type{device="veth0c46f9c"} 3
-node_network_name_assign_type{device="veth172b0e8"} 3
-node_network_name_assign_type{device="veth1b5046f"} 3
-node_network_name_assign_type{device="veth1cc7faf"} 3
-node_network_name_assign_type{device="veth20c7ef1"} 3
-node_network_name_assign_type{device="veth2627759"} 3
-node_network_name_assign_type{device="veth299e88a"} 3
-node_network_name_assign_type{device="veth3454f15"} 3
-node_network_name_assign_type{device="veth42b9fcf"} 3
-node_network_name_assign_type{device="veth47f7380"} 3
-node_network_name_assign_type{device="veth4943c51"} 3
-node_network_name_assign_type{device="veth4b4fa8b"} 3
-node_network_name_assign_type{device="veth75ea39d"} 3
-node_network_name_assign_type{device="veth7ba5026"} 3
-node_network_name_assign_type{device="veth8981bcf"} 3
-node_network_name_assign_type{device="veth8bf3774"} 3
-node_network_name_assign_type{device="veth95ee2ad"} 3
-node_network_name_assign_type{device="veth96761db"} 3
-node_network_name_assign_type{device="vethb5e4ecb"} 3
-node_network_name_assign_type{device="vethc53ac98"} 3
-node_network_name_assign_type{device="vethc8108b1"} 3
-node_network_name_assign_type{device="vethce0b8ca"} 3
-node_network_name_assign_type{device="vethd118ce1"} 3
-node_network_name_assign_type{device="vethd6944c2"} 3
-node_network_name_assign_type{device="vetheb6145e"} 3
-node_network_name_assign_type{device="vethfffdc4a"} 3
+node_network_name_assign_type{device="eth0"} 4
+node_network_name_assign_type{device="lo"} 2
+node_network_name_assign_type{device="vetha602b83"} 3
 # HELP node_network_net_dev_group Network device property: net_dev_group
 # TYPE node_network_net_dev_group gauge
-node_network_net_dev_group{device="br-0b3831161cf7"} 0
-node_network_net_dev_group{device="br-0d007144137d"} 0
-node_network_net_dev_group{device="br-4dea6d1426f4"} 0
-node_network_net_dev_group{device="br-804926c487e9"} 0
-node_network_net_dev_group{device="br-8410c26e61e6"} 0
-node_network_net_dev_group{device="br-93ec4e5de303"} 0
-node_network_net_dev_group{device="br-fdf0fd580b92"} 0
+node_network_net_dev_group{device="br-9fe3bbaef917"} 0
+node_network_net_dev_group{device="br-a08a0ec8f10a"} 0
+node_network_net_dev_group{device="br-b74749ee92fc"} 0
 node_network_net_dev_group{device="docker0"} 0
 node_network_net_dev_group{device="eth0"} 0
 node_network_net_dev_group{device="lo"} 0
-node_network_net_dev_group{device="veth067cbb9"} 0
-node_network_net_dev_group{device="veth0c46f9c"} 0
-node_network_net_dev_group{device="veth172b0e8"} 0
-node_network_net_dev_group{device="veth1b5046f"} 0
-node_network_net_dev_group{device="veth1cc7faf"} 0
-node_network_net_dev_group{device="veth20c7ef1"} 0
-node_network_net_dev_group{device="veth2627759"} 0
-node_network_net_dev_group{device="veth299e88a"} 0
-node_network_net_dev_group{device="veth3454f15"} 0
-node_network_net_dev_group{device="veth42b9fcf"} 0
-node_network_net_dev_group{device="veth47f7380"} 0
-node_network_net_dev_group{device="veth4943c51"} 0
-node_network_net_dev_group{device="veth4b4fa8b"} 0
-node_network_net_dev_group{device="veth75ea39d"} 0
-node_network_net_dev_group{device="veth7ba5026"} 0
-node_network_net_dev_group{device="veth8981bcf"} 0
-node_network_net_dev_group{device="veth8bf3774"} 0
-node_network_net_dev_group{device="veth95ee2ad"} 0
-node_network_net_dev_group{device="veth96761db"} 0
-node_network_net_dev_group{device="vethb5e4ecb"} 0
-node_network_net_dev_group{device="vethc53ac98"} 0
-node_network_net_dev_group{device="vethc8108b1"} 0
-node_network_net_dev_group{device="vethce0b8ca"} 0
-node_network_net_dev_group{device="vethd118ce1"} 0
-node_network_net_dev_group{device="vethd6944c2"} 0
-node_network_net_dev_group{device="vetheb6145e"} 0
-node_network_net_dev_group{device="vethfffdc4a"} 0
+node_network_net_dev_group{device="vetha602b83"} 0
 # HELP node_network_protocol_type Network device property: protocol_type
 # TYPE node_network_protocol_type gauge
-node_network_protocol_type{device="br-0b3831161cf7"} 1
-node_network_protocol_type{device="br-0d007144137d"} 1
-node_network_protocol_type{device="br-4dea6d1426f4"} 1
-node_network_protocol_type{device="br-804926c487e9"} 1
-node_network_protocol_type{device="br-8410c26e61e6"} 1
-node_network_protocol_type{device="br-93ec4e5de303"} 1
-node_network_protocol_type{device="br-fdf0fd580b92"} 1
+node_network_protocol_type{device="br-9fe3bbaef917"} 1
+node_network_protocol_type{device="br-a08a0ec8f10a"} 1
+node_network_protocol_type{device="br-b74749ee92fc"} 1
 node_network_protocol_type{device="docker0"} 1
 node_network_protocol_type{device="eth0"} 1
 node_network_protocol_type{device="lo"} 772
-node_network_protocol_type{device="veth067cbb9"} 1
-node_network_protocol_type{device="veth0c46f9c"} 1
-node_network_protocol_type{device="veth172b0e8"} 1
-node_network_protocol_type{device="veth1b5046f"} 1
-node_network_protocol_type{device="veth1cc7faf"} 1
-node_network_protocol_type{device="veth20c7ef1"} 1
-node_network_protocol_type{device="veth2627759"} 1
-node_network_protocol_type{device="veth299e88a"} 1
-node_network_protocol_type{device="veth3454f15"} 1
-node_network_protocol_type{device="veth42b9fcf"} 1
-node_network_protocol_type{device="veth47f7380"} 1
-node_network_protocol_type{device="veth4943c51"} 1
-node_network_protocol_type{device="veth4b4fa8b"} 1
-node_network_protocol_type{device="veth75ea39d"} 1
-node_network_protocol_type{device="veth7ba5026"} 1
-node_network_protocol_type{device="veth8981bcf"} 1
-node_network_protocol_type{device="veth8bf3774"} 1
-node_network_protocol_type{device="veth95ee2ad"} 1
-node_network_protocol_type{device="veth96761db"} 1
-node_network_protocol_type{device="vethb5e4ecb"} 1
-node_network_protocol_type{device="vethc53ac98"} 1
-node_network_protocol_type{device="vethc8108b1"} 1
-node_network_protocol_type{device="vethce0b8ca"} 1
-node_network_protocol_type{device="vethd118ce1"} 1
-node_network_protocol_type{device="vethd6944c2"} 1
-node_network_protocol_type{device="vetheb6145e"} 1
-node_network_protocol_type{device="vethfffdc4a"} 1
+node_network_protocol_type{device="vetha602b83"} 1
 # HELP node_network_receive_bytes_total Network device statistic receive_bytes.
 # TYPE node_network_receive_bytes_total counter
-node_network_receive_bytes_total{device="br-0b3831161cf7"} 3.7927407793e+10
-node_network_receive_bytes_total{device="br-0d007144137d"} 1.254405409e+09
-node_network_receive_bytes_total{device="br-4dea6d1426f4"} 6.733956162e+09
-node_network_receive_bytes_total{device="br-804926c487e9"} 0
-node_network_receive_bytes_total{device="br-8410c26e61e6"} 1.6219313621041e+13
-node_network_receive_bytes_total{device="br-93ec4e5de303"} 189567
-node_network_receive_bytes_total{device="br-fdf0fd580b92"} 4.3929987e+07
-node_network_receive_bytes_total{device="docker0"} 429329
-node_network_receive_bytes_total{device="eth0"} 1.773367179649e+12
-node_network_receive_bytes_total{device="lo"} 1.3158698e+07
-node_network_receive_bytes_total{device="veth067cbb9"} 0
-node_network_receive_bytes_total{device="veth0c46f9c"} 6.552912024e+09
-node_network_receive_bytes_total{device="veth172b0e8"} 1.042543001e+09
-node_network_receive_bytes_total{device="veth1b5046f"} 2.116724082e+09
-node_network_receive_bytes_total{device="veth1cc7faf"} 9.0410589211e+10
-node_network_receive_bytes_total{device="veth20c7ef1"} 5.653364e+06
-node_network_receive_bytes_total{device="veth2627759"} 2.04500388877e+11
-node_network_receive_bytes_total{device="veth299e88a"} 1.272087383381e+12
-node_network_receive_bytes_total{device="veth3454f15"} 2.7728220143e+10
-node_network_receive_bytes_total{device="veth42b9fcf"} 7.64609e+06
-node_network_receive_bytes_total{device="veth47f7380"} 5.3858260982e+10
-node_network_receive_bytes_total{device="veth4943c51"} 9.97631984e+08
-node_network_receive_bytes_total{device="veth4b4fa8b"} 1.788128548e+09
-node_network_receive_bytes_total{device="veth75ea39d"} 7.285574e+06
-node_network_receive_bytes_total{device="veth7ba5026"} 4.84905495375e+11
-node_network_receive_bytes_total{device="veth8981bcf"} 1.247908392e+09
-node_network_receive_bytes_total{device="veth8bf3774"} 8.9034319e+07
-node_network_receive_bytes_total{device="veth95ee2ad"} 1.220184803e+09
-node_network_receive_bytes_total{device="veth96761db"} 4.26534937578e+11
-node_network_receive_bytes_total{device="vethb5e4ecb"} 5.826520842e+09
-node_network_receive_bytes_total{device="vethc53ac98"} 4.4650025e+07
-node_network_receive_bytes_total{device="vethc8108b1"} 1.633129094609e+12
-node_network_receive_bytes_total{device="vethce0b8ca"} 1.11479808e+08
-node_network_receive_bytes_total{device="vethd118ce1"} 2.98304868e+08
-node_network_receive_bytes_total{device="vethd6944c2"} 4.447130509e+09
-node_network_receive_bytes_total{device="vetheb6145e"} 1.85670358e+08
-node_network_receive_bytes_total{device="vethfffdc4a"} 1.368841995e+09
+node_network_receive_bytes_total{device="br-9fe3bbaef917"} 0
+node_network_receive_bytes_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_bytes_total{device="br-b74749ee92fc"} 7.003153e+06
+node_network_receive_bytes_total{device="docker0"} 7.8884504e+07
+node_network_receive_bytes_total{device="eth0"} 3.23269846e+08
+node_network_receive_bytes_total{device="lo"} 60136
+node_network_receive_bytes_total{device="vetha602b83"} 7.355197e+06
 # HELP node_network_receive_compressed_total Network device statistic receive_compressed.
 # TYPE node_network_receive_compressed_total counter
-node_network_receive_compressed_total{device="br-0b3831161cf7"} 0
-node_network_receive_compressed_total{device="br-0d007144137d"} 0
-node_network_receive_compressed_total{device="br-4dea6d1426f4"} 0
-node_network_receive_compressed_total{device="br-804926c487e9"} 0
-node_network_receive_compressed_total{device="br-8410c26e61e6"} 0
-node_network_receive_compressed_total{device="br-93ec4e5de303"} 0
-node_network_receive_compressed_total{device="br-fdf0fd580b92"} 0
+node_network_receive_compressed_total{device="br-9fe3bbaef917"} 0
+node_network_receive_compressed_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_compressed_total{device="br-b74749ee92fc"} 0
 node_network_receive_compressed_total{device="docker0"} 0
 node_network_receive_compressed_total{device="eth0"} 0
 node_network_receive_compressed_total{device="lo"} 0
-node_network_receive_compressed_total{device="veth067cbb9"} 0
-node_network_receive_compressed_total{device="veth0c46f9c"} 0
-node_network_receive_compressed_total{device="veth172b0e8"} 0
-node_network_receive_compressed_total{device="veth1b5046f"} 0
-node_network_receive_compressed_total{device="veth1cc7faf"} 0
-node_network_receive_compressed_total{device="veth20c7ef1"} 0
-node_network_receive_compressed_total{device="veth2627759"} 0
-node_network_receive_compressed_total{device="veth299e88a"} 0
-node_network_receive_compressed_total{device="veth3454f15"} 0
-node_network_receive_compressed_total{device="veth42b9fcf"} 0
-node_network_receive_compressed_total{device="veth47f7380"} 0
-node_network_receive_compressed_total{device="veth4943c51"} 0
-node_network_receive_compressed_total{device="veth4b4fa8b"} 0
-node_network_receive_compressed_total{device="veth75ea39d"} 0
-node_network_receive_compressed_total{device="veth7ba5026"} 0
-node_network_receive_compressed_total{device="veth8981bcf"} 0
-node_network_receive_compressed_total{device="veth8bf3774"} 0
-node_network_receive_compressed_total{device="veth95ee2ad"} 0
-node_network_receive_compressed_total{device="veth96761db"} 0
-node_network_receive_compressed_total{device="vethb5e4ecb"} 0
-node_network_receive_compressed_total{device="vethc53ac98"} 0
-node_network_receive_compressed_total{device="vethc8108b1"} 0
-node_network_receive_compressed_total{device="vethce0b8ca"} 0
-node_network_receive_compressed_total{device="vethd118ce1"} 0
-node_network_receive_compressed_total{device="vethd6944c2"} 0
-node_network_receive_compressed_total{device="vetheb6145e"} 0
-node_network_receive_compressed_total{device="vethfffdc4a"} 0
+node_network_receive_compressed_total{device="vetha602b83"} 0
 # HELP node_network_receive_drop_total Network device statistic receive_drop.
 # TYPE node_network_receive_drop_total counter
-node_network_receive_drop_total{device="br-0b3831161cf7"} 0
-node_network_receive_drop_total{device="br-0d007144137d"} 0
-node_network_receive_drop_total{device="br-4dea6d1426f4"} 0
-node_network_receive_drop_total{device="br-804926c487e9"} 0
-node_network_receive_drop_total{device="br-8410c26e61e6"} 0
-node_network_receive_drop_total{device="br-93ec4e5de303"} 0
-node_network_receive_drop_total{device="br-fdf0fd580b92"} 0
+node_network_receive_drop_total{device="br-9fe3bbaef917"} 0
+node_network_receive_drop_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_drop_total{device="br-b74749ee92fc"} 0
 node_network_receive_drop_total{device="docker0"} 0
 node_network_receive_drop_total{device="eth0"} 0
 node_network_receive_drop_total{device="lo"} 0
-node_network_receive_drop_total{device="veth067cbb9"} 0
-node_network_receive_drop_total{device="veth0c46f9c"} 0
-node_network_receive_drop_total{device="veth172b0e8"} 0
-node_network_receive_drop_total{device="veth1b5046f"} 0
-node_network_receive_drop_total{device="veth1cc7faf"} 0
-node_network_receive_drop_total{device="veth20c7ef1"} 0
-node_network_receive_drop_total{device="veth2627759"} 0
-node_network_receive_drop_total{device="veth299e88a"} 0
-node_network_receive_drop_total{device="veth3454f15"} 0
-node_network_receive_drop_total{device="veth42b9fcf"} 0
-node_network_receive_drop_total{device="veth47f7380"} 0
-node_network_receive_drop_total{device="veth4943c51"} 0
-node_network_receive_drop_total{device="veth4b4fa8b"} 0
-node_network_receive_drop_total{device="veth75ea39d"} 0
-node_network_receive_drop_total{device="veth7ba5026"} 0
-node_network_receive_drop_total{device="veth8981bcf"} 0
-node_network_receive_drop_total{device="veth8bf3774"} 0
-node_network_receive_drop_total{device="veth95ee2ad"} 0
-node_network_receive_drop_total{device="veth96761db"} 0
-node_network_receive_drop_total{device="vethb5e4ecb"} 0
-node_network_receive_drop_total{device="vethc53ac98"} 0
-node_network_receive_drop_total{device="vethc8108b1"} 0
-node_network_receive_drop_total{device="vethce0b8ca"} 0
-node_network_receive_drop_total{device="vethd118ce1"} 0
-node_network_receive_drop_total{device="vethd6944c2"} 0
-node_network_receive_drop_total{device="vetheb6145e"} 0
-node_network_receive_drop_total{device="vethfffdc4a"} 0
+node_network_receive_drop_total{device="vetha602b83"} 0
 # HELP node_network_receive_errs_total Network device statistic receive_errs.
 # TYPE node_network_receive_errs_total counter
-node_network_receive_errs_total{device="br-0b3831161cf7"} 0
-node_network_receive_errs_total{device="br-0d007144137d"} 0
-node_network_receive_errs_total{device="br-4dea6d1426f4"} 0
-node_network_receive_errs_total{device="br-804926c487e9"} 0
-node_network_receive_errs_total{device="br-8410c26e61e6"} 0
-node_network_receive_errs_total{device="br-93ec4e5de303"} 0
-node_network_receive_errs_total{device="br-fdf0fd580b92"} 0
+node_network_receive_errs_total{device="br-9fe3bbaef917"} 0
+node_network_receive_errs_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_errs_total{device="br-b74749ee92fc"} 0
 node_network_receive_errs_total{device="docker0"} 0
 node_network_receive_errs_total{device="eth0"} 0
 node_network_receive_errs_total{device="lo"} 0
-node_network_receive_errs_total{device="veth067cbb9"} 0
-node_network_receive_errs_total{device="veth0c46f9c"} 0
-node_network_receive_errs_total{device="veth172b0e8"} 0
-node_network_receive_errs_total{device="veth1b5046f"} 0
-node_network_receive_errs_total{device="veth1cc7faf"} 0
-node_network_receive_errs_total{device="veth20c7ef1"} 0
-node_network_receive_errs_total{device="veth2627759"} 0
-node_network_receive_errs_total{device="veth299e88a"} 0
-node_network_receive_errs_total{device="veth3454f15"} 0
-node_network_receive_errs_total{device="veth42b9fcf"} 0
-node_network_receive_errs_total{device="veth47f7380"} 0
-node_network_receive_errs_total{device="veth4943c51"} 0
-node_network_receive_errs_total{device="veth4b4fa8b"} 0
-node_network_receive_errs_total{device="veth75ea39d"} 0
-node_network_receive_errs_total{device="veth7ba5026"} 0
-node_network_receive_errs_total{device="veth8981bcf"} 0
-node_network_receive_errs_total{device="veth8bf3774"} 0
-node_network_receive_errs_total{device="veth95ee2ad"} 0
-node_network_receive_errs_total{device="veth96761db"} 0
-node_network_receive_errs_total{device="vethb5e4ecb"} 0
-node_network_receive_errs_total{device="vethc53ac98"} 0
-node_network_receive_errs_total{device="vethc8108b1"} 0
-node_network_receive_errs_total{device="vethce0b8ca"} 0
-node_network_receive_errs_total{device="vethd118ce1"} 0
-node_network_receive_errs_total{device="vethd6944c2"} 0
-node_network_receive_errs_total{device="vetheb6145e"} 0
-node_network_receive_errs_total{device="vethfffdc4a"} 0
+node_network_receive_errs_total{device="vetha602b83"} 0
 # HELP node_network_receive_fifo_total Network device statistic receive_fifo.
 # TYPE node_network_receive_fifo_total counter
-node_network_receive_fifo_total{device="br-0b3831161cf7"} 0
-node_network_receive_fifo_total{device="br-0d007144137d"} 0
-node_network_receive_fifo_total{device="br-4dea6d1426f4"} 0
-node_network_receive_fifo_total{device="br-804926c487e9"} 0
-node_network_receive_fifo_total{device="br-8410c26e61e6"} 0
-node_network_receive_fifo_total{device="br-93ec4e5de303"} 0
-node_network_receive_fifo_total{device="br-fdf0fd580b92"} 0
+node_network_receive_fifo_total{device="br-9fe3bbaef917"} 0
+node_network_receive_fifo_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_fifo_total{device="br-b74749ee92fc"} 0
 node_network_receive_fifo_total{device="docker0"} 0
 node_network_receive_fifo_total{device="eth0"} 0
 node_network_receive_fifo_total{device="lo"} 0
-node_network_receive_fifo_total{device="veth067cbb9"} 0
-node_network_receive_fifo_total{device="veth0c46f9c"} 0
-node_network_receive_fifo_total{device="veth172b0e8"} 0
-node_network_receive_fifo_total{device="veth1b5046f"} 0
-node_network_receive_fifo_total{device="veth1cc7faf"} 0
-node_network_receive_fifo_total{device="veth20c7ef1"} 0
-node_network_receive_fifo_total{device="veth2627759"} 0
-node_network_receive_fifo_total{device="veth299e88a"} 0
-node_network_receive_fifo_total{device="veth3454f15"} 0
-node_network_receive_fifo_total{device="veth42b9fcf"} 0
-node_network_receive_fifo_total{device="veth47f7380"} 0
-node_network_receive_fifo_total{device="veth4943c51"} 0
-node_network_receive_fifo_total{device="veth4b4fa8b"} 0
-node_network_receive_fifo_total{device="veth75ea39d"} 0
-node_network_receive_fifo_total{device="veth7ba5026"} 0
-node_network_receive_fifo_total{device="veth8981bcf"} 0
-node_network_receive_fifo_total{device="veth8bf3774"} 0
-node_network_receive_fifo_total{device="veth95ee2ad"} 0
-node_network_receive_fifo_total{device="veth96761db"} 0
-node_network_receive_fifo_total{device="vethb5e4ecb"} 0
-node_network_receive_fifo_total{device="vethc53ac98"} 0
-node_network_receive_fifo_total{device="vethc8108b1"} 0
-node_network_receive_fifo_total{device="vethce0b8ca"} 0
-node_network_receive_fifo_total{device="vethd118ce1"} 0
-node_network_receive_fifo_total{device="vethd6944c2"} 0
-node_network_receive_fifo_total{device="vetheb6145e"} 0
-node_network_receive_fifo_total{device="vethfffdc4a"} 0
+node_network_receive_fifo_total{device="vetha602b83"} 0
 # HELP node_network_receive_frame_total Network device statistic receive_frame.
 # TYPE node_network_receive_frame_total counter
-node_network_receive_frame_total{device="br-0b3831161cf7"} 0
-node_network_receive_frame_total{device="br-0d007144137d"} 0
-node_network_receive_frame_total{device="br-4dea6d1426f4"} 0
-node_network_receive_frame_total{device="br-804926c487e9"} 0
-node_network_receive_frame_total{device="br-8410c26e61e6"} 0
-node_network_receive_frame_total{device="br-93ec4e5de303"} 0
-node_network_receive_frame_total{device="br-fdf0fd580b92"} 0
+node_network_receive_frame_total{device="br-9fe3bbaef917"} 0
+node_network_receive_frame_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_frame_total{device="br-b74749ee92fc"} 0
 node_network_receive_frame_total{device="docker0"} 0
 node_network_receive_frame_total{device="eth0"} 0
 node_network_receive_frame_total{device="lo"} 0
-node_network_receive_frame_total{device="veth067cbb9"} 0
-node_network_receive_frame_total{device="veth0c46f9c"} 0
-node_network_receive_frame_total{device="veth172b0e8"} 0
-node_network_receive_frame_total{device="veth1b5046f"} 0
-node_network_receive_frame_total{device="veth1cc7faf"} 0
-node_network_receive_frame_total{device="veth20c7ef1"} 0
-node_network_receive_frame_total{device="veth2627759"} 0
-node_network_receive_frame_total{device="veth299e88a"} 0
-node_network_receive_frame_total{device="veth3454f15"} 0
-node_network_receive_frame_total{device="veth42b9fcf"} 0
-node_network_receive_frame_total{device="veth47f7380"} 0
-node_network_receive_frame_total{device="veth4943c51"} 0
-node_network_receive_frame_total{device="veth4b4fa8b"} 0
-node_network_receive_frame_total{device="veth75ea39d"} 0
-node_network_receive_frame_total{device="veth7ba5026"} 0
-node_network_receive_frame_total{device="veth8981bcf"} 0
-node_network_receive_frame_total{device="veth8bf3774"} 0
-node_network_receive_frame_total{device="veth95ee2ad"} 0
-node_network_receive_frame_total{device="veth96761db"} 0
-node_network_receive_frame_total{device="vethb5e4ecb"} 0
-node_network_receive_frame_total{device="vethc53ac98"} 0
-node_network_receive_frame_total{device="vethc8108b1"} 0
-node_network_receive_frame_total{device="vethce0b8ca"} 0
-node_network_receive_frame_total{device="vethd118ce1"} 0
-node_network_receive_frame_total{device="vethd6944c2"} 0
-node_network_receive_frame_total{device="vetheb6145e"} 0
-node_network_receive_frame_total{device="vethfffdc4a"} 0
+node_network_receive_frame_total{device="vetha602b83"} 0
 # HELP node_network_receive_multicast_total Network device statistic receive_multicast.
 # TYPE node_network_receive_multicast_total counter
-node_network_receive_multicast_total{device="br-0b3831161cf7"} 0
-node_network_receive_multicast_total{device="br-0d007144137d"} 0
-node_network_receive_multicast_total{device="br-4dea6d1426f4"} 0
-node_network_receive_multicast_total{device="br-804926c487e9"} 0
-node_network_receive_multicast_total{device="br-8410c26e61e6"} 0
-node_network_receive_multicast_total{device="br-93ec4e5de303"} 0
-node_network_receive_multicast_total{device="br-fdf0fd580b92"} 0
-node_network_receive_multicast_total{device="docker0"} 0
+node_network_receive_multicast_total{device="br-9fe3bbaef917"} 0
+node_network_receive_multicast_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_multicast_total{device="br-b74749ee92fc"} 61
+node_network_receive_multicast_total{device="docker0"} 13
 node_network_receive_multicast_total{device="eth0"} 0
 node_network_receive_multicast_total{device="lo"} 0
-node_network_receive_multicast_total{device="veth067cbb9"} 0
-node_network_receive_multicast_total{device="veth0c46f9c"} 0
-node_network_receive_multicast_total{device="veth172b0e8"} 0
-node_network_receive_multicast_total{device="veth1b5046f"} 0
-node_network_receive_multicast_total{device="veth1cc7faf"} 0
-node_network_receive_multicast_total{device="veth20c7ef1"} 0
-node_network_receive_multicast_total{device="veth2627759"} 0
-node_network_receive_multicast_total{device="veth299e88a"} 0
-node_network_receive_multicast_total{device="veth3454f15"} 0
-node_network_receive_multicast_total{device="veth42b9fcf"} 0
-node_network_receive_multicast_total{device="veth47f7380"} 0
-node_network_receive_multicast_total{device="veth4943c51"} 0
-node_network_receive_multicast_total{device="veth4b4fa8b"} 0
-node_network_receive_multicast_total{device="veth75ea39d"} 0
-node_network_receive_multicast_total{device="veth7ba5026"} 0
-node_network_receive_multicast_total{device="veth8981bcf"} 0
-node_network_receive_multicast_total{device="veth8bf3774"} 0
-node_network_receive_multicast_total{device="veth95ee2ad"} 0
-node_network_receive_multicast_total{device="veth96761db"} 0
-node_network_receive_multicast_total{device="vethb5e4ecb"} 0
-node_network_receive_multicast_total{device="vethc53ac98"} 0
-node_network_receive_multicast_total{device="vethc8108b1"} 0
-node_network_receive_multicast_total{device="vethce0b8ca"} 0
-node_network_receive_multicast_total{device="vethd118ce1"} 0
-node_network_receive_multicast_total{device="vethd6944c2"} 0
-node_network_receive_multicast_total{device="vetheb6145e"} 0
-node_network_receive_multicast_total{device="vethfffdc4a"} 0
+node_network_receive_multicast_total{device="vetha602b83"} 0
 # HELP node_network_receive_nohandler_total Network device statistic receive_nohandler.
 # TYPE node_network_receive_nohandler_total counter
-node_network_receive_nohandler_total{device="br-0b3831161cf7"} 0
-node_network_receive_nohandler_total{device="br-0d007144137d"} 0
-node_network_receive_nohandler_total{device="br-4dea6d1426f4"} 0
-node_network_receive_nohandler_total{device="br-804926c487e9"} 0
-node_network_receive_nohandler_total{device="br-8410c26e61e6"} 0
-node_network_receive_nohandler_total{device="br-93ec4e5de303"} 0
-node_network_receive_nohandler_total{device="br-fdf0fd580b92"} 0
+node_network_receive_nohandler_total{device="br-9fe3bbaef917"} 0
+node_network_receive_nohandler_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_nohandler_total{device="br-b74749ee92fc"} 0
 node_network_receive_nohandler_total{device="docker0"} 0
 node_network_receive_nohandler_total{device="eth0"} 0
 node_network_receive_nohandler_total{device="lo"} 0
-node_network_receive_nohandler_total{device="veth067cbb9"} 0
-node_network_receive_nohandler_total{device="veth0c46f9c"} 0
-node_network_receive_nohandler_total{device="veth172b0e8"} 0
-node_network_receive_nohandler_total{device="veth1b5046f"} 0
-node_network_receive_nohandler_total{device="veth1cc7faf"} 0
-node_network_receive_nohandler_total{device="veth20c7ef1"} 0
-node_network_receive_nohandler_total{device="veth2627759"} 0
-node_network_receive_nohandler_total{device="veth299e88a"} 0
-node_network_receive_nohandler_total{device="veth3454f15"} 0
-node_network_receive_nohandler_total{device="veth42b9fcf"} 0
-node_network_receive_nohandler_total{device="veth47f7380"} 0
-node_network_receive_nohandler_total{device="veth4943c51"} 0
-node_network_receive_nohandler_total{device="veth4b4fa8b"} 0
-node_network_receive_nohandler_total{device="veth75ea39d"} 0
-node_network_receive_nohandler_total{device="veth7ba5026"} 0
-node_network_receive_nohandler_total{device="veth8981bcf"} 0
-node_network_receive_nohandler_total{device="veth8bf3774"} 0
-node_network_receive_nohandler_total{device="veth95ee2ad"} 0
-node_network_receive_nohandler_total{device="veth96761db"} 0
-node_network_receive_nohandler_total{device="vethb5e4ecb"} 0
-node_network_receive_nohandler_total{device="vethc53ac98"} 0
-node_network_receive_nohandler_total{device="vethc8108b1"} 0
-node_network_receive_nohandler_total{device="vethce0b8ca"} 0
-node_network_receive_nohandler_total{device="vethd118ce1"} 0
-node_network_receive_nohandler_total{device="vethd6944c2"} 0
-node_network_receive_nohandler_total{device="vetheb6145e"} 0
-node_network_receive_nohandler_total{device="vethfffdc4a"} 0
+node_network_receive_nohandler_total{device="vetha602b83"} 0
 # HELP node_network_receive_packets_total Network device statistic receive_packets.
 # TYPE node_network_receive_packets_total counter
-node_network_receive_packets_total{device="br-0b3831161cf7"} 4.0334204e+07
-node_network_receive_packets_total{device="br-0d007144137d"} 1.8462385e+07
-node_network_receive_packets_total{device="br-4dea6d1426f4"} 8.3353329e+07
-node_network_receive_packets_total{device="br-804926c487e9"} 0
-node_network_receive_packets_total{device="br-8410c26e61e6"} 2.9970867862e+10
-node_network_receive_packets_total{device="br-93ec4e5de303"} 2764
-node_network_receive_packets_total{device="br-fdf0fd580b92"} 592890
-node_network_receive_packets_total{device="docker0"} 7100
-node_network_receive_packets_total{device="eth0"} 2.432675546e+10
-node_network_receive_packets_total{device="lo"} 103175
-node_network_receive_packets_total{device="veth067cbb9"} 0
-node_network_receive_packets_total{device="veth0c46f9c"} 9.5961578e+07
-node_network_receive_packets_total{device="veth172b0e8"} 1.0854048e+07
-node_network_receive_packets_total{device="veth1b5046f"} 1.9042934e+07
-node_network_receive_packets_total{device="veth1cc7faf"} 1.31587862e+08
-node_network_receive_packets_total{device="veth20c7ef1"} 40544
-node_network_receive_packets_total{device="veth2627759"} 4.72926062e+08
-node_network_receive_packets_total{device="veth299e88a"} 1.044521689e+10
-node_network_receive_packets_total{device="veth3454f15"} 4.591621e+06
-node_network_receive_packets_total{device="veth42b9fcf"} 3192
-node_network_receive_packets_total{device="veth47f7380"} 9.8059904e+07
-node_network_receive_packets_total{device="veth4943c51"} 921417
-node_network_receive_packets_total{device="veth4b4fa8b"} 4.239892e+06
-node_network_receive_packets_total{device="veth75ea39d"} 4304
-node_network_receive_packets_total{device="veth7ba5026"} 1.574460024e+09
-node_network_receive_packets_total{device="veth8981bcf"} 2.097295e+06
-node_network_receive_packets_total{device="veth8bf3774"} 1.005659e+06
-node_network_receive_packets_total{device="veth95ee2ad"} 2.080358e+06
-node_network_receive_packets_total{device="veth96761db"} 1.471893695e+09
-node_network_receive_packets_total{device="vethb5e4ecb"} 1.0194161e+07
-node_network_receive_packets_total{device="vethc53ac98"} 370123
-node_network_receive_packets_total{device="vethc8108b1"} 4.195676303e+09
-node_network_receive_packets_total{device="vethce0b8ca"} 1.194519e+06
-node_network_receive_packets_total{device="vethd118ce1"} 4.012221e+06
-node_network_receive_packets_total{device="vethd6944c2"} 1.884089e+06
-node_network_receive_packets_total{device="vetheb6145e"} 1.507639e+06
-node_network_receive_packets_total{device="vethfffdc4a"} 9.265342e+06
+node_network_receive_packets_total{device="br-9fe3bbaef917"} 0
+node_network_receive_packets_total{device="br-a08a0ec8f10a"} 0
+node_network_receive_packets_total{device="br-b74749ee92fc"} 6033
+node_network_receive_packets_total{device="docker0"} 162881
+node_network_receive_packets_total{device="eth0"} 183363
+node_network_receive_packets_total{device="lo"} 480
+node_network_receive_packets_total{device="vetha602b83"} 4539
 # HELP node_network_speed_bytes Network device property: speed_bytes
 # TYPE node_network_speed_bytes gauge
+node_network_speed_bytes{device="br-9fe3bbaef917"} -125000
+node_network_speed_bytes{device="br-a08a0ec8f10a"} -125000
+node_network_speed_bytes{device="br-b74749ee92fc"} 1.25e+09
+node_network_speed_bytes{device="docker0"} -125000
 node_network_speed_bytes{device="eth0"} -125000
-node_network_speed_bytes{device="veth067cbb9"} 1.25e+09
-node_network_speed_bytes{device="veth0c46f9c"} 1.25e+09
-node_network_speed_bytes{device="veth172b0e8"} 1.25e+09
-node_network_speed_bytes{device="veth1b5046f"} 1.25e+09
-node_network_speed_bytes{device="veth1cc7faf"} 1.25e+09
-node_network_speed_bytes{device="veth20c7ef1"} 1.25e+09
-node_network_speed_bytes{device="veth2627759"} 1.25e+09
-node_network_speed_bytes{device="veth299e88a"} 1.25e+09
-node_network_speed_bytes{device="veth3454f15"} 1.25e+09
-node_network_speed_bytes{device="veth42b9fcf"} 1.25e+09
-node_network_speed_bytes{device="veth47f7380"} 1.25e+09
-node_network_speed_bytes{device="veth4943c51"} 1.25e+09
-node_network_speed_bytes{device="veth4b4fa8b"} 1.25e+09
-node_network_speed_bytes{device="veth75ea39d"} 1.25e+09
-node_network_speed_bytes{device="veth7ba5026"} 1.25e+09
-node_network_speed_bytes{device="veth8981bcf"} 1.25e+09
-node_network_speed_bytes{device="veth8bf3774"} 1.25e+09
-node_network_speed_bytes{device="veth95ee2ad"} 1.25e+09
-node_network_speed_bytes{device="veth96761db"} 1.25e+09
-node_network_speed_bytes{device="vethb5e4ecb"} 1.25e+09
-node_network_speed_bytes{device="vethc53ac98"} 1.25e+09
-node_network_speed_bytes{device="vethc8108b1"} 1.25e+09
-node_network_speed_bytes{device="vethce0b8ca"} 1.25e+09
-node_network_speed_bytes{device="vethd118ce1"} 1.25e+09
-node_network_speed_bytes{device="vethd6944c2"} 1.25e+09
-node_network_speed_bytes{device="vetheb6145e"} 1.25e+09
-node_network_speed_bytes{device="vethfffdc4a"} 1.25e+09
+node_network_speed_bytes{device="vetha602b83"} 1.25e+09
 # HELP node_network_transmit_bytes_total Network device statistic transmit_bytes.
 # TYPE node_network_transmit_bytes_total counter
-node_network_transmit_bytes_total{device="br-0b3831161cf7"} 4.222879069e+09
-node_network_transmit_bytes_total{device="br-0d007144137d"} 1.610590737e+09
-node_network_transmit_bytes_total{device="br-4dea6d1426f4"} 1.5752157732e+10
-node_network_transmit_bytes_total{device="br-804926c487e9"} 826
-node_network_transmit_bytes_total{device="br-8410c26e61e6"} 1.512054227482e+12
-node_network_transmit_bytes_total{device="br-93ec4e5de303"} 541326
-node_network_transmit_bytes_total{device="br-fdf0fd580b92"} 8.279918e+07
-node_network_transmit_bytes_total{device="docker0"} 6.3217655e+07
-node_network_transmit_bytes_total{device="eth0"} 2.4398392215354e+13
-node_network_transmit_bytes_total{device="lo"} 1.3158698e+07
-node_network_transmit_bytes_total{device="veth067cbb9"} 1572
-node_network_transmit_bytes_total{device="veth0c46f9c"} 5.3661144465e+10
-node_network_transmit_bytes_total{device="veth172b0e8"} 1.04522053e+09
-node_network_transmit_bytes_total{device="veth1b5046f"} 2.693881443e+09
-node_network_transmit_bytes_total{device="veth1cc7faf"} 1.3953890922e+10
-node_network_transmit_bytes_total{device="veth20c7ef1"} 7.401484e+06
-node_network_transmit_bytes_total{device="veth2627759"} 2.3541753342e+10
-node_network_transmit_bytes_total{device="veth299e88a"} 1.581137687967e+12
-node_network_transmit_bytes_total{device="veth3454f15"} 3.00171638e+08
-node_network_transmit_bytes_total{device="veth42b9fcf"} 5.254214e+06
-node_network_transmit_bytes_total{device="veth47f7380"} 6.602104607e+09
-node_network_transmit_bytes_total{device="veth4943c51"} 9.8752965e+07
-node_network_transmit_bytes_total{device="veth4b4fa8b"} 6.13040945e+08
-node_network_transmit_bytes_total{device="veth75ea39d"} 1.6006411e+07
-node_network_transmit_bytes_total{device="veth7ba5026"} 4.56273984569e+11
-node_network_transmit_bytes_total{device="veth8981bcf"} 5.07584276e+08
-node_network_transmit_bytes_total{device="veth8bf3774"} 6.34369e+07
-node_network_transmit_bytes_total{device="veth95ee2ad"} 4.96918756e+08
-node_network_transmit_bytes_total{device="veth96761db"} 3.33164719607e+11
-node_network_transmit_bytes_total{device="vethb5e4ecb"} 1.8494355238e+10
-node_network_transmit_bytes_total{device="vethc53ac98"} 9.202579e+07
-node_network_transmit_bytes_total{device="vethc8108b1"} 7.57071763189e+11
-node_network_transmit_bytes_total{device="vethce0b8ca"} 1.14640919e+08
-node_network_transmit_bytes_total{device="vethd118ce1"} 4.17676543e+08
-node_network_transmit_bytes_total{device="vethd6944c2"} 9.65315989e+08
-node_network_transmit_bytes_total{device="vetheb6145e"} 1.48975407e+08
-node_network_transmit_bytes_total{device="vethfffdc4a"} 4.685744294e+09
+node_network_transmit_bytes_total{device="br-9fe3bbaef917"} 826
+node_network_transmit_bytes_total{device="br-a08a0ec8f10a"} 826
+node_network_transmit_bytes_total{device="br-b74749ee92fc"} 1.01519682e+08
+node_network_transmit_bytes_total{device="docker0"} 7.838113e+06
+node_network_transmit_bytes_total{device="eth0"} 1.00827806e+08
+node_network_transmit_bytes_total{device="lo"} 60136
+node_network_transmit_bytes_total{device="vetha602b83"} 6.860738e+06
 # HELP node_network_transmit_carrier_total Network device statistic transmit_carrier.
 # TYPE node_network_transmit_carrier_total counter
-node_network_transmit_carrier_total{device="br-0b3831161cf7"} 0
-node_network_transmit_carrier_total{device="br-0d007144137d"} 0
-node_network_transmit_carrier_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_carrier_total{device="br-804926c487e9"} 0
-node_network_transmit_carrier_total{device="br-8410c26e61e6"} 0
-node_network_transmit_carrier_total{device="br-93ec4e5de303"} 0
-node_network_transmit_carrier_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_carrier_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_carrier_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_carrier_total{device="br-b74749ee92fc"} 0
 node_network_transmit_carrier_total{device="docker0"} 0
 node_network_transmit_carrier_total{device="eth0"} 0
 node_network_transmit_carrier_total{device="lo"} 0
-node_network_transmit_carrier_total{device="veth067cbb9"} 0
-node_network_transmit_carrier_total{device="veth0c46f9c"} 0
-node_network_transmit_carrier_total{device="veth172b0e8"} 0
-node_network_transmit_carrier_total{device="veth1b5046f"} 0
-node_network_transmit_carrier_total{device="veth1cc7faf"} 0
-node_network_transmit_carrier_total{device="veth20c7ef1"} 0
-node_network_transmit_carrier_total{device="veth2627759"} 0
-node_network_transmit_carrier_total{device="veth299e88a"} 0
-node_network_transmit_carrier_total{device="veth3454f15"} 0
-node_network_transmit_carrier_total{device="veth42b9fcf"} 0
-node_network_transmit_carrier_total{device="veth47f7380"} 0
-node_network_transmit_carrier_total{device="veth4943c51"} 0
-node_network_transmit_carrier_total{device="veth4b4fa8b"} 0
-node_network_transmit_carrier_total{device="veth75ea39d"} 0
-node_network_transmit_carrier_total{device="veth7ba5026"} 0
-node_network_transmit_carrier_total{device="veth8981bcf"} 0
-node_network_transmit_carrier_total{device="veth8bf3774"} 0
-node_network_transmit_carrier_total{device="veth95ee2ad"} 0
-node_network_transmit_carrier_total{device="veth96761db"} 0
-node_network_transmit_carrier_total{device="vethb5e4ecb"} 0
-node_network_transmit_carrier_total{device="vethc53ac98"} 0
-node_network_transmit_carrier_total{device="vethc8108b1"} 0
-node_network_transmit_carrier_total{device="vethce0b8ca"} 0
-node_network_transmit_carrier_total{device="vethd118ce1"} 0
-node_network_transmit_carrier_total{device="vethd6944c2"} 0
-node_network_transmit_carrier_total{device="vetheb6145e"} 0
-node_network_transmit_carrier_total{device="vethfffdc4a"} 0
+node_network_transmit_carrier_total{device="vetha602b83"} 0
 # HELP node_network_transmit_colls_total Network device statistic transmit_colls.
 # TYPE node_network_transmit_colls_total counter
-node_network_transmit_colls_total{device="br-0b3831161cf7"} 0
-node_network_transmit_colls_total{device="br-0d007144137d"} 0
-node_network_transmit_colls_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_colls_total{device="br-804926c487e9"} 0
-node_network_transmit_colls_total{device="br-8410c26e61e6"} 0
-node_network_transmit_colls_total{device="br-93ec4e5de303"} 0
-node_network_transmit_colls_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_colls_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_colls_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_colls_total{device="br-b74749ee92fc"} 0
 node_network_transmit_colls_total{device="docker0"} 0
 node_network_transmit_colls_total{device="eth0"} 0
 node_network_transmit_colls_total{device="lo"} 0
-node_network_transmit_colls_total{device="veth067cbb9"} 0
-node_network_transmit_colls_total{device="veth0c46f9c"} 0
-node_network_transmit_colls_total{device="veth172b0e8"} 0
-node_network_transmit_colls_total{device="veth1b5046f"} 0
-node_network_transmit_colls_total{device="veth1cc7faf"} 0
-node_network_transmit_colls_total{device="veth20c7ef1"} 0
-node_network_transmit_colls_total{device="veth2627759"} 0
-node_network_transmit_colls_total{device="veth299e88a"} 0
-node_network_transmit_colls_total{device="veth3454f15"} 0
-node_network_transmit_colls_total{device="veth42b9fcf"} 0
-node_network_transmit_colls_total{device="veth47f7380"} 0
-node_network_transmit_colls_total{device="veth4943c51"} 0
-node_network_transmit_colls_total{device="veth4b4fa8b"} 0
-node_network_transmit_colls_total{device="veth75ea39d"} 0
-node_network_transmit_colls_total{device="veth7ba5026"} 0
-node_network_transmit_colls_total{device="veth8981bcf"} 0
-node_network_transmit_colls_total{device="veth8bf3774"} 0
-node_network_transmit_colls_total{device="veth95ee2ad"} 0
-node_network_transmit_colls_total{device="veth96761db"} 0
-node_network_transmit_colls_total{device="vethb5e4ecb"} 0
-node_network_transmit_colls_total{device="vethc53ac98"} 0
-node_network_transmit_colls_total{device="vethc8108b1"} 0
-node_network_transmit_colls_total{device="vethce0b8ca"} 0
-node_network_transmit_colls_total{device="vethd118ce1"} 0
-node_network_transmit_colls_total{device="vethd6944c2"} 0
-node_network_transmit_colls_total{device="vetheb6145e"} 0
-node_network_transmit_colls_total{device="vethfffdc4a"} 0
+node_network_transmit_colls_total{device="vetha602b83"} 0
 # HELP node_network_transmit_compressed_total Network device statistic transmit_compressed.
 # TYPE node_network_transmit_compressed_total counter
-node_network_transmit_compressed_total{device="br-0b3831161cf7"} 0
-node_network_transmit_compressed_total{device="br-0d007144137d"} 0
-node_network_transmit_compressed_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_compressed_total{device="br-804926c487e9"} 0
-node_network_transmit_compressed_total{device="br-8410c26e61e6"} 0
-node_network_transmit_compressed_total{device="br-93ec4e5de303"} 0
-node_network_transmit_compressed_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_compressed_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_compressed_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_compressed_total{device="br-b74749ee92fc"} 0
 node_network_transmit_compressed_total{device="docker0"} 0
 node_network_transmit_compressed_total{device="eth0"} 0
 node_network_transmit_compressed_total{device="lo"} 0
-node_network_transmit_compressed_total{device="veth067cbb9"} 0
-node_network_transmit_compressed_total{device="veth0c46f9c"} 0
-node_network_transmit_compressed_total{device="veth172b0e8"} 0
-node_network_transmit_compressed_total{device="veth1b5046f"} 0
-node_network_transmit_compressed_total{device="veth1cc7faf"} 0
-node_network_transmit_compressed_total{device="veth20c7ef1"} 0
-node_network_transmit_compressed_total{device="veth2627759"} 0
-node_network_transmit_compressed_total{device="veth299e88a"} 0
-node_network_transmit_compressed_total{device="veth3454f15"} 0
-node_network_transmit_compressed_total{device="veth42b9fcf"} 0
-node_network_transmit_compressed_total{device="veth47f7380"} 0
-node_network_transmit_compressed_total{device="veth4943c51"} 0
-node_network_transmit_compressed_total{device="veth4b4fa8b"} 0
-node_network_transmit_compressed_total{device="veth75ea39d"} 0
-node_network_transmit_compressed_total{device="veth7ba5026"} 0
-node_network_transmit_compressed_total{device="veth8981bcf"} 0
-node_network_transmit_compressed_total{device="veth8bf3774"} 0
-node_network_transmit_compressed_total{device="veth95ee2ad"} 0
-node_network_transmit_compressed_total{device="veth96761db"} 0
-node_network_transmit_compressed_total{device="vethb5e4ecb"} 0
-node_network_transmit_compressed_total{device="vethc53ac98"} 0
-node_network_transmit_compressed_total{device="vethc8108b1"} 0
-node_network_transmit_compressed_total{device="vethce0b8ca"} 0
-node_network_transmit_compressed_total{device="vethd118ce1"} 0
-node_network_transmit_compressed_total{device="vethd6944c2"} 0
-node_network_transmit_compressed_total{device="vetheb6145e"} 0
-node_network_transmit_compressed_total{device="vethfffdc4a"} 0
+node_network_transmit_compressed_total{device="vetha602b83"} 0
 # HELP node_network_transmit_drop_total Network device statistic transmit_drop.
 # TYPE node_network_transmit_drop_total counter
-node_network_transmit_drop_total{device="br-0b3831161cf7"} 0
-node_network_transmit_drop_total{device="br-0d007144137d"} 0
-node_network_transmit_drop_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_drop_total{device="br-804926c487e9"} 0
-node_network_transmit_drop_total{device="br-8410c26e61e6"} 0
-node_network_transmit_drop_total{device="br-93ec4e5de303"} 0
-node_network_transmit_drop_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_drop_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_drop_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_drop_total{device="br-b74749ee92fc"} 0
 node_network_transmit_drop_total{device="docker0"} 0
 node_network_transmit_drop_total{device="eth0"} 0
 node_network_transmit_drop_total{device="lo"} 0
-node_network_transmit_drop_total{device="veth067cbb9"} 0
-node_network_transmit_drop_total{device="veth0c46f9c"} 0
-node_network_transmit_drop_total{device="veth172b0e8"} 0
-node_network_transmit_drop_total{device="veth1b5046f"} 0
-node_network_transmit_drop_total{device="veth1cc7faf"} 0
-node_network_transmit_drop_total{device="veth20c7ef1"} 0
-node_network_transmit_drop_total{device="veth2627759"} 0
-node_network_transmit_drop_total{device="veth299e88a"} 0
-node_network_transmit_drop_total{device="veth3454f15"} 0
-node_network_transmit_drop_total{device="veth42b9fcf"} 0
-node_network_transmit_drop_total{device="veth47f7380"} 0
-node_network_transmit_drop_total{device="veth4943c51"} 0
-node_network_transmit_drop_total{device="veth4b4fa8b"} 0
-node_network_transmit_drop_total{device="veth75ea39d"} 0
-node_network_transmit_drop_total{device="veth7ba5026"} 0
-node_network_transmit_drop_total{device="veth8981bcf"} 0
-node_network_transmit_drop_total{device="veth8bf3774"} 0
-node_network_transmit_drop_total{device="veth95ee2ad"} 0
-node_network_transmit_drop_total{device="veth96761db"} 0
-node_network_transmit_drop_total{device="vethb5e4ecb"} 0
-node_network_transmit_drop_total{device="vethc53ac98"} 0
-node_network_transmit_drop_total{device="vethc8108b1"} 0
-node_network_transmit_drop_total{device="vethce0b8ca"} 0
-node_network_transmit_drop_total{device="vethd118ce1"} 0
-node_network_transmit_drop_total{device="vethd6944c2"} 0
-node_network_transmit_drop_total{device="vetheb6145e"} 0
-node_network_transmit_drop_total{device="vethfffdc4a"} 0
+node_network_transmit_drop_total{device="vetha602b83"} 0
 # HELP node_network_transmit_errs_total Network device statistic transmit_errs.
 # TYPE node_network_transmit_errs_total counter
-node_network_transmit_errs_total{device="br-0b3831161cf7"} 0
-node_network_transmit_errs_total{device="br-0d007144137d"} 0
-node_network_transmit_errs_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_errs_total{device="br-804926c487e9"} 0
-node_network_transmit_errs_total{device="br-8410c26e61e6"} 0
-node_network_transmit_errs_total{device="br-93ec4e5de303"} 0
-node_network_transmit_errs_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_errs_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_errs_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_errs_total{device="br-b74749ee92fc"} 0
 node_network_transmit_errs_total{device="docker0"} 0
 node_network_transmit_errs_total{device="eth0"} 0
 node_network_transmit_errs_total{device="lo"} 0
-node_network_transmit_errs_total{device="veth067cbb9"} 0
-node_network_transmit_errs_total{device="veth0c46f9c"} 0
-node_network_transmit_errs_total{device="veth172b0e8"} 0
-node_network_transmit_errs_total{device="veth1b5046f"} 0
-node_network_transmit_errs_total{device="veth1cc7faf"} 0
-node_network_transmit_errs_total{device="veth20c7ef1"} 0
-node_network_transmit_errs_total{device="veth2627759"} 0
-node_network_transmit_errs_total{device="veth299e88a"} 0
-node_network_transmit_errs_total{device="veth3454f15"} 0
-node_network_transmit_errs_total{device="veth42b9fcf"} 0
-node_network_transmit_errs_total{device="veth47f7380"} 0
-node_network_transmit_errs_total{device="veth4943c51"} 0
-node_network_transmit_errs_total{device="veth4b4fa8b"} 0
-node_network_transmit_errs_total{device="veth75ea39d"} 0
-node_network_transmit_errs_total{device="veth7ba5026"} 0
-node_network_transmit_errs_total{device="veth8981bcf"} 0
-node_network_transmit_errs_total{device="veth8bf3774"} 0
-node_network_transmit_errs_total{device="veth95ee2ad"} 0
-node_network_transmit_errs_total{device="veth96761db"} 0
-node_network_transmit_errs_total{device="vethb5e4ecb"} 0
-node_network_transmit_errs_total{device="vethc53ac98"} 0
-node_network_transmit_errs_total{device="vethc8108b1"} 0
-node_network_transmit_errs_total{device="vethce0b8ca"} 0
-node_network_transmit_errs_total{device="vethd118ce1"} 0
-node_network_transmit_errs_total{device="vethd6944c2"} 0
-node_network_transmit_errs_total{device="vetheb6145e"} 0
-node_network_transmit_errs_total{device="vethfffdc4a"} 0
+node_network_transmit_errs_total{device="vetha602b83"} 0
 # HELP node_network_transmit_fifo_total Network device statistic transmit_fifo.
 # TYPE node_network_transmit_fifo_total counter
-node_network_transmit_fifo_total{device="br-0b3831161cf7"} 0
-node_network_transmit_fifo_total{device="br-0d007144137d"} 0
-node_network_transmit_fifo_total{device="br-4dea6d1426f4"} 0
-node_network_transmit_fifo_total{device="br-804926c487e9"} 0
-node_network_transmit_fifo_total{device="br-8410c26e61e6"} 0
-node_network_transmit_fifo_total{device="br-93ec4e5de303"} 0
-node_network_transmit_fifo_total{device="br-fdf0fd580b92"} 0
+node_network_transmit_fifo_total{device="br-9fe3bbaef917"} 0
+node_network_transmit_fifo_total{device="br-a08a0ec8f10a"} 0
+node_network_transmit_fifo_total{device="br-b74749ee92fc"} 0
 node_network_transmit_fifo_total{device="docker0"} 0
 node_network_transmit_fifo_total{device="eth0"} 0
 node_network_transmit_fifo_total{device="lo"} 0
-node_network_transmit_fifo_total{device="veth067cbb9"} 0
-node_network_transmit_fifo_total{device="veth0c46f9c"} 0
-node_network_transmit_fifo_total{device="veth172b0e8"} 0
-node_network_transmit_fifo_total{device="veth1b5046f"} 0
-node_network_transmit_fifo_total{device="veth1cc7faf"} 0
-node_network_transmit_fifo_total{device="veth20c7ef1"} 0
-node_network_transmit_fifo_total{device="veth2627759"} 0
-node_network_transmit_fifo_total{device="veth299e88a"} 0
-node_network_transmit_fifo_total{device="veth3454f15"} 0
-node_network_transmit_fifo_total{device="veth42b9fcf"} 0
-node_network_transmit_fifo_total{device="veth47f7380"} 0
-node_network_transmit_fifo_total{device="veth4943c51"} 0
-node_network_transmit_fifo_total{device="veth4b4fa8b"} 0
-node_network_transmit_fifo_total{device="veth75ea39d"} 0
-node_network_transmit_fifo_total{device="veth7ba5026"} 0
-node_network_transmit_fifo_total{device="veth8981bcf"} 0
-node_network_transmit_fifo_total{device="veth8bf3774"} 0
-node_network_transmit_fifo_total{device="veth95ee2ad"} 0
-node_network_transmit_fifo_total{device="veth96761db"} 0
-node_network_transmit_fifo_total{device="vethb5e4ecb"} 0
-node_network_transmit_fifo_total{device="vethc53ac98"} 0
-node_network_transmit_fifo_total{device="vethc8108b1"} 0
-node_network_transmit_fifo_total{device="vethce0b8ca"} 0
-node_network_transmit_fifo_total{device="vethd118ce1"} 0
-node_network_transmit_fifo_total{device="vethd6944c2"} 0
-node_network_transmit_fifo_total{device="vetheb6145e"} 0
-node_network_transmit_fifo_total{device="vethfffdc4a"} 0
+node_network_transmit_fifo_total{device="vetha602b83"} 0
 # HELP node_network_transmit_packets_total Network device statistic transmit_packets.
 # TYPE node_network_transmit_packets_total counter
-node_network_transmit_packets_total{device="br-0b3831161cf7"} 3.1577913e+07
-node_network_transmit_packets_total{device="br-0d007144137d"} 1.1613858e+07
-node_network_transmit_packets_total{device="br-4dea6d1426f4"} 6.9342112e+07
-node_network_transmit_packets_total{device="br-804926c487e9"} 7
-node_network_transmit_packets_total{device="br-8410c26e61e6"} 2.3666598428e+10
-node_network_transmit_packets_total{device="br-93ec4e5de303"} 1693
-node_network_transmit_packets_total{device="br-fdf0fd580b92"} 693473
-node_network_transmit_packets_total{device="docker0"} 13012
-node_network_transmit_packets_total{device="eth0"} 3.1778911839e+10
-node_network_transmit_packets_total{device="lo"} 103175
-node_network_transmit_packets_total{device="veth067cbb9"} 14
-node_network_transmit_packets_total{device="veth0c46f9c"} 9.6655711e+07
-node_network_transmit_packets_total{device="veth172b0e8"} 1.1009642e+07
-node_network_transmit_packets_total{device="veth1b5046f"} 2.2021375e+07
-node_network_transmit_packets_total{device="veth1cc7faf"} 1.09421439e+08
-node_network_transmit_packets_total{device="veth20c7ef1"} 61988
-node_network_transmit_packets_total{device="veth2627759"} 3.94239382e+08
-node_network_transmit_packets_total{device="veth299e88a"} 1.1208452503e+10
-node_network_transmit_packets_total{device="veth3454f15"} 2.578219e+06
-node_network_transmit_packets_total{device="veth42b9fcf"} 3611
-node_network_transmit_packets_total{device="veth47f7380"} 9.5613556e+07
-node_network_transmit_packets_total{device="veth4943c51"} 774849
-node_network_transmit_packets_total{device="veth4b4fa8b"} 4.946844e+06
-node_network_transmit_packets_total{device="veth75ea39d"} 5300
-node_network_transmit_packets_total{device="veth7ba5026"} 1.448775846e+09
-node_network_transmit_packets_total{device="veth8981bcf"} 2.764479e+06
-node_network_transmit_packets_total{device="veth8bf3774"} 536694
-node_network_transmit_packets_total{device="veth95ee2ad"} 2.750276e+06
-node_network_transmit_packets_total{device="veth96761db"} 1.398148668e+09
-node_network_transmit_packets_total{device="vethb5e4ecb"} 1.1513365e+07
-node_network_transmit_packets_total{device="vethc53ac98"} 258216
-node_network_transmit_packets_total{device="vethc8108b1"} 4.04954698e+09
-node_network_transmit_packets_total{device="vethce0b8ca"} 1.188122e+06
-node_network_transmit_packets_total{device="vethd118ce1"} 4.518273e+06
-node_network_transmit_packets_total{device="vethd6944c2"} 3.349899e+06
-node_network_transmit_packets_total{device="vetheb6145e"} 1.504881e+06
-node_network_transmit_packets_total{device="vethfffdc4a"} 6.281848e+06
+node_network_transmit_packets_total{device="br-9fe3bbaef917"} 7
+node_network_transmit_packets_total{device="br-a08a0ec8f10a"} 7
+node_network_transmit_packets_total{device="br-b74749ee92fc"} 10938
+node_network_transmit_packets_total{device="docker0"} 144781
+node_network_transmit_packets_total{device="eth0"} 189585
+node_network_transmit_packets_total{device="lo"} 480
+node_network_transmit_packets_total{device="vetha602b83"} 3907
 # HELP node_network_transmit_queue_length Network device property: transmit_queue_length
 # TYPE node_network_transmit_queue_length gauge
-node_network_transmit_queue_length{device="br-0b3831161cf7"} 0
-node_network_transmit_queue_length{device="br-0d007144137d"} 0
-node_network_transmit_queue_length{device="br-4dea6d1426f4"} 0
-node_network_transmit_queue_length{device="br-804926c487e9"} 0
-node_network_transmit_queue_length{device="br-8410c26e61e6"} 0
-node_network_transmit_queue_length{device="br-93ec4e5de303"} 0
-node_network_transmit_queue_length{device="br-fdf0fd580b92"} 0
+node_network_transmit_queue_length{device="br-9fe3bbaef917"} 0
+node_network_transmit_queue_length{device="br-a08a0ec8f10a"} 0
+node_network_transmit_queue_length{device="br-b74749ee92fc"} 0
 node_network_transmit_queue_length{device="docker0"} 0
 node_network_transmit_queue_length{device="eth0"} 1000
 node_network_transmit_queue_length{device="lo"} 1000
-node_network_transmit_queue_length{device="veth067cbb9"} 0
-node_network_transmit_queue_length{device="veth0c46f9c"} 0
-node_network_transmit_queue_length{device="veth172b0e8"} 0
-node_network_transmit_queue_length{device="veth1b5046f"} 0
-node_network_transmit_queue_length{device="veth1cc7faf"} 0
-node_network_transmit_queue_length{device="veth20c7ef1"} 0
-node_network_transmit_queue_length{device="veth2627759"} 0
-node_network_transmit_queue_length{device="veth299e88a"} 0
-node_network_transmit_queue_length{device="veth3454f15"} 0
-node_network_transmit_queue_length{device="veth42b9fcf"} 0
-node_network_transmit_queue_length{device="veth47f7380"} 0
-node_network_transmit_queue_length{device="veth4943c51"} 0
-node_network_transmit_queue_length{device="veth4b4fa8b"} 0
-node_network_transmit_queue_length{device="veth75ea39d"} 0
-node_network_transmit_queue_length{device="veth7ba5026"} 0
-node_network_transmit_queue_length{device="veth8981bcf"} 0
-node_network_transmit_queue_length{device="veth8bf3774"} 0
-node_network_transmit_queue_length{device="veth95ee2ad"} 0
-node_network_transmit_queue_length{device="veth96761db"} 0
-node_network_transmit_queue_length{device="vethb5e4ecb"} 0
-node_network_transmit_queue_length{device="vethc53ac98"} 0
-node_network_transmit_queue_length{device="vethc8108b1"} 0
-node_network_transmit_queue_length{device="vethce0b8ca"} 0
-node_network_transmit_queue_length{device="vethd118ce1"} 0
-node_network_transmit_queue_length{device="vethd6944c2"} 0
-node_network_transmit_queue_length{device="vetheb6145e"} 0
-node_network_transmit_queue_length{device="vethfffdc4a"} 0
+node_network_transmit_queue_length{device="vetha602b83"} 0
 # HELP node_network_up Value is 1 if operstate is 'up', 0 otherwise.
 # TYPE node_network_up gauge
-node_network_up{device="br-0b3831161cf7"} 1
-node_network_up{device="br-0d007144137d"} 1
-node_network_up{device="br-4dea6d1426f4"} 1
-node_network_up{device="br-804926c487e9"} 1
-node_network_up{device="br-8410c26e61e6"} 1
-node_network_up{device="br-93ec4e5de303"} 1
-node_network_up{device="br-fdf0fd580b92"} 1
+node_network_up{device="br-9fe3bbaef917"} 0
+node_network_up{device="br-a08a0ec8f10a"} 0
+node_network_up{device="br-b74749ee92fc"} 1
 node_network_up{device="docker0"} 0
 node_network_up{device="eth0"} 1
 node_network_up{device="lo"} 0
-node_network_up{device="veth067cbb9"} 1
-node_network_up{device="veth0c46f9c"} 1
-node_network_up{device="veth172b0e8"} 1
-node_network_up{device="veth1b5046f"} 1
-node_network_up{device="veth1cc7faf"} 1
-node_network_up{device="veth20c7ef1"} 1
-node_network_up{device="veth2627759"} 1
-node_network_up{device="veth299e88a"} 1
-node_network_up{device="veth3454f15"} 1
-node_network_up{device="veth42b9fcf"} 1
-node_network_up{device="veth47f7380"} 1
-node_network_up{device="veth4943c51"} 1
-node_network_up{device="veth4b4fa8b"} 1
-node_network_up{device="veth75ea39d"} 1
-node_network_up{device="veth7ba5026"} 1
-node_network_up{device="veth8981bcf"} 1
-node_network_up{device="veth8bf3774"} 1
-node_network_up{device="veth95ee2ad"} 1
-node_network_up{device="veth96761db"} 1
-node_network_up{device="vethb5e4ecb"} 1
-node_network_up{device="vethc53ac98"} 1
-node_network_up{device="vethc8108b1"} 1
-node_network_up{device="vethce0b8ca"} 1
-node_network_up{device="vethd118ce1"} 1
-node_network_up{device="vethd6944c2"} 1
-node_network_up{device="vetheb6145e"} 1
-node_network_up{device="vethfffdc4a"} 1
+node_network_up{device="vetha602b83"} 1
 # HELP node_nf_conntrack_entries Number of currently allocated flow entries for connection tracking.
 # TYPE node_nf_conntrack_entries gauge
-node_nf_conntrack_entries 665
+node_nf_conntrack_entries 13
 # HELP node_nf_conntrack_entries_limit Maximum size of connection tracking table.
 # TYPE node_nf_conntrack_entries_limit gauge
-node_nf_conntrack_entries_limit 262144
+node_nf_conntrack_entries_limit 65536
 # HELP node_os_info A metric with a constant '1' value labeled by build_id, id, id_like, image_id, image_version, name, pretty_name, variant, variant_id, version, version_codename, version_id.
 # TYPE node_os_info gauge
-node_os_info{build_id="",id="ubuntu",id_like="debian",image_id="",image_version="",name="Ubuntu",pretty_name="Ubuntu 20.04.2 LTS",variant="",variant_id="",version="20.04.2 LTS (Focal Fossa)",version_codename="focal",version_id="20.04"} 1
+node_os_info{build_id="",id="ubuntu",id_like="debian",image_id="",image_version="",name="Ubuntu",pretty_name="Ubuntu 22.04.3 LTS",variant="",variant_id="",version="22.04.3 LTS (Jammy Jellyfish)",version_codename="jammy",version_id="22.04"} 1
 # HELP node_os_version Metric containing the major.minor part of the OS version.
 # TYPE node_os_version gauge
-node_os_version{id="ubuntu",id_like="debian",name="Ubuntu"} 20.04
+node_os_version{id="ubuntu",id_like="debian",name="Ubuntu"} 22.04
 # HELP node_pressure_cpu_waiting_seconds_total Total time in seconds that processes have waited for CPU time
 # TYPE node_pressure_cpu_waiting_seconds_total counter
-node_pressure_cpu_waiting_seconds_total 1.379684557872e+06
+node_pressure_cpu_waiting_seconds_total 97.214556
 # HELP node_pressure_io_stalled_seconds_total Total time in seconds no process could make progress due to IO congestion
 # TYPE node_pressure_io_stalled_seconds_total counter
-node_pressure_io_stalled_seconds_total 473846.921288
+node_pressure_io_stalled_seconds_total 5.952921
 # HELP node_pressure_io_waiting_seconds_total Total time in seconds that processes have waited due to IO congestion
 # TYPE node_pressure_io_waiting_seconds_total counter
-node_pressure_io_waiting_seconds_total 550907.7902439999
+node_pressure_io_waiting_seconds_total 9.927942999999999
 # HELP node_pressure_memory_stalled_seconds_total Total time in seconds no process could make progress due to memory congestion
 # TYPE node_pressure_memory_stalled_seconds_total counter
-node_pressure_memory_stalled_seconds_total 2889.813577
+node_pressure_memory_stalled_seconds_total 0.197775
 # HELP node_pressure_memory_waiting_seconds_total Total time in seconds that processes have waited for memory
 # TYPE node_pressure_memory_waiting_seconds_total counter
-node_pressure_memory_waiting_seconds_total 4720.275444
+node_pressure_memory_waiting_seconds_total 0.354968
 # HELP node_procs_blocked Number of processes blocked waiting for I/O to complete.
 # TYPE node_procs_blocked gauge
 node_procs_blocked 0
@@ -2088,75 +946,60 @@ node_procs_blocked 0
 node_procs_running 1
 # HELP node_schedstat_running_seconds_total Number of seconds CPU spent running a process.
 # TYPE node_schedstat_running_seconds_total counter
-node_schedstat_running_seconds_total{cpu="0"} 6.324055851377923e+06
-node_schedstat_running_seconds_total{cpu="1"} 9.423255944893263e+06
-node_schedstat_running_seconds_total{cpu="2"} 6.138238623863763e+06
-node_schedstat_running_seconds_total{cpu="3"} 7.698051725380532e+06
-node_schedstat_running_seconds_total{cpu="4"} 5.64188568004826e+06
-node_schedstat_running_seconds_total{cpu="5"} 7.129332691654178e+06
+node_schedstat_running_seconds_total{cpu="0"} 327.068646053
 # HELP node_schedstat_timeslices_total Number of timeslices executed by CPU.
 # TYPE node_schedstat_timeslices_total counter
-node_schedstat_timeslices_total{cpu="0"} 3.7843473839e+10
-node_schedstat_timeslices_total{cpu="1"} 6.5220773105e+10
-node_schedstat_timeslices_total{cpu="2"} 3.8521957483e+10
-node_schedstat_timeslices_total{cpu="3"} 5.1807772101e+10
-node_schedstat_timeslices_total{cpu="4"} 3.5305701887e+10
-node_schedstat_timeslices_total{cpu="5"} 4.3920130672e+10
+node_schedstat_timeslices_total{cpu="0"} 1.871427e+06
 # HELP node_schedstat_waiting_seconds_total Number of seconds spent by processing waiting for this CPU.
 # TYPE node_schedstat_waiting_seconds_total counter
-node_schedstat_waiting_seconds_total{cpu="0"} 1.475445064325283e+06
-node_schedstat_waiting_seconds_total{cpu="1"} 2.491488881325774e+06
-node_schedstat_waiting_seconds_total{cpu="2"} 1.50625085775937e+06
-node_schedstat_waiting_seconds_total{cpu="3"} 1.838871440568523e+06
-node_schedstat_waiting_seconds_total{cpu="4"} 1.434001149442061e+06
-node_schedstat_waiting_seconds_total{cpu="5"} 1.629127329772496e+06
+node_schedstat_waiting_seconds_total{cpu="0"} 156.033556801
 # HELP node_scrape_collector_duration_seconds node_exporter: Duration of a collector scrape.
 # TYPE node_scrape_collector_duration_seconds gauge
-node_scrape_collector_duration_seconds{collector="arp"} 0.000124854
-node_scrape_collector_duration_seconds{collector="bcache"} 8.71e-06
-node_scrape_collector_duration_seconds{collector="bonding"} 1.62e-05
-node_scrape_collector_duration_seconds{collector="btrfs"} 0.000605736
-node_scrape_collector_duration_seconds{collector="conntrack"} 5.0971e-05
-node_scrape_collector_duration_seconds{collector="cpu"} 0.000564276
-node_scrape_collector_duration_seconds{collector="cpufreq"} 9.8663e-05
-node_scrape_collector_duration_seconds{collector="diskstats"} 0.000296739
-node_scrape_collector_duration_seconds{collector="dmi"} 5.45e-06
-node_scrape_collector_duration_seconds{collector="edac"} 2.2071e-05
-node_scrape_collector_duration_seconds{collector="entropy"} 5.8372e-05
-node_scrape_collector_duration_seconds{collector="fibrechannel"} 1.7861e-05
-node_scrape_collector_duration_seconds{collector="filefd"} 4.2641e-05
-node_scrape_collector_duration_seconds{collector="filesystem"} 0.001185962
-node_scrape_collector_duration_seconds{collector="hwmon"} 1.854e-05
-node_scrape_collector_duration_seconds{collector="infiniband"} 1.3721e-05
-node_scrape_collector_duration_seconds{collector="ipvs"} 1.657e-05
-node_scrape_collector_duration_seconds{collector="loadavg"} 3.0481e-05
-node_scrape_collector_duration_seconds{collector="mdadm"} 4.4691e-05
-node_scrape_collector_duration_seconds{collector="meminfo"} 0.00038511
-node_scrape_collector_duration_seconds{collector="netclass"} 0.010746911
-node_scrape_collector_duration_seconds{collector="netdev"} 0.015330874
-node_scrape_collector_duration_seconds{collector="netstat"} 0.000841173
-node_scrape_collector_duration_seconds{collector="nfs"} 8.86e-06
-node_scrape_collector_duration_seconds{collector="nfsd"} 1.5151e-05
-node_scrape_collector_duration_seconds{collector="nvme"} 1.7431e-05
-node_scrape_collector_duration_seconds{collector="os"} 3.2631e-05
-node_scrape_collector_duration_seconds{collector="powersupplyclass"} 2.9151e-05
-node_scrape_collector_duration_seconds{collector="pressure"} 0.000139474
-node_scrape_collector_duration_seconds{collector="rapl"} 1.606e-05
-node_scrape_collector_duration_seconds{collector="schedstat"} 6.9472e-05
-node_scrape_collector_duration_seconds{collector="selinux"} 1.306e-05
-node_scrape_collector_duration_seconds{collector="sockstat"} 0.000188185
-node_scrape_collector_duration_seconds{collector="softnet"} 5.7371e-05
-node_scrape_collector_duration_seconds{collector="stat"} 0.000173855
-node_scrape_collector_duration_seconds{collector="tapestats"} 1.2461e-05
-node_scrape_collector_duration_seconds{collector="textfile"} 1.735e-05
-node_scrape_collector_duration_seconds{collector="thermal_zone"} 0.000287158
-node_scrape_collector_duration_seconds{collector="time"} 9.5372e-05
-node_scrape_collector_duration_seconds{collector="timex"} 1.609e-05
-node_scrape_collector_duration_seconds{collector="udp_queues"} 0.000136024
-node_scrape_collector_duration_seconds{collector="uname"} 9.7e-06
-node_scrape_collector_duration_seconds{collector="vmstat"} 0.000132243
-node_scrape_collector_duration_seconds{collector="xfs"} 1.283e-05
-node_scrape_collector_duration_seconds{collector="zfs"} 2.1721e-05
+node_scrape_collector_duration_seconds{collector="arp"} 8.7451e-05
+node_scrape_collector_duration_seconds{collector="bcache"} 1.8127e-05
+node_scrape_collector_duration_seconds{collector="bonding"} 5.5871e-05
+node_scrape_collector_duration_seconds{collector="btrfs"} 0.002187124
+node_scrape_collector_duration_seconds{collector="conntrack"} 0.000115136
+node_scrape_collector_duration_seconds{collector="cpu"} 0.000335049
+node_scrape_collector_duration_seconds{collector="cpufreq"} 8.4295e-05
+node_scrape_collector_duration_seconds{collector="diskstats"} 0.000365561
+node_scrape_collector_duration_seconds{collector="dmi"} 3.9907e-05
+node_scrape_collector_duration_seconds{collector="edac"} 9.2724e-05
+node_scrape_collector_duration_seconds{collector="entropy"} 0.000171689
+node_scrape_collector_duration_seconds{collector="fibrechannel"} 1.7116e-05
+node_scrape_collector_duration_seconds{collector="filefd"} 0.000183701
+node_scrape_collector_duration_seconds{collector="filesystem"} 0.000554859
+node_scrape_collector_duration_seconds{collector="hwmon"} 3.376e-05
+node_scrape_collector_duration_seconds{collector="infiniband"} 1.7173e-05
+node_scrape_collector_duration_seconds{collector="ipvs"} 1.8168e-05
+node_scrape_collector_duration_seconds{collector="loadavg"} 5.0485e-05
+node_scrape_collector_duration_seconds{collector="mdadm"} 7.6277e-05
+node_scrape_collector_duration_seconds{collector="meminfo"} 0.000282097
+node_scrape_collector_duration_seconds{collector="netclass"} 0.024440707
+node_scrape_collector_duration_seconds{collector="netdev"} 0.001965265
+node_scrape_collector_duration_seconds{collector="netstat"} 0.001360907
+node_scrape_collector_duration_seconds{collector="nfs"} 6.1406e-05
+node_scrape_collector_duration_seconds{collector="nfsd"} 0.000109723
+node_scrape_collector_duration_seconds{collector="nvme"} 5.1049e-05
+node_scrape_collector_duration_seconds{collector="os"} 0.000126223
+node_scrape_collector_duration_seconds{collector="powersupplyclass"} 7.0291e-05
+node_scrape_collector_duration_seconds{collector="pressure"} 0.000230926
+node_scrape_collector_duration_seconds{collector="rapl"} 6.4278e-05
+node_scrape_collector_duration_seconds{collector="schedstat"} 0.000129293
+node_scrape_collector_duration_seconds{collector="selinux"} 1.6542e-05
+node_scrape_collector_duration_seconds{collector="sockstat"} 0.000194725
+node_scrape_collector_duration_seconds{collector="softnet"} 6.1789e-05
+node_scrape_collector_duration_seconds{collector="stat"} 0.000167319
+node_scrape_collector_duration_seconds{collector="tapestats"} 1.7164e-05
+node_scrape_collector_duration_seconds{collector="textfile"} 1.8154e-05
+node_scrape_collector_duration_seconds{collector="thermal_zone"} 0.00058905
+node_scrape_collector_duration_seconds{collector="time"} 0.000140996
+node_scrape_collector_duration_seconds{collector="timex"} 4.2267e-05
+node_scrape_collector_duration_seconds{collector="udp_queues"} 0.000208952
+node_scrape_collector_duration_seconds{collector="uname"} 1.4354e-05
+node_scrape_collector_duration_seconds{collector="vmstat"} 0.000241455
+node_scrape_collector_duration_seconds{collector="xfs"} 2.1615e-05
+node_scrape_collector_duration_seconds{collector="zfs"} 2.0017e-05
 # HELP node_scrape_collector_success node_exporter: Whether a collector succeeded.
 # TYPE node_scrape_collector_success gauge
 node_scrape_collector_success{collector="arp"} 1
@@ -2227,19 +1070,19 @@ node_sockstat_RAW6_inuse 1
 node_sockstat_RAW_inuse 0
 # HELP node_sockstat_TCP6_inuse Number of TCP6 sockets in state inuse.
 # TYPE node_sockstat_TCP6_inuse gauge
-node_sockstat_TCP6_inuse 10
+node_sockstat_TCP6_inuse 8
 # HELP node_sockstat_TCP_alloc Number of TCP sockets in state alloc.
 # TYPE node_sockstat_TCP_alloc gauge
-node_sockstat_TCP_alloc 163
+node_sockstat_TCP_alloc 17
 # HELP node_sockstat_TCP_inuse Number of TCP sockets in state inuse.
 # TYPE node_sockstat_TCP_inuse gauge
-node_sockstat_TCP_inuse 3
+node_sockstat_TCP_inuse 5
 # HELP node_sockstat_TCP_mem Number of TCP sockets in state mem.
 # TYPE node_sockstat_TCP_mem gauge
-node_sockstat_TCP_mem 58
+node_sockstat_TCP_mem 1
 # HELP node_sockstat_TCP_mem_bytes Number of TCP sockets in state mem_bytes.
 # TYPE node_sockstat_TCP_mem_bytes gauge
-node_sockstat_TCP_mem_bytes 237568
+node_sockstat_TCP_mem_bytes 4096
 # HELP node_sockstat_TCP_orphan Number of TCP sockets in state orphan.
 # TYPE node_sockstat_TCP_orphan gauge
 node_sockstat_TCP_orphan 0
@@ -2248,7 +1091,7 @@ node_sockstat_TCP_orphan 0
 node_sockstat_TCP_tw 0
 # HELP node_sockstat_UDP6_inuse Number of UDP6 sockets in state inuse.
 # TYPE node_sockstat_UDP6_inuse gauge
-node_sockstat_UDP6_inuse 1
+node_sockstat_UDP6_inuse 0
 # HELP node_sockstat_UDPLITE6_inuse Number of UDPLITE6 sockets in state inuse.
 # TYPE node_sockstat_UDPLITE6_inuse gauge
 node_sockstat_UDPLITE6_inuse 0
@@ -2257,72 +1100,37 @@ node_sockstat_UDPLITE6_inuse 0
 node_sockstat_UDPLITE_inuse 0
 # HELP node_sockstat_UDP_inuse Number of UDP sockets in state inuse.
 # TYPE node_sockstat_UDP_inuse gauge
-node_sockstat_UDP_inuse 1
+node_sockstat_UDP_inuse 2
 # HELP node_sockstat_UDP_mem Number of UDP sockets in state mem.
 # TYPE node_sockstat_UDP_mem gauge
-node_sockstat_UDP_mem 20
+node_sockstat_UDP_mem 2
 # HELP node_sockstat_UDP_mem_bytes Number of UDP sockets in state mem_bytes.
 # TYPE node_sockstat_UDP_mem_bytes gauge
-node_sockstat_UDP_mem_bytes 81920
+node_sockstat_UDP_mem_bytes 8192
 # HELP node_sockstat_sockets_used Number of IPv4 sockets in use.
 # TYPE node_sockstat_sockets_used gauge
-node_sockstat_sockets_used 244
+node_sockstat_sockets_used 164
 # HELP node_softnet_backlog_len Softnet backlog status
 # TYPE node_softnet_backlog_len gauge
 node_softnet_backlog_len{cpu="0"} 0
-node_softnet_backlog_len{cpu="1"} 0
-node_softnet_backlog_len{cpu="2"} 0
-node_softnet_backlog_len{cpu="3"} 0
-node_softnet_backlog_len{cpu="4"} 0
-node_softnet_backlog_len{cpu="5"} 0
 # HELP node_softnet_cpu_collision_total Number of collision occur while obtaining device lock while transmitting
 # TYPE node_softnet_cpu_collision_total counter
 node_softnet_cpu_collision_total{cpu="0"} 0
-node_softnet_cpu_collision_total{cpu="1"} 0
-node_softnet_cpu_collision_total{cpu="2"} 0
-node_softnet_cpu_collision_total{cpu="3"} 0
-node_softnet_cpu_collision_total{cpu="4"} 0
-node_softnet_cpu_collision_total{cpu="5"} 0
 # HELP node_softnet_dropped_total Number of dropped packets
 # TYPE node_softnet_dropped_total counter
 node_softnet_dropped_total{cpu="0"} 0
-node_softnet_dropped_total{cpu="1"} 0
-node_softnet_dropped_total{cpu="2"} 0
-node_softnet_dropped_total{cpu="3"} 0
-node_softnet_dropped_total{cpu="4"} 0
-node_softnet_dropped_total{cpu="5"} 0
 # HELP node_softnet_flow_limit_count_total Number of times flow limit has been reached
 # TYPE node_softnet_flow_limit_count_total counter
 node_softnet_flow_limit_count_total{cpu="0"} 0
-node_softnet_flow_limit_count_total{cpu="1"} 0
-node_softnet_flow_limit_count_total{cpu="2"} 0
-node_softnet_flow_limit_count_total{cpu="3"} 0
-node_softnet_flow_limit_count_total{cpu="4"} 0
-node_softnet_flow_limit_count_total{cpu="5"} 0
 # HELP node_softnet_processed_total Number of processed packets
 # TYPE node_softnet_processed_total counter
-node_softnet_processed_total{cpu="0"} 2.754821997e+09
-node_softnet_processed_total{cpu="1"} 2.915279677e+09
-node_softnet_processed_total{cpu="2"} 2.093573691e+09
-node_softnet_processed_total{cpu="3"} 4.048936042e+09
-node_softnet_processed_total{cpu="4"} 1.132461406e+09
-node_softnet_processed_total{cpu="5"} 2.647410403e+09
+node_softnet_processed_total{cpu="0"} 684030
 # HELP node_softnet_received_rps_total Number of times cpu woken up received_rps
 # TYPE node_softnet_received_rps_total counter
 node_softnet_received_rps_total{cpu="0"} 0
-node_softnet_received_rps_total{cpu="1"} 0
-node_softnet_received_rps_total{cpu="2"} 0
-node_softnet_received_rps_total{cpu="3"} 0
-node_softnet_received_rps_total{cpu="4"} 0
-node_softnet_received_rps_total{cpu="5"} 0
 # HELP node_softnet_times_squeezed_total Number of times processing packets ran out of quota
 # TYPE node_softnet_times_squeezed_total counter
-node_softnet_times_squeezed_total{cpu="0"} 47975
-node_softnet_times_squeezed_total{cpu="1"} 308293
-node_softnet_times_squeezed_total{cpu="2"} 47278
-node_softnet_times_squeezed_total{cpu="3"} 89056
-node_softnet_times_squeezed_total{cpu="4"} 45155
-node_softnet_times_squeezed_total{cpu="5"} 51096
+node_softnet_times_squeezed_total{cpu="0"} 0
 # HELP node_textfile_scrape_error 1 if there was an error opening or reading a file, 0 otherwise
 # TYPE node_textfile_scrape_error gauge
 node_textfile_scrape_error 0
@@ -2331,12 +1139,13 @@ node_textfile_scrape_error 0
 node_time_clocksource_available_info{clocksource="acpi_pm",device="0"} 1
 node_time_clocksource_available_info{clocksource="hpet",device="0"} 1
 node_time_clocksource_available_info{clocksource="kvm-clock",device="0"} 1
+node_time_clocksource_available_info{clocksource="tsc",device="0"} 1
 # HELP node_time_clocksource_current_info Current clocksource read from '/sys/devices/system/clocksource'.
 # TYPE node_time_clocksource_current_info gauge
 node_time_clocksource_current_info{clocksource="kvm-clock",device="0"} 1
 # HELP node_time_seconds System time in seconds since epoch (1970).
 # TYPE node_time_seconds gauge
-node_time_seconds 1.6910468274901376e+09
+node_time_seconds 1.6955629199862015e+09
 # HELP node_time_zone_offset_seconds System time zone offset in seconds.
 # TYPE node_time_zone_offset_seconds gauge
 node_time_zone_offset_seconds{time_zone="UTC"} 0
@@ -2345,16 +1154,16 @@ node_time_zone_offset_seconds{time_zone="UTC"} 0
 node_timex_estimated_error_seconds 0
 # HELP node_timex_frequency_adjustment_ratio Local clock frequency adjustment.
 # TYPE node_timex_frequency_adjustment_ratio gauge
-node_timex_frequency_adjustment_ratio 1.0000263405151366
+node_timex_frequency_adjustment_ratio 1.0000368371887207
 # HELP node_timex_loop_time_constant Phase-locked loop time constant.
 # TYPE node_timex_loop_time_constant gauge
 node_timex_loop_time_constant 7
 # HELP node_timex_maxerror_seconds Maximum error in seconds.
 # TYPE node_timex_maxerror_seconds gauge
-node_timex_maxerror_seconds 0.3095
+node_timex_maxerror_seconds 0.103
 # HELP node_timex_offset_seconds Time offset in between local system and reference clock.
 # TYPE node_timex_offset_seconds gauge
-node_timex_offset_seconds -3.0423e-05
+node_timex_offset_seconds 0.001070076
 # HELP node_timex_pps_calibration_total Pulse per second count of calibration intervals.
 # TYPE node_timex_pps_calibration_total counter
 node_timex_pps_calibration_total 0
@@ -2381,7 +1190,7 @@ node_timex_pps_stability_exceeded_total 0
 node_timex_pps_stability_hertz 0
 # HELP node_timex_status Value of the status array bits.
 # TYPE node_timex_status gauge
-node_timex_status 24577
+node_timex_status 8193
 # HELP node_timex_sync_status Is clock synchronized to a reliable server (1 = yes, 0 = no).
 # TYPE node_timex_sync_status gauge
 node_timex_sync_status 1
@@ -2399,46 +1208,46 @@ node_udp_queues{ip="v6",queue="rx"} 0
 node_udp_queues{ip="v6",queue="tx"} 0
 # HELP node_uname_info Labeled system information as provided by the uname system call.
 # TYPE node_uname_info gauge
-node_uname_info{domainname="(none)",machine="x86_64",nodename="akheron",release="5.4.0-65-generic",sysname="Linux",version="#73-Ubuntu SMP Mon Jan 18 17:25:17 UTC 2021"} 1
+node_uname_info{domainname="(none)",machine="x86_64",nodename="node-prod-ek77jvl",release="5.15.0-79-generic",sysname="Linux",version="#86-Ubuntu SMP Mon Jul 10 16:07:21 UTC 2023"} 1
 # HELP node_vmstat_oom_kill /proc/vmstat information field oom_kill.
 # TYPE node_vmstat_oom_kill untyped
-node_vmstat_oom_kill 1
+node_vmstat_oom_kill 0
 # HELP node_vmstat_pgfault /proc/vmstat information field pgfault.
 # TYPE node_vmstat_pgfault untyped
-node_vmstat_pgfault 6.87144747945e+11
+node_vmstat_pgfault 3.974289e+06
 # HELP node_vmstat_pgmajfault /proc/vmstat information field pgmajfault.
 # TYPE node_vmstat_pgmajfault untyped
-node_vmstat_pgmajfault 2.8872449e+07
+node_vmstat_pgmajfault 1332
 # HELP node_vmstat_pgpgin /proc/vmstat information field pgpgin.
 # TYPE node_vmstat_pgpgin untyped
-node_vmstat_pgpgin 6.0966781972e+10
+node_vmstat_pgpgin 223379
 # HELP node_vmstat_pgpgout /proc/vmstat information field pgpgout.
 # TYPE node_vmstat_pgpgout untyped
-node_vmstat_pgpgout 4.9280210308e+10
+node_vmstat_pgpgout 1.597289e+06
 # HELP node_vmstat_pswpin /proc/vmstat information field pswpin.
 # TYPE node_vmstat_pswpin untyped
-node_vmstat_pswpin 1.6307415e+07
+node_vmstat_pswpin 0
 # HELP node_vmstat_pswpout /proc/vmstat information field pswpout.
 # TYPE node_vmstat_pswpout untyped
-node_vmstat_pswpout 1.7142013e+07
+node_vmstat_pswpout 0
 # HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
 # TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total 5587.52
+process_cpu_seconds_total 24.37
 # HELP process_max_fds Maximum number of open file descriptors.
 # TYPE process_max_fds gauge
 process_max_fds 1.048576e+06
 # HELP process_open_fds Number of open file descriptors.
 # TYPE process_open_fds gauge
-process_open_fds 11
+process_open_fds 13
 # HELP process_resident_memory_bytes Resident memory size in bytes.
 # TYPE process_resident_memory_bytes gauge
-process_resident_memory_bytes 1.4651392e+07
+process_resident_memory_bytes 2.1098496e+07
 # HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
 # TYPE process_start_time_seconds gauge
-process_start_time_seconds 1.69038118834e+09
+process_start_time_seconds 1.695554578e+09
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
-process_virtual_memory_bytes 7.43899136e+08
+process_virtual_memory_bytes 7.43120896e+08
 # HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
 # TYPE process_virtual_memory_max_bytes gauge
 process_virtual_memory_max_bytes 1.8446744073709552e+19
@@ -2451,6 +1260,6 @@ promhttp_metric_handler_errors_total{cause="gathering"} 0
 promhttp_metric_handler_requests_in_flight 1
 # HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
 # TYPE promhttp_metric_handler_requests_total counter
-promhttp_metric_handler_requests_total{code="200"} 177501
+promhttp_metric_handler_requests_total{code="200"} 829
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
