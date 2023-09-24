@@ -3,7 +3,7 @@ import CurrencyDisplay from "../CurrencyDisplay.js";
 
 import { create } from "../../api/node.js";
 import { get_nodetype, get_nodetypes } from "../../service/nodetype.js";
-import { get_balance } from "../../service/user.js";
+import { get_balance, fetch_profile } from "../../service/user.js";
 
 export default {
 	components: {
@@ -25,6 +25,7 @@ export default {
             })
             .then(node => {
                 this.$router.push(`/nodes/${node.id}`);
+                fetch_profile();
             });
         }
     },
