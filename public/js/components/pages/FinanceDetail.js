@@ -15,6 +15,7 @@ export default {
 	},
     data: function() {
         return {
+            busy: false,
             transaction: null,
             breadcrumb: [{
                 icon: "home", name: "Home", link: "/"
@@ -42,9 +43,13 @@ export default {
             });
         },
         refund: function() {
+            this.busy = true;
             refund(this.transaction)
-            .then(() => this.update())
-            .then(() => fetch_profile());
+            .then(() => {
+                this.update();
+                fetch_profile();
+                this.busy = false;
+            });
         },
         get_refund_amount: get_refund_amount
     },
@@ -73,10 +78,11 @@ export default {
             <tr>
                 <td>Actions</td>
                 <td>
-                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0 || balance <= 0">
+                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0 || balance <= 0 || busy">
                         <i class="fa-solid fa-recycle"></i>
                         Refund
                         <currency-display :eurocents="get_refund_amount(transaction)"/>
+                        <i class="fa fa-spinner fa-spin" v-if="busy"></i>
                     </button>
                 </td>
             </tr>
