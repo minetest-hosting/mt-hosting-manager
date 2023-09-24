@@ -15,6 +15,7 @@ services:
    SERVER_NAME: "{{.Servername}}"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
    MINETEST_CONFIG: "/minetest.conf"
+   DEFAULT_THEME: "flatly"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/world/minetest.conf"
    DOCKER_MINETEST_PORT: {{.Port}}
