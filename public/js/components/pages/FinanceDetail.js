@@ -5,6 +5,7 @@ import { check, get_by_id, refund } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { fetch_profile } from "../../service/user.js";
 import { get_balance } from "../../service/user.js";
+import { get_refund_amount } from "../../service/finance.js";
 
 export default {
     props: ["id"],
@@ -44,7 +45,8 @@ export default {
             refund(this.transaction)
             .then(() => this.update())
             .then(() => fetch_profile());
-        }
+        },
+        get_refund_amount: get_refund_amount
     },
     computed: {
         balance: get_balance
@@ -74,6 +76,7 @@ export default {
                     <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0 || balance <= 0">
                         <i class="fa-solid fa-recycle"></i>
                         Refund
+                        <currency-display :eurocents="get_refund_amount(transaction)"/>
                     </button>
                 </td>
             </tr>
