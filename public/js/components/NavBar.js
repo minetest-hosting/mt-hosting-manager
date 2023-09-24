@@ -51,6 +51,11 @@ export default {
 							<i class="fa fa-server"></i> Node-Types
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="has_role('ADMIN')">
+						<router-link to="/sendmail" class="nav-link">
+							<i class="fa fa-envelope"></i> Send mail
+						</router-link>
+					</li>
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/jobs" class="nav-link">
 							<i class="fa fa-play"></i> Jobs

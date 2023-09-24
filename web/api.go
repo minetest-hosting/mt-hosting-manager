@@ -92,6 +92,7 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.DeleteJob)).Methods(http.MethodDelete)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.RetryJob)).Methods(http.MethodPost)
+	admin_api.HandleFunc("/mail/send/{user_id}", api.Secure(api.SendMail)).Methods(http.MethodPost)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {

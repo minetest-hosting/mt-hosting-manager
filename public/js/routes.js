@@ -15,6 +15,7 @@ import Jobs from './components/pages/Jobs.js';
 import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
 import AuditLogs from './components/pages/AuditLogs.js';
+import SendMail from './components/pages/SendMail.js';
 
 export default [{
 	path: "/", component: Start
@@ -64,5 +65,8 @@ export default [{
 	meta: { requiredRole: "ADMIN" }
 },{
 	path: "/node_types/:id", component: NodeTypeDetail, props: true,
+	meta: { requiredRole: "ADMIN" }
+},{
+	path: "/sendmail", component: SendMail,
 	meta: { requiredRole: "ADMIN" }
 }];
