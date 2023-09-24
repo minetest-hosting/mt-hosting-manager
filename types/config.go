@@ -15,7 +15,6 @@ type Config struct {
 	Stage               string
 	Webdev              bool
 	EnableWorker        bool
-	EnableDummyWorker   bool
 	JWTKey              string
 	CookieName          string
 	CookieDomain        string
@@ -38,7 +37,6 @@ func NewConfig() *Config {
 		Stage:               os.Getenv("STAGE"),
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
-		EnableDummyWorker:   os.Getenv("ENABLE_DUMMY_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),
 		CookieName:          "mt-hosting-manager",
 		CookieDomain:        os.Getenv("COOKIE_DOMAIN"),

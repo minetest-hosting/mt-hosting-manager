@@ -3,7 +3,6 @@ package web
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker"
@@ -58,7 +57,12 @@ func (a *Api) GetLatestNodeJob(w http.ResponseWriter, r *http.Request, c *types.
 func (a *Api) GetNodeStats(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	node, _, err := a.CheckedGetUserNode(id, c)
+	node, status, err := a.CheckedGetUserNode(id, c)
+	if err != nil {
+		SendError(w, status, err)
+		return
+	}
+
 	metrics := &core.NodeExporterMetrics{}
 
 	if node.State != types.UserNodeStateRunning {
@@ -66,17 +70,7 @@ func (a *Api) GetNodeStats(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	if a.cfg.EnableDummyWorker {
-		metrics.DiskSize = 1000 * 1000 * 1000 * 10
-		metrics.DiskUsed = 1000 * 1000 * 1000 * 2.5
-		metrics.MemorySize = 1000 * 1000 * 1000 * 2
-		metrics.MemoryUsed = 1000 * 1000 * 1000 * 0.2
-		metrics.LoadPercent = rand.Intn(20)
-
-	} else {
-		metrics, err = core.FetchMetrics(node.IPv4)
-	}
-
+	metrics, err = core.FetchMetrics(node.IPv4)
 	Send(w, metrics, err)
 }
 

@@ -45,10 +45,6 @@ func main() {
 		w = worker.NewWorker(repos, cfg)
 		w.Start()
 	}
-	if cfg.EnableDummyWorker {
-		logrus.Info("Starting dummy worker")
-		go worker.DummyWorker(repos, cfg)
-	}
 
 	// create and setup web api
 	api := web.NewApi(repos, cfg)

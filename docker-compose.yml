@@ -22,8 +22,7 @@ services:
    - CSRF_KEY=my-csrf-key
    - JWT_KEY=my-jwt-key
    - WEBDEV=true
-#   - ENABLE_WORKER=true
-   - ENABLE_DUMMY_WORKER=true
+   - ENABLE_WORKER=true
   env_file:
     - .env
   ports:

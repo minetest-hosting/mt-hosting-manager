@@ -24,7 +24,6 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 
 * `LOGLEVEL` "debug" / "info"
 * `ENABLE_WORKER`
-* `ENABLE_DUMMY_WORKER` mock worker part if "true"
 * `STAGE` "prod" / "dev"
 
 * `CSRF_KEY`
