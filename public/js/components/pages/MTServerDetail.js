@@ -78,7 +78,7 @@ export default {
 					<td>DNS Name</td>
 					<td>
 						<i class="fa-solid fa-arrow-up-right-from-square"></i>
-						<a :href="'https://' + server.dns_name + '.' + dns_suffix" target="new">{{server.dns_name}}.{{dns_suffix}}</a>
+						<a :href="'https://' + server.dns_name + '.' + dns_suffix + '/ui'" target="new">{{server.dns_name}}.{{dns_suffix}}</a>
 					</td>
 				</tr>
 				<tr>

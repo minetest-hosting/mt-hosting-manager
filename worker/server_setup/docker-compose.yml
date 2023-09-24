@@ -8,6 +8,7 @@ services:
    - network-{{.ServerShortID}}
   environment:
    COOKIE_DOMAIN: "{{.Hostname}}"
+   COOKIE_PATH: "/ui"
    COOKIE_SECURE: "true"
    LOGLEVEL: debug
    WORLD_DIR: "/root/.minetest/worlds/world"
@@ -28,10 +29,12 @@ services:
     - "promtail=true"
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
-    - "traefik.http.routers.{{.ServerShortID}}.rule=Host(`{{.Hostname}}`)"
     - "traefik.http.services.{{.ServerShortID}}.loadbalancer.server.port=8080"
+    - "traefik.http.routers.{{.ServerShortID}}.rule=Host(`{{.Hostname}}`) && PathPrefix(`/ui`)"
     - "traefik.http.routers.{{.ServerShortID}}.entrypoints=websecure"
     - "traefik.http.routers.{{.ServerShortID}}.tls.certresolver=default"
+    - "traefik.http.routers.{{.ServerShortID}}.middlewares={{.ServerShortID}}-stripprefix"
+    - "traefik.http.middlewares.{{.ServerShortID}}-stripprefix.stripprefix.prefixes=/ui"
   restart: always
 
 networks:
