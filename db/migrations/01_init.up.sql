@@ -53,8 +53,6 @@ create table user_node(
     fingerprint varchar(512) not null default '' -- ssh fingerprint
 );
 
--- update user set credits = credits - (select sum(n.cost_per_hour) from user_node un join node n on un.node_id = n.id where un.user_id = user.id);
-
 create table minetest_server(
     id varchar(36) primary key not null, -- uuid
     user_node_id varchar(36) not null references user_node(id) on delete restrict,

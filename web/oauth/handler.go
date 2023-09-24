@@ -77,15 +77,16 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if user == nil {
 		user = &types.User{
-			ID:         uuid.NewString(),
-			Created:    time.Now().Unix(),
-			State:      types.UserStateActive,
-			Name:       info.Name,
-			Mail:       info.Email,
-			ExternalID: info.ExternalID,
-			Type:       h.Type,
-			Balance:    0,
-			Role:       types.UserRoleUser,
+			ID:           uuid.NewString(),
+			Created:      time.Now().Unix(),
+			State:        types.UserStateActive,
+			Name:         info.Name,
+			Mail:         info.Email,
+			MailVerified: true, // verification check already done
+			ExternalID:   info.ExternalID,
+			Type:         h.Type,
+			Balance:      0,
+			Role:         types.UserRoleUser,
 		}
 
 		// check for admin mail config
