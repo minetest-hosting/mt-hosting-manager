@@ -95,12 +95,19 @@ export default {
 					<td>{{node.name}}.{{hostingdomain_suffix}}</td>
 				</tr>
 				<tr>
-					<td>IPv4</td>
-					<td>{{node.ipv4}}</td>
+					<td>IP</td>
+					<td>
+						<b>v4:</b> {{node.ipv4}}
+						<b>v6:</b> {{node.ipv6}}
+					</td>
 				</tr>
 				<tr>
-					<td>IPv6</td>
-					<td>{{node.ipv6}}</td>
+					<td>Created</td>
+					<td>{{format_time(node.created)}}</td>
+				</tr>
+				<tr>
+					<td>Last billed</td>
+					<td>{{format_time(node.last_collected_time)}}</td>
 				</tr>
 				<tr>
 					<td>State</td>

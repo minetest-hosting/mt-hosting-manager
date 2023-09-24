@@ -108,13 +108,15 @@ func DummyWorker(repos *db.Repositories, cfg *types.Config) {
 
 	c := core.New(repos, cfg)
 	go func() {
-		ts := time.Now().Unix()
-		err := c.Collect(ts - core.SECONDS_IN_A_DAY)
-		if err != nil {
-			logrus.WithError(err).Error("collect error")
-		}
+		for {
+			ts := time.Now().Unix()
+			err := c.Collect(ts - core.SECONDS_IN_A_DAY)
+			if err != nil {
+				logrus.WithError(err).Error("collect error")
+			}
 
-		time.Sleep(time.Minute)
+			time.Sleep(time.Minute)
+		}
 	}()
 
 	jobs, err := repos.JobRepo.GetByState(types.JobStateRunning)

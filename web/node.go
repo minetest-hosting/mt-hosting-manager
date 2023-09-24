@@ -160,6 +160,21 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
+	user, err := a.repos.UserRepo.GetByID(c.UserID)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("user fetch error: %v", err))
+		return
+	}
+	if user == nil {
+		SendError(w, 404, fmt.Errorf("user not found: %s", c.UserID))
+		return
+	}
+
+	if user.Balance < nt.DailyCost {
+		SendError(w, 405, fmt.Errorf("remaining balance is less than the daily cost of the node-type"))
+		return
+	}
+
 	randstr := core.RandStringRunes(7)
 
 	node := &types.UserNode{
