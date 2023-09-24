@@ -1,9 +1,11 @@
 import CardLayout from "../layouts/CardLayout.js";
 import NodeState from "../NodeState.js";
 import ServerList from "../ServerList.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
 
 import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
+import { get_nodetype } from "../../service/nodetype.js";
 
 import format_time from "../../util/format_time.js";
 
@@ -18,13 +20,15 @@ export default {
 	components: {
 		"card-layout": CardLayout,
 		"node-state": NodeState,
-		"server-list": ServerList
+		"server-list": ServerList,
+		"currency-display": CurrencyDisplay
 	},
 	data: function() {
 		return {
 			hostingdomain_suffix: get_hostingdomain_suffix(),
 			servers: [],
 			node: null,
+			nodetype: null,
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
 			},{
@@ -47,7 +51,8 @@ export default {
 		.then(n => this.node = n)
 		.then(() => {
 			this.update_stats();
-			this.handle = setInterval(() => this.update_stats(), 2000);	
+			this.handle = setInterval(() => this.update_stats(), 2000);
+			this.nodetype = get_nodetype(this.node.node_type_id);
 		});
 	},
 	beforeUnmount: function() {
@@ -84,7 +89,7 @@ export default {
 	template: /*html*/`
 	<card-layout title="Node details" icon="server" :breadcrumb="breadcrumb">
 		<h4>Details</h4>
-		<table class="table" v-if="node">
+		<table class="table" v-if="node && nodetype">
 			<tbody>
 				<tr>
 					<td>ID</td>
@@ -108,6 +113,12 @@ export default {
 				<tr>
 					<td>Last billed</td>
 					<td>{{format_time(node.last_collected_time)}}</td>
+				</tr>
+				<tr>
+					<td>Daily cost</td>
+					<td>
+						<currency-display :eurocents="nodetype.daily_cost"/>
+					</td>
 				</tr>
 				<tr>
 					<td>State</td>
