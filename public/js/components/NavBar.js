@@ -1,7 +1,12 @@
 import { logout, get_claims, is_logged_in, has_role } from '../service/login.js';
 import { get_stage } from '../service/info.js';
+import CurrencyDisplay from './CurrencyDisplay.js';
+import { get_balance } from '../service/user.js';
 
 export default {
+	components: {
+		"currency-display": CurrencyDisplay
+	},
 	data: function() {
 		return {
 			stage: get_stage()
@@ -15,7 +20,8 @@ export default {
 	},
 	computed: {
 		is_logged_in: is_logged_in,
-		claims: get_claims
+		claims: get_claims,
+		balance: get_balance
 	},
 	template: /*html*/`
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -35,6 +41,9 @@ export default {
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/finance" class="nav-link">
 							<i class="fa-solid fa-money-bill"></i> Finance
+							<span class="badge bg-secondary">
+								<currency-display :eurocents="balance"/>
+							</span>
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">
