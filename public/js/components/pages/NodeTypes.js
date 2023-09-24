@@ -1,9 +1,12 @@
 import CardLayout from "../layouts/CardLayout.js";
+import CurrencyDisplay from "../CurrencyDisplay.js";
+
 import { get_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
-		"card-layout": CardLayout
+		"card-layout": CardLayout,
+		"currency-display": CurrencyDisplay
 	},
 	data: function() {
 		return {
@@ -22,6 +25,7 @@ export default {
 				<th>ID</th>
 				<th>OrderID</th>
 				<th>Name</th>
+				<th>Daily cost</th>
 				<th>Provider</th>
 				<th>Server-Type</th>
 				<th>Actions</th>
@@ -36,6 +40,9 @@ export default {
 					</td>
 					<td>{{nt.order_id}}</td>
 					<td>{{nt.name}}</td>
+					<td>
+						<currency-display :eurocents="nt.daily_cost"/>
+					</td>
 					<td>{{nt.provider}}</td>
 					<td>{{nt.server_type}}</td>
 					<td>
