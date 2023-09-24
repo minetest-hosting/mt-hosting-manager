@@ -3,7 +3,8 @@ create table user(
     id varchar(36) primary key not null, -- uuid
     state varchar(32) not null default 'ACTIVE',
     name varchar(128) not null, -- username
-    mail varchar(128) not null, -- email
+    hash varchar(256) not null default '', -- bcrypt hash for local users
+    mail varchar(128) not null default '', -- email
     mail_verified bit default false, -- verified mail address
     activation_code varchar(64) not null default '', -- mail activation code
     created bigint not null, -- creation time in `time.Now().Unix()`

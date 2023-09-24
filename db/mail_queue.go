@@ -31,11 +31,19 @@ func (r *MailQueueRepository) Update(n *types.MailQueue) error {
 }
 
 func (r *MailQueueRepository) GetByID(id string) (*types.MailQueue, error) {
-	nt, err := r.dbu.Select("where id = %s", id)
+	m, err := r.dbu.Select("where id = %s", id)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
-	return nt, err
+	return m, err
+}
+
+func (r *MailQueueRepository) GetLatestByReceiver(receiver string) (*types.MailQueue, error) {
+	m, err := r.dbu.Select("where receiver = %s order by timestamp desc limit 1")
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	return m, err
 }
 
 func (r *MailQueueRepository) GetByState(state types.MailQueueState) ([]*types.MailQueue, error) {
