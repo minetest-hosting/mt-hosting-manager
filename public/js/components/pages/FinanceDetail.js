@@ -4,6 +4,7 @@ import CurrencyDisplay from "../CurrencyDisplay.js";
 import { check, get_by_id, refund } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { fetch_profile } from "../../service/user.js";
+import { get_balance } from "../../service/user.js";
 
 export default {
     props: ["id"],
@@ -45,6 +46,9 @@ export default {
             .then(() => fetch_profile());
         }
     },
+    computed: {
+        balance: get_balance
+    },
 	template: /*html*/`
 	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
         <table class="table table-condensed" v-if="transaction">
@@ -67,7 +71,7 @@ export default {
             <tr>
                 <td>Actions</td>
                 <td>
-                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0">
+                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0 || balance <= 0">
                         <i class="fa-solid fa-recycle"></i>
                         Refund
                     </button>
