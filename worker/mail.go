@@ -23,13 +23,16 @@ func (w *Worker) MailJob() {
 		}
 
 		for _, mail := range mails {
+			lf := logrus.Fields{
+				"receiver": mail.Receiver,
+				"subject":  mail.Subject,
+			}
+			logrus.WithFields(lf).Info("sending mail")
+
 			err = w.SendMail(mail)
 			if err != nil {
-				logrus.WithFields(logrus.Fields{
-					"err":      err,
-					"receiver": mail.Receiver,
-					"subject":  mail.Subject,
-				}).Error("send-mail error")
+				lf["err"] = err
+				logrus.WithFields(lf).Error("send-mail error")
 
 				mail.State = types.MailQueueStateDoneFailure
 			} else {
