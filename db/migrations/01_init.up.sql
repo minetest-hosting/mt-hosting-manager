@@ -9,6 +9,7 @@ create table user(
     activation_code varchar(64) not null default '', -- mail activation code
     created bigint not null, -- creation time in `time.Now().Unix()`
     balance bigint not null default 0, -- current balance in euro-cent
+    warn_balance bigint not null default 500, -- warning balance in euro-cent
     external_id varchar(64) not null, -- id on the external oauth provider
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER

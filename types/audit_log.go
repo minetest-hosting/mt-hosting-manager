@@ -23,6 +23,7 @@ const (
 	AuditLogPaymentCreated  AuditLogType = "payment_created"
 	AuditLogPaymentReceived AuditLogType = "payment_received"
 	AuditLogPaymentRefunded AuditLogType = "payment_refunded"
+	AuditLogPaymentWarning  AuditLogType = "payment_warning"
 )
 
 type AuditLogSearch struct {

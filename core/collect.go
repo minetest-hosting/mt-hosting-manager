@@ -42,7 +42,7 @@ func (c *Core) Collect(last_collected_time int64) error {
 
 			// cost in eurocents
 			cost := nt.DailyCost * delta_days
-			err = c.repos.UserRepo.AddBalance(node.UserID, cost*-1)
+			err = c.SubtractBalance(node.UserID, cost)
 			if err != nil {
 				return fmt.Errorf("could not subtract cost '%d' from user '%s': %v", cost, node.UserID, err)
 			}

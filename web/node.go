@@ -200,7 +200,7 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	err = a.repos.UserRepo.AddBalance(c.UserID, nt.DailyCost*-1)
+	err = a.core.SubtractBalance(c.UserID, nt.DailyCost)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("balance update error: %v", err))
 		return

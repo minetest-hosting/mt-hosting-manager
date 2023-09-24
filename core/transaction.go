@@ -63,7 +63,7 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 		return nil, fmt.Errorf("tx update error: %v", err)
 	}
 
-	err = c.repos.UserRepo.AddBalance(tx.UserID, refund_amount*-1)
+	err = c.repos.UserRepo.SubtractBalance(tx.UserID, refund_amount)
 	if err != nil {
 		return nil, fmt.Errorf("user balance update error: %v", err)
 	}

@@ -46,6 +46,9 @@ func (w *Worker) Run() {
 	// start collector job
 	go w.CollectJob()
 
+	// start mail job
+	go w.MailJob()
+
 	// execute previously running jobs
 	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {
@@ -84,7 +87,6 @@ func (w *Worker) Run() {
 		}
 
 		//TODO: remove old jobs
-
 		time.Sleep(500 * time.Millisecond)
 	}
 }

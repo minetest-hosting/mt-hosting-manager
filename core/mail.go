@@ -21,3 +21,12 @@ func (c *Core) SendActivationMail(user *types.User) error {
 
 	return nil
 }
+
+func (c *Core) SendBalanceWarning(user *types.User) error {
+	euros := float64(user.Balance) / 100
+	return c.repos.MailQueueRepo.Insert(&types.MailQueue{
+		Receiver: user.Mail,
+		Subject:  fmt.Sprintf("Low balance warning (EUR %.2f)", euros),
+		Content:  fmt.Sprintf("Your balance just dropped below the warning limit of EUR %.2f, services will be interrupted if it reaches zero!", euros),
+	})
+}
