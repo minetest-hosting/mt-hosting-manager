@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"mt-hosting-manager/types"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/minetest-go/dbutil"
@@ -15,6 +16,12 @@ type MailQueueRepository struct {
 func (r *MailQueueRepository) Insert(n *types.MailQueue) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
+	}
+	if n.State == "" {
+		n.State = types.MailQueueStateCreated
+	}
+	if n.Timestamp == 0 {
+		n.Timestamp = time.Now().Unix()
 	}
 	return r.dbu.Insert(n)
 }

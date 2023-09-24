@@ -4,6 +4,8 @@ create table user(
     state varchar(32) not null default 'ACTIVE',
     name varchar(128) not null, -- username
     mail varchar(128) not null, -- email
+    mail_verified bit default false, -- verified mail address
+    activation_code varchar(64) not null default '', -- mail activation code
     created bigint not null, -- creation time in `time.Now().Unix()`
     balance bigint not null default 0, -- current balance in euro-cent
     external_id varchar(64) not null, -- id on the external oauth provider
