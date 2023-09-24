@@ -1,12 +1,14 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import NodeTypeState from "../NodeTypeState.js";
 
 import { get_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
-		"currency-display": CurrencyDisplay
+		"currency-display": CurrencyDisplay,
+		"nodetype-state": NodeTypeState
 	},
 	data: function() {
 		return {
@@ -34,9 +36,7 @@ export default {
 				<tr v-for="nt in nodetypes">
 					<td>
 						{{nt.id}}
-						<span v-if="nt.state == 'ACTIVE'" class="badge text-bg-success">Active</span>
-						<span v-if="nt.state == 'INACTIVE'" class="badge text-bg-info">Inactive</span>
-						<span v-if="nt.state == 'DEPRECATED'" class="badge text-bg-warning">Deprecated</span>
+						<nodetype-state :state="nt.state"/>
 					</td>
 					<td>{{nt.order_id}}</td>
 					<td>{{nt.name}}</td>
