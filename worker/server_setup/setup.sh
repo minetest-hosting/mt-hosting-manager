@@ -8,7 +8,7 @@ CFG="world/minetest.conf"
 
 # initialize minetest config if it does not exist
 test -f ${CFG} ||{
-    echo "server_name = {{.Servername}}" > ${CFG}
+    echo "server_name = {{.Server.Name}}" > ${CFG}
     echo "ipv6_server = true" >> ${CFG}
     echo "server_address = {{.Hostname}}" >> ${CFG}
     echo "server_url = https://{{.Hostname}}" >> ${CFG}
