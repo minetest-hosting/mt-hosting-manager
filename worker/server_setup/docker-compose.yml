@@ -41,7 +41,7 @@ services:
     - "traefik.http.middlewares.{{.ServerShortID}}-stripprefix.stripprefix.prefixes=/ui"
   restart: always
 
- nginx:
+ nginx-{{.ServerShortID}}:
   image: nginx:1.25.2
   networks:
    - terminator
@@ -51,12 +51,10 @@ services:
     - "promtail=true"
     - "traefik.enable=true"
     - "traefik.docker.network=terminator"
-    - "traefik.http.services.{{.ServerShortID}}.loadbalancer.server.port=8080"
-    - "traefik.http.routers.{{.ServerShortID}}.rule=Host(`{{.Hostname}}`) && PathPrefix(`/ui`)"
-    - "traefik.http.routers.{{.ServerShortID}}.entrypoints=websecure"
-    - "traefik.http.routers.{{.ServerShortID}}.tls.certresolver=default"
-    - "traefik.http.routers.{{.ServerShortID}}.middlewares={{.ServerShortID}}-stripprefix"
-    - "traefik.http.middlewares.{{.ServerShortID}}-stripprefix.stripprefix.prefixes=/ui"
+    - "traefik.http.services.{{.ServerShortID}}-nginx.loadbalancer.server.port=80"
+    - "traefik.http.routers.{{.ServerShortID}}-nginx.rule=Host(`{{.Hostname}}`)"
+    - "traefik.http.routers.{{.ServerShortID}}-nginx.entrypoints=websecure"
+    - "traefik.http.routers.{{.ServerShortID}}-nginx.tls.certresolver=default"
   volumes:
    - "./nginx.conf:/etc/nginx/nginx.conf:ro"
    - "./world/www:/www"
