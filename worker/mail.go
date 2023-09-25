@@ -12,7 +12,6 @@ import (
 
 func (w *Worker) MailJob() {
 	for w.running.Load() {
-
 		mails, err := w.repos.MailQueueRepo.GetByState(types.MailQueueStateCreated)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{

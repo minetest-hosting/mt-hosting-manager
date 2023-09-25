@@ -10,6 +10,8 @@ import (
 
 func (w *Worker) ExecuteJob(job *types.Job) {
 	logrus.WithFields(job.LogrusFields()).Debug("Executing job")
+	w.wg.Add(1)
+	defer w.wg.Done()
 
 	var err error
 	switch job.Type {

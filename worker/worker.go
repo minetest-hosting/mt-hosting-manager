@@ -6,6 +6,7 @@ import (
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -19,6 +20,7 @@ type Worker struct {
 	hdc     *hetzner_dns.HetznerDNSClient
 	running *atomic.Bool
 	core    *core.Core
+	wg      *sync.WaitGroup
 }
 
 func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
@@ -29,11 +31,13 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 		hdc:     hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
 		running: &atomic.Bool{},
 		core:    core.New(repos, cfg),
+		wg:      &sync.WaitGroup{},
 	}
 }
 
 func (w *Worker) Stop() {
 	w.running.Store(false)
+	w.wg.Wait()
 }
 
 func (w *Worker) Start() {
