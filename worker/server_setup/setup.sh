@@ -13,6 +13,10 @@ test -f ${CFG} ||{
     echo "server_address = {{.Hostname}}" >> ${CFG}
     echo "server_url = https://{{.Hostname}}" >> ${CFG}
     echo "port = {{.Server.Port}}" >> ${CFG}
+    echo "server_announce = false" >> ${CFG}
+    echo "server_description {{.Server.Name}}" >> ${CFG}
+    echo "max_users = 15" >> ${CFG}
+    echo "motd = Welcome for {{.Server.Name}}" >> ${CFG}
 }
 
 docker network create "network-{{.ServerShortID}}" || true
