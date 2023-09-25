@@ -12,7 +12,7 @@ test -f ${CFG} ||{
     echo "ipv6_server = true" >> ${CFG}
     echo "server_address = {{.Hostname}}" >> ${CFG}
     echo "server_url = https://{{.Hostname}}" >> ${CFG}
-    echo "port = {{.Port}}" >> ${CFG}
+    echo "port = {{.Server.Port}}" >> ${CFG}
 }
 
 docker network create "network-{{.ServerShortID}}" || true
