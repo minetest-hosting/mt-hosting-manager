@@ -15,6 +15,7 @@ services:
    LOG_STREAM_AUTHORIZATION: "{{.Config.LogStreamKey}}"
    WORLD_DIR: "/root/.minetest/worlds/world"
    SERVER_NAME: "{{.Server.Name}}"
+   INSTALL_MTUI_MOD: "true"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
    MINETEST_CONFIG: "/minetest.conf"
    DEFAULT_THEME: "flatly"
