@@ -66,6 +66,12 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		}
 	}
 
+	// save external dns id
+	err = w.repos.MinetestServerRepo.Update(server)
+	if err != nil {
+		return fmt.Errorf("mid-setup update failed: %v", err)
+	}
+
 	// dns propagation time (LE has issues with really _fresh_ records)
 	time.Sleep(10 * time.Second)
 
