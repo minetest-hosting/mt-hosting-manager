@@ -21,6 +21,8 @@ services:
    - COOKIE_SECURE=false
    - CSRF_KEY=my-csrf-key
    - JWT_KEY=my-jwt-key
+   - LOG_STREAM_KEY=my-stream-key
+   - LOG_STREAM_DIR=/data/logs
    - WEBDEV=true
    - ENABLE_WORKER=true
   env_file:

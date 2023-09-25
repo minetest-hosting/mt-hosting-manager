@@ -16,6 +16,8 @@ type Config struct {
 	Webdev              bool
 	EnableWorker        bool
 	JWTKey              string
+	LogStreamKey        string
+	LogStreamDir        string
 	CookieName          string
 	CookieDomain        string
 	CookiePath          string
@@ -38,6 +40,8 @@ func NewConfig() *Config {
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),
+		LogStreamKey:        os.Getenv("LOG_STREAM_KEY"),
+		LogStreamDir:        os.Getenv("LOG_STREAM_DIR"),
 		CookieName:          "mt-hosting-manager",
 		CookieDomain:        os.Getenv("COOKIE_DOMAIN"),
 		CookiePath:          os.Getenv("COOKIE_PATH"),

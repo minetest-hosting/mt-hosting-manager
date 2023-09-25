@@ -12,12 +12,11 @@ import (
 
 type SetupModel struct {
 	BaseDir       string
-	MTUIVersion   string
 	Hostname      string
-	Servername    string
 	Enginename    string
 	ServerShortID string
-	Port          int
+	Server        *types.MinetestServer
+	Config        *types.Config
 }
 
 func GetShortName(id string) string {
@@ -61,17 +60,16 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 
 	m := &SetupModel{
 		BaseDir:       basedir,
-		MTUIVersion:   server.UIVersion,
 		Hostname:      fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix),
 		Enginename:    GetEngineName(server),
-		Servername:    server.Name,
 		ServerShortID: GetShortName(server.ID),
-		Port:          server.Port,
+		Server:        server,
+		Config:        cfg,
 	}
 
-	if m.MTUIVersion == "" {
+	if m.Server.UIVersion == "" {
 		// fall back to latest
-		m.MTUIVersion = "latest"
+		m.Server.UIVersion = "latest"
 	}
 
 	err = core.SCPTemplateFile(sftp, Files, "docker-compose.yml", fmt.Sprintf("%s/docker-compose.yml", basedir), 0644, m)

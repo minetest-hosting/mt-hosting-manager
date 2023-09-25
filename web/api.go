@@ -53,6 +53,7 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
+	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()

@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
  ui-{{.ServerShortID}}:
-  image: ghcr.io/minetest-go/mtui:{{.MTUIVersion}}
+  image: ghcr.io/minetest-go/mtui:{{.Server.UIVersion}}
   networks:
    - terminator
    - network-{{.ServerShortID}}
@@ -11,14 +11,16 @@ services:
    COOKIE_PATH: "/ui"
    COOKIE_SECURE: "true"
    LOGLEVEL: debug
+   LOG_STREAM_URL: "{{.Config.BaseURL}}/api/logstream/{{.Server.ID}}"
+   LOG_STREAM_AUTHORIZATION: "{{.Config.LogStreamKey}}"
    WORLD_DIR: "/root/.minetest/worlds/world"
-   SERVER_NAME: "{{.Servername}}"
+   SERVER_NAME: "{{.Server.Name}}"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement"
    MINETEST_CONFIG: "/minetest.conf"
    DEFAULT_THEME: "flatly"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/world/minetest.conf"
-   DOCKER_MINETEST_PORT: {{.Port}}
+   DOCKER_MINETEST_PORT: {{.Server.Port}}
    DOCKER_NETWORK: "network-{{.ServerShortID}},terminator"
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_MINETEST_CONTAINER: "{{.Enginename}}"
