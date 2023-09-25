@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
+	"path"
 	"strings"
 
 	"github.com/pkg/sftp"
@@ -72,13 +73,41 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 		m.Server.UIVersion = "latest"
 	}
 
-	err = core.SCPTemplateFile(sftp, Files, "docker-compose.yml", fmt.Sprintf("%s/docker-compose.yml", basedir), 0644, m)
+	files := []string{
+		"docker-compose.yml",
+		"nginx.conf",
+	}
+	for _, filename := range files {
+		err = core.SCPTemplateFile(sftp, Files, filename, fmt.Sprintf("%s/%s", basedir, filename), 0644, true, m)
+		if err != nil {
+			return err
+		}
+	}
+
+	world_dir := path.Join(basedir, "world")
+	err = core.SCPMkDir(sftp, world_dir)
+	if err != nil {
+		return err
+	}
+
+	err = core.SCPTemplateFile(sftp, Files, "minetest.conf", fmt.Sprintf("%s/%s", world_dir, "minetest.conf"), 0644, false, m)
+	if err != nil {
+		return err
+	}
+
+	www_dir := path.Join(world_dir, "www")
+	err = core.SCPMkDir(sftp, www_dir)
+	if err != nil {
+		return err
+	}
+
+	err = core.SCPTemplateFile(sftp, Files, "index.html", fmt.Sprintf("%s/%s", www_dir, "index.html"), 0644, false, m)
 	if err != nil {
 		return err
 	}
 
 	setup_file := fmt.Sprintf("%s/setup.sh", basedir)
-	err = core.SCPTemplateFile(sftp, Files, "setup.sh", setup_file, 0755, m)
+	err = core.SCPTemplateFile(sftp, Files, "setup.sh", setup_file, 0755, true, m)
 	if err != nil {
 		return err
 	}

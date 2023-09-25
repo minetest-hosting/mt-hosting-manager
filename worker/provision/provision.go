@@ -78,22 +78,22 @@ func Provision(client *ssh.Client) error {
 		}
 	}
 
-	err = core.SCPTemplateFile(sftp, Files, "daemon.json", "/etc/docker/daemon.json", 0644, nil)
+	err = core.SCPTemplateFile(sftp, Files, "daemon.json", "/etc/docker/daemon.json", 0644, true, nil)
 	if err != nil {
 		return err
 	}
 
-	err = core.SCPTemplateFile(sftp, Files, "rules.v6", "/etc/iptables/rules.v6", 0644, nil)
+	err = core.SCPTemplateFile(sftp, Files, "rules.v6", "/etc/iptables/rules.v6", 0644, true, nil)
 	if err != nil {
 		return err
 	}
 
-	err = core.SCPWriteFile(sftp, Files, "setup.sh", "/provision/setup.sh", 0755)
+	err = core.SCPWriteFile(sftp, Files, "setup.sh", "/provision/setup.sh", 0755, true)
 	if err != nil {
 		return fmt.Errorf("could not write file: %v", err)
 	}
 
-	err = core.SCPWriteFile(sftp, Files, "docker-compose.yml", "/provision/docker-compose.yml", 0644)
+	err = core.SCPWriteFile(sftp, Files, "docker-compose.yml", "/provision/docker-compose.yml", 0644, true)
 	if err != nil {
 		return fmt.Errorf("could not write file: %v", err)
 	}

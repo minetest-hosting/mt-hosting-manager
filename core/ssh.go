@@ -11,7 +11,15 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func SCPWriteBytes(sftp *sftp.Client, data []byte, target string, mode os.FileMode) error {
+func SCPWriteBytes(sftp *sftp.Client, data []byte, target string, mode os.FileMode, overwrite bool) error {
+	if !overwrite {
+		fi, _ := sftp.Stat(target)
+		if fi != nil {
+			// already exists
+			return nil
+		}
+	}
+
 	dstFile, err := sftp.Create(target)
 	if err != nil {
 		return fmt.Errorf("could not create file: %v", err)
@@ -51,13 +59,13 @@ func TemplateFile(fs embed.FS, filename string, model any) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, model any) error {
+func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, overwrite bool, model any) error {
 	data, err := TemplateFile(fs, filename, model)
 	if err != nil {
 		return err
 	}
 
-	err = SCPWriteBytes(sftp, data, target, mode)
+	err = SCPWriteBytes(sftp, data, target, mode, overwrite)
 	if err != nil {
 		return fmt.Errorf("template error in file '%s': %v", target, err)
 	}
@@ -65,13 +73,13 @@ func SCPTemplateFile(sftp *sftp.Client, fs embed.FS, filename, target string, mo
 	return nil
 }
 
-func SCPWriteFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode) error {
+func SCPWriteFile(sftp *sftp.Client, fs embed.FS, filename, target string, mode os.FileMode, overwrite bool) error {
 	data, err := fs.ReadFile(filename)
 	if err != nil {
 		return fmt.Errorf("could not read file: %v", err)
 	}
 
-	return SCPWriteBytes(sftp, data, target, mode)
+	return SCPWriteBytes(sftp, data, target, mode, overwrite)
 }
 
 func SCPMkDir(sftp *sftp.Client, dir string) error {
