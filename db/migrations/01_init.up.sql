@@ -44,7 +44,7 @@ create table user_node(
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
     external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
-    last_collected_time bigint not null, -- time of last balance collection in `time.Now().Unix()`
+    valid_until bigint not null, -- validity ("payed" until) in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED',
     name varchar(64) not null, -- name of the host, used for dns registration (A, AAAA record)
     alias varchar(256) not null, -- internal name, user-specified

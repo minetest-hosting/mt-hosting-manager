@@ -111,8 +111,8 @@ export default {
 					<td>{{format_time(node.created)}}</td>
 				</tr>
 				<tr>
-					<td>Last billed</td>
-					<td>{{format_time(node.last_collected_time)}}</td>
+					<td>Next billing cycle</td>
+					<td>{{format_time(node.valid_until)}}</td>
 				</tr>
 				<tr>
 					<td>Daily cost</td>

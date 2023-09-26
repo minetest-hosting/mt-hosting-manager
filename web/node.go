@@ -172,14 +172,14 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 	randstr := core.RandStringRunes(7)
 
 	node := &types.UserNode{
-		ID:                uuid.NewString(),
-		UserID:            c.UserID,
-		NodeTypeID:        create_node.NodeTypeID,
-		Created:           time.Now().Unix(),
-		LastCollectedTime: time.Now().Unix(),
-		State:             types.UserNodeStateCreated,
-		Name:              fmt.Sprintf("node-%s-%s", a.cfg.Stage, randstr),
-		Alias:             create_node.Alias,
+		ID:         uuid.NewString(),
+		UserID:     c.UserID,
+		NodeTypeID: create_node.NodeTypeID,
+		Created:    time.Now().Unix(),
+		ValidUntil: time.Now().Unix() + core.SECONDS_IN_A_DAY,
+		State:      types.UserNodeStateCreated,
+		Name:       fmt.Sprintf("node-%s-%s", a.cfg.Stage, randstr),
+		Alias:      create_node.Alias,
 	}
 	err = a.repos.UserNodeRepo.Insert(node)
 	if err != nil {

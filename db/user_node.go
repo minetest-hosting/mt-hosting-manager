@@ -55,6 +55,6 @@ func (r *UserNodeRepository) Delete(id string) error {
 	return r.dbu.Delete("where id = %s", id)
 }
 
-func (r *UserNodeRepository) GetByLastCollectedTime(last_collected_time int64) ([]*types.UserNode, error) {
-	return r.dbu.SelectMulti("where last_collected_time < %s", last_collected_time)
+func (r *UserNodeRepository) GetByValidUntilTime(valid_until int64) ([]*types.UserNode, error) {
+	return r.dbu.SelectMulti("where valid_until < %s", valid_until)
 }

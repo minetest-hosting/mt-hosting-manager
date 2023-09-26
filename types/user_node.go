@@ -20,7 +20,7 @@ type UserNode struct {
 	NodeTypeID        string        `json:"node_type_id"`
 	ExternalID        string        `json:"external_id"`
 	Created           int64         `json:"created"`
-	LastCollectedTime int64         `json:"last_collected_time"`
+	ValidUntil        int64         `json:"valid_until"`
 	State             UserNodeState `json:"state"`
 	Name              string        `json:"name"`
 	Alias             string        `json:"alias"`
@@ -38,7 +38,7 @@ func (m *UserNode) Columns(action string) []string {
 		"node_type_id",
 		"external_id",
 		"created",
-		"last_collected_time",
+		"valid_until",
 		"state",
 		"name",
 		"alias",
@@ -61,7 +61,7 @@ func (m *UserNode) Scan(action string, r func(dest ...any) error) error {
 		&m.NodeTypeID,
 		&m.ExternalID,
 		&m.Created,
-		&m.LastCollectedTime,
+		&m.ValidUntil,
 		&m.State,
 		&m.Name,
 		&m.Alias,
@@ -80,7 +80,7 @@ func (m *UserNode) Values(action string) []any {
 		m.NodeTypeID,
 		m.ExternalID,
 		m.Created,
-		m.LastCollectedTime,
+		m.ValidUntil,
 		m.State,
 		m.Name,
 		m.Alias,

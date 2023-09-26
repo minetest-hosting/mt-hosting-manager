@@ -40,16 +40,22 @@ func TestCollect(t *testing.T) {
 	ts := time.Now().Unix()
 
 	un := &types.UserNode{
-		UserID:            user.ID,
-		NodeTypeID:        nt.ID,
-		LastCollectedTime: ts - (core.SECONDS_IN_A_DAY * 2),
+		UserID:     user.ID,
+		NodeTypeID: nt.ID,
+		ValidUntil: ts + (core.SECONDS_IN_A_DAY * 1),
+		State:      types.UserNodeStateRunning,
 	}
 	assert.NoError(t, repos.UserNodeRepo.Insert(un))
 
-	assert.NoError(t, c.Collect(ts-core.SECONDS_IN_A_DAY))
-
+	// no updates
+	assert.NoError(t, c.Collect(ts+300))
 	user, err := repos.UserRepo.GetByID(user.ID)
 	assert.NoError(t, err)
+	assert.Equal(t, int64(100), user.Balance)
 
-	assert.Equal(t, int64(60), user.Balance)
+	// 1 day
+	assert.NoError(t, c.Collect(ts+300+core.SECONDS_IN_A_DAY))
+	user, err = repos.UserRepo.GetByID(user.ID)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(80), user.Balance)
 }
