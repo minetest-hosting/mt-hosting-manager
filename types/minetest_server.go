@@ -23,6 +23,7 @@ type MinetestServer struct {
 	ExternalCNAMEDNSID string              `json:"external_cname_dns_id"`
 	Port               int                 `json:"port"`
 	UIVersion          string              `json:"ui_version"`
+	JWTKey             string              `json:"jwt_key"`
 	Created            int64               `json:"created"`
 	State              MinetestServerState `json:"state"`
 }
@@ -36,6 +37,7 @@ func (m *MinetestServer) Columns(action string) []string {
 		"external_cname_dns_id",
 		"port",
 		"ui_version",
+		"jwt_key",
 		"created",
 		"state",
 	}
@@ -46,9 +48,9 @@ func (m *MinetestServer) Table() string {
 }
 
 func (m *MinetestServer) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.ExternalCNAMEDNSID, &m.Port, &m.UIVersion, &m.Created, &m.State)
+	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.ExternalCNAMEDNSID, &m.Port, &m.UIVersion, &m.JWTKey, &m.Created, &m.State)
 }
 
 func (m *MinetestServer) Values(action string) []any {
-	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.ExternalCNAMEDNSID, m.Port, m.UIVersion, m.Created, m.State}
+	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.ExternalCNAMEDNSID, m.Port, m.UIVersion, m.JWTKey, m.Created, m.State}
 }

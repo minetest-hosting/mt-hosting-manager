@@ -10,6 +10,7 @@ services:
    COOKIE_DOMAIN: "{{.Hostname}}"
    COOKIE_PATH: "/ui"
    COOKIE_SECURE: "true"
+   JWT_KEY: "{{.Server.JWTKey}}"
    LOGLEVEL: debug
    LOG_STREAM_URL: "{{.Config.BaseURL}}/api/logstream/{{.Server.ID}}"
    LOG_STREAM_AUTHORIZATION: "{{.Config.LogStreamKey}}"

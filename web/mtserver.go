@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker"
 	"net/http"
@@ -69,6 +70,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		Port:       create_mtserver.Port,
 		Created:    time.Now().Unix(),
 		UIVersion:  "latest",
+		JWTKey:     core.RandSeq(16),
 		State:      types.MinetestServerStateCreated,
 	}
 	err = a.repos.MinetestServerRepo.Insert(mtserver)

@@ -63,6 +63,7 @@ create table minetest_server(
     external_cname_dns_id varchar default '', -- hetzner dns record id
     port int not null default 30000, -- minetest server port
     ui_version varchar(16) not null default 'latest', -- ui version to deploy
+    jwt_key varchar(16) not null, -- jwt key
     created bigint not null, -- creation time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED'
 );
