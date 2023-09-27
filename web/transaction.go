@@ -32,6 +32,11 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 
 	if user.Balance+create_tx_req.Amount > int64(a.cfg.MaxBalance) {
 		SendError(w, 405, fmt.Errorf("max balance of %d exceeded", a.cfg.MaxBalance))
+		return
+	}
+	if create_tx_req.Amount < 500 {
+		SendError(w, 405, fmt.Errorf("min payment: EUR 5"))
+		return
 	}
 
 	payment_tx_id := uuid.NewString()

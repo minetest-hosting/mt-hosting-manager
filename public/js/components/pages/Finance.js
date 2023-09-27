@@ -53,6 +53,9 @@ export default {
     },
     computed: {
         balance: get_balance,
+        min_sum_error: function() {
+            return this.amount < 5;
+        },
         amount_sum_valid: function() {
             return get_balance() + (this.amount*100) <= get_max_balance();
         },
@@ -75,12 +78,15 @@ export default {
                 <td>
                     <div class="input-group">
                         <span class="input-group-text">&euro;</span>
-                        <input class="form-control" type="number" min="0" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid}"/>
-                        <button class="btn btn-outline-primary" v-on:click="new_payment()" :disabled="!amount_valid">
+                        <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
+                        <button class="btn btn-outline-primary" v-on:click="new_payment()" :disabled="!amount_valid||min_sum_error">
                             <i class="fa-solid fa-plus"></i> Create new payment
                         </button>
                         <div class="invalid-feedback" v-if="!amount_sum_valid">
                             User-balance can't exceed <currency-display :eurocents="get_max_balance()"/>
+                        </div>
+                        <div class="invalid-feedback" v-if="min_sum_error">
+                            Minimum payment: <currency-display eurocents="500"/>
                         </div>
                     </div>
                 </td>
