@@ -30,6 +30,24 @@ func (a *Api) GetMTServer(w http.ResponseWriter, r *http.Request, c *types.Claim
 	Send(w, server, err)
 }
 
+func (a *Api) ValidateCreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	create_mtserver := &types.MinetestServer{}
+	err := json.NewDecoder(r.Body).Decode(create_mtserver)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	node, status, err := a.CheckedGetUserNode(create_mtserver.UserNodeID, c)
+	if err != nil {
+		SendError(w, status, err)
+		return
+	}
+
+	v, err := a.core.ValidateCreateServer(create_mtserver, node)
+	Send(w, v, err)
+}
+
 func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	create_mtserver := &types.MinetestServer{}
 	err := json.NewDecoder(r.Body).Decode(create_mtserver)
@@ -44,28 +62,14 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	other_servers, err := a.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	v, err := a.core.ValidateCreateServer(create_mtserver, node)
 	if err != nil {
-		SendError(w, 500, fmt.Errorf("servers fetch error: %v", err))
+		SendError(w, 500, err)
 		return
 	}
-
-	if create_mtserver.Port < 1000 || create_mtserver.Port > 65000 {
-		SendError(w, 500, fmt.Errorf("invalid port: %d", create_mtserver.Port))
+	if !v.Valid {
+		SendError(w, 500, fmt.Errorf("validation failed"))
 		return
-	}
-
-	err = types.ValidateUsername(create_mtserver.Admin)
-	if err != nil {
-		SendError(w, 500, fmt.Errorf("invalid admin-name: %v", err))
-		return
-	}
-
-	for _, s := range other_servers {
-		if s.Port == create_mtserver.Port {
-			SendError(w, 500, fmt.Errorf("port already in use by: %s", s.ID))
-			return
-		}
 	}
 
 	mtserver := &types.MinetestServer{

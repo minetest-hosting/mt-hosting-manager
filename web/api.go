@@ -71,6 +71,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/node/{id}", api.Secure(api.UpdateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver", api.Secure(api.GetMTServers)).Methods(http.MethodGet)
 	user_api.HandleFunc("/mtserver", api.Secure(api.CreateMTServer)).Methods(http.MethodPost)
+	user_api.HandleFunc("/mtserver/validate", api.Secure(api.ValidateCreateMTServer)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.GetMTServer)).Methods(http.MethodGet)
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.UpdateMTServer)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver/{id}/setup", api.Secure(api.SetupMTServer)).Methods(http.MethodPost)

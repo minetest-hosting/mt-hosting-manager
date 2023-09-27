@@ -11,6 +11,12 @@ export const create = s => protected_fetch(`api/mtserver`, {
     body: JSON.stringify(s)
 });
 
+export const create_validate = s => protected_fetch(`api/mtserver/validate`, {
+    method: "POST",
+    body: JSON.stringify(s)
+});
+
+
 export const update = s => protected_fetch(`api/mtserver/${s.id}`, {
     method: "POST",
     body: JSON.stringify(s)

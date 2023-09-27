@@ -1,6 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
-import { create as create_server } from "../../api/mtserver.js";
+import { create as create_server, create_validate } from "../../api/mtserver.js";
 import { get_all as get_all_nodes } from "../../api/node.js";
 
 export default {
@@ -9,6 +9,7 @@ export default {
 	},
 	data: function() {
 		return {
+			validation_result: {},
 			user_nodes: [],
 			user_node_id: "",
 			port: 30000,
@@ -34,14 +35,23 @@ export default {
 	},
 	methods: {
 		create: function() {
-			create_server({
+			const server = {
 				port: this.port,
 				name: this.name,
 				dns_name: this.dns_name,
 				admin: this.admin,
 				user_node_id: this.user_node_id
-			})
-			.then(s => this.$router.push(`/mtservers/${s.id}`));
+			};
+
+			create_validate(server)
+			.then(v => {
+				if (v.valid) {
+					return create_server(server)
+					.then(s => this.$router.push(`/mtservers/${s.id}`));
+				}
+
+				this.validation_result = v;
+			});
 		}
 	},
 	computed: {
@@ -70,21 +80,33 @@ export default {
 				<tr>
 					<td>Port</td>
 					<td>
-						<input type="number" min="1000" max="65500" class="form-control" v-model="port"/>
+						<input type="number" min="1000" max="65500" class="form-control" v-bind:class="{'is-invalid':validation_result.port_invalid || validation_result.port_used}" v-model="port"/>
+						<div class="invalid-feedback" v-if="validation_result.port_invalid">
+							Port number is invalid
+						</div>
+						<div class="invalid-feedback" v-if="validation_result.port_used">
+							Port number already used
+						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>Admin-user</td>
 					<td>
-						<input type="text" class="form-control" v-model="admin"/>
+						<input type="text" class="form-control" v-bind:class="{'is-invalid':validation_result.admin_name_invalid}" v-model="admin"/>
+						<div class="invalid-feedback" v-if="validation_result.admin_name_invalid">
+							Username invalid
+						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>DNS Prefix</td>
 					<td>
 						<div class="input-group">
-							<input type="text" class="form-control" v-model="dns_name"/>
+							<input type="text" class="form-control" v-bind:class="{'is-invalid':validation_result.server_name_invalid}" v-model="dns_name"/>
 							<span class="input-group-text">.{{dns_suffix}}</span>
+							<div class="invalid-feedback" v-if="validation_result.server_name_invalid">
+								Servername invalid
+							</div>
 						</div>
 					</td>
 				</tr>
