@@ -1,10 +1,24 @@
+import { get_all } from "../api/node.js";
+
+const store = Vue.reactive({
+    nodes: []
+});
 
 export default {
     props: ["id", "node"],
+    created: function() {
+        if (!store.nodes.length) {
+            get_all().then(list => store.nodes = list);
+        }
+    },
     computed: {
         name: function() {
-            if (this.node) {
-                return `${this.node.alias} (${this.node.name})`;
+            let node = this.node;
+            if (!node) {
+                node = store.nodes.find(n => n.id == this.id);
+            }
+            if (node) {
+                return `${node.alias} (${node.name})`;
             } else {
                 return this.id;
             }
