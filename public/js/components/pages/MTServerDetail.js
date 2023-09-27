@@ -56,6 +56,10 @@ export default {
 	computed: {
 		setup_running: function() {
 			return (this.job && this.job.state == "RUNNING");
+		},
+		admin_login_url: function() {
+			const s = this.server;
+			return `https://${s.dns_name}.${this.dns_suffix}/ui/api/loginadmin/${s.admin}?key=${s.jwt_key}`;
 		}
 	},
 	template: /*html*/`
@@ -78,7 +82,7 @@ export default {
 					<td>DNS Name</td>
 					<td>
 						<i class="fa-solid fa-arrow-up-right-from-square"></i>
-						<a :href="'https://' + server.dns_name + '.' + dns_suffix + '/ui/'" target="new">{{server.dns_name}}.{{dns_suffix}}</a>
+						<a :href="admin_login_url" target="new">{{server.dns_name}}.{{dns_suffix}}</a>
 					</td>
 				</tr>
 				<tr>

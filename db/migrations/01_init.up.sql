@@ -60,6 +60,7 @@ create table minetest_server(
     user_node_id varchar(36) not null references user_node(id) on delete restrict,
     name varchar(64) not null, -- display name of the server
     dns_name varchar(256) not null, -- DNS name prefix
+    admin varchar(32) not null default 'admin', -- admin name
     external_cname_dns_id varchar default '', -- hetzner dns record id
     port int not null default 30000, -- minetest server port
     ui_version varchar(16) not null default 'latest', -- ui version to deploy

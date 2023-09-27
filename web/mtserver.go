@@ -55,6 +55,12 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
+	err = types.ValidateUsername(create_mtserver.Admin)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("invalid admin-name: %v", err))
+		return
+	}
+
 	for _, s := range other_servers {
 		if s.Port == create_mtserver.Port {
 			SendError(w, 500, fmt.Errorf("port already in use by: %s", s.ID))
@@ -66,6 +72,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		ID:         uuid.NewString(),
 		UserNodeID: node.ID,
 		Name:       create_mtserver.Name,
+		Admin:      create_mtserver.Admin,
 		DNSName:    create_mtserver.DNSName,
 		Port:       create_mtserver.Port,
 		Created:    time.Now().Unix(),

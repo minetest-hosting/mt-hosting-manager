@@ -12,6 +12,7 @@ export default {
 			user_nodes: [],
 			user_node_id: "",
 			port: 30000,
+			admin: "admin",
 			name: "",
 			dns_name: "",
 			dns_suffix: get_hostingdomain_suffix(),
@@ -37,6 +38,7 @@ export default {
 				port: this.port,
 				name: this.name,
 				dns_name: this.dns_name,
+				admin: this.admin,
 				user_node_id: this.user_node_id
 			})
 			.then(s => this.$router.push(`/mtservers/${s.id}`));
@@ -69,6 +71,12 @@ export default {
 					<td>Port</td>
 					<td>
 						<input type="number" min="1000" max="65500" class="form-control" v-model="port"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Admin-user</td>
+					<td>
+						<input type="text" class="form-control" v-model="admin"/>
 					</td>
 				</tr>
 				<tr>
