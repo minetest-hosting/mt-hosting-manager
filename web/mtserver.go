@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
-	"mt-hosting-manager/worker"
 	"net/http"
 	"time"
 
@@ -90,7 +89,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	job := worker.SetupServerJob(node, mtserver)
+	job := types.SetupServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
@@ -117,7 +116,7 @@ func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	job := worker.RemoveServerJob(node, mtserver)
+	job := types.RemoveServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
 
 	a.core.AddAuditLog(&types.AuditLog{
@@ -174,7 +173,7 @@ func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Cla
 		return
 	}
 
-	job := worker.SetupServerJob(node, mtserver)
+	job := types.SetupServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
 
 	Send(w, job, err)

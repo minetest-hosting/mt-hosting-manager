@@ -1,6 +1,9 @@
 package types
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
+)
 
 type JobState string
 
@@ -96,5 +99,43 @@ func (job *Job) LogrusFields() logrus.Fields {
 		"minetest_server_id": job.MinetestServerID,
 		"message":            job.Message,
 		"started":            job.Started,
+	}
+}
+
+func SetupNodeJob(node *UserNode) *Job {
+	return &Job{
+		ID:         uuid.NewString(),
+		Type:       JobTypeNodeSetup,
+		State:      JobStateCreated,
+		UserNodeID: &node.ID,
+	}
+}
+
+func RemoveNodeJob(node *UserNode) *Job {
+	return &Job{
+		ID:         uuid.NewString(),
+		Type:       JobTypeNodeDestroy,
+		State:      JobStateCreated,
+		UserNodeID: &node.ID,
+	}
+}
+
+func SetupServerJob(node *UserNode, server *MinetestServer) *Job {
+	return &Job{
+		ID:               uuid.NewString(),
+		Type:             JobTypeServerSetup,
+		State:            JobStateCreated,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+	}
+}
+
+func RemoveServerJob(node *UserNode, server *MinetestServer) *Job {
+	return &Job{
+		ID:               uuid.NewString(),
+		Type:             JobTypeServerDestroy,
+		State:            JobStateCreated,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
 	}
 }

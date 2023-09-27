@@ -30,3 +30,11 @@ func (c *Core) SendBalanceWarning(user *types.User) error {
 		Content:  fmt.Sprintf("Your balance just dropped below the warning limit of EUR %.2f, services will be interrupted if it reaches zero!", euros),
 	})
 }
+
+func (c *Core) SendRemovalNotice(user *types.User) error {
+	return c.repos.MailQueueRepo.Insert(&types.MailQueue{
+		Receiver: user.Mail,
+		Subject:  "Server removal notice",
+		Content:  "Due to insufficient balance on your account all your servers and nodes are now being removed!",
+	})
+}

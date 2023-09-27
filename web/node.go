@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
-	"mt-hosting-manager/worker"
 	"net/http"
 	"time"
 
@@ -116,7 +115,7 @@ func (a *Api) DeleteNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	job := worker.RemoveNodeJob(node)
+	job := types.RemoveNodeJob(node)
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
@@ -187,7 +186,7 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	job := worker.SetupNodeJob(node)
+	job := types.SetupNodeJob(node)
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
