@@ -17,7 +17,7 @@ services:
    WORLD_DIR: "/root/.minetest/worlds/world"
    SERVER_NAME: "{{.Server.Name}}"
    INSTALL_MTUI_MOD: "true"
-   ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement,mediaserver"
+   ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement,mediaserver,signup"
    MINETEST_CONFIG: "/minetest.conf"
    DEFAULT_THEME: "flatly"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
