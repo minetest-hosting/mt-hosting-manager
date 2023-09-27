@@ -54,7 +54,10 @@ export default {
         get_refund_amount: get_refund_amount
     },
     computed: {
-        balance: get_balance
+        balance: get_balance,
+        refund_disabled: function() {
+            return this.transaction.amount_refunded > 0 || this.balance <= 0 || this.busy || this.transaction.state != "SUCCESS";
+        }
     },
 	template: /*html*/`
 	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
@@ -78,10 +81,10 @@ export default {
             <tr>
                 <td>Actions</td>
                 <td>
-                    <button class="btn btn-warning" v-on:click="refund" :disabled="transaction.amount_refunded > 0 || balance <= 0 || busy">
+                    <button class="btn btn-warning" v-on:click="refund" :disabled="refund_disabled">
                         <i class="fa-solid fa-recycle"></i>
                         Refund
-                        <currency-display :eurocents="get_refund_amount(transaction)"/>
+                        <currency-display :eurocents="get_refund_amount(transaction)" v-if="!refund_disabled"/>
                         <i class="fa fa-spinner fa-spin" v-if="busy"></i>
                     </button>
                 </td>
