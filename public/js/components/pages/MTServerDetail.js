@@ -1,8 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerState from "../ServerState.js";
 
-import defer from "../../util/defer.js";
-
 import { get_by_id, setup, get_latest_job } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 
@@ -49,8 +47,10 @@ export default {
 		},
 		setup: function() {
 			setup(this.server)
-			.then(() => defer(500))
-			.then(() => this.update());
+			.then(j => {
+				j.state = "RUNNING";
+				this.job = j;
+			});
 		}
 	},
 	computed: {
