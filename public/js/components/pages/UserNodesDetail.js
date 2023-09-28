@@ -124,6 +124,10 @@ export default {
 					<td>State</td>
 					<td>
 						<node-state :state="node.state"/>
+						<div class="alert alert-info" v-if="node.state == 'PROVISIONING'">
+							<i class="fa-solid fa-info"></i>
+							The node is still provisioning, this might take a few minutes
+						</div>
 					</td>
 				</tr>
 				<tr v-if="servers.length == 0 && node.state == 'RUNNING'">
@@ -146,7 +150,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="node.state == 'RUNNING'">
 					<td>CPU Usage</td>
 					<td>
 						<div class="progress">
@@ -156,7 +160,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="node.state == 'RUNNING'">
 					<td>Disk Usage</td>
 					<td>
 						{{disk_gb_used}}/{{disk_gb_total}} GB
@@ -167,7 +171,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="node.state == 'RUNNING'">
 					<td>Memory Usage</td>
 					<td>
 						{{memory_gb_used}}/{{memory_gb_total}} GB

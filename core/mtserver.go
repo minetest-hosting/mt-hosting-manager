@@ -65,6 +65,7 @@ func (c *Core) ValidateCreateServer(server *types.MinetestServer, node *types.Us
 	for _, existing_record := range hdns_records.Records {
 		if existing_record.Name == server.DNSName {
 			csr.ServerNameAlreadyUsed = true
+			csr.Valid = false
 			break
 		}
 	}
