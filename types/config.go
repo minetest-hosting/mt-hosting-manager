@@ -2,6 +2,7 @@ package types
 
 import (
 	"os"
+	"strings"
 )
 
 type OAuthConfig struct {
@@ -13,6 +14,7 @@ type Config struct {
 	BaseURL             string
 	HostingDomainSuffix string
 	Stage               string
+	SignupWhitelist     []string
 	Webdev              bool
 	EnableWorker        bool
 	JWTKey              string
@@ -39,6 +41,7 @@ func NewConfig() *Config {
 		BaseURL:             os.Getenv("BASEURL"),
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
 		Stage:               os.Getenv("STAGE"),
+		SignupWhitelist:     strings.Split(os.Getenv("SIGNUP_WHITELIST"), ","),
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),

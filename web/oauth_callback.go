@@ -11,6 +11,7 @@ import (
 )
 
 func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user bool) error {
+
 	if new_user {
 		notify.Send(&notify.NtfyNotification{
 			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
@@ -24,6 +25,21 @@ func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user 
 			UserID: user.ID,
 		})
 	}
+
+	if api.cfg.SignupWhitelist[0] != "" {
+		// check whitelist
+		found := false
+		for _, mail := range api.cfg.SignupWhitelist {
+			if user.Mail == mail {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return fmt.Errorf("signup currently restricted, sorry")
+		}
+	}
+
 	dur := time.Duration(24 * 180 * time.Hour)
 	claims := &types.Claims{
 		Mail:   user.Mail,

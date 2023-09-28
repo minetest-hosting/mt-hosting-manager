@@ -95,12 +95,6 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			user.Role = types.UserRoleAdmin
 		}
 
-		if os.Getenv("DISABLE_SIGNUP") == "true" && user.Role != types.UserRoleAdmin {
-			// not an admin and signup disabled
-			SendError(w, 405, "signup disabled for non-admins")
-			return
-		}
-
 		err = h.UserRepo.Insert(user)
 		if err != nil {
 			SendError(w, 500, err.Error())
