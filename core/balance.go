@@ -39,7 +39,7 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
 
-		err = c.SendBalanceWarning(before_user)
+		err = c.SendBalanceWarning(after_user)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"err":            err,
@@ -66,7 +66,7 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
 
-		err = c.SendRemovalNotice(before_user)
+		err = c.SendRemovalNotice(after_user)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"err":            err,
