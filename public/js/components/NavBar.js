@@ -38,6 +38,11 @@ export default {
 							<i class="fa fa-user"></i> Login
 						</router-link>
 					</li>
+					<li class="nav-item">
+						<router-link to="/help" class="nav-link" v-if="is_logged_in">
+							<i class="fa fa-question"></i> Help
+						</router-link>
+					</li>
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/finance" class="nav-link">
 							<i class="fa-solid fa-money-bill"></i> Finance

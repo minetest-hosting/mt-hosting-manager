@@ -16,11 +16,15 @@ import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
 import AuditLogs from './components/pages/AuditLogs.js';
 import SendMail from './components/pages/SendMail.js';
+import Help from './components/pages/Help.js';
 
 export default [{
 	path: "/", component: Start
 },{
 	path: "/login", component: Login
+},{
+	path: "/help", component: Help,
+	meta: { loggedIn: true }
 },{
 	path: "/profile", component: Profile,
 	meta: { loggedIn: true }
