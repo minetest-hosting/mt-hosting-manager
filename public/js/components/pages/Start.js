@@ -18,6 +18,10 @@ export default {
 			<a class="btn btn-secondary" href="https://github.com/minetest-hosting/mt-hosting-manager" target="new">
 				<i class="fa-brands fa-github"></i> Source
 			</a>
+			&nbsp;
+			<a class="btn btn-secondary" href="https://github.com/minetest-go/mtui" target="new">
+				<i class="fa-brands fa-github"></i> Powered by mtui
+			</a>
 			<hr/>
 			<img src="assets/minetest-hosting-600px.png" class="img img-rounded"/>
 		</div>
