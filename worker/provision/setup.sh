@@ -16,6 +16,8 @@ test -f ${DISK_IMG} ||{
     fallocate -l $(( $(df / --output=avail | tail -n1) * 900 )) ${DISK_IMG}
     mkfs.btrfs ${DISK_IMG}
     echo "${DISK_IMG} /data btrfs rw 0 0" >> /etc/fstab
+    mkdir /data
+    mount /data
 }
 
 docker-compose up -d
