@@ -77,8 +77,8 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 	})
 
 	notify.Send(&notify.NtfyNotification{
-		Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
-		Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+		Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(refund_amount)/100),
+		Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(refund_amount)/100),
 		Priority: 3,
 		Tags:     []string{"coin", "recycle"},
 	}, true)
