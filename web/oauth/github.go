@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
@@ -101,6 +102,9 @@ func (o *GithubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConfi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("invalid status code in email-response: %d", resp.StatusCode)
+	}
 
 	mails := []GithubUserMail{}
 	err = json.NewDecoder(resp.Body).Decode(&mails)

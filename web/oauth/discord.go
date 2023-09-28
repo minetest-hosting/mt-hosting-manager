@@ -71,10 +71,10 @@ func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("invalid status code in response: %d", resp.StatusCode)
 	}
-	defer resp.Body.Close()
 
 	userData := DiscordResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&userData)

@@ -3,6 +3,7 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
@@ -81,14 +82,48 @@ func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 		return nil, err
 	}
 
-	//TODO: verify mail: https://try.gitea.io/api/swagger#/user/userListEmails
+	// fetch mails
+	req, err = http.NewRequest("GET", "https://git.minetest.land/api/v1/user/emails", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+access_token)
+
+	resp, err = client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("invalid status code in email-response: %d", resp.StatusCode)
+	}
+
+	mails := []GithubUserMail{}
+	err = json.NewDecoder(resp.Body).Decode(&mails)
+	if err != nil {
+		return nil, err
+	}
+
+	// fetch primary mail
+	primary_mail := ""
+	for _, mail := range mails {
+		if mail.Primary && mail.Verified {
+			primary_mail = mail.Email
+		}
+	}
+
+	if primary_mail == "" {
+		return nil, errors.New("no primary and verified email address found")
+	}
 
 	external_id := strconv.Itoa(userData.ID)
 	info := OauthUserInfo{
 		Name:       userData.Login,
-		Email:      userData.Email,
+		Email:      primary_mail,
 		ExternalID: external_id,
 	}
 
-	return &info, fmt.Errorf("email verification not implemented yet")
+	return &info, nil
 }
