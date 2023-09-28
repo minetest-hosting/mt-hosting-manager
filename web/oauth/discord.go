@@ -23,11 +23,10 @@ func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuth
 	q := url.Values{}
 	q.Add("client_id", cfg.ClientID)
 	q.Add("client_secret", cfg.Secret)
-	q.Add("redirect_uri", baseurl+"/api/oauth_callback/discord")
+	q.Add("redirect_uri", baseurl+"/oauth_callback/discord")
 	q.Add("code", code)
 	q.Add("grant_type", "authorization_code")
 	q.Add("scope", "identify email connections")
-	fmt.Println(q.Encode())
 
 	buf := bytes.NewBufferString(q.Encode())
 
@@ -43,6 +42,9 @@ func (o *DiscordOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuth
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("invalid status code in token-response: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 
@@ -68,6 +70,9 @@ func (o *DiscordOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("invalid status code in response: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 

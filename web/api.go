@@ -109,6 +109,18 @@ func (api *Api) Setup() {
 		r.Handle("/oauth_callback/github", oauth_handler)
 	}
 
+	if api.cfg.DiscordOauthConfig.ClientID != "" {
+		oauth_handler := &oauth.OauthHandler{
+			Impl:     &oauth.DiscordOauth{},
+			UserRepo: api.repos.UserRepo,
+			Config:   api.cfg.DiscordOauthConfig,
+			BaseURL:  api.cfg.BaseURL,
+			Type:     types.UserTypeDiscord,
+			Callback: api.OauthCallback,
+		}
+		r.Handle("/oauth_callback/discord", oauth_handler)
+	}
+
 	// static files
 	if api.cfg.Webdev {
 		logrus.WithFields(logrus.Fields{"dir": "public"}).Info("Using live mode")
