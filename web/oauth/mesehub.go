@@ -3,6 +3,7 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
 	"strconv"
@@ -22,7 +23,7 @@ func (o *MesehubOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuth
 	accessTokenReq["client_secret"] = cfg.Secret
 	accessTokenReq["code"] = code
 	accessTokenReq["grant_type"] = "authorization_code"
-	accessTokenReq["redirect_uri"] = baseurl + "/api/oauth_callback/mesehub"
+	accessTokenReq["redirect_uri"] = baseurl + "/oauth_callback/mesehub"
 
 	data, err := json.Marshal(accessTokenReq)
 	if err != nil {
@@ -40,6 +41,9 @@ func (o *MesehubOauth) RequestAccessToken(code, baseurl string, cfg *types.OAuth
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", fmt.Errorf("invalid status code in token-response: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 
@@ -66,6 +70,9 @@ func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("invalid status code in response: %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
 
 	userData := MesehubUserResponse{}
@@ -83,5 +90,5 @@ func (o *MesehubOauth) RequestUserInfo(access_token string, cfg *types.OAuthConf
 		ExternalID: external_id,
 	}
 
-	return &info, nil
+	return &info, fmt.Errorf("email verification not implemented yet")
 }

@@ -121,6 +121,18 @@ func (api *Api) Setup() {
 		r.Handle("/oauth_callback/discord", oauth_handler)
 	}
 
+	if api.cfg.MesehubOauthConfig.ClientID != "" {
+		oauth_handler := &oauth.OauthHandler{
+			Impl:     &oauth.MesehubOauth{},
+			UserRepo: api.repos.UserRepo,
+			Config:   api.cfg.MesehubOauthConfig,
+			BaseURL:  api.cfg.BaseURL,
+			Type:     types.UserTypeMesehub,
+			Callback: api.OauthCallback,
+		}
+		r.Handle("/oauth_callback/mesehub", oauth_handler)
+	}
+
 	// static files
 	if api.cfg.Webdev {
 		logrus.WithFields(logrus.Fields{"dir": "public"}).Info("Using live mode")

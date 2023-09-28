@@ -5,6 +5,7 @@ type UserType string
 const (
 	UserTypeGithub  UserType = "GITHUB"
 	UserTypeDiscord UserType = "DISCORD"
+	UserTypeMesehub UserType = "MESEHUB"
 )
 
 type UserRole string

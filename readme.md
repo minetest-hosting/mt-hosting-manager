@@ -54,3 +54,7 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 # License
 
 * Code: `MIT`
+
+## Other assets
+
+* `public/assets/default_mese_crystal.png` CC BY-SA 3.0 https://github.com/minetest/minetest_game
