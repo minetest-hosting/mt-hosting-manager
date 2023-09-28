@@ -2,6 +2,8 @@ package worker
 
 import (
 	"errors"
+	"fmt"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"time"
 
@@ -34,6 +36,15 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		fields := job.LogrusFields()
 		fields["err"] = err
 		logrus.WithFields(fields).Error("job failed")
+
+		job_url := fmt.Sprintf("%s/#/jobs", w.cfg.BaseURL)
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("Job failed: %s", job.Type),
+			Message:  fmt.Sprintf("Type: %s, ID %s, Message: '%s'", job.Type, job.ID, job.Message),
+			Priority: 3,
+			Click:    &job_url,
+			Tags:     []string{"arrow_forward", "warning"},
+		}, true)
 
 	} else {
 		job.State = types.JobStateDoneSuccess

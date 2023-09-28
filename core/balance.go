@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 
 	"github.com/sirupsen/logrus"
@@ -31,6 +32,13 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Amount: &after_user.Balance,
 		})
 
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("User %s balance warning (%.2f)", after_user.Mail, float64(after_user.Balance)/100),
+			Message:  fmt.Sprintf("User: %s crossed warning threshold: EUR %.2f", after_user.Mail, float64(after_user.Balance)/100),
+			Priority: 3,
+			Tags:     []string{"credit_card", "warning"},
+		}, true)
+
 		err = c.SendBalanceWarning(before_user)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
@@ -50,6 +58,13 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			UserID: user_id,
 			Amount: &after_user.Balance,
 		})
+
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("User %s balance zero warning (%.2f)", after_user.Mail, float64(after_user.Balance)/100),
+			Message:  fmt.Sprintf("User: %s crossed zero threshold: EUR %.2f", after_user.Mail, float64(after_user.Balance)/100),
+			Priority: 4,
+			Tags:     []string{"credit_card", "warning"},
+		}, true)
 
 		err = c.SendRemovalNotice(before_user)
 		if err != nil {

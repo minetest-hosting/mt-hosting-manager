@@ -16,6 +16,7 @@ func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user 
 			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
 			Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
 			Priority: 3,
+			Tags:     []string{"new"},
 		}, true)
 
 		api.core.AddAuditLog(&types.AuditLog{

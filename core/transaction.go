@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"strconv"
 )
@@ -63,7 +64,7 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 		return nil, fmt.Errorf("tx update error: %v", err)
 	}
 
-	err = c.repos.UserRepo.SubtractBalance(tx.UserID, refund_amount)
+	err = c.SubtractBalance(tx.UserID, refund_amount)
 	if err != nil {
 		return nil, fmt.Errorf("user balance update error: %v", err)
 	}
@@ -74,6 +75,13 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 		PaymentTransactionID: &tx.ID,
 		Amount:               &refund_amount,
 	})
+
+	notify.Send(&notify.NtfyNotification{
+		Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
+		Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+		Priority: 3,
+		Tags:     []string{"coin", "recycle"},
+	}, true)
 
 	return tx, nil
 }
@@ -131,6 +139,13 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 				PaymentTransactionID: &tx.ID,
 				Amount:               &tx.Amount,
 			})
+
+			notify.Send(&notify.NtfyNotification{
+				Title:    fmt.Sprintf("Payment received by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
+				Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+				Priority: 3,
+				Tags:     []string{"coin"},
+			}, true)
 		}
 	}
 

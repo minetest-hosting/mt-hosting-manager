@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mt-hosting-manager/core"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"net/http"
 	"time"
@@ -204,6 +205,13 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		UserID:     c.UserID,
 		UserNodeID: &node.ID,
 	})
+
+	notify.Send(&notify.NtfyNotification{
+		Title:    fmt.Sprintf("Node created by %s (Type: %s)", user.Mail, nt.Name),
+		Message:  fmt.Sprintf("User: %s, Node-type %s, Name: %s", user.Mail, nt.Name, node.Name),
+		Priority: 3,
+		Tags:     []string{"computer", "new"},
+	}, true)
 
 	Send(w, node, nil)
 }

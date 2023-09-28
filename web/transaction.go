@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mt-hosting-manager/api/wallee"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"net/http"
 	"time"
@@ -92,6 +93,14 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		PaymentTransactionID: &payment_tx_id,
 		Amount:               &create_tx_req.Amount,
 	})
+
+	notify.Send(&notify.NtfyNotification{
+		Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Mail, float64(create_tx_req.Amount)/100),
+		Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(create_tx_req.Amount)/100),
+		Click:    &url,
+		Priority: 3,
+		Tags:     []string{"credit_card", "new"},
+	}, true)
 
 	Send(w, create_tx_resp, nil)
 }
