@@ -2,6 +2,7 @@ import App from './app.js';
 import routes from './routes.js';
 import { check_login } from './service/login.js';
 import { fetch_info } from './service/info.js';
+import { load_currencies } from './service/currency.js';
 import router_guards from './util/router_guards.js';
 import events, { EVENT_STARTUP } from './events.js';
 import { fetch_nodetypes } from './service/nodetype.js';
@@ -28,6 +29,6 @@ function start(){
 }
 
 fetch_info()
-.then(() => Promise.all([check_login(), fetch_nodetypes()]))
+.then(() => Promise.all([check_login(), fetch_nodetypes(), load_currencies()]))
 .then(() => start())
 .catch(e => console.error(e));

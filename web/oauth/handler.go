@@ -84,6 +84,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			Mail:         info.Email,
 			MailVerified: true, // verification check already done
 			ExternalID:   info.ExternalID,
+			Currency:     "EUR",
 			Type:         h.Type,
 			Balance:      0,
 			WarnBalance:  500,

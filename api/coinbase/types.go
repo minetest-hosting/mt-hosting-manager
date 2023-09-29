@@ -17,6 +17,29 @@ type RatesResponse struct {
 	Data *RatesData `json:"data"`
 }
 
+type CryptoCurrencyData struct {
+	AssetID      string `json:"asset_id"`
+	Code         string `json:"code"`
+	Name         string `json:"name"`
+	Color        string `json:"color"`
+	Exponent     int    `json:"exponent"`
+	AddressRegex string `json:"address_regex"`
+}
+
+type CryptoCurrencies struct {
+	Data []*CryptoCurrencyData `json:"data"`
+}
+
+type CurrencyData struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	MinSize string `json:"min_size"`
+}
+
+type Currencies struct {
+	Data []*CurrencyData `json:"data"`
+}
+
 type PricingType string
 
 const (

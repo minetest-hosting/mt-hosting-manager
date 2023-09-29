@@ -60,6 +60,7 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
 	apir.HandleFunc("/send_activation", api.SendActivationMail).Methods(http.MethodPost)
 	apir.HandleFunc("/activate", api.ActivationCallback).Methods(http.MethodPost)
+	apir.HandleFunc("/currency", api.GetCurrencies)
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()

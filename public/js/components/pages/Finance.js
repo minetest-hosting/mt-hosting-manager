@@ -71,37 +71,39 @@ export default {
 	<card-layout title="Finance" icon="money-bill" :breadcrumb="breadcrumb">
         <h4>Current balance</h4>
         <table class="table table-condensed">
-            <tr>
-                <td>Balance</td>
-                <td>
-                    <currency-display :eurocents="balance"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Payment</td>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-text">&euro;</span>
-                        <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
-                        <button class="btn btn-outline-primary" v-on:click="new_payment('WALLEE')" :disabled="busy||!amount_valid||min_sum_error">
-                            <i class="fa-brands fa-cc-visa"></i>
-                            <i class="fa-brands fa-paypal"></i>
-                            Pay
-                        </button>
-                        <button class="btn btn-outline-primary" v-on:click="new_payment('COINBASE')" :disabled="busy||!amount_valid||min_sum_error">
-                            <i class="fa-brands fa-bitcoin"></i>
-                            <i class="fa-brands fa-ethereum"></i>
-                            Pay with crypto
-                        </button>
-                        <div class="invalid-feedback" v-if="!amount_sum_valid">
-                            User-balance can't exceed <currency-display :eurocents="get_max_balance()"/>
+            <thead>
+                <tr>
+                    <td>Balance</td>
+                    <td>
+                        <currency-display :eurocents="balance"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Payment</td>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-text">&euro;</span>
+                            <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
+                            <button class="btn btn-outline-primary" v-on:click="new_payment('WALLEE')" :disabled="busy||!amount_valid||min_sum_error">
+                                <i class="fa-brands fa-cc-visa"></i>
+                                <i class="fa-brands fa-paypal"></i>
+                                Pay
+                            </button>
+                            <button class="btn btn-outline-primary" v-on:click="new_payment('COINBASE')" :disabled="busy||!amount_valid||min_sum_error">
+                                <i class="fa-brands fa-bitcoin"></i>
+                                <i class="fa-brands fa-ethereum"></i>
+                                Pay with crypto
+                            </button>
+                            <div class="invalid-feedback" v-if="!amount_sum_valid">
+                                User-balance can't exceed <currency-display :eurocents="get_max_balance()"/>
+                            </div>
+                            <div class="invalid-feedback" v-if="min_sum_error">
+                                Minimum payment: <currency-display eurocents="500"/>
+                            </div>
                         </div>
-                        <div class="invalid-feedback" v-if="min_sum_error">
-                            Minimum payment: <currency-display eurocents="500"/>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            </thead>
         </table>
         <hr>
         <h4>Payment history</h4>
