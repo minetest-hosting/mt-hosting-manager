@@ -95,7 +95,11 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 		charge, err := c.cbc.CreateCharge(&coinbase.CreateChargeRequest{
 			Name:        "Minetest hosting",
 			Description: "Minetest hosting payment",
-			PricingType: coinbase.PricingTypeNoPrice,
+			PricingType: coinbase.PricingTypeFixed,
+			LocalPrice: &coinbase.LocalPrice{
+				Amount:   fmt.Sprintf("%.2f", float64(create_tx_req.Amount)/100),
+				Currency: coinbase.CURRENCY_EUR,
+			},
 			RedirectURL: back_url,
 			CancelURL:   back_url,
 		})
@@ -108,8 +112,8 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 			Type:           types.PaymentTypeCoinbase,
 			TransactionID:  charge.Data.Code,
 			PaymentURL:     charge.Data.HostedURL,
-			Created:        charge.Data.ExpiredAt.Unix(),
-			Expires:        charge.Data.ExpiredAt.Unix(),
+			Created:        time.Now().Unix(),
+			Expires:        time.Now().Add(time.Hour).Unix(),
 			UserID:         userid,
 			Amount:         0,
 			AmountRefunded: 0,
