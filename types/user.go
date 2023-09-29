@@ -6,6 +6,7 @@ const (
 	UserTypeGithub  UserType = "GITHUB"
 	UserTypeDiscord UserType = "DISCORD"
 	UserTypeMesehub UserType = "MESEHUB"
+	UserTypeLocal   UserType = "LOCAL"
 )
 
 type UserRole string
@@ -37,6 +38,11 @@ type User struct {
 	ExternalID     string    `json:"external_id"`
 	Type           UserType  `json:"type"`
 	Role           UserRole  `json:"role"`
+}
+
+func (u *User) RemoveSensitiveFields() {
+	u.Hash = ""
+	u.ActivationCode = ""
 }
 
 type UserSearch struct {
