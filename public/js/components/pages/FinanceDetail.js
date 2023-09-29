@@ -73,12 +73,18 @@ export default {
                 </td>
             </tr>
             <tr>
+                <td>Type</td>
+                <td>
+                    <span class="badge bg-success">{{transaction.type}}</span>
+                </td>
+            </tr>
+            <tr v-if="transaction.type == 'WALLEE'">
                 <td>Refunded amount</td>
                 <td>
                     <currency-display :eurocents="transaction.amount_refunded"/>
                 </td>
             </tr>
-            <tr>
+            <tr v-if="transaction.type == 'WALLEE'">
                 <td>Actions</td>
                 <td>
                     <button class="btn btn-warning" v-on:click="refund" :disabled="refund_disabled">
@@ -87,6 +93,28 @@ export default {
                         <currency-display :eurocents="get_refund_amount(transaction)" v-if="!refund_disabled"/>
                         <i class="fa fa-spinner fa-spin" v-if="busy"></i>
                     </button>
+                </td>
+            </tr>
+            <tr v-if="transaction.type == 'COINBASE'">
+                <td>Bitcoin address</td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa-brands fa-bitcoin"></i>
+                        </span>
+                        <input type="text" class="form-control" :value="transaction.btc_address" disabled="true"/>
+                    </div>
+                </td>
+            </tr>
+            <tr v-if="transaction.type == 'COINBASE'">
+                <td>Ethereum address</td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fa-brands fa-ethereum"></i>
+                        </span>
+                        <input type="text" class="form-control" :value="transaction.eth_address" disabled="true"/>
+                    </div>
                 </td>
             </tr>
         </table>

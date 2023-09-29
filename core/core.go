@@ -1,6 +1,7 @@
 package core
 
 import (
+	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/db"
@@ -12,6 +13,7 @@ type Core struct {
 	cfg   *types.Config
 	wc    *wallee.WalleeClient
 	hdns  *hetzner_dns.HetznerDNSClient
+	cbc   *coinbase.CoinbaseClient
 }
 
 func New(repos *db.Repositories, cfg *types.Config) *Core {
@@ -20,5 +22,6 @@ func New(repos *db.Repositories, cfg *types.Config) *Core {
 		cfg:   cfg,
 		wc:    wallee.New(),
 		hdns:  hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
+		cbc:   coinbase.New(cfg.CoinbaseKey),
 	}
 }

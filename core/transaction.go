@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
@@ -96,56 +97,72 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 	}
 
 	if tx.State == types.PaymentStatePending {
-		// verify tx success
-		txr := &wallee.TransactionSearchRequest{
-			Filter: &wallee.TransactionSearchFilter{
-				FieldName: "id",
-				Operator:  wallee.FilterOperatorEquals,
-				Type:      wallee.FilterTypeLeaf,
-				Value:     tx.TransactionID,
-			},
-		}
-		tx_list, err := c.wc.SearchTransaction(txr)
-		if err != nil {
-			return nil, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err)
-		}
-		if tx_list == nil || len(tx_list) != 1 {
-			return nil, fmt.Errorf("transaction not found %s", tx.ID)
-		}
-		verfifed_tx := tx_list[0]
-		if verfifed_tx.State == wallee.TransactionStateFulfilled {
-			tx.State = types.PaymentStateSuccess
-			err = c.repos.PaymentTransactionRepo.Update(tx)
+		switch tx.Type {
+		case types.PaymentTypeWallee:
+			// verify tx success
+			txr := &wallee.TransactionSearchRequest{
+				Filter: &wallee.TransactionSearchFilter{
+					FieldName: "id",
+					Operator:  wallee.FilterOperatorEquals,
+					Type:      wallee.FilterTypeLeaf,
+					Value:     tx.TransactionID,
+				},
+			}
+			tx_list, err := c.wc.SearchTransaction(txr)
 			if err != nil {
-				return nil, fmt.Errorf("failed to save transaction: %v", err)
+				return nil, fmt.Errorf("failed to fetch transaction %s: %v", tx.ID, err)
+			}
+			if tx_list == nil || len(tx_list) != 1 {
+				return nil, fmt.Errorf("transaction not found %s", tx.ID)
+			}
+			verfifed_tx := tx_list[0]
+			if verfifed_tx.State == wallee.TransactionStateFulfilled {
+				tx.State = types.PaymentStateSuccess
+				err = c.repos.PaymentTransactionRepo.Update(tx)
+				if err != nil {
+					return nil, fmt.Errorf("failed to save transaction: %v", err)
+				}
+
+				user, err := c.repos.UserRepo.GetByID(tx.UserID)
+				if err != nil {
+					return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
+				}
+				if user == nil {
+					return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
+				}
+
+				err = c.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
+				if err != nil {
+					return nil, fmt.Errorf("could not add balance '%d' to user '%s': %v", tx.Amount, tx.UserID, err)
+				}
+
+				c.AddAuditLog(&types.AuditLog{
+					Type:                 types.AuditLogPaymentReceived,
+					UserID:               tx.UserID,
+					PaymentTransactionID: &tx.ID,
+					Amount:               &tx.Amount,
+				})
+
+				notify.Send(&notify.NtfyNotification{
+					Title:    fmt.Sprintf("Payment received by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
+					Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+					Priority: 3,
+					Tags:     []string{"coin"},
+				}, true)
 			}
 
-			user, err := c.repos.UserRepo.GetByID(tx.UserID)
+		case types.PaymentTypeCoinbase:
+			charge, err := c.cbc.GetCharge(tx.TransactionID)
 			if err != nil {
-				return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
-			}
-			if user == nil {
-				return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
+				return nil, err
 			}
 
-			err = c.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
-			if err != nil {
-				return nil, fmt.Errorf("could not add balance '%d' to user '%s': %v", tx.Amount, tx.UserID, err)
+			for _, payment := range charge.Data.Payments {
+				if payment.Status == coinbase.PaymentStatusConfirmend {
+					//TODO
+					fmt.Println("confirmed")
+				}
 			}
-
-			c.AddAuditLog(&types.AuditLog{
-				Type:                 types.AuditLogPaymentReceived,
-				UserID:               tx.UserID,
-				PaymentTransactionID: &tx.ID,
-				Amount:               &tx.Amount,
-			})
-
-			notify.Send(&notify.NtfyNotification{
-				Title:    fmt.Sprintf("Payment received by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
-				Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
-				Priority: 3,
-				Tags:     []string{"coin"},
-			}, true)
 		}
 	}
 

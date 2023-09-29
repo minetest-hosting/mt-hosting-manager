@@ -1,6 +1,7 @@
 package web
 
 import (
+	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
@@ -23,6 +24,7 @@ type Api struct {
 	cfg     *types.Config
 	core    *core.Core
 	wc      *wallee.WalleeClient
+	cbc     *coinbase.CoinbaseClient
 	running *atomic.Bool
 }
 
@@ -33,6 +35,7 @@ func NewApi(repos *db.Repositories, cfg *types.Config) *Api {
 		wc:      wallee.New(),
 		running: &atomic.Bool{},
 		core:    core.New(repos, cfg),
+		cbc:     coinbase.New(cfg.CoinbaseKey),
 	}
 }
 

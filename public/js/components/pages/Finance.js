@@ -37,8 +37,19 @@ export default {
         get_max_balance: get_max_balance,
         has_role: has_role,
         new_payment: function() {
-            create({ amount: Math.round(this.amount*100) })
-            .then(r => window.location = r.url);
+            this.busy = true;
+            create({
+                amount: Math.round(this.amount*100),
+                type: "WALLEE"
+            })
+            .then(ctx => window.location = ctx.url);
+        },
+        new_crypto_payment: function() {
+            this.busy = true;
+            create({
+                type: "COINBASE"
+            })
+            .then(ctx => this.$router.push(`/finance/detail/${ctx.transaction.id}`));
         },
         search: function() {
             this.busy = true;
@@ -74,7 +85,7 @@ export default {
                 </td>
             </tr>
             <tr>
-                <td>Actions</td>
+                <td>Payment</td>
                 <td>
                     <div class="input-group">
                         <span class="input-group-text">&euro;</span>
@@ -89,6 +100,16 @@ export default {
                             Minimum payment: <currency-display eurocents="500"/>
                         </div>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Crypto payment</td>
+                <td>
+                    <button class="btn btn-outline-primary w-100" v-on:click="new_crypto_payment" :disabled="busy">
+                        <i class="fa-brands fa-bitcoin"></i>
+                        <i class="fa-brands fa-ethereum"></i>
+                        Create new crypto payment
+                    </button>
                 </td>
             </tr>
         </table>
@@ -124,6 +145,7 @@ export default {
                 <tr>
                     <th>Date</th>
                     <th>Amount</th>
+                    <th>Type</th>
                     <th>State</th>
                 </tr>
             </thead>
@@ -137,6 +159,7 @@ export default {
                     <td>
                         <currency-display :eurocents="tx.amount"/>
                     </td>
+                    <td>{{tx.type}}</td>
                     <td>
                         {{tx.state}}
                         <span class="badge bg-warning" v-if="tx.amount_refunded != '0'">
