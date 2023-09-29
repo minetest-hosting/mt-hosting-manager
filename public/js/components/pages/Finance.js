@@ -86,7 +86,7 @@ export default {
                         <button class="btn btn-outline-primary" v-on:click="new_payment('WALLEE')" :disabled="busy||!amount_valid||min_sum_error">
                             <i class="fa-brands fa-cc-visa"></i>
                             <i class="fa-brands fa-paypal"></i>
-                            <i class="fa-solid fa-plus"></i> Create new payment
+                            Create new payment
                         </button>
                         <button class="btn btn-outline-primary" v-on:click="new_payment('COINBASE')" :disabled="busy||!amount_valid||min_sum_error">
                             <i class="fa-brands fa-bitcoin"></i>
