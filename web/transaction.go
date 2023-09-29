@@ -33,6 +33,8 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 	}
 
 	create_tx_resp := &types.CreateTransactionResponse{}
+	payment_tx_id := uuid.NewString()
+	back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 
 	switch create_tx_req.Type {
 	case types.PaymentTypeWallee:
@@ -45,8 +47,6 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 			return
 		}
 
-		payment_tx_id := uuid.NewString()
-
 		item := &wallee.LineItem{
 			Name:               "Minetest hosting credits",
 			Quantity:           1,
@@ -55,7 +55,6 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 			UniqueID:           payment_tx_id,
 		}
 
-		back_url := fmt.Sprintf("%s/#/finance/detail/%s", a.cfg.BaseURL, payment_tx_id)
 		tx, err := a.wc.CreateTransaction(&wallee.TransactionRequest{
 			Currency:   "EUR",
 			LineItems:  []*wallee.LineItem{item},
@@ -113,6 +112,8 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 			Name:        "Minetest hosting",
 			Description: "Minnetest hosting payment",
 			PricingType: coinbase.PricingTypeNoPrice,
+			RedirectURL: back_url,
+			CancelURL:   back_url,
 		})
 		if err != nil {
 			SendError(w, 500, err)
@@ -120,7 +121,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		}
 
 		payment_tx := &types.PaymentTransaction{
-			ID:             uuid.NewString(),
+			ID:             payment_tx_id,
 			Type:           types.PaymentTypeCoinbase,
 			TransactionID:  charge.Data.Code,
 			Created:        time.Now().Unix(),
@@ -139,6 +140,7 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 		}
 
 		create_tx_resp.Transaction = payment_tx
+		create_tx_resp.URL = charge.Data.HostedURL
 	}
 
 	Send(w, create_tx_resp, nil)

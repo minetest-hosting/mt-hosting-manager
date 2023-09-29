@@ -49,7 +49,7 @@ export default {
             create({
                 type: "COINBASE"
             })
-            .then(ctx => this.$router.push(`/finance/detail/${ctx.transaction.id}`));
+            .then(ctx => window.location = ctx.url);
         },
         search: function() {
             this.busy = true;

@@ -34,6 +34,8 @@ type CreateChargeRequest struct {
 	Description string      `json:"description"`
 	PricingType PricingType `json:"pricing_type"`
 	LocalPrice  *LocalPrice `json:"local_price"`
+	RedirectURL string      `json:"redirect_url"`
+	CancelURL   string      `json:"cancel_url"`
 }
 
 type ChargeAddresses struct {
@@ -65,6 +67,7 @@ type Payment struct {
 }
 
 type ChargeData struct {
+	HostedURL string           `json:"hosted_url"`
 	Addresses *ChargeAddresses `json:"addresses"`
 	Code      string           `json:"code"`
 	CreatedAt time.Time        `json:"created_at"`
