@@ -39,6 +39,11 @@ type User struct {
 	Role           UserRole  `json:"role"`
 }
 
+func (u *User) RemoveSensitiveFields() {
+	u.Hash = ""
+	u.ActivationCode = ""
+}
+
 type UserSearch struct {
 	MailLike *string `json:"mail_like"`
 	Limit    *int    `json:"limit"`

@@ -15,5 +15,8 @@ func (a *Api) SearchUser(w http.ResponseWriter, r *http.Request, c *types.Claims
 	}
 
 	list, err := a.repos.UserRepo.Search(s)
+	for _, u := range list {
+		u.RemoveSensitiveFields()
+	}
 	Send(w, list, err)
 }
