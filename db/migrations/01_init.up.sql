@@ -11,6 +11,7 @@ create table user(
     balance bigint not null default 0, -- current balance in euro-cent
     warn_balance bigint not null default 500, -- warning balance in euro-cent
     external_id varchar(64) not null, -- id on the external oauth provider
+    currency varchar(16) not null default 'EUR', -- user preferred currency
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER
 );

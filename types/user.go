@@ -36,6 +36,7 @@ type User struct {
 	Balance        int64     `json:"balance"`
 	WarnBalance    int64     `json:"warn_balance"`
 	ExternalID     string    `json:"external_id"`
+	Currency       string    `json:"currency"`
 	Type           UserType  `json:"type"`
 	Role           UserRole  `json:"role"`
 }
@@ -51,7 +52,7 @@ type UserSearch struct {
 }
 
 func (m *User) Columns(action string) []string {
-	return []string{"id", "state", "name", "hash", "mail", "mail_verified", "activation_code", "created", "balance", "warn_balance", "external_id", "type", "role"}
+	return []string{"id", "state", "name", "hash", "mail", "mail_verified", "activation_code", "created", "balance", "warn_balance", "external_id", "currency", "type", "role"}
 }
 
 func (m *User) Table() string {
@@ -59,9 +60,9 @@ func (m *User) Table() string {
 }
 
 func (m *User) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.State, &m.Name, &m.Hash, &m.Mail, &m.MailVerified, &m.ActivationCode, &m.Created, &m.Balance, &m.WarnBalance, &m.ExternalID, &m.Type, &m.Role)
+	return r(&m.ID, &m.State, &m.Name, &m.Hash, &m.Mail, &m.MailVerified, &m.ActivationCode, &m.Created, &m.Balance, &m.WarnBalance, &m.ExternalID, &m.Currency, &m.Type, &m.Role)
 }
 
 func (m *User) Values(action string) []any {
-	return []any{m.ID, m.State, m.Name, m.Hash, m.Mail, m.MailVerified, m.ActivationCode, m.Created, m.Balance, m.WarnBalance, m.ExternalID, m.Type, m.Role}
+	return []any{m.ID, m.State, m.Name, m.Hash, m.Mail, m.MailVerified, m.ActivationCode, m.Created, m.Balance, m.WarnBalance, m.ExternalID, m.Currency, m.Type, m.Role}
 }

@@ -39,6 +39,7 @@ func (a *Api) SendActivationMail(w http.ResponseWriter, r *http.Request) {
 			Created:      time.Now().Unix(),
 			Balance:      0,
 			WarnBalance:  500,
+			Currency:     "EUR",
 			Type:         types.UserTypeLocal,
 			Role:         types.UserRoleUser,
 		}

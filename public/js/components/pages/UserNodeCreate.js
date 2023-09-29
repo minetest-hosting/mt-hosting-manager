@@ -64,7 +64,9 @@ export default {
                 <tr>
                     <td>Daily cost</td>
                     <td>
-                        <currency-display :eurocents="nodetype.daily_cost" class="badge" v-bind:class="{'bg-success':enough_funds, 'bg-warning':!enough_funds}"/>
+                        <span class="badge" v-bind:class="{'bg-success':enough_funds, 'bg-warning':!enough_funds}">
+                            <currency-display :eurocents="nodetype.daily_cost"/>
+                        </span>
                     </td>
                 </tr>
             </tbody>
