@@ -42,14 +42,14 @@ export default {
                 amount: Math.round(this.amount*100),
                 type: "WALLEE"
             })
-            .then(ctx => window.location = ctx.url);
+            .then(ctx => window.location = ctx.payment_url);
         },
         new_crypto_payment: function() {
             this.busy = true;
             create({
                 type: "COINBASE"
             })
-            .then(ctx => window.location = ctx.url);
+            .then(ctx => window.location = ctx.payment_url);
         },
         search: function() {
             this.busy = true;

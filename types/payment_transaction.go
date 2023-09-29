@@ -5,6 +5,7 @@ type PaymentStateType string
 const (
 	PaymentStatePending PaymentStateType = "PENDING"
 	PaymentStateSuccess PaymentStateType = "SUCCESS"
+	PaymentStateExpired PaymentStateType = "EXPIRED"
 	PaymentStateError   PaymentStateType = "ERROR"
 )
 
@@ -21,13 +22,12 @@ type PaymentTransaction struct {
 	ID             string           `json:"id"`
 	Type           PaymentType      `json:"type"`
 	TransactionID  string           `json:"transaction_id"`
+	PaymentURL     string           `json:"payment_url"`
 	Created        int64            `json:"created"`
 	Expires        int64            `json:"expires"`
 	UserID         string           `json:"user_id"`
 	Amount         int64            `json:"amount"`
 	AmountRefunded int64            `json:"amount_refunded"`
-	BTCAddress     string           `json:"btc_address"`
-	ETHAddress     string           `json:"eth_address"`
 	State          PaymentStateType `json:"state"`
 }
 
@@ -42,13 +42,12 @@ func (m *PaymentTransaction) Columns(action string) []string {
 		"id",
 		"type",
 		"transaction_id",
+		"payment_url",
 		"created",
 		"expires",
 		"user_id",
 		"amount",
 		"amount_refunded",
-		"btc_address",
-		"eth_address",
 		"state",
 	}
 }
@@ -62,13 +61,12 @@ func (m *PaymentTransaction) Scan(action string, r func(dest ...any) error) erro
 		&m.ID,
 		&m.Type,
 		&m.TransactionID,
+		&m.PaymentURL,
 		&m.Created,
 		&m.Expires,
 		&m.UserID,
 		&m.Amount,
 		&m.AmountRefunded,
-		&m.BTCAddress,
-		&m.ETHAddress,
 		&m.State,
 	)
 }
@@ -78,13 +76,12 @@ func (m *PaymentTransaction) Values(action string) []any {
 		m.ID,
 		m.Type,
 		m.TransactionID,
+		m.PaymentURL,
 		m.Created,
 		m.Expires,
 		m.UserID,
 		m.Amount,
 		m.AmountRefunded,
-		m.BTCAddress,
-		m.ETHAddress,
 		m.State,
 	}
 }

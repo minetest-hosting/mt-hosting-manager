@@ -95,26 +95,12 @@ export default {
                     </button>
                 </td>
             </tr>
-            <tr v-if="transaction.type == 'COINBASE'">
-                <td>Bitcoin address</td>
+            <tr v-if="transaction.state == 'PENDING'">
+                <td>Payment url</td>
                 <td>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="fa-brands fa-bitcoin"></i>
-                        </span>
-                        <input type="text" class="form-control" :value="transaction.btc_address" disabled="true"/>
-                    </div>
-                </td>
-            </tr>
-            <tr v-if="transaction.type == 'COINBASE'">
-                <td>Ethereum address</td>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="fa-brands fa-ethereum"></i>
-                        </span>
-                        <input type="text" class="form-control" :value="transaction.eth_address" disabled="true"/>
-                    </div>
+                    <a :href="transaction.payment_url" class="btn btn-primary" target="new">
+                        Go to payment provider
+                    </a>
                 </td>
             </tr>
         </table>

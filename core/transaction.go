@@ -7,7 +7,124 @@ import (
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"strconv"
+	"time"
+
+	"github.com/google/uuid"
 )
+
+func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTransactionRequest) (*types.PaymentTransaction, error) {
+
+	user, err := c.repos.UserRepo.GetByID(userid)
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, fmt.Errorf("user not found: '%s'", userid)
+	}
+
+	payment_tx_id := uuid.NewString()
+	back_url := fmt.Sprintf("%s/#/finance/detail/%s", c.cfg.BaseURL, payment_tx_id)
+
+	switch create_tx_req.Type {
+	case types.PaymentTypeWallee:
+		if user.Balance+create_tx_req.Amount > int64(c.cfg.MaxBalance) {
+			return nil, fmt.Errorf("max balance of %d exceeded", c.cfg.MaxBalance)
+		}
+		if create_tx_req.Amount < 500 {
+			return nil, fmt.Errorf("min payment: EUR 5")
+		}
+
+		item := &wallee.LineItem{
+			Name:               "Minetest hosting credits",
+			Quantity:           1,
+			AmountIncludingTax: float64(create_tx_req.Amount) / 100,
+			Type:               wallee.LineItemTypeProduct,
+			UniqueID:           payment_tx_id,
+		}
+
+		tx, err := c.wc.CreateTransaction(&wallee.TransactionRequest{
+			Currency:   "EUR",
+			LineItems:  []*wallee.LineItem{item},
+			SuccessURL: back_url,
+			FailedURL:  back_url,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("create transaction failed: %v", err)
+		}
+
+		url, err := c.wc.CreatePaymentPageURL(tx.ID)
+		if err != nil {
+			return nil, fmt.Errorf("create payment url failed: %v", err)
+		}
+
+		payment_tx := &types.PaymentTransaction{
+			ID:             payment_tx_id,
+			Type:           types.PaymentTypeWallee,
+			TransactionID:  fmt.Sprintf("%d", tx.ID),
+			PaymentURL:     url,
+			Created:        time.Now().Unix(),
+			Expires:        time.Now().Add(time.Hour).Unix(),
+			UserID:         userid,
+			Amount:         create_tx_req.Amount,
+			AmountRefunded: 0,
+			State:          types.PaymentStatePending,
+		}
+		err = c.repos.PaymentTransactionRepo.Insert(payment_tx)
+		if err != nil {
+			return nil, fmt.Errorf("payment tx insert failed: %v", err)
+		}
+
+		c.AddAuditLog(&types.AuditLog{
+			Type:                 types.AuditLogPaymentCreated,
+			UserID:               userid,
+			PaymentTransactionID: &payment_tx_id,
+			Amount:               &create_tx_req.Amount,
+		})
+
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Mail, float64(create_tx_req.Amount)/100),
+			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(create_tx_req.Amount)/100),
+			Click:    &url,
+			Priority: 3,
+			Tags:     []string{"credit_card", "new"},
+		}, true)
+
+		return payment_tx, nil
+
+	case types.PaymentTypeCoinbase:
+		charge, err := c.cbc.CreateCharge(&coinbase.CreateChargeRequest{
+			Name:        "Minetest hosting",
+			Description: "Minetest hosting payment",
+			PricingType: coinbase.PricingTypeNoPrice,
+			RedirectURL: back_url,
+			CancelURL:   back_url,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		payment_tx := &types.PaymentTransaction{
+			ID:             payment_tx_id,
+			Type:           types.PaymentTypeCoinbase,
+			TransactionID:  charge.Data.Code,
+			PaymentURL:     charge.Data.HostedURL,
+			Created:        charge.Data.ExpiredAt.Unix(),
+			Expires:        charge.Data.ExpiredAt.Unix(),
+			UserID:         userid,
+			Amount:         0,
+			AmountRefunded: 0,
+			State:          types.PaymentStatePending,
+		}
+		err = c.repos.PaymentTransactionRepo.Insert(payment_tx)
+		if err != nil {
+			return nil, fmt.Errorf("payment tx insert failed: %v", err)
+		}
+
+		return payment_tx, nil
+	default:
+		return nil, fmt.Errorf("payment type not implemented: %s", create_tx_req.Type)
+	}
+}
 
 // refunds the given transaction by all or the available amount
 func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
@@ -33,58 +150,63 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 		return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
 	}
 
-	tx_id, err := strconv.ParseInt(tx.TransactionID, 10, 64)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse tx id: %v", err)
+	switch tx.Type {
+	case types.PaymentTypeWallee:
+		tx_id, err := strconv.ParseInt(tx.TransactionID, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse tx id: %v", err)
+		}
+
+		refund_amount := tx.Amount
+		if refund_amount > user.Balance {
+			// use remaining balance
+			refund_amount = user.Balance
+		}
+
+		crs, err := c.wc.CreateRefund(&wallee.CreateRefundRequest{
+			Amount:     fmt.Sprintf("%.2f", float64(refund_amount)/100),
+			ExternalID: tx.ID,
+			Transaction: &wallee.CreateRefundRequestTransaction{
+				ID: tx_id,
+			},
+			Type: wallee.RefundCustomerInitiatedManual,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("could not create refund: %v", err)
+		}
+		if crs.State != wallee.CreateRefundSuccessful {
+			return nil, fmt.Errorf("refund not successful, state: %s", crs.State)
+		}
+
+		tx.AmountRefunded = refund_amount
+		err = c.repos.PaymentTransactionRepo.Update(tx)
+		if err != nil {
+			return nil, fmt.Errorf("tx update error: %v", err)
+		}
+
+		err = c.SubtractBalance(tx.UserID, refund_amount)
+		if err != nil {
+			return nil, fmt.Errorf("user balance update error: %v", err)
+		}
+
+		c.AddAuditLog(&types.AuditLog{
+			Type:                 types.AuditLogPaymentRefunded,
+			UserID:               tx.UserID,
+			PaymentTransactionID: &tx.ID,
+			Amount:               &refund_amount,
+		})
+
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(refund_amount)/100),
+			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(refund_amount)/100),
+			Priority: 3,
+			Tags:     []string{"coin", "recycle"},
+		}, true)
+
+		return tx, nil
+	default:
+		return nil, fmt.Errorf("refund for payment type %s not implemented", tx.Type)
 	}
-
-	refund_amount := tx.Amount
-	if refund_amount > user.Balance {
-		// use remaining balance
-		refund_amount = user.Balance
-	}
-
-	crs, err := c.wc.CreateRefund(&wallee.CreateRefundRequest{
-		Amount:     fmt.Sprintf("%.2f", float64(refund_amount)/100),
-		ExternalID: tx.ID,
-		Transaction: &wallee.CreateRefundRequestTransaction{
-			ID: tx_id,
-		},
-		Type: wallee.RefundCustomerInitiatedManual,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("could not create refund: %v", err)
-	}
-	if crs.State != wallee.CreateRefundSuccessful {
-		return nil, fmt.Errorf("refund not successful, state: %s", crs.State)
-	}
-
-	tx.AmountRefunded = refund_amount
-	err = c.repos.PaymentTransactionRepo.Update(tx)
-	if err != nil {
-		return nil, fmt.Errorf("tx update error: %v", err)
-	}
-
-	err = c.SubtractBalance(tx.UserID, refund_amount)
-	if err != nil {
-		return nil, fmt.Errorf("user balance update error: %v", err)
-	}
-
-	c.AddAuditLog(&types.AuditLog{
-		Type:                 types.AuditLogPaymentRefunded,
-		UserID:               tx.UserID,
-		PaymentTransactionID: &tx.ID,
-		Amount:               &refund_amount,
-	})
-
-	notify.Send(&notify.NtfyNotification{
-		Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(refund_amount)/100),
-		Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(refund_amount)/100),
-		Priority: 3,
-		Tags:     []string{"coin", "recycle"},
-	}, true)
-
-	return tx, nil
 }
 
 func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
@@ -96,7 +218,16 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 		return nil, fmt.Errorf("payment tx not found: %s", id)
 	}
 
+	user, err := c.repos.UserRepo.GetByID(tx.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
+	}
+	if user == nil {
+		return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
+	}
+
 	if tx.State == types.PaymentStatePending {
+
 		switch tx.Type {
 		case types.PaymentTypeWallee:
 			// verify tx success
@@ -121,14 +252,6 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 				err = c.repos.PaymentTransactionRepo.Update(tx)
 				if err != nil {
 					return nil, fmt.Errorf("failed to save transaction: %v", err)
-				}
-
-				user, err := c.repos.UserRepo.GetByID(tx.UserID)
-				if err != nil {
-					return nil, fmt.Errorf("could not fetch user '%s': %v", tx.UserID, err)
-				}
-				if user == nil {
-					return nil, fmt.Errorf("user not found: '%s'", tx.UserID)
 				}
 
 				err = c.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
@@ -159,11 +282,68 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 
 			for _, payment := range charge.Data.Payments {
 				if payment.Status == coinbase.PaymentStatusConfirmend {
-					//TODO
-					fmt.Println("confirmed")
+					// convert crypto-currency to EUR and add balance
+
+					rates, err := c.cbc.GetRates(coinbase.CURRENCY_EUR)
+					if err != nil {
+						return nil, fmt.Errorf("could not fetch rates: %v", err)
+					}
+
+					crypto_value := payment.Value[coinbase.PaymentValueCrypto]
+					rate := rates.Data.Rates[crypto_value.Currency]
+					if rate == "" {
+						return nil, fmt.Errorf("rate not found for %s (amount: %s)", crypto_value.Currency, crypto_value.Amount)
+					}
+
+					ratef, err := strconv.ParseFloat(rate, 64)
+					if err != nil {
+						return nil, fmt.Errorf("could not parse rate '%s': %v", rate, err)
+					}
+
+					crypto_amount, err := strconv.ParseFloat(crypto_value.Amount, 64)
+					if err != nil {
+						return nil, fmt.Errorf("could not parse crypto amount '%s': %v", crypto_value.Amount, err)
+					}
+
+					eur := crypto_amount / ratef
+					tx.Amount = int64(eur * 100)
+					tx.State = types.PaymentStateSuccess
+					err = c.repos.PaymentTransactionRepo.Update(tx)
+					if err != nil {
+						return nil, fmt.Errorf("could not update tx: %v", err)
+					}
+
+					err = c.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
+					if err != nil {
+						return nil, fmt.Errorf("could not add balance '%d' to user '%s': %v", tx.Amount, tx.UserID, err)
+					}
+
+					c.AddAuditLog(&types.AuditLog{
+						Type:                 types.AuditLogPaymentReceived,
+						UserID:               tx.UserID,
+						PaymentTransactionID: &tx.ID,
+						Amount:               &tx.Amount,
+					})
+
+					notify.Send(&notify.NtfyNotification{
+						Title:    fmt.Sprintf("Crypto payment (%s %s) received by %s (%.2f)", crypto_value.Amount, crypto_value.Currency, user.Mail, float64(tx.Amount)/100),
+						Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+						Priority: 3,
+						Tags:     []string{"coin"},
+					}, true)
 				}
 			}
+		default:
+			return nil, fmt.Errorf("check for payment type %s not implemented", tx.Type)
 		}
+	}
+
+	// check expiration _after_ confirmation check
+	if time.Now().After(time.Unix(tx.Expires, 0)) {
+		// payment expired
+		tx.State = types.PaymentStateExpired
+		err = c.repos.PaymentTransactionRepo.Update(tx)
+		return tx, err
 	}
 
 	return tx, nil
