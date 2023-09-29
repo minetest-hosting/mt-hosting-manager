@@ -95,12 +95,15 @@ create table mail_queue(
 
 create table payment_transaction(
     id varchar(36) primary key not null, -- uuid
-    transaction_id varchar not null, -- external tx id
+    type varchar(32) not null, -- WALLEE, COINBASE
+    transaction_id varchar not null, -- external tx id / coinbase code
+    payment_url varchar not null default '', -- url to payment service
     created bigint not null, -- creation time in `time.Now().Unix()`
+    expires bigint not null, -- expiry time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict,
     amount bigint not null default 0, -- currency amount in eurocents
     amount_refunded bigint not null default 0, -- amount refunded from this transaction in eurocents
-    state varchar(32) not null default 'PENDING' -- state of the transaction
+    state varchar(32) not null default 'PENDING' -- state of the transaction, PENDING, SUCCESS, ERROR
 );
 
 create index payment_transaction_user_id on payment_transaction(user_id);

@@ -27,7 +27,7 @@ func (c *CoinbaseClient) CreateCharge(charge *CreateChargeRequest) (*Charge, err
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusCreated {
 		return nil, fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}
 	cr := &Charge{}

@@ -36,9 +36,13 @@ export default {
         format_time: format_time,
         get_max_balance: get_max_balance,
         has_role: has_role,
-        new_payment: function() {
-            create({ amount: Math.round(this.amount*100) })
-            .then(r => window.location = r.url);
+        new_payment: function(type) {
+            this.busy = true;
+            create({
+                amount: Math.round(this.amount*100),
+                type: type
+            })
+            .then(ctx => window.location = ctx.payment_url);
         },
         search: function() {
             this.busy = true;
@@ -74,13 +78,20 @@ export default {
                 </td>
             </tr>
             <tr>
-                <td>Actions</td>
+                <td>Payment</td>
                 <td>
                     <div class="input-group">
                         <span class="input-group-text">&euro;</span>
                         <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
-                        <button class="btn btn-outline-primary" v-on:click="new_payment()" :disabled="!amount_valid||min_sum_error">
-                            <i class="fa-solid fa-plus"></i> Create new payment
+                        <button class="btn btn-outline-primary" v-on:click="new_payment('WALLEE')" :disabled="busy||!amount_valid||min_sum_error">
+                            <i class="fa-brands fa-cc-visa"></i>
+                            <i class="fa-brands fa-paypal"></i>
+                            Pay
+                        </button>
+                        <button class="btn btn-outline-primary" v-on:click="new_payment('COINBASE')" :disabled="busy||!amount_valid||min_sum_error">
+                            <i class="fa-brands fa-bitcoin"></i>
+                            <i class="fa-brands fa-ethereum"></i>
+                            Pay with crypto
                         </button>
                         <div class="invalid-feedback" v-if="!amount_sum_valid">
                             User-balance can't exceed <currency-display :eurocents="get_max_balance()"/>
@@ -93,7 +104,7 @@ export default {
             </tr>
         </table>
         <hr>
-        <h4>Payments</h4>
+        <h4>Payment history</h4>
         <div class="row">
 			<div class="col-4">
 				<label>From</label>
@@ -124,6 +135,7 @@ export default {
                 <tr>
                     <th>Date</th>
                     <th>Amount</th>
+                    <th>Type</th>
                     <th>State</th>
                 </tr>
             </thead>
@@ -137,6 +149,7 @@ export default {
                     <td>
                         <currency-display :eurocents="tx.amount"/>
                     </td>
+                    <td>{{tx.type}}</td>
                     <td>
                         {{tx.state}}
                         <span class="badge bg-warning" v-if="tx.amount_refunded != '0'">

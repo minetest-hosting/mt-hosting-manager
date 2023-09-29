@@ -73,12 +73,18 @@ export default {
                 </td>
             </tr>
             <tr>
+                <td>Type</td>
+                <td>
+                    <span class="badge bg-success">{{transaction.type}}</span>
+                </td>
+            </tr>
+            <tr v-if="transaction.type == 'WALLEE'">
                 <td>Refunded amount</td>
                 <td>
                     <currency-display :eurocents="transaction.amount_refunded"/>
                 </td>
             </tr>
-            <tr>
+            <tr v-if="transaction.type == 'WALLEE'">
                 <td>Actions</td>
                 <td>
                     <button class="btn btn-warning" v-on:click="refund" :disabled="refund_disabled">
@@ -87,6 +93,14 @@ export default {
                         <currency-display :eurocents="get_refund_amount(transaction)" v-if="!refund_disabled"/>
                         <i class="fa fa-spinner fa-spin" v-if="busy"></i>
                     </button>
+                </td>
+            </tr>
+            <tr v-if="transaction.state == 'PENDING'">
+                <td>Payment url</td>
+                <td>
+                    <a :href="transaction.payment_url" class="btn btn-primary" target="new">
+                        Go to payment provider
+                    </a>
                 </td>
             </tr>
         </table>
