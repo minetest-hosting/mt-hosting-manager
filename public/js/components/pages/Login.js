@@ -16,7 +16,7 @@ export default {
 		"card-layout": CardLayout
 	},
 	methods: {
-		logout: logout,
+		logout,
 		github_href: function() {
 			return `https://github.com/login/oauth/authorize?client_id=${get_github_client_id()}&scope=user:email`;
 		},
@@ -28,21 +28,24 @@ export default {
 		}
 	},
 	computed: {
-		is_logged_in: is_logged_in
+		is_logged_in,
+		get_github_client_id,
+		get_discord_client_id,
+		get_mesehub_client_id
 	},
 	template: /*html*/`
 	<card-layout title="Login" icon="user" :breadcrumb="breadcrumb">
-		<a :href="github_href()" class="btn btn-secondary" v-if="!is_logged_in">
+		<a :href="github_href()" class="btn btn-secondary" v-if="!is_logged_in && get_github_client_id">
 			<i class="fab fa-github"></i>
 			Login with Github
 		</a>
 		&nbsp;
-		<a :href="discord_href()" class="btn btn-secondary" v-if="!is_logged_in">
+		<a :href="discord_href()" class="btn btn-secondary" v-if="!is_logged_in && get_discord_client_id">
 			<i class="fab fa-discord"></i>
 			Login with Discord
 		</a>
 		&nbsp;
-		<a :href="mesehub_href()" class="btn btn-secondary" v-if="!is_logged_in">
+		<a :href="mesehub_href()" class="btn btn-secondary" v-if="!is_logged_in && get_mesehub_client_id">
 			<img src="assets/default_mese_crystal.png">
 			Login with Mesehub
 		</a>
