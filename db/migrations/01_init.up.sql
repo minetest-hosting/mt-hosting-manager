@@ -102,7 +102,7 @@ create table payment_transaction(
     user_id varchar(36) not null references user(id) on delete restrict,
     amount bigint not null default 0, -- currency amount in eurocents
     amount_refunded bigint not null default 0, -- amount refunded from this transaction in eurocents
-    coinbase_code varchar(32) not null, default '', -- coinbase code (optional)
+    coinbase_code varchar(32) not null default '', -- coinbase code (optional)
     btc_address varchar(128) not null default '', -- btc address (optional)
     eth_address varchar(128) not null default '', -- ether address (optional)
     state varchar(32) not null default 'PENDING' -- state of the transaction, PENDING, SUCCESS, ERROR
