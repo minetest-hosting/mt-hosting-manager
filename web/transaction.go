@@ -70,8 +70,10 @@ func (a *Api) CreateTransaction(w http.ResponseWriter, r *http.Request, c *types
 
 	payment_tx := &types.PaymentTransaction{
 		ID:             payment_tx_id,
+		Type:           types.PaymentTypeWallee,
 		TransactionID:  fmt.Sprintf("%d", tx.ID),
 		Created:        time.Now().Unix(),
+		Expires:        time.Now().Add(time.Hour).Unix(),
 		UserID:         c.UserID,
 		Amount:         create_tx_req.Amount,
 		AmountRefunded: 0,
