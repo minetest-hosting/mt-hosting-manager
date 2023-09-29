@@ -6,6 +6,7 @@ const (
 	UserTypeGithub  UserType = "GITHUB"
 	UserTypeDiscord UserType = "DISCORD"
 	UserTypeMesehub UserType = "MESEHUB"
+	UserTypeLocal   UserType = "LOCAL"
 )
 
 type UserRole string

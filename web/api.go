@@ -47,17 +47,21 @@ func (api *Api) Setup() {
 
 	// public
 	apir := r.PathPrefix("/api").Subrouter()
-	apir.HandleFunc("/info", api.GetInfo)
-	apir.HandleFunc("/healthcheck", api.Healthcheck)
+	apir.HandleFunc("/info", api.GetInfo).Methods(http.MethodGet)
+	apir.HandleFunc("/healthcheck", api.Healthcheck).Methods(http.MethodGet)
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
+	apir.HandleFunc("/login", api.Login).Methods(http.MethodPost)
 	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
+	apir.HandleFunc("/send_activation", api.SendActivationMail).Methods(http.MethodPost)
+	apir.HandleFunc("/activate", api.ActivationCallback).Methods(http.MethodPost)
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()
 	user_api.Use(SecureHandler(api.LoginCheck()))
+	user_api.HandleFunc("/set_password", api.Secure(api.SetPassword)).Methods(http.MethodPost)
 	user_api.HandleFunc("/profile", api.Secure(api.GetUserProfile)).Methods(http.MethodGet)
 	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
 	user_api.HandleFunc("/audit_log", api.Secure(api.SearchAuditLog)).Methods(http.MethodPost)

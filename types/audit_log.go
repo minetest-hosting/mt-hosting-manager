@@ -5,8 +5,9 @@ func AuditLogProvider() *AuditLog { return &AuditLog{} }
 type AuditLogType string
 
 const (
-	AuditLogUserCreated  AuditLogType = "user_created"
-	AuditLogUserLoggedIn AuditLogType = "user_logged_in"
+	AuditLogUserActivated AuditLogType = "user_activated"
+	AuditLogUserCreated   AuditLogType = "user_created"
+	AuditLogUserLoggedIn  AuditLogType = "user_logged_in"
 
 	AuditLogNodeCreated AuditLogType = "node_created"
 	AuditLogNodeRemoved AuditLogType = "node_removed"
