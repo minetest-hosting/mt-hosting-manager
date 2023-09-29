@@ -64,9 +64,11 @@ export default {
                 <tr>
                     <td>Daily cost</td>
                     <td>
-                        <span class="badge" v-bind:class="{'bg-success':enough_funds, 'bg-warning':!enough_funds}">
-                            <currency-display :eurocents="nodetype.daily_cost"/>
-                        </span>
+                        <currency-display :eurocents="nodetype.daily_cost"/>
+                        <div class="alert alert-warning" v-if="!enough_funds">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Not enough funds
+                        </div>
                     </td>
                 </tr>
             </tbody>

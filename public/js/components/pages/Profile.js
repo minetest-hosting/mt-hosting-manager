@@ -66,7 +66,7 @@ export default {
 			<tr>
 				<td>Action</td>
 				<td>
-					<a class="btn btn-success" v-on:click="save">
+					<a class="btn btn-success w-100" v-on:click="save">
 						<i class="fa-solid fa-floppy-disk"></i>
 						Save
 					</a>
