@@ -54,7 +54,7 @@ func (a *Api) SendActivationMail(w http.ResponseWriter, r *http.Request) {
 }
 
 type ActivationCallbackRequest struct {
-	Mail           string `json:"mail"`
+	UserID         string `json:"user_id"`
 	ActivationCode string `json:"activation_code"`
 	NewPassword    string `json:"new_password"`
 }
@@ -67,13 +67,13 @@ func (a *Api) ActivationCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := a.repos.UserRepo.GetByMail(acr.Mail)
+	user, err := a.repos.UserRepo.GetByID(acr.UserID)
 	if err != nil {
 		SendError(w, 500, err)
 		return
 	}
 	if user == nil {
-		SendError(w, 404, fmt.Errorf("user with mail '%s' not found", acr.Mail))
+		SendError(w, 404, fmt.Errorf("user with id '%s' not found", acr.UserID))
 		return
 	}
 	if user.ActivationCode != acr.ActivationCode {
@@ -96,6 +96,7 @@ func (a *Api) ActivationCallback(w http.ResponseWriter, r *http.Request) {
 
 	user.Hash = string(hash)
 	user.MailVerified = true
+	user.ActivationCode = ""
 	err = a.repos.UserRepo.Update(user)
 	user.RemoveSensitiveFields()
 	Send(w, user, err)

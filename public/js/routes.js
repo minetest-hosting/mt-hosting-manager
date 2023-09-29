@@ -17,11 +17,14 @@ import FinanceDetail from './components/pages/FinanceDetail.js';
 import AuditLogs from './components/pages/AuditLogs.js';
 import SendMail from './components/pages/SendMail.js';
 import Help from './components/pages/Help.js';
+import Activate from './components/pages/Activate.js';
 
 export default [{
 	path: "/", component: Start
 },{
 	path: "/login", component: Login
+},{
+	path: "/activate/:userid/:code", component: Activate, props: true
 },{
 	path: "/help", component: Help,
 	meta: { loggedIn: true }

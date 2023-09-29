@@ -39,7 +39,7 @@ func (r *MailQueueRepository) GetByID(id string) (*types.MailQueue, error) {
 }
 
 func (r *MailQueueRepository) GetLatestByReceiver(receiver string) (*types.MailQueue, error) {
-	m, err := r.dbu.Select("where receiver = %s order by timestamp desc limit 1")
+	m, err := r.dbu.Select("where receiver = %s order by timestamp desc limit 1", receiver)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
