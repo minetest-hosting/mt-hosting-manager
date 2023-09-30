@@ -187,7 +187,7 @@ export default {
 		<div v-if="this.node && this.node.state == 'RUNNING'">
 			<h4>Servers</h4>
 			<server-list :list="servers"/>
-			<router-link class="btn btn-success" to="/mtservers/create">
+			<router-link class="btn btn-success" :to="'/mtservers/create?node=' + this.node.id">
 				<i class="fa fa-plus"></i>
 				Create server
 			</router-link>

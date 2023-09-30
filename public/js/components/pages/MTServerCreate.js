@@ -11,7 +11,7 @@ export default {
 		return {
 			validation_result: {},
 			user_nodes: [],
-			user_node_id: "",
+			user_node_id: this.$route.query.node ? this.$route.query.node : "",
 			port: 30000,
 			admin: "admin",
 			name: "",
