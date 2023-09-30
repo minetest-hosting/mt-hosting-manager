@@ -100,7 +100,7 @@ export default {
 						<a :href="admin_login_url" target="new">{{server.dns_name}}.{{dns_suffix}}/ui</a>
 						<div class="alert alert-warning" v-if="server_fresh">
 							<i class="fa-solid fa-triangle-exclamation"></i>
-							The server was recently created, if the ui-link does not work yet wait another minute or two.
+							The server was recently created, if the ui-link does not work wait another minute or two.
 						</div>
 					</td>
 				</tr>
