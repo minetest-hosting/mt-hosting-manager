@@ -6,6 +6,7 @@ import (
 	"mt-hosting-manager/types"
 	"net"
 	"os"
+	"path"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -101,6 +102,28 @@ func Provision(client *ssh.Client) error {
 	_, _, err = core.SSHExecute(client, "/provision/setup.sh")
 	if err != nil {
 		return fmt.Errorf("SSHExecute error: %v", err)
+	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get cwd: %v", err)
+	}
+
+	for _, mmdb_file := range []string{"GeoLite2-ASN.mmdb", "GeoLite2-City.mmdb"} {
+		p := path.Join(wd, mmdb_file)
+		fi, _ := os.Stat(p)
+		if fi != nil {
+			data, err := os.ReadFile(p)
+			if err != nil {
+				return fmt.Errorf("could not read '%s': %v", p, err)
+			}
+
+			target := fmt.Sprintf("/data/%s", mmdb_file)
+			err = core.SCPWriteBytes(sftp, data, target, 0644, true)
+			if err != nil {
+				return fmt.Errorf("scp write error '%s': %v", target, err)
+			}
+		}
 	}
 
 	return nil
