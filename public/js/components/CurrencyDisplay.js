@@ -35,10 +35,14 @@ export default {
         decimals: function() {
             const c = get_currency_list().find(c => c.id == this.currency);
             return c ? c.decimals : 2;
+        },
+        warn: function() {
+            const profile = get_user_profile();
+            return profile.balance < 500;
         }
     },
     template: /*html*/`
-    <span class="badge bg-secondary">
+    <span class="badge" v-bind:class="{'bg-secondary': !warn, 'bg-warning': warn}">
         {{format_currency(eurocents/100, 'EUR', 2)}}
         <span v-if="currency != 'EUR'">
             / {{format_currency(amount, currency, decimals)}}
