@@ -18,7 +18,7 @@ function format_currency(amount, currency, decimals) {
 }
 
 export default {
-    props: ["eurocents"],
+    props: ["eurocents", "enable_warning"],
     methods: {
         format_currency
     },
@@ -37,6 +37,9 @@ export default {
             return c ? c.decimals : 2;
         },
         warn: function() {
+            if (!this.enable_warning) {
+                return false;
+            }
             const profile = get_user_profile();
             return profile.balance < 500;
         }

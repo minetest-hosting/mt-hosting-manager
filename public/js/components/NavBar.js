@@ -46,7 +46,7 @@ export default {
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/finance" class="nav-link">
 							<i class="fa-solid fa-money-bill"></i> Finance
-							<currency-display :eurocents="balance"/>
+							<currency-display :eurocents="balance" :enable_warning="true"/>
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">

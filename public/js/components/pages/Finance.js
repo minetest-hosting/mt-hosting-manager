@@ -75,7 +75,7 @@ export default {
                 <tr>
                     <td>Balance</td>
                     <td>
-                        <currency-display :eurocents="balance"/>
+                        <currency-display :eurocents="balance" :enable_warning="true"/>
                     </td>
                 </tr>
                 <tr>
