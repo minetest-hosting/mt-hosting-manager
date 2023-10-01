@@ -32,6 +32,8 @@ func (a *Api) UpdateUserProfile(w http.ResponseWriter, r *http.Request, c *types
 
 	// update allowed fields
 	user.Currency = updated_user.Currency
+	user.WarnBalance = updated_user.WarnBalance
+	user.WarnEnabled = updated_user.WarnEnabled
 
 	err = a.repos.UserRepo.Update(user)
 	Send(w, user, err)

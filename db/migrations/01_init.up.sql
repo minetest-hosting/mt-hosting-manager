@@ -5,11 +5,12 @@ create table user(
     name varchar(128) not null, -- username
     hash varchar(256) not null default '', -- bcrypt hash for local users
     mail varchar(128) not null default '', -- email
-    mail_verified bit default false, -- verified mail address
+    mail_verified bit not null default false, -- verified mail address
     activation_code varchar(64) not null default '', -- mail activation code
     created bigint not null, -- creation time in `time.Now().Unix()`
     balance bigint not null default 0, -- current balance in euro-cent
     warn_balance bigint not null default 500, -- warning balance in euro-cent
+    warn_enabled bit not null default false, -- enable warning mails
     external_id varchar(64) not null, -- id on the external oauth provider
     currency varchar(16) not null default 'EUR', -- user preferred currency
     type varchar(32) not null, -- GITHUB, DISCORD

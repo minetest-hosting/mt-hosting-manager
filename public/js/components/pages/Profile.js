@@ -56,6 +56,18 @@ export default {
 				</td>
 			</tr>
 			<tr>
+				<td>Warning balance threshold</td>
+				<td>
+					<input type="number" class="form-control" step="0.01" :value="profile.warn_balance / 100" v-on:input="e => profile.warn_balance = e.target.value * 100"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Send balance warning mail</td>
+				<td>
+					<input type="checkbox" class="form-check-input" v-model="profile.warn_enabled"/>
+				</td>
+			</tr>
+			<tr>
 				<td>Preferred currency</td>
 				<td>
 					<select class="form-control" v-model="profile.currency">

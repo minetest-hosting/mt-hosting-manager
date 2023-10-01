@@ -63,6 +63,10 @@ func (c *Core) SendActivationMail(user *types.User) error {
 }
 
 func (c *Core) SendBalanceWarning(user *types.User) error {
+	if !user.WarnEnabled {
+		return nil
+	}
+
 	euros := float64(user.Balance) / 100
 	return c.repos.MailQueueRepo.Insert(&types.MailQueue{
 		Receiver: user.Mail,
