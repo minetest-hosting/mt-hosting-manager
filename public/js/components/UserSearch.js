@@ -38,7 +38,10 @@ export default {
         }, 250)
     },
     watch: {
-        "mail_like": "search"
+        "mail_like": "search",
+        "modelValue": function() {
+            this.user = this.modelValue;
+        }
     },
     template: /*html*/`
     <div>

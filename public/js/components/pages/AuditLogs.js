@@ -8,6 +8,7 @@ import UserSearch from "../UserSearch.js";
 import { search_audit_logs } from "../../api/audit_log.js";
 import format_time from "../../util/format_time.js";
 import { has_role } from "../../service/login.js";
+import { get_profile } from "../../api/profile.js";
 
 const store = Vue.reactive({
     from: new Date(Date.now() - (3600*1000*2)),
@@ -48,10 +49,11 @@ export default {
 	},
 	watch: {
 		"from": "search",
-		"to": "search"
+		"to": "search",
+		"user": "search"
 	},
 	created: function() {
-		this.search();
+		get_profile().then(u => this.user = u);
 	},
 	template: /*html*/`
 	<card-layout title="Audit-Logs" icon="rectangle-list" :breadcrumb="breadcrumb" fullwidth="true">

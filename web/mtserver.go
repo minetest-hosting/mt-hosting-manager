@@ -13,7 +13,7 @@ import (
 )
 
 func (a *Api) GetMTServers(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	if c.Role == types.UserRoleAdmin {
+	if c.Role == types.UserRoleAdmin && r.URL.Query().Get("all") == "true" {
 		list, err := a.repos.MinetestServerRepo.GetAll()
 		Send(w, list, err)
 	} else {

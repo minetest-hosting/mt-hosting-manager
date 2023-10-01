@@ -14,7 +14,7 @@ import (
 )
 
 func (a *Api) GetNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	if c.Role == types.UserRoleAdmin {
+	if c.Role == types.UserRoleAdmin && r.URL.Query().Get("all") == "true" {
 		list, err := a.repos.UserNodeRepo.GetAll()
 		Send(w, list, err)
 	} else {
