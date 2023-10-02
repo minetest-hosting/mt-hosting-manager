@@ -18,6 +18,8 @@ import AuditLogs from './components/pages/AuditLogs.js';
 import SendMail from './components/pages/SendMail.js';
 import Help from './components/pages/Help.js';
 import Activate from './components/pages/Activate.js';
+import PrivacyPolicy from './components/pages/PrivacyPolicy.js';
+import TermsConditions from './components/pages/TermsConditions.js';
 
 export default [{
 	path: "/", component: Start
@@ -25,6 +27,10 @@ export default [{
 	path: "/login", component: Login
 },{
 	path: "/activate/:userid/:code", component: Activate, props: true
+},{
+	path: "/privacy-policy", component: PrivacyPolicy
+},{
+	path: "/terms-conditions", component: TermsConditions
 },{
 	path: "/help", component: Help,
 	meta: { loggedIn: true }

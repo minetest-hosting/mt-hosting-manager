@@ -15,6 +15,18 @@ export default {
 	<card-layout title="Home" icon="home" :breadcrumb="breadcrumb">
 		<div class="text-center">
 			<h4>Minetest hosting</h4>
+			<router-link class="btn btn-secondary" to="/privacy-policy">
+				<i class="fa fa-section"></i> Privacy policy
+			</router-link>
+			&nbsp;
+			<router-link class="btn btn-secondary" to="/terms-conditions">
+				<i class="fa fa-section"></i> Terms and conditions
+			</router-link>
+			&nbsp;
+			<a class="btn btn-secondary" href="mailto:hosting@minetest.ch">
+				<i class="fa fa-envelope"></i> Contact
+			</a>
+			&nbsp;
 			<a class="btn btn-secondary" href="https://github.com/minetest-hosting/mt-hosting-manager" target="new">
 				<i class="fa-brands fa-github"></i> Source
 			</a>
