@@ -285,32 +285,30 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 			}
 
 			for _, payment := range charge.Data.Payments {
-				if payment.Status == coinbase.PaymentStatusConfirmend {
-					// convert crypto-currency to EUR and add balance
-
-					rates, err := c.cbc.GetRates(coinbase.CURRENCY_EUR)
-					if err != nil {
-						return nil, fmt.Errorf("could not fetch rates: %v", err)
-					}
+				if payment.Status == coinbase.PaymentStatusConfirmed {
 
 					crypto_value := payment.Value[coinbase.PaymentValueCrypto]
-					rate := rates.Data.Rates[crypto_value.Currency]
-					if rate == "" {
-						return nil, fmt.Errorf("rate not found for %s (amount: %s)", crypto_value.Currency, crypto_value.Amount)
+					if crypto_value == nil {
+						return nil, fmt.Errorf("crypto value not found")
 					}
 
-					ratef, err := strconv.ParseFloat(rate, 64)
+					local_value := payment.Value[coinbase.PaymentValueLocal]
+					if local_value == nil {
+						return nil, fmt.Errorf("local value not found")
+					}
+					if local_value.Currency != "EUR" {
+						return nil, fmt.Errorf("invalid local currency: %s", local_value.Currency)
+					}
+					eur_value, err := strconv.ParseFloat(local_value.Amount, 64)
 					if err != nil {
-						return nil, fmt.Errorf("could not parse rate '%s': %v", rate, err)
+						return nil, fmt.Errorf("could not convert local amount '%s': %v", local_value.Amount, err)
 					}
-
-					crypto_amount, err := strconv.ParseFloat(crypto_value.Amount, 64)
-					if err != nil {
-						return nil, fmt.Errorf("could not parse crypto amount '%s': %v", crypto_value.Amount, err)
+					if eur_value < 0 {
+						return nil, fmt.Errorf("negative amount: %.2f", eur_value)
 					}
+					eurocent_value := int64(eur_value * 100) // TODO: proper currency calc or possible rounding error fix of 1 eurocent
 
-					eur := crypto_amount / ratef
-					tx.Amount = int64(eur * 100)
+					tx.Amount = eurocent_value
 					tx.State = types.PaymentStateSuccess
 					err = c.repos.PaymentTransactionRepo.Update(tx)
 					if err != nil {
@@ -330,7 +328,8 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 					})
 
 					notify.Send(&notify.NtfyNotification{
-						Title:    fmt.Sprintf("Crypto payment (%s %s) received by %s (%.2f)", crypto_value.Amount, crypto_value.Currency, user.Mail, float64(tx.Amount)/100),
+						Title: fmt.Sprintf("Crypto payment (%s %s, local: %d eurocent) received from %s",
+							crypto_value.Amount, crypto_value.Currency, eurocent_value, user.Mail),
 						Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
 						Priority: 3,
 						Tags:     []string{"coin"},
