@@ -27,6 +27,10 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 
 	switch create_tx_req.Type {
 	case types.PaymentTypeWallee:
+		if !c.cfg.WalleeEnabled {
+			return nil, fmt.Errorf("wallee provider not enabled")
+		}
+
 		if user.Balance+create_tx_req.Amount > int64(c.cfg.MaxBalance) {
 			return nil, fmt.Errorf("max balance of %d exceeded", c.cfg.MaxBalance)
 		}
@@ -92,6 +96,10 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 		return payment_tx, nil
 
 	case types.PaymentTypeCoinbase:
+		if !c.cfg.CoinbaseEnabled {
+			return nil, fmt.Errorf("coinbase provider not enabled")
+		}
+
 		charge, err := c.cbc.CreateCharge(&coinbase.CreateChargeRequest{
 			Name:        "Minetest hosting",
 			Description: "Minetest hosting payment",

@@ -20,7 +20,7 @@ func New(repos *db.Repositories, cfg *types.Config) *Core {
 	return &Core{
 		repos: repos,
 		cfg:   cfg,
-		wc:    wallee.New(),
+		wc:    wallee.New(cfg.WalleeUserID, cfg.WalleeSpaceID, cfg.WalleeKey),
 		hdns:  hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
 		cbc:   coinbase.New(cfg.CoinbaseKey),
 	}

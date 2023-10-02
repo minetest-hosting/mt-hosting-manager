@@ -13,7 +13,8 @@ services:
   stop_grace_period: 1m
   volumes:
    - ".:/data"
-   - "go_cache:/go"
+   - "go_dir:/go"
+   - "go_cache:/.cache"
   environment:
    - LOGLEVEL=debug
    - BASEURL=http://localhost:8080
@@ -34,4 +35,5 @@ services:
   command: ["go", "run", "."]
 
 volumes:
+  go_dir: {}
   go_cache: {}

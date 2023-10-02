@@ -19,6 +19,7 @@ type Config struct {
 	EnableWorker        bool
 	JWTKey              string
 	CoinbaseKey         string
+	CoinbaseEnabled     bool
 	LogStreamKey        string
 	LogStreamDir        string
 	CookieName          string
@@ -28,6 +29,10 @@ type Config struct {
 	HetznerCloudKey     string
 	HetznerApiKey       string
 	HetznerApiZoneID    string
+	WalleeUserID        string
+	WalleeSpaceID       string
+	WalleeKey           string
+	WalleeEnabled       bool
 	GithubOauthConfig   *OAuthConfig
 	DiscordOauthConfig  *OAuthConfig
 	MesehubOauthConfig  *OAuthConfig
@@ -47,6 +52,7 @@ func NewConfig() *Config {
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),
 		CoinbaseKey:         os.Getenv("COINBASE_KEY"),
+		CoinbaseEnabled:     os.Getenv("COINBASE_ENABLED") == "true",
 		LogStreamKey:        os.Getenv("LOG_STREAM_KEY"),
 		LogStreamDir:        os.Getenv("LOG_STREAM_DIR"),
 		CookieName:          "mt-hosting-manager",
@@ -56,6 +62,10 @@ func NewConfig() *Config {
 		HetznerCloudKey:     os.Getenv("HETZNER_CLOUD_KEY"),
 		HetznerApiKey:       os.Getenv("HETZNER_API_KEY"),
 		HetznerApiZoneID:    os.Getenv("HETZNER_API_ZONEID"),
+		WalleeUserID:        os.Getenv("WALLEE_USERID"),
+		WalleeSpaceID:       os.Getenv("WALLEE_SPACEID"),
+		WalleeKey:           os.Getenv("WALLEE_KEY"),
+		WalleeEnabled:       os.Getenv("WALLEE_ENABLED") == "true",
 		GithubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("GITHUB_CLIENTID"),
 			Secret:   os.Getenv("GITHUB_SECRET"),
