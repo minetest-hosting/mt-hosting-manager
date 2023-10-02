@@ -5,7 +5,7 @@ import UserSearch from "../UserSearch.js";
 import { search_transaction, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { get_max_balance, get_coinbase_enabled, get_wallee_enabled } from "../../service/info.js";
-import { get_balance } from "../../service/user.js";
+import { get_balance, get_user_profile } from "../../service/user.js";
 import { has_role } from "../../service/login.js";
 
 export default {
@@ -59,6 +59,7 @@ export default {
         balance: get_balance,
         coinbase_enabled: get_coinbase_enabled,
         wallee_enabled: get_wallee_enabled,
+        profile: get_user_profile,
         min_sum_error: function() {
             return this.amount < 5;
         },
@@ -78,6 +79,10 @@ export default {
                     <td>Balance</td>
                     <td>
                         <currency-display :eurocents="balance" :enable_warning="true"/>
+                        <div class="alert alert-warning" v-if="profile.balance < profile.warn_balance">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <b>Warning:</b> your balance is low!
+                        </div>
                     </td>
                 </tr>
                 <tr>

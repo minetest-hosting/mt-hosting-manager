@@ -41,7 +41,7 @@ export default {
                 return false;
             }
             const profile = get_user_profile();
-            return profile.balance < 500;
+            return profile.balance < profile.warn_balance;
         }
     },
     template: /*html*/`
