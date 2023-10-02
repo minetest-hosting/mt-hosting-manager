@@ -334,6 +334,8 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 						Priority: 3,
 						Tags:     []string{"coin"},
 					}, true)
+
+					break
 				}
 			}
 		default:
@@ -342,7 +344,7 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 	}
 
 	// check expiration _after_ confirmation check
-	if time.Now().After(time.Unix(tx.Expires, 0)) {
+	if time.Now().After(time.Unix(tx.Expires, 0)) && tx.State != types.PaymentStateSuccess {
 		// payment expired
 		tx.State = types.PaymentStateExpired
 		err = c.repos.PaymentTransactionRepo.Update(tx)
