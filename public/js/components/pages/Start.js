@@ -22,6 +22,11 @@ export default {
 			<a class="btn btn-secondary" href="https://github.com/minetest-go/mtui" target="new">
 				<i class="fa-brands fa-github"></i> Powered by mtui
 			</a>
+			&nbsp;
+			<a class="btn btn-secondary" href="https://discord.gg/Xj62fUbQkn" target="new">
+				<i class="fa-brands fa-discord"></i>
+				Join the discord server
+			</a>
 			<hr/>
 			<img src="assets/minetest-hosting-600px.png" class="img img-rounded"/>
 		</div>
