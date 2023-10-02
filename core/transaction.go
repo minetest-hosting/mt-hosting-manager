@@ -115,7 +115,7 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 			Created:        time.Now().Unix(),
 			Expires:        time.Now().Add(time.Hour).Unix(),
 			UserID:         userid,
-			Amount:         0,
+			Amount:         create_tx_req.Amount,
 			AmountRefunded: 0,
 			State:          types.PaymentStatePending,
 		}
