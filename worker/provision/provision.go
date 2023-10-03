@@ -54,19 +54,21 @@ func CreateClient(node *types.UserNode) (*ssh.Client, error) {
 	return client, nil
 }
 
-func Provision(client *ssh.Client) error {
+func Provision(client *ssh.Client, status func(string, int)) error {
 	session, err := client.NewSession()
 	if err != nil {
 		return fmt.Errorf("could not open session: %v", err)
 	}
 	defer session.Close()
 
+	status("creating sftp session", 50)
 	sftp, err := sftp.NewClient(client)
 	if err != nil {
 		return fmt.Errorf("could not create sftp client: %v", err)
 	}
 	defer sftp.Close()
 
+	status("creating directory skelton", 60)
 	dirs := []string{
 		"/etc/docker",
 		"/etc/iptables",
@@ -99,6 +101,7 @@ func Provision(client *ssh.Client) error {
 		return fmt.Errorf("could not write file: %v", err)
 	}
 
+	status("executing setup script", 70)
 	_, _, err = core.SSHExecute(client, "/provision/setup.sh")
 	if err != nil {
 		return fmt.Errorf("SSHExecute error: %v", err)
@@ -107,6 +110,12 @@ func Provision(client *ssh.Client) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("could not get cwd: %v", err)
+	}
+
+	status("copying geolocation databases", 80)
+	err = core.SCPMkDir(sftp, "/data/mmdb")
+	if err != nil {
+		return err
 	}
 
 	for _, mmdb_file := range []string{"GeoLite2-ASN.mmdb", "GeoLite2-City.mmdb"} {
@@ -118,7 +127,7 @@ func Provision(client *ssh.Client) error {
 				return fmt.Errorf("could not read '%s': %v", p, err)
 			}
 
-			target := fmt.Sprintf("/data/%s", mmdb_file)
+			target := fmt.Sprintf("/data/mmdb/%s", mmdb_file)
 			err = core.SCPWriteBytes(sftp, data, target, 0644, true)
 			if err != nil {
 				return fmt.Errorf("scp write error '%s': %v", target, err)

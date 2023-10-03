@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (w *Worker) NodeProvision(job *types.Job) error {
+func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
 	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
 	if err != nil {
 		return err
@@ -46,6 +46,7 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		logrus.WithFields(logrus.Fields{
 			"node_id": node.ID,
 		}).Info("Creating new hetzner server instance")
+		status("creating new server", 10)
 
 		csr := &hetzner_cloud.CreateServerRequest{
 			Image: "ubuntu-22.04",
@@ -85,19 +86,31 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 	}
 
 	if node.ExternalIPv4DNSID == "" {
+		status("creating dns A-record", 20)
+
 		record, err := w.CreateDNSRecord(hetzner_dns.RecordA, node.Name, node.IPv4)
 		if err != nil {
 			return fmt.Errorf("could not create A-record: %v", err)
 		}
 		node.ExternalIPv4DNSID = record.ID
+		err = w.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			return fmt.Errorf("ipv4 record update failed: %v", err)
+		}
 	}
 
 	if node.ExternalIPv6DNSID == "" {
+		status("creating dns AAAA-record", 30)
+
 		record, err := w.CreateDNSRecord(hetzner_dns.RecordAAAA, node.Name, node.IPv6)
 		if err != nil {
 			return fmt.Errorf("could not create AAAA-record: %v", err)
 		}
 		node.ExternalIPv6DNSID = record.ID
+		err = w.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			return fmt.Errorf("ipv6 record update failed: %v", err)
+		}
 	}
 
 	logrus.WithFields(logrus.Fields{
@@ -106,12 +119,13 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 		"ipv6":        node.IPv6,
 	}).Info("Executing provisioning")
 
+	status("waiting for node-startup", 40)
 	client, err := TrySSHConnection(node)
 	if err != nil {
 		return err
 	}
 
-	err = provision.Provision(client)
+	err = provision.Provision(client, status)
 	if err != nil {
 		return fmt.Errorf("provision error: %v", err)
 	}
@@ -119,6 +133,8 @@ func (w *Worker) NodeProvision(job *types.Job) error {
 	if err != nil {
 		return err
 	}
+
+	status("done", 100)
 
 	node.State = types.UserNodeStateRunning
 

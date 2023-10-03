@@ -27,8 +27,7 @@ services:
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_MINETEST_CONTAINER: "{{.Enginename}}"
   volumes:
-   - "/data/GeoLite2-ASN.mmdb:/root/.minetest/worlds/world/GeoLite2-ASN.mmdb"
-   - "/data/GeoLite2-City.mmdb:/root/.minetest/worlds/world/GeoLite2-City.mmdb"
+   - "/data/mmdb:/root/.minetest/worlds/world/mmdb"
    - "./world:/root/.minetest/worlds/world"
    - "./world/minetest.conf:/minetest.conf"
    - "/var/run/docker.sock:/var/run/docker.sock:ro"

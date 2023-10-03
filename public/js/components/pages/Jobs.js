@@ -54,6 +54,7 @@ export default {
 					<th>Started</th>
 					<th>State</th>
 					<th>Links</th>
+					<th>Progress</th>
 					<th>Message</th>
 					<th>Actions</th>
 				</tr>
@@ -70,6 +71,9 @@ export default {
 						<node-link :id="job.user_node_id" v-if="job.user_node_id"/>
 						<br>
 						<server-link :id="job.minetest_server_id" v-if="job.minetest_server_id"/>
+					</td>
+					<td>
+						{{job.progress_percent}}
 					</td>
 					<td>{{job.message}}</td>
 					<td>

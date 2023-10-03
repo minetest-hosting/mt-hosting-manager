@@ -3,7 +3,7 @@ import NodeState from "../NodeState.js";
 import ServerList from "../ServerList.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 
-import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid } from "../../api/node.js";
+import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid, get_latest_job } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_nodetype } from "../../service/nodetype.js";
 
@@ -27,6 +27,7 @@ export default {
 		return {
 			hostingdomain_suffix: get_hostingdomain_suffix(),
 			servers: [],
+			job: null,
 			node: null,
 			nodetype: null,
 			breadcrumb: [{
@@ -62,6 +63,11 @@ export default {
 		format_time: format_time,
 		update_stats: function() {
 			const nodeid = this.id;
+			if (this.node.state == "PROVISIONING") {
+				// fetch job progress
+				get_latest_job(this.id).then(j => this.job = j);
+			}
+
 			if (this.node.state != "RUNNING") {
 				get_by_id(nodeid)
 				.then(n => this.node = n);
@@ -127,6 +133,17 @@ export default {
 						<div class="alert alert-info" v-if="node.state == 'PROVISIONING'">
 							<i class="fa-solid fa-info"></i>
 							The node is still provisioning, this might take a few minutes
+						</div>
+					</td>
+				</tr>
+				<tr v-if="node.state == 'PROVISIONING' && job">
+					<td>Privisioning progress</td>
+					<td>
+						<b>Status: </b> {{job.message}}
+						<div class="progress">
+							<div class="progress-bar" v-bind:style="{ width: job.progress_percent + '%' }" v-bind:class="{'bg-danger': job.state == 'DONE_FAILURE'}">
+								{{job.progress_percent}}%
+							</div>
 						</div>
 					</td>
 				</tr>

@@ -15,12 +15,22 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 	w.wg.Add(1)
 	defer w.wg.Done()
 
+	status_callback := func(msg string, progress_percent int) {
+		job.Message = msg
+		job.ProgressPercent = float64(progress_percent)
+		// update and ignore errors
+		err := w.repos.JobRepo.Update(job)
+		if err != nil {
+			logrus.WithError(err).Error("failed to update job progress")
+		}
+	}
+
 	var err error
 	switch job.Type {
 	case types.JobTypeNodeDestroy:
 		err = w.NodeDestroy(job)
 	case types.JobTypeNodeSetup:
-		err = w.NodeProvision(job)
+		err = w.NodeProvision(job, status_callback)
 	case types.JobTypeServerSetup:
 		err = w.ServerSetup(job)
 	case types.JobTypeServerDestroy:
@@ -40,7 +50,7 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		job_url := fmt.Sprintf("%s/#/jobs", w.cfg.BaseURL)
 		notify.Send(&notify.NtfyNotification{
 			Title:    fmt.Sprintf("Job failed: %s", job.Type),
-			Message:  fmt.Sprintf("Type: %s, ID %s, Message: '%s'", job.Type, job.ID, job.Message),
+			Message:  fmt.Sprintf("Type: %s, ID %s, progress %.2f, message: '%s'", job.Type, job.ID, job.ProgressPercent, job.Message),
 			Priority: 3,
 			Click:    &job_url,
 			Tags:     []string{"arrow_forward", "warning"},
