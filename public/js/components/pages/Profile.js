@@ -58,7 +58,10 @@ export default {
 			<tr>
 				<td>Warning balance threshold</td>
 				<td>
-					<input type="number" class="form-control" step="0.01" :value="profile.warn_balance / 100" v-on:input="e => profile.warn_balance = e.target.value * 100"/>
+					<div class="input-group">
+                        <span class="input-group-text">&euro;</span>
+						<input type="number" class="form-control" min="0" :value="profile.warn_balance / 100" v-on:input="e => profile.warn_balance = e.target.value * 100"/>
+					</div>
 				</td>
 			</tr>
 			<tr>
