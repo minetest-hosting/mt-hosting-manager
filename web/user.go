@@ -20,3 +20,8 @@ func (a *Api) SearchUser(w http.ResponseWriter, r *http.Request, c *types.Claims
 	}
 	Send(w, list, err)
 }
+
+func (a *Api) GetUsers(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	list, err := a.repos.UserRepo.GetAll()
+	Send(w, list, err)
+}

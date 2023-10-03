@@ -3,3 +3,4 @@ mt-hosting-manager
 .env
 id_rsa
 logs
+*.mmdb
