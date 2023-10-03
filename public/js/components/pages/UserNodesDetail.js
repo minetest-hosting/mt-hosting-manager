@@ -139,7 +139,7 @@ export default {
 						</router-link>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="node.state == 'RUNNING'">
 					<td>Alias</td>
 					<td>
 						<div class="btn-group w-100">

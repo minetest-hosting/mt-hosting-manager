@@ -93,7 +93,7 @@ export default {
 						{{server.dns_name}}.{{dns_suffix}}
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="server.state == 'RUNNING'">
 					<td>Admin login</td>
 					<td>
 						<i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -104,7 +104,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="server.state == 'RUNNING'">
 					<td>UI Version</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.ui_version"/>
@@ -114,7 +114,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="server.state == 'RUNNING'">
 					<td>Admin-user</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.admin"/>
@@ -139,7 +139,7 @@ export default {
 								Update management UI
 								<i class="fa fa-spinner fa-spin" v-if="setup_running"></i>
 							</button>
-							<router-link class="btn btn-xs btn-danger" :to="'/mtservers/' + server.id + '/delete'" :disabled="setup_running">
+							<router-link class="btn btn-xs btn-danger" :to="'/mtservers/' + server.id + '/delete'" :disabled="server.state != 'RUNNING'">
 								<i class="fa fa-trash"></i>
 								Delete
 							</router-link>
