@@ -64,6 +64,7 @@ create table minetest_server(
     dns_name varchar(256) not null, -- DNS name prefix
     admin varchar(32) not null default 'admin', -- admin name
     external_cname_dns_id varchar default '', -- hetzner dns record id
+    custom_dns_name varchar default '', -- custom dns name (CNAME pointing to server-CNAME) optional
     port int not null default 30000, -- minetest server port
     ui_version varchar(16) not null default 'latest', -- ui version to deploy
     jwt_key varchar(16) not null, -- jwt key

@@ -40,6 +40,7 @@ type MinetestServer struct {
 	DNSName            string              `json:"dns_name"`
 	Admin              string              `json:"admin"`
 	ExternalCNAMEDNSID string              `json:"external_cname_dns_id"`
+	CustomDNS          string              `json:"custom_dns_name"`
 	Port               int                 `json:"port"`
 	UIVersion          string              `json:"ui_version"`
 	JWTKey             string              `json:"jwt_key"`
@@ -55,6 +56,7 @@ func (m *MinetestServer) Columns(action string) []string {
 		"dns_name",
 		"admin",
 		"external_cname_dns_id",
+		"custom_dns_name",
 		"port",
 		"ui_version",
 		"jwt_key",
@@ -68,9 +70,9 @@ func (m *MinetestServer) Table() string {
 }
 
 func (m *MinetestServer) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.Admin, &m.ExternalCNAMEDNSID, &m.Port, &m.UIVersion, &m.JWTKey, &m.Created, &m.State)
+	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.Admin, &m.ExternalCNAMEDNSID, &m.CustomDNS, &m.Port, &m.UIVersion, &m.JWTKey, &m.Created, &m.State)
 }
 
 func (m *MinetestServer) Values(action string) []any {
-	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.Admin, m.ExternalCNAMEDNSID, m.Port, m.UIVersion, m.JWTKey, m.Created, m.State}
+	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.Admin, m.ExternalCNAMEDNSID, m.CustomDNS, m.Port, m.UIVersion, m.JWTKey, m.Created, m.State}
 }

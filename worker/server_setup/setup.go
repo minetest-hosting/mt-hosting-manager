@@ -59,9 +59,14 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 		return err
 	}
 
+	hostname := fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix)
+	if server.CustomDNS != "" {
+		hostname = server.CustomDNS
+	}
+
 	m := &SetupModel{
 		BaseDir:       basedir,
-		Hostname:      fmt.Sprintf("%s.%s", server.DNSName, cfg.HostingDomainSuffix),
+		Hostname:      hostname,
 		Enginename:    GetEngineName(server),
 		ServerShortID: GetShortName(server.ID),
 		Server:        server,

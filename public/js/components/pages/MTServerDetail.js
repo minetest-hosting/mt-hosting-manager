@@ -1,21 +1,29 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerState from "../ServerState.js";
+import HelpPopup from "../HelpPopup.js";
 
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
+import { get_by_id as get_node_by_id } from "../../api/node.js";
 
 export default {
 	props: ["id"],
 	components: {
 		"card-layout": CardLayout,
-		"server-state": ServerState
+		"server-state": ServerState,
+		"help-popup": HelpPopup
 	},
 	mounted: function() {
 		const server_id = this.id;
 		get_by_id(server_id)
-		.then(s => this.server = s);
-
-		this.handle = setInterval(() => this.update(), 2000);
+		.then(s => {
+			this.server = s;
+			return get_node_by_id(s.user_node_id);
+		})
+		.then(n => {
+			this.node = n;
+			this.handle = setInterval(() => this.update(), 2000);
+		});
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
@@ -23,6 +31,7 @@ export default {
 	data: function(){
 		return {
 			server: null,
+			node: null,
 			job: null,
 			dns_suffix: get_hostingdomain_suffix(),
 			breadcrumb: [{
@@ -62,16 +71,23 @@ export default {
 		},
 		admin_login_url: function() {
 			const s = this.server;
-			return `https://${s.dns_name}.${this.dns_suffix}/ui/api/loginadmin/${s.admin}?key=${s.jwt_key}`;
+			return `https://${this.dns_name}/ui/api/loginadmin/${s.admin}?key=${s.jwt_key}`;
 		},
 		server_fresh: function() {
 			// server created in the last 2 minutes
 			return (Date.now() - (this.server.created*1000)) < 120000;
+		},
+		dns_name: function() {
+			if (this.server.custom_dns_name == "") {
+				return this.server.dns_name + "." + this.dns_suffix;
+			} else {
+				return this.server.custom_dns_name;
+			}
 		}
 	},
 	template: /*html*/`
 	<card-layout title="Server details" icon="list" :breadcrumb="breadcrumb">
-		<table class="table" v-if="server">
+		<table class="table" v-if="server && node">
 			<tbody>
 				<tr>
 					<td>ID</td>
@@ -90,14 +106,26 @@ export default {
 				<tr>
 					<td>DNS Name</td>
 					<td>
-						{{server.dns_name}}.{{dns_suffix}}
+						{{dns_name}}
 					</td>
+				</tr>
+				<tr v-if="server.state == 'RUNNING'">
+					<td>
+						Custom DNS Name
+						<help-popup title="Custom DNS Name">
+							<p>You can use your own dns name and point a CNAME record to: <b>{{node.name}}.{{dns_suffix}}</b></p>
+							<p>The server will use the custom name after the UI setup has been run again</p>
+						</help-popup>
+					</td>
+					<td>
+						<input type="text" placeholder="Custom DNS Name" class="form-control" v-model="server.custom_dns_name"/>
+					</td>					
 				</tr>
 				<tr v-if="server.state == 'RUNNING'">
 					<td>Admin login</td>
 					<td>
 						<i class="fa-solid fa-arrow-up-right-from-square"></i>
-						<a :href="admin_login_url" target="new">{{server.dns_name}}.{{dns_suffix}}/ui</a>
+						<a :href="admin_login_url" target="new">{{dns_name}}/ui</a>
 						<div class="alert alert-warning" v-if="server_fresh">
 							<i class="fa-solid fa-triangle-exclamation"></i>
 							The server was recently created, if the ui-link does not work wait another minute or two.

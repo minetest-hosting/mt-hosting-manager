@@ -149,6 +149,7 @@ func (a *Api) UpdateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 	mtserver.Name = updated_mtserver.Name
 	mtserver.Admin = updated_mtserver.Admin
 	mtserver.UIVersion = updated_mtserver.UIVersion
+	mtserver.CustomDNS = updated_mtserver.CustomDNS
 
 	err = a.repos.MinetestServerRepo.Update(mtserver)
 	Send(w, mtserver, err)
