@@ -68,7 +68,7 @@ func Provision(client *ssh.Client, status func(string, int)) error {
 	}
 	defer sftp.Close()
 
-	status("creating directory skelton", 60)
+	status("creating directories", 60)
 	dirs := []string{
 		"/etc/docker",
 		"/etc/iptables",
@@ -81,6 +81,7 @@ func Provision(client *ssh.Client, status func(string, int)) error {
 		}
 	}
 
+	status("templating files", 65)
 	err = core.SCPTemplateFile(sftp, Files, "daemon.json", "/etc/docker/daemon.json", 0644, true, nil)
 	if err != nil {
 		return err
@@ -118,7 +119,10 @@ func Provision(client *ssh.Client, status func(string, int)) error {
 		return err
 	}
 
-	for _, mmdb_file := range []string{"GeoLite2-ASN.mmdb", "GeoLite2-City.mmdb"} {
+	mmdb_files := []string{"GeoLite2-ASN.mmdb", "GeoLite2-City.mmdb"}
+	for i, mmdb_file := range mmdb_files {
+		status(fmt.Sprintf("copying geolocation databases %d/%d", i+1, len(mmdb_files)), 85+(5*i))
+
 		p := path.Join(wd, mmdb_file)
 		fi, _ := os.Stat(p)
 		if fi != nil {
