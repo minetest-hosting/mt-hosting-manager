@@ -19,7 +19,8 @@ func (a *Api) Logout(w http.ResponseWriter, r *http.Request) {
 func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 	claims, err := a.GetClaims(r)
 	if err == err_unauthorized {
-		SendError(w, 401, errors.New("unauthorized"))
+		w.WriteHeader(401)
+		w.Write([]byte("unauthorized"))
 	} else if err != nil {
 		SendError(w, 500, err)
 	} else {
