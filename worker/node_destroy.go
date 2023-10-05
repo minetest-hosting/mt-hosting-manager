@@ -34,6 +34,26 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		return errors.New("user not found")
 	}
 
+	servers, err := w.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	if err != nil {
+		return fmt.Errorf("could not fetch servers: %v", err)
+	}
+
+	for _, server := range servers {
+		// remove CNAME record
+		if server.ExternalCNAMEDNSID != "" {
+			err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
+			if err != nil {
+				return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
+			}
+
+			err = w.repos.MinetestServerRepo.Delete(server.ID)
+			if err != nil {
+				return fmt.Errorf("could not remove server entry '%s': %v", server.ID, err)
+			}
+		}
+	}
+
 	err = w.hcc.DeleteServer(node.ExternalID)
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
