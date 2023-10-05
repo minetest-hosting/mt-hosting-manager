@@ -3,6 +3,7 @@ package worker
 import (
 	"errors"
 	"fmt"
+	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 
@@ -42,8 +43,8 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 	for _, server := range servers {
 		// remove CNAME record
 		if server.ExternalCNAMEDNSID != "" {
-			err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
-			if err != nil {
+			err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
+			if err != nil && err != hetzner_dns.ErrRecordNotFound {
 				return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
 			}
 
@@ -62,15 +63,15 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 	}
 
 	if node.ExternalIPv4DNSID != "" {
-		err = w.RemoveDNSRecord(node.ExternalIPv4DNSID)
-		if err != nil {
+		err = w.hdc.DeleteRecord(node.ExternalIPv4DNSID)
+		if err != nil && err != hetzner_dns.ErrRecordNotFound {
 			return fmt.Errorf("could not remove A-record: %v", err)
 		}
 	}
 
 	if node.ExternalIPv6DNSID != "" {
-		err = w.RemoveDNSRecord(node.ExternalIPv6DNSID)
-		if err != nil {
+		err = w.hdc.DeleteRecord(node.ExternalIPv6DNSID)
+		if err != nil && err != hetzner_dns.ErrRecordNotFound {
 			return fmt.Errorf("could not remove AAAA-record: %v", err)
 		}
 	}

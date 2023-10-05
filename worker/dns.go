@@ -45,7 +45,3 @@ func (w *Worker) UpdateDNSRecord(record_id string, value string) error {
 
 	return w.hdc.UpdateRecord(record)
 }
-
-func (w *Worker) RemoveDNSRecord(record_id string) error {
-	return w.hdc.DeleteRecord(record_id)
-}

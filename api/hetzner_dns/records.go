@@ -3,9 +3,12 @@ package hetzner_dns
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 )
+
+var ErrRecordNotFound = errors.New("record not found")
 
 func (c *HetznerDNSClient) GetRecords() (*RecordsResponse, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://dns.hetzner.com/api/v1/records?zone_id=%s", c.zoneID), nil)
@@ -43,7 +46,9 @@ func (c *HetznerDNSClient) GetRecord(id string) (*RecordResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
+	if resp.StatusCode == 404 {
+		return nil, ErrRecordNotFound
+	} else if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}
 
@@ -100,7 +105,9 @@ func (c *HetznerDNSClient) UpdateRecord(rec *Record) error {
 		return err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
+	if resp.StatusCode == 404 {
+		return ErrRecordNotFound
+	} else if resp.StatusCode != 200 {
 		return fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}
 
@@ -120,7 +127,9 @@ func (c *HetznerDNSClient) DeleteRecord(recordID string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
+	if resp.StatusCode == 404 {
+		return ErrRecordNotFound
+	} else if resp.StatusCode != 200 {
 		return fmt.Errorf("unexpected response-code: %d", resp.StatusCode)
 	}
 

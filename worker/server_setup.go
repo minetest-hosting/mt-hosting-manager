@@ -54,7 +54,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		}
 		if record.Record.Name != server.DNSName || record.Record.Value != node.Name {
 			// values changed, remove and recreate
-			err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
+			err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
 			if err != nil {
 				return fmt.Errorf("could not remove record with id '%s', %v", server.ExternalCNAMEDNSID, err)
 			}

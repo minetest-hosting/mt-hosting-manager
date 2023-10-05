@@ -30,7 +30,7 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 	}
 
 	if server.ExternalCNAMEDNSID != "" {
-		err = w.RemoveDNSRecord(server.ExternalCNAMEDNSID)
+		err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
 		if err != nil {
 			return fmt.Errorf("could not remove CNAME: %v", err)
 		}
