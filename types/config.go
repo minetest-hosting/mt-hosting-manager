@@ -40,6 +40,10 @@ type Config struct {
 	MailAddress         string
 	MailPassword        string
 	MaxBalance          int //max balance in eurocents
+	S3Endpoint          string
+	S3Bucket            string
+	S3KeyID             string
+	S3AccessKey         string
 }
 
 func NewConfig() *Config {
@@ -82,5 +86,9 @@ func NewConfig() *Config {
 		MailAddress:  os.Getenv("MAIL_ADDRESS"),
 		MailPassword: os.Getenv("MAIL_PASSWORD"),
 		MaxBalance:   100 * 100,
+		S3Endpoint:   os.Getenv("S3_ENDPOINT"),
+		S3Bucket:     os.Getenv("S3_BUCKET"),
+		S3KeyID:      os.Getenv("S3_KEY_ID"),
+		S3AccessKey:  os.Getenv("S3_ACCESS_KEY"),
 	}
 }
