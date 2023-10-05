@@ -123,12 +123,6 @@ func (a *Api) DeleteNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	a.core.AddAuditLog(&types.AuditLog{
-		Type:       types.AuditLogNodeRemoved,
-		UserID:     c.UserID,
-		UserNodeID: &node.ID,
-	})
-
 	Send(w, true, nil)
 }
 

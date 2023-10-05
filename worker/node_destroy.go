@@ -38,5 +38,11 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		}
 	}
 
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:       types.AuditLogNodeRemoved,
+		UserID:     node.UserID,
+		UserNodeID: &node.ID,
+	})
+
 	return w.repos.UserNodeRepo.Delete(node.ID)
 }

@@ -119,13 +119,6 @@ func (a *Api) DeleteMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 	job := types.RemoveServerJob(node, mtserver)
 	err = a.repos.JobRepo.Insert(job)
 
-	a.core.AddAuditLog(&types.AuditLog{
-		Type:             types.AuditLogServerRemoved,
-		UserID:           c.UserID,
-		UserNodeID:       &node.ID,
-		MinetestServerID: &mtserver.ID,
-	})
-
 	Send(w, true, err)
 }
 

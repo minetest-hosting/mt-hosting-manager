@@ -58,5 +58,12 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		return fmt.Errorf("could not run remove data-dir '%s': %v", basedir, err)
 	}
 
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerRemoved,
+		UserID:           node.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+	})
+
 	return w.repos.MinetestServerRepo.Delete(server.ID)
 }
