@@ -23,8 +23,13 @@ type NodeType struct {
 	Provider                ProviderType  `json:"provider"`
 	ServerType              string        `json:"server_type"`
 	Location                string        `json:"location"`
+	LocationReadable        string        `json:"location_readable"`
 	Name                    string        `json:"name"`
 	Description             string        `json:"description"`
+	CpuCount                int           `json:"cpu_count"`
+	RamGB                   int           `json:"ram_gb"`
+	DiskGB                  int           `json:"disk_gb"`
+	Dedicated               bool          `json:"dedicated"`
 	DailyCost               int64         `json:"daily_cost"`
 	MaxRecommendedInstances int           `json:"max_recommended_instances"`
 	MaxInstances            int           `json:"max_instances"`
@@ -38,8 +43,13 @@ func (m *NodeType) Columns(action string) []string {
 		"provider",
 		"server_type",
 		"location",
+		"location_readable",
 		"name",
 		"description",
+		"cpu_count",
+		"ram_gb",
+		"disk_gb",
+		"dedicated",
 		"daily_cost",
 		"max_recommended_instances",
 		"max_instances",
@@ -51,9 +61,43 @@ func (m *NodeType) Table() string {
 }
 
 func (m *NodeType) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.State, &m.OrderID, &m.Provider, &m.ServerType, &m.Location, &m.Name, &m.Description, &m.DailyCost, &m.MaxRecommendedInstances, &m.MaxInstances)
+	return r(
+		&m.ID,
+		&m.State,
+		&m.OrderID,
+		&m.Provider,
+		&m.ServerType,
+		&m.Location,
+		&m.LocationReadable,
+		&m.Name,
+		&m.Description,
+		&m.CpuCount,
+		&m.RamGB,
+		&m.DiskGB,
+		&m.Dedicated,
+		&m.DailyCost,
+		&m.MaxRecommendedInstances,
+		&m.MaxInstances,
+	)
 }
 
 func (m *NodeType) Values(action string) []any {
-	return []any{m.ID, m.State, m.OrderID, m.Provider, m.ServerType, m.Location, m.Name, m.Description, m.DailyCost, m.MaxRecommendedInstances, m.MaxInstances}
+	return []any{
+		m.ID,
+		m.State,
+		m.OrderID,
+		m.Provider,
+		m.ServerType,
+		m.Location,
+		m.LocationReadable,
+		m.Name,
+		m.Description,
+		m.CpuCount,
+		m.RamGB,
+		m.DiskGB,
+		m.Dedicated,
+		m.DailyCost,
+		m.MaxRecommendedInstances,
+		m.MaxInstances,
+	}
 }

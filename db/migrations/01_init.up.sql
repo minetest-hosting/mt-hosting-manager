@@ -27,17 +27,17 @@ create table node_type(
     provider varchar(32) not null, -- HETZNER
     server_type varchar(32) not null, -- provider server-type: cx11
     location varchar(32) not null, -- location name/id
+    location_readable varchar(32) not null default '', -- location in readable format
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
+    cpu_count int not null default 1, -- number of cpu's
+    ram_gb int not null default 2, -- ram in gb
+    disk_gb int not null default 10, -- disk size in gb
+    dedicated bit not null default false, -- dedicated machine
     daily_cost bigint not null default 0, -- daily cost in eurocents
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
 );
-
--- default node types
-INSERT INTO node_type VALUES('0b71901c-9fe7-4a49-9431-e8ce5981310c','ACTIVE',0,'HETZNER','cx11','nbg1','SMALL1','Small, versatile node, suited for 1 or 2 minetest servers',40,2,4);
-INSERT INTO node_type VALUES('37d9f80b-8a4e-4c22-bd7a-65ad23ae1fa4','ACTIVE',5,'HETZNER','cx21','nbg1','MEDIUM1','Medium node for average servers and mod-sets',80,3,6);
-INSERT INTO node_type VALUES('fedbbf78-ef43-4fa6-9f1c-b24180c93ac3','ACTIVE',10,'HETZNER','cx41','nbg1','LARGE1','Larger node for heavier workloads',120,5,10);
 
 -- a node set up by a user
 create table user_node(

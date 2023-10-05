@@ -21,12 +21,16 @@ export default {
 		};
 	},
 	template: /*html*/`
-	<card-layout title="Nodetype" icon="server" :breadcrumb="breadcrumb">
+	<card-layout title="Nodetype" icon="server" :breadcrumb="breadcrumb" :fullwidth="true">
 		<table class="table">
 			<thead>
 				<th>ID</th>
 				<th>OrderID</th>
 				<th>Name</th>
+				<th>Location</th>
+				<th>CPU Count</th>
+				<th>RAM GB</th>
+				<th>Disk GB</th>
 				<th>Daily cost</th>
 				<th>Provider</th>
 				<th>Server-Type</th>
@@ -40,6 +44,10 @@ export default {
 					</td>
 					<td>{{nt.order_id}}</td>
 					<td>{{nt.name}}</td>
+					<td>{{nt.location}} / {{nt.location_readable}}</td>
+					<td>{{nt.cpu_count}}</td>
+					<td>{{nt.ram_gb}}</td>
+					<td>{{nt.disk_gb}}</td>
 					<td>
 						<currency-display :eurocents="nt.daily_cost"/>
 					</td>

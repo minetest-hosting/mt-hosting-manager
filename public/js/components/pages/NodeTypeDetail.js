@@ -97,6 +97,12 @@ export default {
 				</td>
 			</tr>
 			<tr>
+				<td>Location (readable)</td>
+				<td>
+					<input type="text" class="form-control" v-model="nt.location_readable"/>
+				</td>
+			</tr>
+			<tr>
 				<td>Name</td>
 				<td>
 					<input type="text" class="form-control" v-model="nt.name"/>
@@ -112,6 +118,30 @@ export default {
 				<td>Daily cost [&euro;cents]</td>
 				<td>
 					<input type="number" min="0" class="form-control" v-model="nt.daily_cost"/>
+				</td>
+			</tr>
+			<tr>
+				<td>CPU Count</td>
+				<td>
+					<input type="number" min="1" class="form-control" v-model="nt.cpu_count"/>
+				</td>
+			</tr>
+			<tr>
+				<td>RAM [GB]</td>
+				<td>
+					<input type="number" min="1" class="form-control" v-model="nt.ram_gb"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Disk [GB]</td>
+				<td>
+					<input type="number" min="1" class="form-control" v-model="nt.disk_gb"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Dedicated</td>
+				<td>
+					<input type="checkbox" class="form-check-input" v-model="nt.dedicated"/>
 				</td>
 			</tr>
 			<tr>

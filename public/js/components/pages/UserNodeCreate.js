@@ -62,9 +62,29 @@ export default {
                     <td>{{nodetype.description}}</td>
                 </tr>
                 <tr>
+                    <td>Location</td>
+                    <td>{{nodetype.location_readable}}</td>
+                </tr>
+                <tr>
+                    <td>CPU Count</td>
+                    <td>
+                        {{nodetype.cpu_count}}
+                        <span class="badge bg-success" v-if="nodetype.dedicated">Dedicated</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RAM [GB]</td>
+                    <td>{{nodetype.ram_gb}}</td>
+                </tr>
+                <tr>
+                    <td>Disk [GB]</td>
+                    <td>{{nodetype.disk_gb}}</td>
+                </tr>
+                <tr>
                     <td>Daily cost</td>
                     <td>
                         <currency-display :eurocents="nodetype.daily_cost"/>
+                        (for 30 days: <currency-display :eurocents="nodetype.daily_cost * 30"/>)
                         <div class="alert alert-warning" v-if="!enough_funds">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             Not enough funds
