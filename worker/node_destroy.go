@@ -48,18 +48,27 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 				return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
 			}
 
-			err = w.repos.MinetestServerRepo.Delete(server.ID)
+			server.ExternalCNAMEDNSID = ""
+			server.State = types.MinetestServerStateDecommissioned
+			err = w.repos.MinetestServerRepo.Update(server)
 			if err != nil {
-				return fmt.Errorf("could not remove server entry '%s': %v", server.ID, err)
+				return fmt.Errorf("could not update server entry '%s': %v", server.ID, err)
 			}
 		}
 	}
 
-	err = w.hcc.DeleteServer(node.ExternalID)
-	if err != nil {
-		logrus.WithFields(logrus.Fields{
-			"ExternalID": node.ExternalID,
-		}).Warn("Server instance not found, not deleting anything")
+	if node.ExternalID != "" {
+		err = w.hcc.DeleteServer(node.ExternalID)
+		if err != nil {
+			logrus.WithFields(logrus.Fields{
+				"ExternalID": node.ExternalID,
+			}).Warn("Server instance not found, not deleting anything")
+		}
+		node.ExternalID = ""
+		err = w.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			return fmt.Errorf("could not update usernode: %v", err)
+		}
 	}
 
 	if node.ExternalIPv4DNSID != "" {
@@ -67,12 +76,22 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		if err != nil && err != hetzner_dns.ErrRecordNotFound {
 			return fmt.Errorf("could not remove A-record: %v", err)
 		}
+		node.ExternalIPv4DNSID = ""
+		err = w.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			return fmt.Errorf("could not update usernode: %v", err)
+		}
 	}
 
 	if node.ExternalIPv6DNSID != "" {
 		err = w.hdc.DeleteRecord(node.ExternalIPv6DNSID)
 		if err != nil && err != hetzner_dns.ErrRecordNotFound {
 			return fmt.Errorf("could not remove AAAA-record: %v", err)
+		}
+		node.ExternalIPv6DNSID = ""
+		err = w.repos.UserNodeRepo.Update(node)
+		if err != nil {
+			return fmt.Errorf("could not update usernode: %v", err)
 		}
 	}
 
@@ -89,5 +108,7 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		Tags:     []string{"computer", "x"},
 	}, true)
 
-	return w.repos.UserNodeRepo.Delete(node.ID)
+	node.State = types.UserNodeStateDecommissioned
+
+	return w.repos.UserNodeRepo.Update(node)
 }

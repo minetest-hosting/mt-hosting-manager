@@ -34,6 +34,11 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		if err != nil {
 			return fmt.Errorf("could not remove CNAME: %v", err)
 		}
+		server.ExternalCNAMEDNSID = ""
+		err = w.repos.MinetestServerRepo.Update(server)
+		if err != nil {
+			return fmt.Errorf("server entity update error: %v", err)
+		}
 	}
 
 	client, err := TrySSHConnection(node)
@@ -65,5 +70,6 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		MinetestServerID: &server.ID,
 	})
 
-	return w.repos.MinetestServerRepo.Delete(server.ID)
+	server.State = types.MinetestServerStateDecommissioned
+	return w.repos.MinetestServerRepo.Update(server)
 }

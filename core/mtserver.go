@@ -41,6 +41,9 @@ func (c *Core) ValidateCreateServer(server *types.MinetestServer, node *types.Us
 	}
 
 	for _, s := range other_servers {
+		if s.State == types.MinetestServerStateDecommissioned {
+			continue
+		}
 		if s.Port == server.Port {
 			csr.PortUsed = true
 			csr.Valid = false

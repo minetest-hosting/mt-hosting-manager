@@ -68,25 +68,29 @@ export default {
 				get_latest_job(this.id).then(j => this.job = j);
 			}
 
-			if (this.node.state != "RUNNING") {
-				get_by_id(nodeid)
-				.then(n => this.node = n);
-				return;
-			}
+			get_by_id(nodeid)
+			.then(n => this.node = n);
 
 			get_mtservers_by_nodeid(nodeid)
 			.then(list => this.servers = list);
 	
-			get_stats(nodeid)
-			.then(stats => {
-				this.load_percent = stats.load_percent;
-				this.disk_gb_total = get_gb_rounded(stats.disk_size);
-				this.disk_gb_used = get_gb_rounded(stats.disk_used);
-				this.disk_percent = parseInt(this.disk_gb_used / this.disk_gb_total * 100);
-				this.memory_gb_total = get_gb_rounded(stats.memory_size);
-				this.memory_gb_used = get_gb_rounded(stats.memory_used);
-				this.memory_percent = parseInt(this.memory_gb_used / this.memory_gb_total * 100);
-			});
+			if (this.node.state == "DECOMMISSIONED") {
+				clearInterval(this.handle);
+				return;
+			}
+
+			if (this.node.state == "RUNNING") {
+				get_stats(nodeid)
+				.then(stats => {
+					this.load_percent = stats.load_percent;
+					this.disk_gb_total = get_gb_rounded(stats.disk_size);
+					this.disk_gb_used = get_gb_rounded(stats.disk_used);
+					this.disk_percent = parseInt(this.disk_gb_used / this.disk_gb_total * 100);
+					this.memory_gb_total = get_gb_rounded(stats.memory_size);
+					this.memory_gb_used = get_gb_rounded(stats.memory_used);
+					this.memory_percent = parseInt(this.memory_gb_used / this.memory_gb_total * 100);
+				});
+			}
 		},
 		save: function() {
 			update_node(this.node);
@@ -147,7 +151,7 @@ export default {
 						</div>
 					</td>
 				</tr>
-				<tr v-if="servers.length == 0 && node.state == 'RUNNING'">
+				<tr v-if="node.state == 'RUNNING'">
 					<td>Actions</td>
 					<td>
 						<router-link class="btn btn-xs btn-danger" :to="'/nodes/' + node.id + '/delete'">
@@ -201,7 +205,7 @@ export default {
 				</tr>
 			</tbody>
 		</table>
-		<div v-if="this.node && this.node.state == 'RUNNING'">
+		<div v-if="this.node">
 			<h4>Servers</h4>
 			<server-list :list="servers"/>
 			<router-link class="btn btn-success" :to="'/mtservers/create?node=' + this.node.id">

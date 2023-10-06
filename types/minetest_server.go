@@ -8,10 +8,11 @@ import (
 type MinetestServerState string
 
 const (
-	MinetestServerStateCreated      MinetestServerState = "CREATED"
-	MinetestServerStateProvisioning MinetestServerState = "PROVISIONING"
-	MinetestServerStateRunning      MinetestServerState = "RUNNING"
-	MinetestServerStateRemoving     MinetestServerState = "REMOVING"
+	MinetestServerStateCreated        MinetestServerState = "CREATED"
+	MinetestServerStateProvisioning   MinetestServerState = "PROVISIONING"
+	MinetestServerStateRunning        MinetestServerState = "RUNNING"
+	MinetestServerStateRemoving       MinetestServerState = "REMOVING"
+	MinetestServerStateDecommissioned MinetestServerState = "DECOMMISSIONED"
 )
 
 var ValidServerName = regexp.MustCompile(`^[a-z|A-Z|0-9]+$`)

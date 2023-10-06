@@ -106,16 +106,6 @@ func (a *Api) DeleteNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	serverlist, err := a.repos.MinetestServerRepo.GetByNodeID(node.ID)
-	if err != nil {
-		SendError(w, 500, fmt.Errorf("server fetch error: %v", err))
-		return
-	}
-	if len(serverlist) > 0 {
-		SendError(w, 500, fmt.Errorf("node still contains servers"))
-		return
-	}
-
 	job := types.RemoveNodeJob(node)
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {

@@ -17,5 +17,9 @@ export default {
 		<i class="fa fa-times"></i>
 		Removing
 	</span>
+	<span class="badge bg-danger" v-if="state == 'DECOMMISSIONED'">
+		<i class="fa fa-trash"></i>
+		Decommissioned
+	</span>
 	`
 };

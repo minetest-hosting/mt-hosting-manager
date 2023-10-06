@@ -3,10 +3,11 @@ package types
 type UserNodeState string
 
 const (
-	UserNodeStateCreated      UserNodeState = "CREATED"
-	UserNodeStateProvisioning UserNodeState = "PROVISIONING"
-	UserNodeStateRunning      UserNodeState = "RUNNING"
-	UserNodeStateRemoving     UserNodeState = "REMOVING"
+	UserNodeStateCreated        UserNodeState = "CREATED"
+	UserNodeStateProvisioning   UserNodeState = "PROVISIONING"
+	UserNodeStateRunning        UserNodeState = "RUNNING"
+	UserNodeStateRemoving       UserNodeState = "REMOVING"
+	UserNodeStateDecommissioned UserNodeState = "DECOMMISSIONED"
 )
 
 // Created -> Provisioning -> Running <-> Stopped

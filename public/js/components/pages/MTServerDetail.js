@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerState from "../ServerState.js";
 import HelpPopup from "../HelpPopup.js";
+import NodeLink from "../NodeLink.js";
 
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -11,7 +12,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
 		"server-state": ServerState,
-		"help-popup": HelpPopup
+		"help-popup": HelpPopup,
+		"node-link": NodeLink
 	},
 	mounted: function() {
 		const server_id = this.id;
@@ -96,7 +98,13 @@ export default {
 				<tr>
 					<td>Name</td>
 					<td>
-						<input type="text" class="form-control" v-model="server.name"/>
+						<input type="text" class="form-control" v-model="server.name" :disabled="server.state != 'RUNNING'"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Parent node</td>
+					<td>
+						<node-link :node="node"/>
 					</td>
 				</tr>
 				<tr>
@@ -154,7 +162,7 @@ export default {
 						<server-state :state="server.state"/>
 					</td>
 				</tr>
-				<tr>
+				<tr v-if="server.state == 'RUNNING'">
 					<td>Actions</td>
 					<td>
 						<div class="btn-group">
