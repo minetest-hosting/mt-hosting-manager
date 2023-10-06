@@ -1,7 +1,5 @@
 package types
 
-import "github.com/minetest-go/dbutil"
-
 type UserType string
 
 const (
@@ -42,8 +40,6 @@ type User struct {
 	Currency       string    `json:"currency"`
 	Type           UserType  `json:"type"`
 	Role           UserRole  `json:"role"`
-	// view only fields
-	NodeCount int `json:"node_count"`
 }
 
 func (u *User) RemoveSensitiveFields() {
@@ -57,7 +53,7 @@ type UserSearch struct {
 }
 
 func (m *User) Columns(action string) []string {
-	fields := []string{
+	return []string{
 		"id",
 		"state",
 		"name",
@@ -74,13 +70,6 @@ func (m *User) Columns(action string) []string {
 		"type",
 		"role",
 	}
-	if action == dbutil.SelectAction {
-		fields = append(
-			fields,
-			"(select count(*) from user_node un where un.user_id = user.id)",
-		)
-	}
-	return fields
 }
 
 func (m *User) Table() string {
@@ -88,7 +77,7 @@ func (m *User) Table() string {
 }
 
 func (m *User) Scan(action string, r func(dest ...any) error) error {
-	fields := []any{
+	return r(
 		&m.ID,
 		&m.State,
 		&m.Name,
@@ -104,11 +93,7 @@ func (m *User) Scan(action string, r func(dest ...any) error) error {
 		&m.Currency,
 		&m.Type,
 		&m.Role,
-	}
-	if action == dbutil.SelectAction {
-		fields = append(fields, &m.NodeCount)
-	}
-	return r(fields...)
+	)
 }
 
 func (m *User) Values(action string) []any {
