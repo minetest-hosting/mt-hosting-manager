@@ -58,6 +58,7 @@ export default {
 					<li>IPv6 support by default</li>
 					<li>Secured with TLS (the management interface)</li>
 					<li>Free *.minetest.ch domain included or bring own</li>
+					<li>Pay with crypto or ordinary currency (not enabled yet)</li>
 				</ul>
 			</div>
 			<div class="col-6">
