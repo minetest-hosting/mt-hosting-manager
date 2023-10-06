@@ -72,6 +72,15 @@ create table minetest_server(
     state varchar(32) not null default 'CREATED'
 );
 
+create table backup(
+    id varchar(36) primary key not null, -- uuid
+    state varchar(32) not null default 'CREATED', -- CREATED, PROGRESS, COMPLETE, ERROR
+    user_id varchar(36) not null references user(id) on delete restrict, -- belongs to user
+    minetest_server_id varchar(36) references minetest_server(id) on delete cascade,
+    created bigint not null, -- creation time in `time.Now().Unix()`
+    size bigint not null -- size of the backup in bytes
+);
+
 create table job(
     id varchar(36) primary key not null, -- uuid
     type varchar(32) not null, -- NODE_SETUP, NODE_DESTROY, SERVER_SETUP, SERVER_DESTROY

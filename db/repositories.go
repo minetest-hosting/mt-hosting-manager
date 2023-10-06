@@ -15,6 +15,7 @@ type Repositories struct {
 	PaymentTransactionRepo *PaymentTransactionRepository
 	AuditLogRepo           *AuditLogRepository
 	MailQueueRepo          *MailQueueRepository
+	BackupRepo             *BackupRepository
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
@@ -28,5 +29,6 @@ func NewRepositories(db dbutil.DBTx) *Repositories {
 		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dialect, types.PaymentTransactionProvider)},
 		AuditLogRepo:           &AuditLogRepository{dbu: dbutil.New[*types.AuditLog](db, dialect, types.AuditLogProvider)},
 		MailQueueRepo:          &MailQueueRepository{dbu: dbutil.New[*types.MailQueue](db, dialect, types.MailQueueProvider)},
+		BackupRepo:             &BackupRepository{dbu: dbutil.New[*types.Backup](db, dialect, types.BackupProvider)},
 	}
 }
