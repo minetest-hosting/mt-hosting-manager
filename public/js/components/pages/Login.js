@@ -64,27 +64,16 @@ export default {
 		<div class="row" v-if="!is_logged_in">
 			<div class="col-6">
 				<h5>Login with email and password</h5>
-				<input type="text" class="form-control" placeholder="E-Mail" v-model="mail" v-bind:class="{'is-invalid': login_error}"/>
-				&nbsp;
-				<input type="password" class="form-control" placeholder="Password" v-model="password" v-bind:class="{'is-invalid': login_error}"/>
-				&nbsp;
-				<button class="btn btn-primary w-100" v-on:click="login">
-					<i class="fa-solid fa-right-to-bracket"></i>
-					Login
-				</button>
-				<hr>
-				<h5>Register new account / Lost password</h5>
-				<input type="text" class="form-control"
-					placeholder="E-Mail"
-					v-bind:class="{'is-valid':activation_mail_success}"
-					v-model="activation_mail"/>
-				&nbsp;
-				<button class="btn btn-secondary w-100"
-					v-on:click="send_activation_code"
-					:disabled="!activation_mail || activation_mail.indexOf('@') < 0">
-					<i class="fa-solid fa-user-plus"></i>
-					Send activation code
-				</button>
+				<form @submit.prevent="login">
+					<input type="text" class="form-control" placeholder="E-Mail" v-model="mail" v-bind:class="{'is-invalid': login_error}"/>
+					&nbsp;
+					<input type="password" class="form-control" placeholder="Password" v-model="password" v-bind:class="{'is-invalid': login_error}"/>
+					&nbsp;
+					<button type="submit" class="btn btn-primary w-100">
+						<i class="fa-solid fa-right-to-bracket"></i>
+						Login
+					</button>
+				</form>
 			</div>
 			<div class="col-6">
 				<h5>Login with external provider</h5>
@@ -102,6 +91,26 @@ export default {
 					<img src="assets/default_mese_crystal.png">
 					Login with Mesehub
 				</a>
+			</div>
+		</div>
+		<hr>
+		<div class="row" v-if="!is_logged_in">
+			<div class="col-6">
+				<h5>Register new account / Lost password</h5>
+				<form @submit.prevent="send_activation_code">
+					<input type="text" class="form-control"
+						placeholder="E-Mail"
+						v-bind:class="{'is-valid':activation_mail_success}"
+						v-model="activation_mail"/>
+					&nbsp;
+					<button class="btn btn-secondary w-100"
+						:disabled="!activation_mail || activation_mail.indexOf('@') < 0">
+						<i class="fa-solid fa-user-plus"></i>
+						Send activation code
+					</button>
+				</form>
+			</div>
+			<div class="col6">
 			</div>
 		</div>
 		<a class="btn btn-primary w-100" v-on:click="logout" v-if="is_logged_in">
