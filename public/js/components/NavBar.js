@@ -39,6 +39,11 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item">
+						<router-link to="/pricing" class="nav-link" v-if="!is_logged_in">
+							<i class="fa fa-money-bill"></i> Pricing
+						</router-link>
+					</li>
+					<li class="nav-item">
 						<router-link to="/help" class="nav-link" v-if="is_logged_in">
 							<i class="fa fa-question"></i> Help
 						</router-link>

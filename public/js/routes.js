@@ -20,11 +20,14 @@ import Help from './components/pages/Help.js';
 import Activate from './components/pages/Activate.js';
 import PrivacyPolicy from './components/pages/PrivacyPolicy.js';
 import TermsConditions from './components/pages/TermsConditions.js';
+import Pricing from './components/pages/Pricing.js';
 
 export default [{
 	path: "/", component: Start
 },{
 	path: "/login", component: Login
+},{
+	path: "/pricing", component: Pricing
 },{
 	path: "/activate/:userid/:code", component: Activate, props: true
 },{

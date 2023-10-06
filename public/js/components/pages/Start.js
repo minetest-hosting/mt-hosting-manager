@@ -15,6 +15,10 @@ export default {
 	<card-layout title="Home" icon="home" :breadcrumb="breadcrumb">
 		<div class="text-center">
 			<h4>Minetest hosting</h4>
+			<router-link class="btn btn-secondary" to="/pricing">
+				<i class="fa fa-money-bill"></i> Pricing
+			</router-link>
+			&nbsp;
 			<router-link class="btn btn-secondary" to="/privacy-policy">
 				<i class="fa fa-section"></i> Privacy policy
 			</router-link>
