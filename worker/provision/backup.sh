@@ -16,7 +16,7 @@ minetest_dir="/data/${minetest_server_id}"
 
 test -d ${minetest_dir} || exit 1
 
-max_size=$(du -sb . | cut -f1)
+max_size=$(du -sb ${minetest_dir} | cut -f1)
 snapshot_dir="/data/.snapshot-${minetest_server_id}"
 
 # try to remove previous snapshot just in case
@@ -24,7 +24,7 @@ btrfs subvolume delete ${snapshot_dir} || true
 
 # call api to create backup entry
 json="{\"user_id\":\"${user_id}\",\"minetest_server_id\":\"${minetest_server_id}\"}"
-backup_id=$(curl --data '${json}' -H "Content-Type: application/json" ${manager_baseurl}/api/backup/create | jq .id -r)
+backup_id=$(curl --data "${json}" -H "Content-Type: application/json" ${manager_baseurl}/api/backup/create | jq .id -r)
 test -n "${backup_id}"
 
 # create snapshot
@@ -45,7 +45,7 @@ trap on_exit EXIT
 
 # create tar and stream to s3 bucket
 S3_URL="s3://${BUCKET}/${user_id}/${minetest_server_id}/${backup_id}.tar.gz"
-tar czf - -C ${snapshot_dir}/${minetest_dir}/ . |\
+tar czf - -C ${snapshot_dir}/${minetest_server_id}/ . |\
     aws --endpoint-url ${AWS_ENDPOINT_URL} s3 cp --expected-size ${max_size} - ${S3_URL}
 
 # call api to complete backup entry
