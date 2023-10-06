@@ -125,7 +125,7 @@ func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
 		return err
 	}
 
-	err = provision.Provision(client, status)
+	err = provision.Provision(client, w.cfg, node.UserID, status)
 	if err != nil {
 		return fmt.Errorf("provision error: %v", err)
 	}

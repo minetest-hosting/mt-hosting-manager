@@ -54,7 +54,12 @@ func CreateClient(node *types.UserNode) (*ssh.Client, error) {
 	return client, nil
 }
 
-func Provision(client *ssh.Client, status func(string, int)) error {
+type ProvisionModel struct {
+	Config *types.Config
+	UserID string
+}
+
+func Provision(client *ssh.Client, cfg *types.Config, userID string, status func(string, int)) error {
 	session, err := client.NewSession()
 	if err != nil {
 		return fmt.Errorf("could not open session: %v", err)
@@ -94,7 +99,15 @@ func Provision(client *ssh.Client, status func(string, int)) error {
 
 	err = core.SCPWriteFile(sftp, Files, "setup.sh", "/provision/setup.sh", 0755, true)
 	if err != nil {
-		return fmt.Errorf("could not write file: %v", err)
+		return fmt.Errorf("could not write setup.sh: %v", err)
+	}
+
+	err = core.SCPTemplateFile(sftp, Files, "backup.sh", "/backup.sh", 0755, true, &ProvisionModel{
+		Config: cfg,
+		UserID: userID,
+	})
+	if err != nil {
+		return fmt.Errorf("could not write backup.sh: %v", err)
 	}
 
 	err = core.SCPWriteFile(sftp, Files, "docker-compose.yml", "/provision/docker-compose.yml", 0644, true)
