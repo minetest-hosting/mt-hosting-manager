@@ -25,7 +25,7 @@ services:
    DOCKER_MINETEST_PORT: {{.Server.Port}}
    DOCKER_NETWORK: "network-{{.ServerShortID}},terminator"
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
-   DOCKER_MINETEST_CONTAINER: "{{.Enginename}}"
+   DOCKER_CONTAINER_PREFIX: "{{.ServerShortID}}"
   volumes:
    - "/data/mmdb:/root/.minetest/worlds/world/mmdb"
    - "./world:/root/.minetest/worlds/world"
