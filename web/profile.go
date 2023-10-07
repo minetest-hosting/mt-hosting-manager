@@ -9,6 +9,7 @@ import (
 
 func (a *Api) GetUserProfile(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	user, err := a.repos.UserRepo.GetByMail(c.Mail)
+	user.RemoveSensitiveFields()
 	Send(w, user, err)
 }
 

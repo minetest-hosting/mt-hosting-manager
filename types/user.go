@@ -45,6 +45,7 @@ type User struct {
 func (u *User) RemoveSensitiveFields() {
 	u.Hash = ""
 	u.ActivationCode = ""
+	u.ExternalID = ""
 }
 
 type UserSearch struct {
