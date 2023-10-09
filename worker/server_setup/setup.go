@@ -100,6 +100,11 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 		return err
 	}
 
+	err = core.SCPTemplateFile(sftp, Files, "matterbridge.toml", fmt.Sprintf("%s/%s", world_dir, "matterbridge.toml"), 0644, false, m)
+	if err != nil {
+		return err
+	}
+
 	www_dir := path.Join(world_dir, "www")
 	err = core.SCPMkDir(sftp, www_dir)
 	if err != nil {
