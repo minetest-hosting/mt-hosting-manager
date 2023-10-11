@@ -110,6 +110,12 @@ export default {
 							<div class="invalid-feedback" v-if="validation_result.server_name_used">
 								Servername already used
 							</div>
+							<div class="invalid-feedback" v-if="validation_result.server_name_too_short">
+								Servername too short (min 5 letters)
+							</div>
+							<div class="invalid-feedback" v-if="validation_result.server_name_reserved">
+								Servername is reserved
+							</div>
 						</div>
 					</td>
 				</tr>

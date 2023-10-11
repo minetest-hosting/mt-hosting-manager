@@ -14,6 +14,8 @@ type CreateServerResult struct {
 	AdminNameInvalid      bool `json:"admin_name_invalid"`
 	ServerNameInvalid     bool `json:"server_name_invalid"`
 	ServerNameAlreadyUsed bool `json:"server_name_used"`
+	ServerNameTooShort    bool `json:"server_name_too_short"`
+	ServerNameReserved    bool `json:"server_name_reserved"`
 }
 
 var hdns_records *hetzner_dns.RecordsResponse
@@ -68,6 +70,19 @@ func (c *Core) ValidateCreateServer(server *types.MinetestServer, node *types.Us
 	for _, existing_record := range hdns_records.Records {
 		if existing_record.Name == server.DNSName {
 			csr.ServerNameAlreadyUsed = true
+			csr.Valid = false
+			break
+		}
+	}
+
+	if len(server.DNSName) < 5 {
+		csr.ServerNameTooShort = true
+		csr.Valid = false
+	}
+
+	for _, resname := range c.cfg.ReservedPrefixes {
+		if resname == server.DNSName {
+			csr.ServerNameReserved = true
 			csr.Valid = false
 			break
 		}

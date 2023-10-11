@@ -13,6 +13,7 @@ type OAuthConfig struct {
 type Config struct {
 	BaseURL             string
 	HostingDomainSuffix string
+	ReservedPrefixes    []string
 	Stage               string
 	SignupWhitelist     []string
 	Webdev              bool
@@ -50,6 +51,7 @@ func NewConfig() *Config {
 	return &Config{
 		BaseURL:             os.Getenv("BASEURL"),
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
+		ReservedPrefixes:    strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
 		Stage:               os.Getenv("STAGE"),
 		SignupWhitelist:     strings.Split(os.Getenv("SIGNUP_WHITELIST"), ","),
 		Webdev:              os.Getenv("WEBDEV") == "true",
