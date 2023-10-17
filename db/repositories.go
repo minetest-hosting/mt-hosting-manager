@@ -16,6 +16,7 @@ type Repositories struct {
 	AuditLogRepo           *AuditLogRepository
 	MailQueueRepo          *MailQueueRepository
 	BackupRepo             *BackupRepository
+	ExchangeRateRepo       *ExchangeRateRepository
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
@@ -30,5 +31,6 @@ func NewRepositories(db dbutil.DBTx) *Repositories {
 		AuditLogRepo:           &AuditLogRepository{dbu: dbutil.New[*types.AuditLog](db, dialect, types.AuditLogProvider)},
 		MailQueueRepo:          &MailQueueRepository{dbu: dbutil.New[*types.MailQueue](db, dialect, types.MailQueueProvider)},
 		BackupRepo:             &BackupRepository{dbu: dbutil.New[*types.Backup](db, dialect, types.BackupProvider)},
+		ExchangeRateRepo:       &ExchangeRateRepository{dbu: dbutil.New[*types.ExchangeRate](db, dialect, types.ExchangeRateProvider)},
 	}
 }
