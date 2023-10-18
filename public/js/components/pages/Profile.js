@@ -71,7 +71,7 @@ export default {
 				</td>
 			</tr>
 			<tr>
-				<td>Preferred currency</td>
+				<td>Alternative currency</td>
 				<td>
 					<select class="form-control" v-model="profile.currency">
 						<option v-for="r in get_rates()" :key="r.currency" :value="r.currency">{{r.display_name}}</option>
