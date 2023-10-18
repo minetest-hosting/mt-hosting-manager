@@ -1,5 +1,5 @@
 import { get_user_profile } from "../service/user.js";
-import { get_rates, get_currency_list } from "../service/currency.js";
+import { get_rate } from "../service/exchange_rate.js";
 
 function get_currency_sign(currency) {
     switch (currency) {
@@ -24,8 +24,8 @@ export default {
     },
     computed: {
         amount: function() {
-            const rates = get_rates();
-            const rate = parseFloat(rates[this.currency]);
+            const r = get_rate(this.currency);
+            const rate = parseFloat(r.rate);
             return Math.floor(this.eurocents / 100 * rate * 1000000) / 1000000;
         },
         currency: function() {
@@ -33,8 +33,7 @@ export default {
             return profile.currency || "EUR";
         },
         decimals: function() {
-            const c = get_currency_list().find(c => c.id == this.currency);
-            return c ? c.decimals : 2;
+            return get_rate(this.currency).digits;
         },
         warn: function() {
             if (!this.enable_warning) {
