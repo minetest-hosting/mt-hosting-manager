@@ -132,3 +132,11 @@ create table audit_log(
 );
 
 create index audit_log_search on audit_log(type, timestamp, user_id);
+
+create table exchange_rate(
+    currency varchar(16) primary key not null, -- EUR, ETH, BTC
+    rate varchar(64) not null, -- EUR * rate = $currency
+    display_name varchar not null, -- "United States Dollar"
+    digits int not null default 2, -- 0.01
+    updated bigint not null -- update time in `time.Now().Unix()`
+);

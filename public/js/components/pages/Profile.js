@@ -4,7 +4,7 @@ import CurrencyDisplay from "../CurrencyDisplay.js";
 import { update } from "../../service/user.js";
 import format_time from "../../util/format_time.js";
 import { get_user_profile } from "../../service/user.js";
-import { get_currency_list } from "../../service/currency.js";
+import { get_rates } from "../../service/exchange_rate.js";
 
 export default {
 	components: {
@@ -22,7 +22,7 @@ export default {
 		};
 	},
 	methods: {
-		get_currency_list,
+		get_rates,
 		format_time,
 		save: function() {
 			update(this.profile);
@@ -71,10 +71,10 @@ export default {
 				</td>
 			</tr>
 			<tr>
-				<td>Preferred currency</td>
+				<td>Alternative currency</td>
 				<td>
 					<select class="form-control" v-model="profile.currency">
-						<option v-for="c in get_currency_list()" :key="c.id" :value="c.id">{{c.name}}</option>
+						<option v-for="r in get_rates()" :key="r.currency" :value="r.currency">{{r.display_name}}</option>
 					</select>
 				</td>
 			</tr>

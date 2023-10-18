@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/api/hetzner_dns"
 	"mt-hosting-manager/core"
@@ -18,6 +19,7 @@ type Worker struct {
 	cfg     *types.Config
 	hcc     *hetzner_cloud.HetznerCloudClient
 	hdc     *hetzner_dns.HetznerDNSClient
+	cbc     *coinbase.CoinbaseClient
 	running *atomic.Bool
 	core    *core.Core
 	wg      *sync.WaitGroup
@@ -29,6 +31,7 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 		cfg:     cfg,
 		hcc:     hetzner_cloud.New(cfg.HetznerCloudKey),
 		hdc:     hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
+		cbc:     coinbase.New(cfg.CoinbaseKey),
 		running: &atomic.Bool{},
 		core:    core.New(repos, cfg),
 		wg:      &sync.WaitGroup{},
@@ -49,6 +52,9 @@ func (w *Worker) Start() {
 func (w *Worker) Run() {
 	// start collector job
 	go w.CollectJob()
+
+	// start exchange rate update job
+	go w.ExchangeRateUpdateJob()
 
 	// start mail job
 	go w.MailJob()
