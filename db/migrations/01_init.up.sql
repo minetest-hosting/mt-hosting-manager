@@ -140,8 +140,3 @@ create table exchange_rate(
     digits int not null default 2, -- 0.01
     updated bigint not null -- update time in `time.Now().Unix()`
 );
-
-insert into exchange_rate values("EUR", "1.0", "Euro", 2, 0);
-insert into exchange_rate values("USD", "1.0548", "United States Dollar", 2, 0);
-insert into exchange_rate values("BTC", "0.0000372006786892", "Bitcoin", 8, 0);
-insert into exchange_rate values("ETH", "0.0006699943050484", "Ethereum", 8, 0);
