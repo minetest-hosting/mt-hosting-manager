@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
-	"time"
 
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -30,20 +28,7 @@ func (a *Api) SendActivationMail(w http.ResponseWriter, r *http.Request) {
 	}
 	if user == nil {
 		// create new user
-		user = &types.User{
-			ID:           uuid.NewString(),
-			Name:         sar.Mail,
-			Mail:         sar.Mail,
-			MailVerified: false,
-			State:        types.UserStateActive,
-			Created:      time.Now().Unix(),
-			Balance:      0,
-			WarnBalance:  500,
-			Currency:     "EUR",
-			Type:         types.UserTypeLocal,
-			Role:         types.UserRoleUser,
-		}
-		err = a.repos.UserRepo.Insert(user)
+		user, err = a.core.CreateUser(sar.Mail, types.UserTypeLocal, types.UserRoleUser, false)
 		if err != nil {
 			SendError(w, 500, err)
 			return

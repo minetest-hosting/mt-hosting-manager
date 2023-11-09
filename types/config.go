@@ -16,6 +16,7 @@ type Config struct {
 	ReservedPrefixes    []string
 	Stage               string
 	SignupWhitelist     []string
+	InitialBalance      string
 	Webdev              bool
 	EnableWorker        bool
 	JWTKey              string
@@ -53,6 +54,7 @@ func NewConfig() *Config {
 		ReservedPrefixes:    strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
 		Stage:               os.Getenv("STAGE"),
 		SignupWhitelist:     strings.Split(os.Getenv("SIGNUP_WHITELIST"), ","),
+		InitialBalance:      os.Getenv("INITIAL_BALANCE"),
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),

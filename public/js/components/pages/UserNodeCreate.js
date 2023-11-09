@@ -87,7 +87,7 @@ export default {
                         (for 30 days: <currency-display :eurocents="nodetype.daily_cost * 30"/>)
                         <div class="alert alert-warning" v-if="!enough_funds">
                             <i class="fa-solid fa-triangle-exclamation"></i>
-                            Not enough funds: there should at least enough funds to support 10 days of runtime
+                            Not enough funds: make sure you have at least enough funds to support 10 days of runtime
                         </div>
                     </td>
                 </tr>

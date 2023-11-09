@@ -20,7 +20,7 @@ func (c *Core) UpdateExchangeRates() error {
 	for _, e := range list {
 		e.Rate = r.Data.Rates[e.Currency]
 		if e.Rate == "" {
-			return fmt.Errorf("currency update failed for %s:", e.Currency)
+			return fmt.Errorf("currency update failed for %s: ", e.Currency)
 		}
 
 		e.Updated = time.Now().Unix()

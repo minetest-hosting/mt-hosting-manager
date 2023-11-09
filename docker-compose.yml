@@ -26,6 +26,7 @@ services:
    - LOG_STREAM_DIR=/data/logs
    - WEBDEV=true
    - ENABLE_WORKER=true
+   - INITIAL_BALANCE=350
   env_file:
     - .env
   ports:

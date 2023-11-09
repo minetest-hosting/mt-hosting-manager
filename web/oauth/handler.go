@@ -2,19 +2,19 @@ package oauth
 
 import (
 	"encoding/json"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"net/http"
 	"os"
-	"time"
 
-	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
 type OauthHandler struct {
 	Impl     OauthImplementation
 	UserRepo *db.UserRepository
+	Core     *core.Core
 	Config   *types.OAuthConfig
 	BaseURL  string
 	Type     types.UserType
@@ -76,27 +76,13 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user == nil {
-		user = &types.User{
-			ID:           uuid.NewString(),
-			Created:      time.Now().Unix(),
-			State:        types.UserStateActive,
-			Name:         info.Name,
-			Mail:         info.Email,
-			MailVerified: true, // verification check already done
-			ExternalID:   info.ExternalID,
-			Currency:     "EUR",
-			Type:         h.Type,
-			Balance:      0,
-			WarnBalance:  500,
-			Role:         types.UserRoleUser,
-		}
-
 		// check for admin mail config
-		if user.Mail == os.Getenv("ADMIN_USER_MAIL") {
-			user.Role = types.UserRoleAdmin
+		role := types.UserRoleUser
+		if info.Email == os.Getenv("ADMIN_USER_MAIL") {
+			role = types.UserRoleAdmin
 		}
 
-		err = h.UserRepo.Insert(user)
+		user, err = h.Core.CreateUser(info.Email, h.Type, role, true)
 		if err != nil {
 			SendError(w, 500, err.Error())
 			return

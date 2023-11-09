@@ -114,6 +114,7 @@ func (api *Api) Setup() {
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
+			Core:     api.core,
 			Impl:     &oauth.GithubOauth{},
 			UserRepo: api.repos.UserRepo,
 			Config:   api.cfg.GithubOauthConfig,
@@ -126,6 +127,7 @@ func (api *Api) Setup() {
 
 	if api.cfg.DiscordOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
+			Core:     api.core,
 			Impl:     &oauth.DiscordOauth{},
 			UserRepo: api.repos.UserRepo,
 			Config:   api.cfg.DiscordOauthConfig,
@@ -138,6 +140,7 @@ func (api *Api) Setup() {
 
 	if api.cfg.MesehubOauthConfig.ClientID != "" {
 		oauth_handler := &oauth.OauthHandler{
+			Core:     api.core,
 			Impl:     &oauth.MesehubOauth{},
 			UserRepo: api.repos.UserRepo,
 			Config:   api.cfg.MesehubOauthConfig,
