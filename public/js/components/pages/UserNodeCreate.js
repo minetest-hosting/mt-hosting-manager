@@ -32,7 +32,7 @@ export default {
     computed: {
         balance: get_balance,
         enough_funds: function() {
-            return this.balance >= this.nodetype.daily_cost;
+            return this.balance >= (10 * this.nodetype.daily_cost);
         },
         nodetype: function() {
             return get_nodetype(this.nodetype_id);
@@ -87,7 +87,7 @@ export default {
                         (for 30 days: <currency-display :eurocents="nodetype.daily_cost * 30"/>)
                         <div class="alert alert-warning" v-if="!enough_funds">
                             <i class="fa-solid fa-triangle-exclamation"></i>
-                            Not enough funds
+                            Not enough funds: there should at least enough funds to support 10 days of runtime
                         </div>
                     </td>
                 </tr>

@@ -148,7 +148,7 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
-	if user.Balance < nt.DailyCost {
+	if user.Balance < (10 * nt.DailyCost) {
 		SendError(w, 405, fmt.Errorf("remaining balance is less than the daily cost of the node-type"))
 		return
 	}
