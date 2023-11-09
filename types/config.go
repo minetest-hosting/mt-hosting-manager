@@ -24,7 +24,6 @@ type Config struct {
 	LogStreamKey        string
 	LogStreamDir        string
 	CookieName          string
-	CookieDomain        string
 	CookiePath          string
 	CookieSecure        bool
 	HetznerCloudKey     string
@@ -62,7 +61,6 @@ func NewConfig() *Config {
 		LogStreamKey:        os.Getenv("LOG_STREAM_KEY"),
 		LogStreamDir:        os.Getenv("LOG_STREAM_DIR"),
 		CookieName:          "mt-hosting-manager",
-		CookieDomain:        os.Getenv("COOKIE_DOMAIN"),
 		CookiePath:          os.Getenv("COOKIE_PATH"),
 		CookieSecure:        os.Getenv("COOKIE_SECURE") == "true",
 		HetznerCloudKey:     os.Getenv("HETZNER_CLOUD_KEY"),

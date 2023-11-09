@@ -19,7 +19,6 @@ func (api *Api) createCookie(value string, expires time.Time) *http.Cookie {
 		Value:    value,
 		Path:     api.cfg.CookiePath,
 		Expires:  expires,
-		Domain:   api.cfg.CookieDomain,
 		HttpOnly: true,
 		Secure:   api.cfg.CookieSecure,
 		SameSite: http.SameSiteStrictMode,

@@ -18,7 +18,6 @@ services:
   environment:
    - LOGLEVEL=debug
    - BASEURL=http://localhost:8080
-   - COOKIE_DOMAIN=localhost
    - COOKIE_PATH=/
    - COOKIE_SECURE=false
    - CSRF_KEY=my-csrf-key
