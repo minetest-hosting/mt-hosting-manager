@@ -33,7 +33,7 @@ func CreateClient(node *types.UserNode) (*ssh.Client, error) {
 		}
 		if fp != node.Fingerprint {
 			// fingerprint mismatch
-			return fmt.Errorf("fingerprint mismatch, on record: '%s'", node.Fingerprint)
+			return fmt.Errorf("fingerprint mismatch, on record: '%s' got: '%s'", node.Fingerprint, fp)
 		}
 
 		return nil
