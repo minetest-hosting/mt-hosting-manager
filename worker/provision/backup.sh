@@ -46,6 +46,7 @@ trap on_exit EXIT
 # create tar and stream to s3 bucket
 S3_URL="s3://${BUCKET}/${user_id}/${minetest_server_id}/${backup_id}.tar.gz"
 tar czf - -C ${snapshot_dir}/${minetest_server_id}/ . |\
+    gpg --batch --passphrase changeme --symmetric |\
     aws --endpoint-url ${AWS_ENDPOINT_URL} s3 cp --expected-size ${max_size} - ${S3_URL}
 
 # call api to complete backup entry
