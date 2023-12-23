@@ -52,12 +52,12 @@ func (r *UserRepository) Delete(user_id string) error {
 }
 
 func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update user set balance = balance + $1", eurocents)
+	_, err := r.db.Exec("update user set balance = balance + $1 where id = $2", eurocents, user_id)
 	return err
 }
 
 func (r *UserRepository) SubtractBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update user set balance = balance - $1", eurocents)
+	_, err := r.db.Exec("update user set balance = balance - $1 where id = $2", eurocents, user_id)
 	return err
 }
 
