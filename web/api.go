@@ -13,6 +13,7 @@ import (
 	"os"
 	"sync/atomic"
 
+	"github.com/dchest/captcha"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"github.com/vearutop/statigz"
@@ -61,6 +62,8 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/send_activation", api.SendActivationMail).Methods(http.MethodPost)
 	apir.HandleFunc("/activate", api.ActivationCallback).Methods(http.MethodPost)
 	apir.HandleFunc("/exchange_rate", api.GetExchangeRates)
+	apir.HandleFunc("/captcha", api.CreateCaptcha).Methods(http.MethodGet)
+	r.PathPrefix("/api/captcha/").Handler(captcha.Server(300, 200))
 
 	// user api
 	user_api := apir.NewRoute().Subrouter()

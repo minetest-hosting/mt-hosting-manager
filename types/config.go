@@ -20,6 +20,7 @@ type Config struct {
 	Webdev              bool
 	EnableWorker        bool
 	JWTKey              string
+	RedisURL            string
 	CoinbaseKey         string
 	CoinbaseEnabled     bool
 	LogStreamKey        string
@@ -58,6 +59,7 @@ func NewConfig() *Config {
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:              os.Getenv("JWT_KEY"),
+		RedisURL:            os.Getenv("REDIS_URL"),
 		CoinbaseKey:         os.Getenv("COINBASE_KEY"),
 		CoinbaseEnabled:     os.Getenv("COINBASE_ENABLED") == "true",
 		LogStreamKey:        os.Getenv("LOG_STREAM_KEY"),

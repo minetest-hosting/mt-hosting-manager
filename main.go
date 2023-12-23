@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web"
@@ -12,6 +13,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/dchest/captcha"
+	"github.com/go-redis/redis/v8"
 	"github.com/sirupsen/logrus"
 )
 
@@ -37,6 +40,20 @@ func main() {
 
 	cfg := types.NewConfig()
 	repos := db.NewRepositories(db_)
+
+	// redis/ captcha
+	captchaExp := 10 * time.Minute
+	var captchaStore captcha.Store = captcha.NewMemoryStore(50, captchaExp)
+	if cfg.RedisURL != "" {
+		rdb := redis.NewClient(&redis.Options{
+			Addr:     cfg.RedisURL,
+			Password: "",
+			DB:       0,
+		})
+
+		captchaStore = core.NewRedisCaptchaStore(rdb, captchaExp)
+	}
+	captcha.SetCustomStore(captchaStore)
 
 	// worker (optional)
 	var w *worker.Worker
