@@ -8,6 +8,12 @@ services:
   working_dir: /app/public
   command: ["npm", "ci"]
 
+ redis:
+  image: redis:7.2.3-alpine
+  restart: always
+  labels:
+   - "promtail=true"
+
  hosting:
   image: golang:1.20.7
   stop_grace_period: 1m
@@ -27,8 +33,11 @@ services:
    - WEBDEV=true
    - ENABLE_WORKER=true
    - INITIAL_BALANCE=350
+   - REDIS_URL=redis:6379
   env_file:
-    - .env
+   - .env
+  depends_on:
+   - redis
   ports:
    - "8080:8080"
   working_dir: /data
