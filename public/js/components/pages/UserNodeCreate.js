@@ -4,6 +4,7 @@ import CurrencyDisplay from "../CurrencyDisplay.js";
 import { create } from "../../api/node.js";
 import { get_nodetype, get_nodetypes } from "../../service/nodetype.js";
 import { get_balance, fetch_profile } from "../../service/user.js";
+import random_name from "../../util/random_name.js";
 
 export default {
 	components: {
@@ -13,7 +14,7 @@ export default {
     data: function() {
         return {
             nodetype_id: get_nodetypes()[0].id,
-            alias: "",
+            alias: random_name(),
             busy: false
         };
     },
