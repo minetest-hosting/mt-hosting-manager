@@ -84,7 +84,7 @@ export default {
 		<hr>
 		<div class="row" v-if="!is_logged_in">
 			<div class="col-6">
-				Register
+				Register a new account <router-link to="/register">here</router-link>
 			</div>
 			<div class="col6">
 			</div>

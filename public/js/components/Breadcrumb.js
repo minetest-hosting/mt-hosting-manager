@@ -25,3 +25,6 @@ export default {
 
     `
 };
+
+export const REGISTER = { name: "Register", icon: "user-plus", link: "/register" };
+export const HOME = { name: "Home", icon: "home", link: "/" };

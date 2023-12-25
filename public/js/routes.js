@@ -20,11 +20,14 @@ import Help from './components/pages/Help.js';
 import PrivacyPolicy from './components/pages/PrivacyPolicy.js';
 import TermsConditions from './components/pages/TermsConditions.js';
 import Pricing from './components/pages/Pricing.js';
+import Register from './components/pages/Register.js';
 
 export default [{
 	path: "/", component: Start
 },{
 	path: "/login", component: Login
+},{
+	path: "/register", component: Register
 },{
 	path: "/pricing", component: Pricing
 },{
