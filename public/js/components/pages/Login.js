@@ -10,7 +10,7 @@ export default {
             },{
                 icon: "user", name: "Login", link: "/login"
             }],
-			mail: "",
+			username: "",
 			password: "",
 			login_error: false
 		};
@@ -31,7 +31,7 @@ export default {
 		},
 		login: function() {
 			login({
-				mail: this.mail,
+				username: this.username,
 				password: this.password
 			})
 			.then(success => {
@@ -51,9 +51,9 @@ export default {
 	<card-layout title="Login" icon="user" :breadcrumb="breadcrumb">
 		<div class="row" v-if="!is_logged_in">
 			<div class="col-6">
-				<h5>Login with email and password</h5>
+				<h5>Login with username and password</h5>
 				<form @submit.prevent="login">
-					<input type="text" class="form-control" placeholder="E-Mail" v-model="mail" v-bind:class="{'is-invalid': login_error}"/>
+					<input type="text" class="form-control" placeholder="Username" v-model="username" v-bind:class="{'is-invalid': login_error}"/>
 					&nbsp;
 					<input type="password" class="form-control" placeholder="Password" v-model="password" v-bind:class="{'is-invalid': login_error}"/>
 					&nbsp;

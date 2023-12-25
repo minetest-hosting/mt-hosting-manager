@@ -46,7 +46,7 @@ export default {
     template: /*html*/`
     <div>
         <div class="input-group">
-            <input class="form-control" readonly="true" :value="user && user.mail"/>
+            <input class="form-control" readonly="true" :value="user && user.name"/>
             <button class="btn btn-outline-secondary" v-on:click="select_user(null)">
                 <i class="fa fa-trash"></i>
             </button>
