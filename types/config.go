@@ -8,6 +8,7 @@ import (
 type OAuthConfig struct {
 	ClientID string
 	Secret   string
+	LoginURL string
 }
 
 type Config struct {
@@ -37,6 +38,7 @@ type Config struct {
 	GithubOauthConfig   *OAuthConfig
 	DiscordOauthConfig  *OAuthConfig
 	MesehubOauthConfig  *OAuthConfig
+	CDBOauthConfig      *OAuthConfig
 	MailHost            string
 	MailAddress         string
 	MailPassword        string
@@ -83,6 +85,10 @@ func NewConfig() *Config {
 		MesehubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("MESEHUB_CLIENTID"),
 			Secret:   os.Getenv("MESEHUB_SECRET"),
+		},
+		CDBOauthConfig: &OAuthConfig{
+			ClientID: os.Getenv("CDB_CLIENTID"),
+			Secret:   os.Getenv("CDB_SECRET"),
 		},
 		MailHost:     os.Getenv("MAIL_HOST"),
 		MailAddress:  os.Getenv("MAIL_ADDRESS"),

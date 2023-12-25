@@ -1,6 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { logout, is_logged_in, login } from "../../service/login.js";
-import { get_github_client_id, get_discord_client_id, get_mesehub_client_id, get_baseurl } from "../../service/info.js";
+import { get_github_login, get_discord_login, get_mesehub_login, get_cdb_login } from "../../service/info.js";
 
 export default {
 	data: function() {
@@ -20,15 +20,6 @@ export default {
 	},
 	methods: {
 		logout,
-		github_href: function() {
-			return `https://github.com/login/oauth/authorize?client_id=${get_github_client_id()}&scope=user:email`;
-		},
-		discord_href: function() {
-			return `https://discord.com/api/oauth2/authorize?client_id=${get_discord_client_id()}&redirect_uri=${encodeURIComponent(get_baseurl()+'/oauth_callback/discord')}&response_type=code&scope=identify%20email`;
-		},
-		mesehub_href: function() {
-			return `https://git.minetest.land/login/oauth/authorize?client_id=${get_mesehub_client_id()}&redirect_uri=${encodeURIComponent(get_baseurl()+'/oauth_callback/mesehub')}&response_type=code&state=STATE&scope=email`;
-		},
 		login: function() {
 			login({
 				username: this.username,
@@ -37,15 +28,18 @@ export default {
 			.then(success => {
 				if (!success) {
 					this.login_error = true;
+				} else {
+					this.$router.push("/profile");
 				}
 			});
 		}
 	},
 	computed: {
 		is_logged_in,
-		get_github_client_id,
-		get_discord_client_id,
-		get_mesehub_client_id
+		get_github_login,
+		get_discord_login,
+		get_mesehub_login,
+		get_cdb_login
 	},
 	template: /*html*/`
 	<card-layout title="Login" icon="user" :breadcrumb="breadcrumb">
@@ -65,19 +59,24 @@ export default {
 			</div>
 			<div class="col-6">
 				<h5>Login with external provider</h5>
-				<a :href="github_href()" class="btn btn-secondary w-100" v-if="get_github_client_id">
+				<a :href="get_github_login" class="btn btn-secondary w-100" v-if="get_github_login">
 					<i class="fab fa-github"></i>
 					Login with Github
 				</a>
 				&nbsp;
-				<a :href="discord_href()" class="btn btn-secondary w-100" v-if="get_discord_client_id">
+				<a :href="get_discord_login" class="btn btn-secondary w-100" v-if="get_discord_login">
 					<i class="fab fa-discord"></i>
 					Login with Discord
 				</a>
 				&nbsp;
-				<a :href="mesehub_href()" class="btn btn-secondary w-100" v-if="get_mesehub_client_id">
+				<a :href="get_mesehub_login" class="btn btn-secondary w-100" v-if="get_mesehub_login">
 					<img src="assets/default_mese_crystal.png">
 					Login with Mesehub
+				</a>
+				&nbsp;
+				<a :href="get_cdb_login" class="btn btn-secondary w-100" v-if="get_cdb_login">
+					<img src="assets/contentdb.png" height="24" width="24">
+					Login with ContentDB
 				</a>
 			</div>
 		</div>

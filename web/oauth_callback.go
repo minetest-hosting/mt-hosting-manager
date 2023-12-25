@@ -1,27 +1,32 @@
 package web
 
 import (
-	"fmt"
-	"mt-hosting-manager/notify"
-	"mt-hosting-manager/types"
 	"net/http"
+
+	"github.com/minetest-go/oauth"
 )
 
-func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user bool) error {
+func (api *Api) OauthCallback(w http.ResponseWriter, r *http.Request, user_info *oauth.OauthUserInfo) error {
 
-	if new_user {
-		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
-			Message:  fmt.Sprintf("Name: %s, Auth: %s", user.Name, user.Type),
-			Priority: 3,
-			Tags:     []string{"new"},
-		}, true)
-
-		api.core.AddAuditLog(&types.AuditLog{
-			Type:   types.AuditLogUserCreated,
-			UserID: user.ID,
-		})
+	user, err := api.repos.UserRepo.GetByNameAndExternalID(user_info.Name, user_info.ExternalID)
+	if err != nil {
+		return err
 	}
 
-	return api.loginUser(w, user)
+	if user == nil {
+		user, err = api.core.RegisterOauth(user_info)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = api.loginUser(w, user)
+	if err != nil {
+		return err
+	}
+
+	target := api.cfg.BaseURL + "/#/profile"
+	http.Redirect(w, r, target, http.StatusSeeOther)
+
+	return nil
 }
