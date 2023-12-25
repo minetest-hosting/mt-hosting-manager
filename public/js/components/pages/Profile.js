@@ -32,8 +32,8 @@ export default {
 	<card-layout title="Profile" icon="user" :breadcrumb="breadcrumb">
 		<table class="table" v-if="profile">
 			<tr>
-				<td>Mail</td>
-				<td>{{profile.mail}}</td>
+				<td>Name</td>
+				<td>{{profile.name}}</td>
 			</tr>
 			<tr>
 				<td>Role</td>
@@ -53,21 +53,6 @@ export default {
 				<td>Balance</td>
 				<td>
 					<currency-display :eurocents="profile.balance" :enable_warning="true"/>
-				</td>
-			</tr>
-			<tr>
-				<td>Warning balance threshold</td>
-				<td>
-					<div class="input-group">
-                        <span class="input-group-text">&euro;</span>
-						<input type="number" class="form-control" min="0" :value="profile.warn_balance / 100" v-on:input="e => profile.warn_balance = e.target.value * 100"/>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>Send balance warning mail</td>
-				<td>
-					<input type="checkbox" class="form-check-input" v-model="profile.warn_enabled"/>
 				</td>
 			</tr>
 			<tr>

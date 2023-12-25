@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/wallee"
 	"mt-hosting-manager/core"
@@ -8,13 +9,13 @@ import (
 	"mt-hosting-manager/public"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/web/middleware"
-	"mt-hosting-manager/web/oauth"
 	"net/http"
 	"os"
 	"sync/atomic"
 
 	"github.com/dchest/captcha"
 	"github.com/gorilla/mux"
+	"github.com/minetest-go/oauth"
 	"github.com/sirupsen/logrus"
 	"github.com/vearutop/statigz"
 	"github.com/vearutop/statigz/brotli"
@@ -56,11 +57,10 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
 	apir.HandleFunc("/login", api.Login).Methods(http.MethodPost)
+	apir.HandleFunc("/register", api.Register).Methods(http.MethodPost)
 	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
-	apir.HandleFunc("/send_activation", api.SendActivationMail).Methods(http.MethodPost)
-	apir.HandleFunc("/activate", api.ActivationCallback).Methods(http.MethodPost)
 	apir.HandleFunc("/exchange_rate", api.GetExchangeRates)
 	apir.HandleFunc("/captcha", api.CreateCaptcha).Methods(http.MethodGet)
 	r.PathPrefix("/api/captcha/").Handler(captcha.Server(300, 200))
@@ -112,46 +112,50 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.DeleteJob)).Methods(http.MethodDelete)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.RetryJob)).Methods(http.MethodPost)
-	admin_api.HandleFunc("/mail/send/{user_id}", api.Secure(api.SendMail)).Methods(http.MethodPost)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {
-		oauth_handler := &oauth.OauthHandler{
-			Core:     api.core,
-			Impl:     &oauth.GithubOauth{},
-			UserRepo: api.repos.UserRepo,
-			Config:   api.cfg.GithubOauthConfig,
-			BaseURL:  api.cfg.BaseURL,
-			Type:     types.UserTypeGithub,
-			Callback: api.OauthCallback,
-		}
+		oauth_handler := oauth.NewHandler(api.OauthCallback, &oauth.OAuthConfig{
+			Provider:    oauth.ProviderTypeGithub,
+			ClientID:    api.cfg.GithubOauthConfig.ClientID,
+			Secret:      api.cfg.GithubOauthConfig.Secret,
+			CallbackURL: fmt.Sprintf("%s/oauth_callback/github", api.cfg.BaseURL),
+		})
 		r.Handle("/oauth_callback/github", oauth_handler)
+		api.cfg.GithubOauthConfig.LoginURL = oauth_handler.LoginURL()
 	}
 
 	if api.cfg.DiscordOauthConfig.ClientID != "" {
-		oauth_handler := &oauth.OauthHandler{
-			Core:     api.core,
-			Impl:     &oauth.DiscordOauth{},
-			UserRepo: api.repos.UserRepo,
-			Config:   api.cfg.DiscordOauthConfig,
-			BaseURL:  api.cfg.BaseURL,
-			Type:     types.UserTypeDiscord,
-			Callback: api.OauthCallback,
-		}
+		oauth_handler := oauth.NewHandler(api.OauthCallback, &oauth.OAuthConfig{
+			Provider:    oauth.ProviderTypeDiscord,
+			ClientID:    api.cfg.DiscordOauthConfig.ClientID,
+			Secret:      api.cfg.DiscordOauthConfig.Secret,
+			CallbackURL: fmt.Sprintf("%s/oauth_callback/discord", api.cfg.BaseURL),
+		})
 		r.Handle("/oauth_callback/discord", oauth_handler)
+		api.cfg.DiscordOauthConfig.LoginURL = oauth_handler.LoginURL()
 	}
 
 	if api.cfg.MesehubOauthConfig.ClientID != "" {
-		oauth_handler := &oauth.OauthHandler{
-			Core:     api.core,
-			Impl:     &oauth.MesehubOauth{},
-			UserRepo: api.repos.UserRepo,
-			Config:   api.cfg.MesehubOauthConfig,
-			BaseURL:  api.cfg.BaseURL,
-			Type:     types.UserTypeMesehub,
-			Callback: api.OauthCallback,
-		}
+		oauth_handler := oauth.NewHandler(api.OauthCallback, &oauth.OAuthConfig{
+			Provider:    oauth.ProviderTypeMesehub,
+			ClientID:    api.cfg.MesehubOauthConfig.ClientID,
+			Secret:      api.cfg.MesehubOauthConfig.Secret,
+			CallbackURL: fmt.Sprintf("%s/oauth_callback/mesehub", api.cfg.BaseURL),
+		})
 		r.Handle("/oauth_callback/mesehub", oauth_handler)
+		api.cfg.MesehubOauthConfig.LoginURL = oauth_handler.LoginURL()
+	}
+
+	if api.cfg.CDBOauthConfig.ClientID != "" {
+		oauth_handler := oauth.NewHandler(api.OauthCallback, &oauth.OAuthConfig{
+			Provider:    oauth.ProviderTypeCDB,
+			ClientID:    api.cfg.CDBOauthConfig.ClientID,
+			Secret:      api.cfg.CDBOauthConfig.Secret,
+			CallbackURL: fmt.Sprintf("%s/oauth_callback/cdb", api.cfg.BaseURL),
+		})
+		r.Handle("/oauth_callback/cdb", oauth_handler)
+		api.cfg.CDBOauthConfig.LoginURL = oauth_handler.LoginURL()
 	}
 
 	// static files

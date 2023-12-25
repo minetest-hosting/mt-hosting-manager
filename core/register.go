@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"mt-hosting-manager/types"
-	"time"
 
 	"github.com/minetest-go/oauth"
 
@@ -37,14 +36,7 @@ func (c *Core) RegisterOauth(user_info *oauth.OauthUserInfo) (*types.User, error
 		}
 	}
 
-	user = &types.User{
-		Created:    time.Now().Unix() * 1000,
-		Name:       new_name,
-		Type:       types.UserType(user_info.Provider),
-		Role:       types.UserRoleUser,
-		ExternalID: user_info.ExternalID,
-	}
-	err = c.repos.UserRepo.Insert(user)
+	user, err = c.CreateUser(new_name, user_info.ExternalID, "", types.UserType(user_info.Provider), types.UserRoleUser)
 	if err != nil {
 		return nil, err
 	}
@@ -66,14 +58,7 @@ func (c *Core) RegisterLocal(rr *types.RegisterRequest) (*types.User, *types.Che
 		return nil, nil, err
 	}
 
-	user := &types.User{
-		Created: time.Now().Unix() * 1000,
-		Name:    rr.Name,
-		Type:    types.UserTypeLocal,
-		Role:    types.UserRoleUser,
-		Hash:    string(hash),
-	}
-	err = c.repos.UserRepo.Insert(user)
+	user, err := c.CreateUser(rr.Name, "", string(hash), types.UserTypeLocal, types.UserRoleUser)
 	if err != nil {
 		return nil, nil, err
 	}

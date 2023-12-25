@@ -60,11 +60,6 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">
-						<router-link to="/sendmail" class="nav-link">
-							<i class="fa fa-envelope"></i> Send mail
-						</router-link>
-					</li>
-					<li class="nav-item" v-if="has_role('ADMIN')">
 						<router-link to="/jobs" class="nav-link">
 							<i class="fa fa-play"></i> Jobs
 						</router-link>
@@ -95,7 +90,7 @@ export default {
 							<router-link to="/profile">
 								<i class="fas fa-user"></i>
 								<span>
-									Logged in as <b>{{claims.mail}}</b>
+									Logged in as <b>{{claims.name}}</b>
 								</span>
 							</router-link>
 						</button>

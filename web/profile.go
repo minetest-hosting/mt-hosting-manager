@@ -8,19 +8,19 @@ import (
 )
 
 func (a *Api) GetUserProfile(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	user, err := a.repos.UserRepo.GetByMail(c.Mail)
+	user, err := a.repos.UserRepo.GetByID(c.UserID)
 	user.RemoveSensitiveFields()
 	Send(w, user, err)
 }
 
 func (a *Api) UpdateUserProfile(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	user, err := a.repos.UserRepo.GetByMail(c.Mail)
+	user, err := a.repos.UserRepo.GetByID(c.UserID)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("user fetch error: %v", err))
 		return
 	}
 	if user == nil {
-		SendError(w, 404, fmt.Errorf("user not found: '%s'", c.Mail))
+		SendError(w, 404, fmt.Errorf("user not found: '%s'", c.UserID))
 		return
 	}
 
@@ -33,8 +33,6 @@ func (a *Api) UpdateUserProfile(w http.ResponseWriter, r *http.Request, c *types
 
 	// update allowed fields
 	user.Currency = updated_user.Currency
-	user.WarnBalance = updated_user.WarnBalance
-	user.WarnEnabled = updated_user.WarnEnabled
 
 	err = a.repos.UserRepo.Update(user)
 	Send(w, user, err)

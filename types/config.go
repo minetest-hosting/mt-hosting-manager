@@ -8,6 +8,7 @@ import (
 type OAuthConfig struct {
 	ClientID string
 	Secret   string
+	LoginURL string
 }
 
 type Config struct {
@@ -15,7 +16,6 @@ type Config struct {
 	HostingDomainSuffix string
 	ReservedPrefixes    []string
 	Stage               string
-	SignupWhitelist     []string
 	InitialBalance      string
 	Webdev              bool
 	EnableWorker        bool
@@ -38,6 +38,7 @@ type Config struct {
 	GithubOauthConfig   *OAuthConfig
 	DiscordOauthConfig  *OAuthConfig
 	MesehubOauthConfig  *OAuthConfig
+	CDBOauthConfig      *OAuthConfig
 	MailHost            string
 	MailAddress         string
 	MailPassword        string
@@ -54,7 +55,6 @@ func NewConfig() *Config {
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
 		ReservedPrefixes:    strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
 		Stage:               os.Getenv("STAGE"),
-		SignupWhitelist:     strings.Split(os.Getenv("SIGNUP_WHITELIST"), ","),
 		InitialBalance:      os.Getenv("INITIAL_BALANCE"),
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
@@ -85,6 +85,10 @@ func NewConfig() *Config {
 		MesehubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("MESEHUB_CLIENTID"),
 			Secret:   os.Getenv("MESEHUB_SECRET"),
+		},
+		CDBOauthConfig: &OAuthConfig{
+			ClientID: os.Getenv("CDB_CLIENTID"),
+			Secret:   os.Getenv("CDB_SECRET"),
 		},
 		MailHost:     os.Getenv("MAIL_HOST"),
 		MailAddress:  os.Getenv("MAIL_ADDRESS"),

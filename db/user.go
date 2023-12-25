@@ -22,7 +22,7 @@ func (r *UserRepository) Insert(u *types.User) error {
 }
 
 func (r *UserRepository) Update(u *types.User) error {
-	return r.dbu.Update(u, "where mail =%s", u.Mail)
+	return r.dbu.Update(u, "where id = %s", u.ID)
 }
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {
@@ -36,6 +36,15 @@ func (r *UserRepository) GetByID(id string) (*types.User, error) {
 
 func (r *UserRepository) GetByName(name string) (*types.User, error) {
 	u, err := r.dbu.Select("where name = %s", name)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else {
+		return u, err
+	}
+}
+
+func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id string) (*types.User, error) {
+	u, err := r.dbu.Select("where type = %s and external_id = %s", t, external_id)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	} else {
@@ -74,9 +83,9 @@ func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
 	q := "where true=true"
 	params := []any{}
 
-	if s.MailLike != nil {
-		q += " and mail like %s"
-		params = append(params, *s.MailLike)
+	if s.NameLike != nil {
+		q += " and name like %s"
+		params = append(params, *s.NameLike)
 	}
 
 	if s.Limit != nil && *s.Limit > 0 && *s.Limit < 100 {

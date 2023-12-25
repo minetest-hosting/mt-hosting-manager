@@ -25,31 +25,25 @@ const (
 func UserProvider() *User { return &User{} }
 
 type User struct {
-	ID             string    `json:"id"`
-	State          UserState `json:"state"`
-	Name           string    `json:"name"`
-	Hash           string    `json:"hash"`
-	Mail           string    `json:"mail"`
-	MailVerified   bool      `json:"mail_verified"`
-	ActivationCode string    `json:"activation_code"`
-	Created        int64     `json:"created"`
-	Balance        int64     `json:"balance"`
-	WarnBalance    int64     `json:"warn_balance"`
-	WarnEnabled    bool      `json:"warn_enabled"`
-	ExternalID     string    `json:"external_id"`
-	Currency       string    `json:"currency"`
-	Type           UserType  `json:"type"`
-	Role           UserRole  `json:"role"`
+	ID         string    `json:"id"`
+	State      UserState `json:"state"`
+	Name       string    `json:"name"`
+	Hash       string    `json:"hash"`
+	Created    int64     `json:"created"`
+	Balance    int64     `json:"balance"`
+	ExternalID string    `json:"external_id"`
+	Currency   string    `json:"currency"`
+	Type       UserType  `json:"type"`
+	Role       UserRole  `json:"role"`
 }
 
 func (u *User) RemoveSensitiveFields() {
 	u.Hash = ""
-	u.ActivationCode = ""
 	u.ExternalID = ""
 }
 
 type UserSearch struct {
-	MailLike *string `json:"mail_like"`
+	NameLike *string `json:"name_like"`
 	Limit    *int    `json:"limit"`
 }
 
@@ -59,13 +53,8 @@ func (m *User) Columns(action string) []string {
 		"state",
 		"name",
 		"hash",
-		"mail",
-		"mail_verified",
-		"activation_code",
 		"created",
 		"balance",
-		"warn_balance",
-		"warn_enabled",
 		"external_id",
 		"currency",
 		"type",
@@ -83,13 +72,8 @@ func (m *User) Scan(action string, r func(dest ...any) error) error {
 		&m.State,
 		&m.Name,
 		&m.Hash,
-		&m.Mail,
-		&m.MailVerified,
-		&m.ActivationCode,
 		&m.Created,
 		&m.Balance,
-		&m.WarnBalance,
-		&m.WarnEnabled,
 		&m.ExternalID,
 		&m.Currency,
 		&m.Type,
@@ -103,13 +87,8 @@ func (m *User) Values(action string) []any {
 		m.State,
 		m.Name,
 		m.Hash,
-		m.Mail,
-		m.MailVerified,
-		m.ActivationCode,
 		m.Created,
 		m.Balance,
-		m.WarnBalance,
-		m.WarnEnabled,
 		m.ExternalID,
 		m.Currency,
 		m.Type,
