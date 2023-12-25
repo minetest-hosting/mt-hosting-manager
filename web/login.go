@@ -25,7 +25,7 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 		SendError(w, 500, err)
 	} else {
 		// refresh token
-		auth_entry, err := a.repos.UserRepo.GetByMail(claims.Mail)
+		auth_entry, err := a.repos.UserRepo.GetByID(claims.UserID)
 		if err != nil {
 			SendError(w, 500, err)
 			return
@@ -40,14 +40,14 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 			RegisteredClaims: &jwt.RegisteredClaims{
 				ExpiresAt: jwt.NewNumericDate(expires),
 			},
-			Mail:   claims.Mail,
-			UserID: claims.ID,
-			Role:   claims.Role,
+			UserID: auth_entry.ID,
+			Name:   auth_entry.Name,
+			Role:   auth_entry.Role,
 		}
 
 		a.core.AddAuditLog(&types.AuditLog{
 			Type:   types.AuditLogUserLoggedIn,
-			UserID: claims.UserID,
+			UserID: auth_entry.ID,
 		})
 
 		err = a.SetClaims(w, claims)
@@ -94,23 +94,9 @@ func (a *Api) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *Api) loginUser(w http.ResponseWriter, user *types.User) error {
-	if a.cfg.SignupWhitelist[0] != "" {
-		// check whitelist
-		found := false
-		for _, mail := range a.cfg.SignupWhitelist {
-			if user.Mail == mail {
-				found = true
-				break
-			}
-		}
-		if !found {
-			return fmt.Errorf("login currently restricted, sorry")
-		}
-	}
-
 	dur := time.Duration(24 * 180 * time.Hour)
 	claims := &types.Claims{
-		Mail:   user.Mail,
+		Name:   user.Name,
 		Role:   user.Role,
 		UserID: user.ID,
 		RegisteredClaims: &jwt.RegisteredClaims{

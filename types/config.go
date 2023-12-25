@@ -15,7 +15,6 @@ type Config struct {
 	HostingDomainSuffix string
 	ReservedPrefixes    []string
 	Stage               string
-	SignupWhitelist     []string
 	InitialBalance      string
 	Webdev              bool
 	EnableWorker        bool
@@ -54,7 +53,6 @@ func NewConfig() *Config {
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
 		ReservedPrefixes:    strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
 		Stage:               os.Getenv("STAGE"),
-		SignupWhitelist:     strings.Split(os.Getenv("SIGNUP_WHITELIST"), ","),
 		InitialBalance:      os.Getenv("INITIAL_BALANCE"),
 		Webdev:              os.Getenv("WEBDEV") == "true",
 		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
