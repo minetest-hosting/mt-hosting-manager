@@ -6,7 +6,7 @@ export default {
     data: function() {
         return {
             show_modal: false,
-            mail_like: this.modelValue ? this.modelValue.mail : "",
+            user_like: this.modelValue ? this.modelValue.name : "",
             busy: false,
             users: [],
             user: null
@@ -22,13 +22,13 @@ export default {
             this.show_modal = false;
         },
         search: debounce(function() {
-            if (this.mail_like == "") {
+            if (this.user_like == "") {
                 this.users = [];
                 return;
             }
             this.busy = true;
             search_user({
-                mail_like: `%${this.mail_like}%`,
+                user_like: `%${this.user_like}%`,
                 limit: 10
             })
             .then(l => {
@@ -38,7 +38,7 @@ export default {
         }, 250)
     },
     watch: {
-        "mail_like": "search",
+        "user_like": "search",
         "modelValue": function() {
             this.user = this.modelValue;
         }
@@ -65,19 +65,17 @@ export default {
                         <button type="button" class="btn-close" v-on:click="show_modal = null"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" class="form-control" v-model="mail_like"/>
+                        <input type="text" class="form-control" v-model="user_like"/>
                         <table class="table table-condensed table-striped">
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Mail</th>
                                     <th>Select</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="user in users" :key="user.id" v-bind:class="{'table-success':modelValue && modelValue.id == user.id}">
                                     <td>{{user.name}}</td>
-                                    <td>{{user.mail}}</td>
                                     <td>
                                         <i class="fa-regular fa-square-check" v-on:click="select_user(user)"></i>
                                     </td>
