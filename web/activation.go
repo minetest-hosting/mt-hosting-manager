@@ -28,7 +28,7 @@ func (a *Api) SendActivationMail(w http.ResponseWriter, r *http.Request) {
 	}
 	if user == nil {
 		// create new user
-		user, err = a.core.CreateUser(sar.Mail, types.UserTypeLocal, types.UserRoleUser, false)
+		user, err = a.core.CreateUser(sar.Mail, sar.Mail, types.UserTypeLocal, types.UserRoleUser, false)
 		if err != nil {
 			SendError(w, 500, err)
 			return

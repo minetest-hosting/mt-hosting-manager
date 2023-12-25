@@ -82,7 +82,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			role = types.UserRoleAdmin
 		}
 
-		user, err = h.Core.CreateUser(info.Email, h.Type, role, true)
+		user, err = h.Core.CreateUser(info.Name, info.Email, h.Type, role, true)
 		if err != nil {
 			SendError(w, 500, err.Error())
 			return

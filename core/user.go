@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (c *Core) CreateUser(mail string, t types.UserType, role types.UserRole, mailVerified bool) (*types.User, error) {
+func (c *Core) CreateUser(name, mail string, t types.UserType, role types.UserRole, mailVerified bool) (*types.User, error) {
 	var balance int64 = 0
 	var warnBalance int64 = 200
 
@@ -21,7 +21,7 @@ func (c *Core) CreateUser(mail string, t types.UserType, role types.UserRole, ma
 
 	user := &types.User{
 		ID:           uuid.NewString(),
-		Name:         mail,
+		Name:         name,
 		Mail:         mail,
 		MailVerified: mailVerified,
 		State:        types.UserStateActive,
