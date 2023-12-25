@@ -18,6 +18,7 @@ create table user(
 );
 
 create unique index user_mail on user(mail);
+create unique index user_name on user(name);
 
 -- available node types to select
 create table node_type(
