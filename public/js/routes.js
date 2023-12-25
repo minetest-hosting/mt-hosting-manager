@@ -20,6 +20,7 @@ import PrivacyPolicy from './components/pages/PrivacyPolicy.js';
 import TermsConditions from './components/pages/TermsConditions.js';
 import Pricing from './components/pages/Pricing.js';
 import Register from './components/pages/Register.js';
+import Overview from './components/pages/Overview.js';
 
 export default [{
 	path: "/", component: Start
@@ -27,6 +28,8 @@ export default [{
 	path: "/login", component: Login
 },{
 	path: "/register", component: Register
+},{
+	path: "/overview", component: Overview
 },{
 	path: "/pricing", component: Pricing
 },{

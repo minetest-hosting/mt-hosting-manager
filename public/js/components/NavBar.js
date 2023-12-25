@@ -65,6 +65,11 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="is_logged_in">
+						<router-link to="/overview" class="nav-link">
+							<i class="fa fa-map"></i> Overview
+						</router-link>
+					</li>
+					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/nodes" class="nav-link">
 							<i class="fa fa-server"></i> Nodes
 						</router-link>

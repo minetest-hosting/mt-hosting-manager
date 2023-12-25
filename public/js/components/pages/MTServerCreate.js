@@ -2,20 +2,22 @@ import CardLayout from "../layouts/CardLayout.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { create as create_server, create_validate } from "../../api/mtserver.js";
 import { get_all as get_all_nodes } from "../../api/node.js";
+import random_name from "../../util/random_name.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout
 	},
 	data: function() {
+		const n = random_name().toLowerCase().replaceAll("-", "");
 		return {
 			validation_result: {},
 			user_nodes: [],
 			user_node_id: this.$route.query.node ? this.$route.query.node : "",
 			port: 30000,
 			admin: "admin",
-			name: "",
-			dns_name: "",
+			name: n,
+			dns_name: n,
 			dns_suffix: get_hostingdomain_suffix(),
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
@@ -29,7 +31,10 @@ export default {
 	mounted: function() {
 		get_all_nodes()
 		.then(n => {
-			this.user_node_id = n[0].id;
+			if (this.user_node_id == "") {
+				// default node id
+				this.user_node_id = n[0].id;
+			}
 			this.user_nodes = n;
 		});
 	},
