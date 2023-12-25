@@ -45,6 +45,8 @@ github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 h1:jWpvCLoY8Z/e3VKvls
 github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0/go.mod h1:QUyp042oQthUoa9bqDv0ER0wrtXnBruoNd7aNjkbP+k=
 github.com/minetest-go/dbutil v1.1.0 h1:eQp4NC1pctAxrLUeq4otCDz8N4szja2rE/nz40XQQJY=
 github.com/minetest-go/dbutil v1.1.0/go.mod h1:STa/8ka7xZgs4OMOQcKX5vcYU5YUuImQaMEyDwWmnko=
+github.com/minetest-go/oauth v1.0.0 h1:J1V8lSR2wZrrQ/PazcjyKSAGZN1vgoU6eEcwsoXPpcw=
+github.com/minetest-go/oauth v1.0.0/go.mod h1:F55pfJpL8sDI7FrYSZytfQwnr6IZW9nWk9jqOvmUhjQ=
 github.com/pkg/sftp v1.13.6 h1:JFZT4XbOU7l77xGSpOdW+pwIMqP044IyjXX6FGyEKFo=
 github.com/pkg/sftp v1.13.6/go.mod h1:tz1ryNURKu77RL+GuCzmoJYxQczL3wLNNpPWagdg4Qk=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

@@ -1,6 +1,6 @@
 module mt-hosting-manager
 
-go 1.19
+go 1.21.5
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -32,6 +32,7 @@ require (
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
+	github.com/minetest-go/oauth v1.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.4.1-0.20230718164431-9a2bf3000d16 // indirect
 	github.com/prometheus/procfs v0.11.1 // indirect
