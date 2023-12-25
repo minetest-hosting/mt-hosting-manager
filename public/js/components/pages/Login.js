@@ -56,6 +56,7 @@ export default {
 						Login
 					</button>
 				</form>
+				Register a new account <router-link to="/register">here</router-link>
 			</div>
 			<div class="col-6">
 				<h5>Login with external provider</h5>
@@ -81,13 +82,6 @@ export default {
 			</div>
 		</div>
 		<hr>
-		<div class="row" v-if="!is_logged_in">
-			<div class="col-6">
-				Register a new account <router-link to="/register">here</router-link>
-			</div>
-			<div class="col6">
-			</div>
-		</div>
 		<a class="btn btn-primary w-100" v-on:click="logout" v-if="is_logged_in">
 			<i class="fa-solid fa-right-from-bracket"></i>
 			Logout
