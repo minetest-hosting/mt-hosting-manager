@@ -1,6 +1,8 @@
 import CardLayout from "../layouts/CardLayout.js";
 import NodeLink from "../NodeLink.js";
 import ServerLink from "../ServerLink.js";
+import NodeState from "../NodeState.js";
+import ServerState from "../ServerState.js";
 
 import { get_all, get_mtservers_by_nodeid } from "../../api/node.js";
 
@@ -8,7 +10,9 @@ export default {
 	components: {
 		"card-layout": CardLayout,
         "node-link": NodeLink,
-        "server-link": ServerLink
+        "server-link": ServerLink,
+        "node-state": NodeState,
+        "server-state": ServerState
 	},
 	data: function() {
 		return {
@@ -46,11 +50,15 @@ export default {
             <div class="card" style="min-height: 250px;">
                 <div class="card-header">
                     <node-link :node="entry.node"/>
+                    &nbsp;
+                    <node-state :state="entry.node.state"/>
                 </div>
                 <div class="card-body">
                     <ul>
                         <li v-for="server in entry.servers">
                             <server-link :server="server"/>
+                            &nbsp;
+                            <server-state :state="server.state"/>
                         </li>
                     </ul>
                 </div>
