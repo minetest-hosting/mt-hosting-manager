@@ -75,7 +75,7 @@ export default {
 				</a>
 				&nbsp;
 				<a :href="get_cdb_login" class="btn btn-secondary w-100" v-if="get_cdb_login">
-					<img src="assets/contentdb.png" height="24" width="24">
+					<img src="assets/contentdb.png" height="20" width="20">
 					Login with ContentDB
 				</a>
 			</div>
