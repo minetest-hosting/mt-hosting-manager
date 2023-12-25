@@ -1,6 +1,7 @@
 package web
 
 import (
+	"mt-hosting-manager/types"
 	"net/http"
 
 	"github.com/minetest-go/oauth"
@@ -8,7 +9,7 @@ import (
 
 func (api *Api) OauthCallback(w http.ResponseWriter, r *http.Request, user_info *oauth.OauthUserInfo) error {
 
-	user, err := api.repos.UserRepo.GetByNameAndExternalID(user_info.Name, user_info.ExternalID)
+	user, err := api.repos.UserRepo.GetByTypeAndExternalID(types.UserType(user_info.Provider), user_info.ExternalID)
 	if err != nil {
 		return err
 	}
