@@ -10,7 +10,6 @@ import (
 
 func (c *Core) CreateUser(name, mail string, t types.UserType, role types.UserRole, mailVerified bool) (*types.User, error) {
 	var balance int64 = 0
-	var warnBalance int64 = 200
 
 	if c.cfg.InitialBalance != "" {
 		b, err := strconv.ParseInt(c.cfg.InitialBalance, 10, 32)
@@ -20,17 +19,14 @@ func (c *Core) CreateUser(name, mail string, t types.UserType, role types.UserRo
 	}
 
 	user := &types.User{
-		ID:           uuid.NewString(),
-		Name:         name,
-		Mail:         mail,
-		MailVerified: mailVerified,
-		State:        types.UserStateActive,
-		Created:      time.Now().Unix(),
-		Balance:      balance,
-		WarnBalance:  warnBalance,
-		Currency:     "EUR",
-		Type:         t,
-		Role:         role,
+		ID:       uuid.NewString(),
+		Name:     name,
+		State:    types.UserStateActive,
+		Created:  time.Now().Unix(),
+		Balance:  balance,
+		Currency: "EUR",
+		Type:     t,
+		Role:     role,
 	}
 	return user, c.repos.UserRepo.Insert(user)
 }

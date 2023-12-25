@@ -86,8 +86,8 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 		})
 
 		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Mail, float64(create_tx_req.Amount)/100),
-			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(create_tx_req.Amount)/100),
+			Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Name, float64(create_tx_req.Amount)/100),
+			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Name, float64(create_tx_req.Amount)/100),
 			Click:    &url,
 			Priority: 3,
 			Tags:     []string{"credit_card", "new"},
@@ -209,8 +209,8 @@ func (c *Core) RefundTransaction(id string) (*types.PaymentTransaction, error) {
 		})
 
 		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Mail, float64(refund_amount)/100),
-			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(refund_amount)/100),
+			Title:    fmt.Sprintf("Payment refunded by %s (%.2f)", user.Name, float64(refund_amount)/100),
+			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Name, float64(refund_amount)/100),
 			Priority: 3,
 			Tags:     []string{"coin", "recycle"},
 		}, true)
@@ -279,8 +279,8 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 				})
 
 				notify.Send(&notify.NtfyNotification{
-					Title:    fmt.Sprintf("Payment received by %s (%.2f)", user.Mail, float64(tx.Amount)/100),
-					Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+					Title:    fmt.Sprintf("Payment received by %s (%.2f)", user.Name, float64(tx.Amount)/100),
+					Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Name, float64(tx.Amount)/100),
 					Priority: 3,
 					Tags:     []string{"coin"},
 				}, true)
@@ -337,8 +337,8 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 
 					notify.Send(&notify.NtfyNotification{
 						Title: fmt.Sprintf("Crypto payment (%s %s, local: %d eurocent) received from %s",
-							crypto_value.Amount, crypto_value.Currency, eurocent_value, user.Mail),
-						Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Mail, float64(tx.Amount)/100),
+							crypto_value.Amount, crypto_value.Currency, eurocent_value, user.Name),
+						Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Name, float64(tx.Amount)/100),
 						Priority: 3,
 						Tags:     []string{"coin"},
 					}, true)

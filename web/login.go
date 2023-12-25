@@ -56,7 +56,7 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 type LoginRequest struct {
-	Mail     string `json:"mail"`
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -68,13 +68,17 @@ func (a *Api) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := a.repos.UserRepo.GetByMail(lr.Mail)
+	user, err := a.repos.UserRepo.GetByName(lr.Username)
 	if err != nil {
 		SendError(w, 500, err)
 		return
 	}
 	if user == nil {
-		SendError(w, 404, fmt.Errorf("user with mail '%s' not found", lr.Mail))
+		SendError(w, 404, fmt.Errorf("user with name '%s' not found", lr.Username))
+		return
+	}
+	if user.Type != types.UserTypeLocal {
+		SendError(w, 405, fmt.Errorf("non-local user"))
 		return
 	}
 	if user.Hash == "" {

@@ -24,7 +24,7 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 		return fmt.Errorf("could not fetch after user: %v", err)
 	}
 
-	if before_user.Balance >= before_user.WarnBalance && after_user.Balance < before_user.WarnBalance {
+	if before_user.Balance >= 500 && after_user.Balance < 500 {
 		// crossed warning threshold
 		c.AddAuditLog(&types.AuditLog{
 			Type:   types.AuditLogPaymentWarning,
@@ -33,22 +33,11 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 		})
 
 		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("User %s balance warning (%.2f)", after_user.Mail, float64(after_user.Balance)/100),
-			Message:  fmt.Sprintf("User: %s crossed warning threshold: EUR %.2f", after_user.Mail, float64(after_user.Balance)/100),
+			Title:    fmt.Sprintf("User %s balance warning (%.2f)", after_user.Name, float64(after_user.Balance)/100),
+			Message:  fmt.Sprintf("User: %s crossed warning threshold: EUR %.2f", after_user.Name, float64(after_user.Balance)/100),
 			Priority: 3,
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
-
-		err = c.SendBalanceWarning(after_user)
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"err":            err,
-				"user_id":        user_id,
-				"before_balance": before_user.Balance,
-				"after_balance":  after_user.Balance,
-				"warn_balance":   before_user.WarnBalance,
-			}).Error("could not send balance warning")
-		}
 	}
 
 	if before_user.Balance >= 0 && after_user.Balance < 0 {
@@ -60,22 +49,11 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 		})
 
 		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("User %s balance zero warning (%.2f)", after_user.Mail, float64(after_user.Balance)/100),
-			Message:  fmt.Sprintf("User: %s crossed zero threshold: EUR %.2f", after_user.Mail, float64(after_user.Balance)/100),
+			Title:    fmt.Sprintf("User %s balance zero warning (%.2f)", after_user.Name, float64(after_user.Balance)/100),
+			Message:  fmt.Sprintf("User: %s crossed zero threshold: EUR %.2f", after_user.Name, float64(after_user.Balance)/100),
 			Priority: 4,
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
-
-		err = c.SendRemovalNotice(after_user)
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"err":            err,
-				"user_id":        user_id,
-				"before_balance": before_user.Balance,
-				"after_balance":  after_user.Balance,
-				"warn_balance":   before_user.WarnBalance,
-			}).Error("could not send removal notice")
-		}
 
 		nodes, err := c.repos.UserNodeRepo.GetByUserID(before_user.ID)
 		if err != nil {

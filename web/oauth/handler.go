@@ -6,7 +6,6 @@ import (
 	"mt-hosting-manager/db"
 	"mt-hosting-manager/types"
 	"net/http"
-	"os"
 
 	"github.com/sirupsen/logrus"
 )
@@ -76,13 +75,7 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user == nil {
-		// check for admin mail config
-		role := types.UserRoleUser
-		if info.Email == os.Getenv("ADMIN_USER_MAIL") {
-			role = types.UserRoleAdmin
-		}
-
-		user, err = h.Core.CreateUser(info.Name, info.Email, h.Type, role, true)
+		user, err = h.Core.CreateUser(info.Name, info.Email, h.Type, types.UserRoleUser, true)
 		if err != nil {
 			SendError(w, 500, err.Error())
 			return
@@ -90,7 +83,6 @@ func (h *OauthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		logrus.WithFields(logrus.Fields{
 			"name":        user.Name,
 			"type":        user.Type,
-			"mail":        user.Mail,
 			"external_id": user.ExternalID,
 		}).Debug("created new user")
 

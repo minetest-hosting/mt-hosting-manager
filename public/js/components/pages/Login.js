@@ -1,7 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import { logout, is_logged_in, login } from "../../service/login.js";
 import { get_github_client_id, get_discord_client_id, get_mesehub_client_id, get_baseurl } from "../../service/info.js";
-import { send_activation } from "../../api/activation.js";
 
 export default {
 	data: function() {
@@ -11,8 +10,6 @@ export default {
             },{
                 icon: "user", name: "Login", link: "/login"
             }],
-			activation_mail: "",
-			activation_mail_success: false,
 			mail: "",
 			password: "",
 			login_error: false
@@ -41,15 +38,6 @@ export default {
 				if (!success) {
 					this.login_error = true;
 				}
-			});
-		},
-		send_activation_code: function() {
-			send_activation({
-				mail: this.activation_mail
-			})
-			.then(() => {
-				this.activation_mail = "";
-				this.activation_mail_success = true;
 			});
 		}
 	},
@@ -96,19 +84,7 @@ export default {
 		<hr>
 		<div class="row" v-if="!is_logged_in">
 			<div class="col-6">
-				<h5>Register new account / Lost password</h5>
-				<form @submit.prevent="send_activation_code">
-					<input type="text" class="form-control"
-						placeholder="E-Mail"
-						v-bind:class="{'is-valid':activation_mail_success}"
-						v-model="activation_mail"/>
-					&nbsp;
-					<button class="btn btn-secondary w-100"
-						:disabled="!activation_mail || activation_mail.indexOf('@') < 0">
-						<i class="fa-solid fa-user-plus"></i>
-						Send activation code
-					</button>
-				</form>
+				Register
 			</div>
 			<div class="col6">
 			</div>

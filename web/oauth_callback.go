@@ -12,7 +12,7 @@ func (api *Api) OauthCallback(w http.ResponseWriter, user *types.User, new_user 
 	if new_user {
 		notify.Send(&notify.NtfyNotification{
 			Title:    fmt.Sprintf("New user signed up: %s", user.Name),
-			Message:  fmt.Sprintf("Name: %s, Mail: %s, Auth: %s", user.Name, user.Mail, user.Type),
+			Message:  fmt.Sprintf("Name: %s, Auth: %s", user.Name, user.Type),
 			Priority: 3,
 			Tags:     []string{"new"},
 		}, true)

@@ -56,11 +56,10 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/login", api.Logout).Methods(http.MethodDelete)
 	apir.HandleFunc("/login", api.GetLogin).Methods(http.MethodGet)
 	apir.HandleFunc("/login", api.Login).Methods(http.MethodPost)
+	apir.HandleFunc("/register", api.Register).Methods(http.MethodPost)
 	apir.HandleFunc("/nodetype", api.GetNodeTypes).Methods(http.MethodGet)
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
-	apir.HandleFunc("/send_activation", api.SendActivationMail).Methods(http.MethodPost)
-	apir.HandleFunc("/activate", api.ActivationCallback).Methods(http.MethodPost)
 	apir.HandleFunc("/exchange_rate", api.GetExchangeRates)
 	apir.HandleFunc("/captcha", api.CreateCaptcha).Methods(http.MethodGet)
 	r.PathPrefix("/api/captcha/").Handler(captcha.Server(300, 200))
@@ -112,7 +111,6 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.DeleteJob)).Methods(http.MethodDelete)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.RetryJob)).Methods(http.MethodPost)
-	admin_api.HandleFunc("/mail/send/{user_id}", api.Secure(api.SendMail)).Methods(http.MethodPost)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {

@@ -102,8 +102,8 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 	})
 
 	notify.Send(&notify.NtfyNotification{
-		Title:    fmt.Sprintf("Node removed by %s (Type: %s)", user.Mail, nt.Name),
-		Message:  fmt.Sprintf("User: %s, Node-type %s, Name: %s", user.Mail, nt.Name, node.Name),
+		Title:    fmt.Sprintf("Node removed by %s (Type: %s)", user.Name, nt.Name),
+		Message:  fmt.Sprintf("User: %s, Node-type %s, Name: %s", user.Name, nt.Name, node.Name),
 		Priority: 3,
 		Tags:     []string{"computer", "x"},
 	}, true)
