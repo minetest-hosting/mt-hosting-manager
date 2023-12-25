@@ -32,8 +32,8 @@ export default {
 	<card-layout title="Profile" icon="user" :breadcrumb="breadcrumb">
 		<table class="table" v-if="profile">
 			<tr>
-				<td>Mail</td>
-				<td>{{profile.mail}}</td>
+				<td>Name</td>
+				<td>{{profile.name}}</td>
 			</tr>
 			<tr>
 				<td>Role</td>

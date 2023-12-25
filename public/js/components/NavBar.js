@@ -95,7 +95,7 @@ export default {
 							<router-link to="/profile">
 								<i class="fas fa-user"></i>
 								<span>
-									Logged in as <b>{{claims.mail}}</b>
+									Logged in as <b>{{claims.name}}</b>
 								</span>
 							</router-link>
 						</button>
