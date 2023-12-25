@@ -43,6 +43,15 @@ func (r *UserRepository) GetByName(name string) (*types.User, error) {
 	}
 }
 
+func (r *UserRepository) GetByNameAndExternalID(name, external_id string) (*types.User, error) {
+	u, err := r.dbu.Select("where name = %s and external_id = %s", name, external_id)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else {
+		return u, err
+	}
+}
+
 func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
 	u, err := r.dbu.Select("where mail = %s", mail)
 	if err == sql.ErrNoRows {
