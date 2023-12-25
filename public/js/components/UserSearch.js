@@ -6,7 +6,7 @@ export default {
     data: function() {
         return {
             show_modal: false,
-            user_like: this.modelValue ? this.modelValue.name : "",
+            name_like: this.modelValue ? this.modelValue.name : "",
             busy: false,
             users: [],
             user: null
@@ -22,13 +22,13 @@ export default {
             this.show_modal = false;
         },
         search: debounce(function() {
-            if (this.user_like == "") {
+            if (this.name_like == "") {
                 this.users = [];
                 return;
             }
             this.busy = true;
             search_user({
-                user_like: `%${this.user_like}%`,
+                name_like: `%${this.name_like}%`,
                 limit: 10
             })
             .then(l => {
@@ -38,7 +38,7 @@ export default {
         }, 250)
     },
     watch: {
-        "user_like": "search",
+        "name_like": "search",
         "modelValue": function() {
             this.user = this.modelValue;
         }
@@ -65,7 +65,7 @@ export default {
                         <button type="button" class="btn-close" v-on:click="show_modal = null"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" class="form-control" v-model="user_like"/>
+                        <input type="text" class="form-control" v-model="name_like"/>
                         <table class="table table-condensed table-striped">
                             <thead>
                                 <tr>
