@@ -45,7 +45,7 @@ export default {
         });
     },
 	template: /*html*/`
-	<card-layout title="Overview" icon="map" :breadcrumb="breadcrumb" :fullwidth="true">
+	<card-layout title="Overview" icon="map" :breadcrumb="breadcrumb" :fullwidth="true" :flex="true">
         <div class="col-md-4" v-for="entry in entries">
             <div class="card" style="min-height: 250px;">
                 <div class="card-header">

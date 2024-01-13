@@ -1,7 +1,7 @@
 import Breadcrumb from "../Breadcrumb.js";
 
 export default {
-    props: ["title", "icon", "breadcrumb", "fullwidth"],
+    props: ["title", "icon", "breadcrumb", "fullwidth", "flex"],
     components: {
         "bread-crumb": Breadcrumb
     },
@@ -11,6 +11,16 @@ export default {
                 return { "col-12": true };
             } else {
                 return { "col-8": true };
+            }
+        },
+        card_classes: function() {
+            if (this.flex) {
+                return {
+                    display: "flex",
+                    "flex-wrap": "wrap"
+                };
+            } else {
+                return {};
             }
         }
     },
@@ -23,7 +33,7 @@ export default {
                 <div class="card-header">
                     <i v-bind:class="{fa:true, ['fa-'+icon]:true}"></i> {{title}}
                 </div>
-                <div class="card-body">
+                <div class="card-body" v-bind:class="card_classes">
                     <slot></slot>
                 </div>
             </div>
