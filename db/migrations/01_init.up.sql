@@ -4,20 +4,14 @@ create table user(
     state varchar(32) not null default 'ACTIVE',
     name varchar(128) not null, -- username
     hash varchar(256) not null default '', -- bcrypt hash for local users
-    mail varchar(128) not null default '', -- email
-    mail_verified bit not null default false, -- verified mail address
-    activation_code varchar(64) not null default '', -- mail activation code
     created bigint not null, -- creation time in `time.Now().Unix()`
     balance bigint not null default 0, -- current balance in euro-cent
-    warn_balance bigint not null default 500, -- warning balance in euro-cent
-    warn_enabled bit not null default false, -- enable warning mails
     external_id varchar(64) not null, -- id on the external oauth provider
     currency varchar(16) not null default 'EUR', -- user preferred currency
     type varchar(32) not null, -- GITHUB, DISCORD
     role varchar(32) not null -- ADMIN / USER
 );
 
-create unique index user_mail on user(mail);
 create unique index user_name on user(name);
 
 -- available node types to select
@@ -73,10 +67,18 @@ create table minetest_server(
     state varchar(32) not null default 'CREATED'
 );
 
+create table backup_space(
+    id varchar(36) primary key not null, -- uuid
+    name varchar(64) not null, -- display name
+    user_id varchar(36) not null references user(id) on delete cascade, -- belongs to user
+    created bigint not null -- creation time in `time.Now().Unix()`
+);
+
 create table backup(
     id varchar(36) primary key not null, -- uuid
     state varchar(32) not null default 'CREATED', -- CREATED, PROGRESS, COMPLETE, ERROR
-    user_id varchar(36) not null references user(id) on delete restrict, -- belongs to user
+    user_id varchar(36) not null references user(id) on delete cascade, -- belongs to user
+    backup_space_id varchar(36) not null references backup_space(id) on delete cascade, -- belongs to backup_space
     minetest_server_id varchar(36) references minetest_server(id) on delete cascade,
     created bigint not null, -- creation time in `time.Now().Unix()`
     size bigint not null -- size of the backup in bytes

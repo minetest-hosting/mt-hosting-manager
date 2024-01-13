@@ -15,6 +15,7 @@ type Backup struct {
 	ID               string      `json:"id"`
 	State            BackupState `json:"state"`
 	UserID           string      `json:"user_id"`
+	BackupSpaceID    string      `json:"backup_space_id"`
 	MinetestServerID string      `json:"minetest_server_id"`
 	Created          int64       `json:"created"`
 	Size             int64       `json:"size"`
@@ -25,6 +26,7 @@ func (m *Backup) Columns(action string) []string {
 		"id",
 		"state",
 		"user_id",
+		"backup_space_id",
 		"minetest_server_id",
 		"created",
 		"size",
@@ -40,6 +42,7 @@ func (m *Backup) Scan(action string, r func(dest ...any) error) error {
 		&m.ID,
 		&m.State,
 		&m.UserID,
+		&m.BackupSpaceID,
 		&m.MinetestServerID,
 		&m.Created,
 		&m.Size,
@@ -51,6 +54,7 @@ func (m *Backup) Values(action string) []any {
 		m.ID,
 		m.State,
 		m.UserID,
+		m.BackupSpaceID,
 		m.MinetestServerID,
 		m.Created,
 		m.Size,
