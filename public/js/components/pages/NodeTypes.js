@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeState from "../NodeTypeState.js";
+import NodeTypeSpec from "../NodeTypeSpec.js";
 
 import { get_nodetypes, fetch_nodetypes } from "../../service/nodetype.js";
 import { add } from "../../api/nodetype.js";
@@ -9,7 +10,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
 		"currency-display": CurrencyDisplay,
-		"nodetype-state": NodeTypeState
+		"nodetype-state": NodeTypeState,
+		"node-type-spec": NodeTypeSpec
 	},
 	data: function() {
 		return {
@@ -42,9 +44,7 @@ export default {
 				<th>OrderID</th>
 				<th>Name</th>
 				<th>Location</th>
-				<th>CPU Count</th>
-				<th>RAM GB</th>
-				<th>Disk GB</th>
+				<th>Specs</th>
 				<th>Daily cost</th>
 				<th>Provider</th>
 				<th>Server-Type</th>
@@ -59,9 +59,10 @@ export default {
 					<td>{{nt.order_id}}</td>
 					<td>{{nt.name}}</td>
 					<td>{{nt.location}} / {{nt.location_readable}}</td>
+					<td>
+						<node-type-spec :nodetype="nt"/>
+					</td>
 					<td>{{nt.cpu_count}}</td>
-					<td>{{nt.ram_gb}}</td>
-					<td>{{nt.disk_gb}}</td>
 					<td>
 						<currency-display :eurocents="nt.daily_cost"/>
 					</td>

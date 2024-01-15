@@ -49,7 +49,7 @@ export default {
                 });
             });
             Promise.all(promises).then(() => {
-                entries.sort((a,b) => a.id < b.id);
+                entries.sort((a,b) => a.node.id < b.node.id);
                 this.entries = entries;
                 this.busy = false;
             });

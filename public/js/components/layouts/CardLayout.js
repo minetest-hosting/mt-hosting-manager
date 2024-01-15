@@ -8,9 +8,9 @@ export default {
     computed: {
         center_col_classes: function() {
             if (this.fullwidth) {
-                return { "col-12": true };
+                return { "col-md-12": true };
             } else {
-                return { "col-8": true };
+                return { "col-md-8": true };
             }
         },
         card_styles: function() {
@@ -26,7 +26,7 @@ export default {
     },
 	template: /*html*/`
     <div class="row">
-        <div class="col-2" v-if="!fullwidth"></div>
+        <div class="col-md-2" v-if="!fullwidth"></div>
         <div v-bind:class="center_col_classes">
             <bread-crumb :items="breadcrumb" v-if="breadcrumb"/>
             <div class="card">

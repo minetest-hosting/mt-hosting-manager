@@ -1,12 +1,14 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import NodeTypeSpec from "../NodeTypeSpec.js";
 
 import { get_nodetypes } from "../../service/nodetype.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
-        "currency-display": CurrencyDisplay
+        "currency-display": CurrencyDisplay,
+        "node-type-spec": NodeTypeSpec
 	},
 	data: function() {
 		return {
@@ -27,31 +29,16 @@ export default {
         <h4>Available server-types</h4>
         <div class="card w-100" style="padding: 10px; margin-bottom: 10px;" v-for="nt in node_types">
             <div class="row">
-                <div class="col-3">
+                <div class="col-md-3">
                     <h4>
                         {{nt.name}}
                     </h4>
                     <h5>
                         {{nt.location_readable}}
                     </h5>
+                    <node-type-spec :nodetype="nt"/>
                 </div>
-                <div class="col-2">
-                    <ul>
-                        <li>
-                            <i class="fa-solid fa-microchip"></i> CPU: {{nt.cpu_count}}
-                            <span class="badge bg-success" v-if="nt.dedicated">
-                                Dedicated
-                            </span>
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-hard-drive"></i> Disk: {{nt.disk_gb}} GB
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-clipboard"></i> RAM: {{nt.ram_gb}} GB
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-2">
+                <div class="col-md-4">
                     <ul>
                         <li>
                             Daily cost: <currency-display :eurocents="nt.daily_cost"/>
@@ -61,7 +48,7 @@ export default {
                         </li>
                     </ul>
                 </div>
-                <div class="col-5">
+                <div class="col-md-5">
                     {{nt.description}}
                 </div>
             </div>

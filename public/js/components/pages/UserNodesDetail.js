@@ -2,6 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import NodeState from "../NodeState.js";
 import ServerList from "../ServerList.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import NodeTypeSpec from "../NodeTypeSpec.js";
 
 import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid, get_latest_job } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -21,7 +22,8 @@ export default {
 		"card-layout": CardLayout,
 		"node-state": NodeState,
 		"server-list": ServerList,
-		"currency-display": CurrencyDisplay
+		"currency-display": CurrencyDisplay,
+		"node-type-spec": NodeTypeSpec
 	},
 	data: function() {
 		return {
@@ -104,6 +106,12 @@ export default {
 				<tr>
 					<td>ID</td>
 					<td>{{node.id}}</td>
+				</tr>
+				<tr>
+					<td>Specs</td>
+					<td>
+						<node-type-spec :nodetype="nodetype"/>
+					</td>
 				</tr>
 				<tr>
 					<td>Hostname</td>
