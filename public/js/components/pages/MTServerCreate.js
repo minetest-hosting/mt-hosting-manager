@@ -1,4 +1,5 @@
 import CardLayout from "../layouts/CardLayout.js";
+
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { create as create_server, create_validate } from "../../api/mtserver.js";
 import { get_all as get_all_nodes } from "../../api/node.js";
@@ -31,11 +32,12 @@ export default {
 	mounted: function() {
 		get_all_nodes()
 		.then(n => {
-			if (this.user_node_id == "") {
+			const nodelist = n.filter(node => node.state == "RUNNING");
+			if (this.user_node_id == "" && nodelist.length) {
 				// default node id
-				this.user_node_id = n[0].id;
+				this.user_node_id = nodelist[0].id;
 			}
-			this.user_nodes = n;
+			this.user_nodes = nodelist;
 		});
 	},
 	methods: {

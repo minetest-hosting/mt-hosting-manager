@@ -1,5 +1,6 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
+import NodeTypeSpec from "../NodeTypeSpec.js";
 
 import { create } from "../../api/node.js";
 import { get_nodetype, get_nodetypes } from "../../service/nodetype.js";
@@ -9,7 +10,8 @@ import random_name from "../../util/random_name.js";
 export default {
 	components: {
 		"card-layout": CardLayout,
-        "currency-display": CurrencyDisplay
+        "currency-display": CurrencyDisplay,
+        "node-type-spec": NodeTypeSpec
 	},
     data: function() {
         return {
@@ -67,19 +69,10 @@ export default {
                     <td>{{nodetype.location_readable}}</td>
                 </tr>
                 <tr>
-                    <td>CPU Count</td>
+                    <td>Specs</td>
                     <td>
-                        {{nodetype.cpu_count}}
-                        <span class="badge bg-success" v-if="nodetype.dedicated">Dedicated</span>
+                        <node-type-spec :nodetype="nodetype"/>
                     </td>
-                </tr>
-                <tr>
-                    <td>RAM [GB]</td>
-                    <td>{{nodetype.ram_gb}}</td>
-                </tr>
-                <tr>
-                    <td>Disk [GB]</td>
-                    <td>{{nodetype.disk_gb}}</td>
                 </tr>
                 <tr>
                     <td>Daily cost</td>

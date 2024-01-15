@@ -13,7 +13,7 @@ export default {
                 return { "col-8": true };
             }
         },
-        card_classes: function() {
+        card_styles: function() {
             if (this.flex) {
                 return {
                     display: "flex",
@@ -33,7 +33,7 @@ export default {
                 <div class="card-header">
                     <i v-bind:class="{fa:true, ['fa-'+icon]:true}"></i> {{title}}
                 </div>
-                <div class="card-body" v-bind:class="card_classes">
+                <div class="card-body" v-bind:style="card_styles">
                     <slot></slot>
                 </div>
             </div>
