@@ -67,14 +67,19 @@ func (c *Core) ValidateCreateServer(server *types.MinetestServer, node *types.Us
 		hdns_records_updated = time.Now()
 	}
 
+	// name of the record inside the zone (with suffix appended)
+	record_name := fmt.Sprintf("%s%s", server.DNSName, c.cfg.DNSRecordSuffix)
+
+	// check if the name is already used within the zone
 	for _, existing_record := range hdns_records.Records {
-		if existing_record.Name == server.DNSName {
+		if existing_record.Name == record_name {
 			csr.ServerNameAlreadyUsed = true
 			csr.Valid = false
 			break
 		}
 	}
 
+	// min length of 5 characters
 	if len(server.DNSName) < 5 {
 		csr.ServerNameTooShort = true
 		csr.Valid = false

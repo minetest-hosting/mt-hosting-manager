@@ -14,6 +14,7 @@ type OAuthConfig struct {
 type Config struct {
 	BaseURL             string
 	HostingDomainSuffix string
+	DNSRecordSuffix     string
 	ReservedPrefixes    []string
 	Stage               string
 	InitialBalance      string
@@ -51,29 +52,32 @@ type Config struct {
 
 func NewConfig() *Config {
 	return &Config{
-		BaseURL:             os.Getenv("BASEURL"),
+		BaseURL: os.Getenv("BASEURL"),
+		// entire suffix for display purposes
 		HostingDomainSuffix: os.Getenv("HOSTING_DOMAIN_SUFFIX"),
-		ReservedPrefixes:    strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
-		Stage:               os.Getenv("STAGE"),
-		InitialBalance:      os.Getenv("INITIAL_BALANCE"),
-		Webdev:              os.Getenv("WEBDEV") == "true",
-		EnableWorker:        os.Getenv("ENABLE_WORKER") == "true",
-		JWTKey:              os.Getenv("JWT_KEY"),
-		RedisURL:            os.Getenv("REDIS_URL"),
-		CoinbaseKey:         os.Getenv("COINBASE_KEY"),
-		CoinbaseEnabled:     os.Getenv("COINBASE_ENABLED") == "true",
-		LogStreamKey:        os.Getenv("LOG_STREAM_KEY"),
-		LogStreamDir:        os.Getenv("LOG_STREAM_DIR"),
-		CookieName:          "mt-hosting-manager",
-		CookiePath:          os.Getenv("COOKIE_PATH"),
-		CookieSecure:        os.Getenv("COOKIE_SECURE") == "true",
-		HetznerCloudKey:     os.Getenv("HETZNER_CLOUD_KEY"),
-		HetznerApiKey:       os.Getenv("HETZNER_API_KEY"),
-		HetznerApiZoneID:    os.Getenv("HETZNER_API_ZONEID"),
-		WalleeUserID:        os.Getenv("WALLEE_USERID"),
-		WalleeSpaceID:       os.Getenv("WALLEE_SPACEID"),
-		WalleeKey:           os.Getenv("WALLEE_KEY"),
-		WalleeEnabled:       os.Getenv("WALLEE_ENABLED") == "true",
+		// suffix for the record itself (valid inside dns zone)
+		DNSRecordSuffix:  os.Getenv("DNS_RECORD_SUFFIX"),
+		ReservedPrefixes: strings.Split(os.Getenv("RESERVED_PREFIXES"), ","),
+		Stage:            os.Getenv("STAGE"),
+		InitialBalance:   os.Getenv("INITIAL_BALANCE"),
+		Webdev:           os.Getenv("WEBDEV") == "true",
+		EnableWorker:     os.Getenv("ENABLE_WORKER") == "true",
+		JWTKey:           os.Getenv("JWT_KEY"),
+		RedisURL:         os.Getenv("REDIS_URL"),
+		CoinbaseKey:      os.Getenv("COINBASE_KEY"),
+		CoinbaseEnabled:  os.Getenv("COINBASE_ENABLED") == "true",
+		LogStreamKey:     os.Getenv("LOG_STREAM_KEY"),
+		LogStreamDir:     os.Getenv("LOG_STREAM_DIR"),
+		CookieName:       "mt-hosting-manager",
+		CookiePath:       os.Getenv("COOKIE_PATH"),
+		CookieSecure:     os.Getenv("COOKIE_SECURE") == "true",
+		HetznerCloudKey:  os.Getenv("HETZNER_CLOUD_KEY"),
+		HetznerApiKey:    os.Getenv("HETZNER_API_KEY"),
+		HetznerApiZoneID: os.Getenv("HETZNER_API_ZONEID"),
+		WalleeUserID:     os.Getenv("WALLEE_USERID"),
+		WalleeSpaceID:    os.Getenv("WALLEE_SPACEID"),
+		WalleeKey:        os.Getenv("WALLEE_KEY"),
+		WalleeEnabled:    os.Getenv("WALLEE_ENABLED") == "true",
 		GithubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("GITHUB_CLIENTID"),
 			Secret:   os.Getenv("GITHUB_SECRET"),

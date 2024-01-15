@@ -38,9 +38,11 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
+	record_name := fmt.Sprintf("%s%s", server.DNSName, w.cfg.DNSRecordSuffix)
+	record_value := fmt.Sprintf("%s%s", node.Name, w.cfg.DNSRecordSuffix)
 	if server.ExternalCNAMEDNSID == "" {
 		// create new record
-		record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, server.DNSName, node.Name)
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, record_name, record_value)
 		if err != nil {
 			return fmt.Errorf("could not create CNAME record: %v", err)
 		}
@@ -52,13 +54,13 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		if err != nil {
 			return fmt.Errorf("could not fetch current cname with id: '%s': %v", server.ExternalCNAMEDNSID, err)
 		}
-		if record.Record.Name != server.DNSName || record.Record.Value != node.Name {
+		if record.Record.Name != record_name || record.Record.Value != record_value {
 			// values changed, remove and recreate
 			err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
 			if err != nil {
 				return fmt.Errorf("could not remove record with id '%s', %v", server.ExternalCNAMEDNSID, err)
 			}
-			created_record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, server.DNSName, node.Name)
+			created_record, err := w.CreateDNSRecord(hetzner_dns.RecordCNAME, record_name, record_value)
 			if err != nil {
 				return fmt.Errorf("could not re-create CNAME record: %v", err)
 			}

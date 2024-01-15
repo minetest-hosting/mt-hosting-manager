@@ -85,10 +85,12 @@ func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
 		}
 	}
 
+	record_name := fmt.Sprintf("%s%s", node.Name, w.cfg.DNSRecordSuffix)
+
 	if node.ExternalIPv4DNSID == "" {
 		status("creating dns A-record", 20)
 
-		record, err := w.CreateDNSRecord(hetzner_dns.RecordA, node.Name, node.IPv4)
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordA, record_name, node.IPv4)
 		if err != nil {
 			return fmt.Errorf("could not create A-record: %v", err)
 		}
@@ -102,7 +104,7 @@ func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
 	if node.ExternalIPv6DNSID == "" {
 		status("creating dns AAAA-record", 30)
 
-		record, err := w.CreateDNSRecord(hetzner_dns.RecordAAAA, node.Name, node.IPv6)
+		record, err := w.CreateDNSRecord(hetzner_dns.RecordAAAA, record_name, node.IPv6)
 		if err != nil {
 			return fmt.Errorf("could not create AAAA-record: %v", err)
 		}
