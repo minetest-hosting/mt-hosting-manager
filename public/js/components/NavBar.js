@@ -85,12 +85,12 @@ export default {
 						</router-link>
 					</li>
 				</ul>
-				<div class="btn btn-warning" v-if="stage != 'prod'">
-					<i class="fa-solid fa-triangle-exclamation"></i>
-					Stage: {{stage}}
-				</div>
 				<div class="d-flex">
 					<div class="btn-group">
+						<div class="btn btn-warning" v-if="stage != 'prod'">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							Stage: {{stage}}
+						</div>
 						<button class="btn btn-outline-secondary" v-if="claims">
 							<router-link to="/profile">
 								<i class="fas fa-user"></i>

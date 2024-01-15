@@ -136,7 +136,7 @@ export default {
 						<node-state :state="node.state"/>
 						<div class="alert alert-info" v-if="node.state == 'PROVISIONING'">
 							<i class="fa-solid fa-info"></i>
-							The node is still provisioning, this might take a few minutes
+							The node is still provisioning, this might take a minute or two
 						</div>
 					</td>
 				</tr>

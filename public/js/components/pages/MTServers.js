@@ -23,7 +23,7 @@ export default {
 	},
 	template: /*html*/`
 	<card-layout title="Servers" icon="list" :breadcrumb="breadcrumb">
-		<server-list :list="servers"/>
+		<server-list :list="servers" :show_parent="true"/>
 	</card-layout>
 	`
 };

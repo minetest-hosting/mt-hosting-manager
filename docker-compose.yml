@@ -32,7 +32,7 @@ services:
    - LOG_STREAM_DIR=/data/logs
    - WEBDEV=true
    - ENABLE_WORKER=true
-   - INITIAL_BALANCE=350
+   - INITIAL_BALANCE=2000
    - REDIS_URL=redis:6379
   env_file:
    - .env

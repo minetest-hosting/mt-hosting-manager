@@ -4,7 +4,7 @@ import ServerState from "./ServerState.js";
 import format_time from "../util/format_time.js";
 
 export default {
-    props: ["list"],
+    props: ["list", "show_parent"],
     components: {
         "server-link": ServerLink,
         "node-link": NodeLink,
@@ -17,7 +17,7 @@ export default {
     <table class="table">
         <thead>
             <th>Name</th>
-            <th>Parent node</th>
+            <th v-if="show_parent">Parent node</th>
             <th>Created</th>
             <th>State</th>
         </thead>
@@ -26,7 +26,7 @@ export default {
                 <td>
                     <server-link :server="server"/>
                 </td>
-                <td>
+                <td v-if="show_parent">
                     <node-link :id="server.user_node_id"/>
                 </td>
                 <td>

@@ -130,17 +130,6 @@ export default {
 					</td>					
 				</tr>
 				<tr v-if="server.state == 'RUNNING'">
-					<td>Admin login</td>
-					<td>
-						<i class="fa-solid fa-arrow-up-right-from-square"></i>
-						<a :href="admin_login_url" target="new">{{dns_name}}/ui</a>
-						<div class="alert alert-warning" v-if="server_fresh">
-							<i class="fa-solid fa-triangle-exclamation"></i>
-							The server was recently created, if the ui-link does not work wait another minute or two.
-						</div>
-					</td>
-				</tr>
-				<tr v-if="server.state == 'RUNNING'">
 					<td>UI Version</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.ui_version"/>
@@ -154,6 +143,17 @@ export default {
 					<td>Admin-user</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.admin"/>
+					</td>
+				</tr>
+				<tr v-if="server.state == 'RUNNING'">
+					<td>Admin login</td>
+					<td>
+						<i class="fa-solid fa-arrow-up-right-from-square"></i>
+						<a :href="admin_login_url" target="new">{{dns_name}}/ui</a>
+						<div class="alert alert-warning" v-if="server_fresh">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							The server was recently created, if the ui-link does not work wait another minute or two.
+						</div>
 					</td>
 				</tr>
 				<tr>
