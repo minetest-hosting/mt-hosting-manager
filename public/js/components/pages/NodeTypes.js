@@ -62,10 +62,16 @@ export default {
 				</tr>
 			</tbody>
 		</table>
-		<router-link class="btn btn-success" to="/node_types/new">
-			<i class="fa fa-plus"></i>
-			Create node-type
-		</router-link>
+		<div class="btn-group">
+			<router-link class="btn btn-success" to="/node_types/new">
+				<i class="fa fa-plus"></i>
+				Create node-type
+			</router-link>
+			<a class="btn btn-outline-secondary" href="api/nodetype?export=true">
+				<i class="fa fa-download"></i>
+				Export as json
+			</a>
+		</div>
 	</card-layout>
 	`
 };

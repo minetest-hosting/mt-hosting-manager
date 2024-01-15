@@ -10,6 +10,9 @@ import (
 
 func (a *Api) GetNodeTypes(w http.ResponseWriter, r *http.Request) {
 	list, err := a.repos.NodeTypeRepo.GetAll()
+	if r.URL.Query().Get("export") == "true" {
+		w.Header().Add("Content-Disposition", "attachment; filename=\"nodetypes.json\"")
+	}
 	Send(w, list, err)
 }
 
