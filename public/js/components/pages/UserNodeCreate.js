@@ -48,6 +48,7 @@ export default {
 	<card-layout title="Create node" icon="plus">
         <div class="row">
             <div class="col-12">
+                <label>Select nodetype</label>
                 <select v-model="nodetype_id" class="form-control" :disabled="busy">
                     <option v-for="nt in available_nodetypes" :value="nt.id">{{nt.name}}</option>
                 </select>

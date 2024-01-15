@@ -88,6 +88,7 @@ export default {
                 <tr>
                     <td>Payment</td>
                     <td>
+                        <label>Select amount to charge</label>
                         <div class="input-group">
                             <span class="input-group-text">&euro;</span>
                             <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
