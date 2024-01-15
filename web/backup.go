@@ -11,8 +11,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (a *Api) GetBackups(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	list, err := a.repos.BackupRepo.GetByUserID(c.UserID)
+func (a *Api) GetBackupSpaces(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	list, err := a.repos.BackupSpaceRepo.GetByUserID(c.UserID)
 	Send(w, list, err)
 }
 
@@ -21,6 +21,16 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(b)
 	if err != nil {
 		SendError(w, 500, err)
+		return
+	}
+
+	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if bs == nil {
+		SendError(w, 404, fmt.Errorf("backupspace not found: '%s'", b.MinetestServerID))
 		return
 	}
 
@@ -43,7 +53,7 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request) {
 		SendError(w, 404, fmt.Errorf("node not found: '%s'", mtserver.UserNodeID))
 		return
 	}
-	if node.UserID != b.UserID {
+	if node.UserID != bs.UserID {
 		SendError(w, 405, fmt.Errorf("invalid data"))
 		return
 	}

@@ -31,6 +31,6 @@ func (r *BackupRepository) GetByID(id string) (*types.Backup, error) {
 	return nt, err
 }
 
-func (r *BackupRepository) GetByUserID(user_id string) ([]*types.Backup, error) {
-	return r.dbu.SelectMulti("where user_id = %s", user_id)
+func (r *BackupRepository) GetByBackupSpaceID(backup_space_id string) ([]*types.Backup, error) {
+	return r.dbu.SelectMulti("where backup_space_id = %s", backup_space_id)
 }

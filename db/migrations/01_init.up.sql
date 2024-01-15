@@ -77,7 +77,6 @@ create table backup_space(
 create table backup(
     id varchar(36) primary key not null, -- uuid
     state varchar(32) not null default 'CREATED', -- CREATED, PROGRESS, COMPLETE, ERROR
-    user_id varchar(36) not null references user(id) on delete cascade, -- belongs to user
     backup_space_id varchar(36) not null references backup_space(id) on delete cascade, -- belongs to backup_space
     minetest_server_id varchar(36) references minetest_server(id) on delete cascade,
     created bigint not null, -- creation time in `time.Now().Unix()`
