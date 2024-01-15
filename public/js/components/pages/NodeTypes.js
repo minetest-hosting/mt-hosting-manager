@@ -2,7 +2,8 @@ import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeState from "../NodeTypeState.js";
 
-import { get_nodetypes } from "../../service/nodetype.js";
+import { get_nodetypes, fetch_nodetypes } from "../../service/nodetype.js";
+import { add } from "../../api/nodetype.js";
 
 export default {
 	components: {
@@ -12,13 +13,26 @@ export default {
 	},
 	data: function() {
 		return {
-			nodetypes: get_nodetypes(),
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
 			},{
 				icon: "server", name: "Nodetypes", link: "/node_types"
 			}]
 		};
+	},
+	computed: {
+		nodetypes: get_nodetypes
+	},
+	methods: {
+		on_import: function() {
+			this.results = [];
+			const files = this.$refs.upload.files;
+			const file = files[0];
+			file.text()
+			.then(json => JSON.parse(json))
+			.then(list => Promise.all(list.map(nt => add(nt))))
+			.finally(() => fetch_nodetypes());
+		}
 	},
 	template: /*html*/`
 	<card-layout title="Nodetype" icon="server" :breadcrumb="breadcrumb" :fullwidth="true">
@@ -62,15 +76,22 @@ export default {
 				</tr>
 			</tbody>
 		</table>
-		<div class="btn-group">
-			<router-link class="btn btn-success" to="/node_types/new">
-				<i class="fa fa-plus"></i>
-				Create node-type
-			</router-link>
-			<a class="btn btn-outline-secondary" href="api/nodetype?export=true">
-				<i class="fa fa-download"></i>
-				Export as json
-			</a>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="btn-group">
+					<router-link class="btn btn-success" to="/node_types/new">
+						<i class="fa fa-plus"></i>
+						Create node-type
+					</router-link>
+					<a class="btn btn-outline-secondary" href="api/nodetype?export=true">
+						<i class="fa fa-download"></i>
+						Export as json
+					</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<input ref="upload" type="file" class="form-control" v-on:change="on_import" accept=".json"/>
+			</div>
 		</div>
 	</card-layout>
 	`
