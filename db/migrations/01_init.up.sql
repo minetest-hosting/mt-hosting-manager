@@ -130,6 +130,7 @@ create table audit_log(
     type varchar(64) not null, -- type of audit log
     timestamp bigint not null, -- time in `time.Now().Unix()`
     user_id varchar(36) not null references user(id) on delete restrict, -- user
+    ip_address text(128), -- ip address (optional)
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
     payment_transaction_id varchar(36), -- payment (optional)
