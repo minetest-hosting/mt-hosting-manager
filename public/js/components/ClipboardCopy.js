@@ -15,7 +15,7 @@ export default {
     <span class="badge bg-secondary" v-on:click="copy">
         {{text}}
         &nbsp;
-        <i class="fa fa-copy" v-bind:style="{'color':copied?'green':null}"></i>
+        <i class="fa fa-copy" v-bind:style="{'color':copied?'green':null}" title="Copy to clipboard"></i>
     </span>
     `
 };

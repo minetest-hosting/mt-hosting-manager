@@ -12,9 +12,24 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func StreamBackup(passphrase string, src io.Reader, dst io.Writer) (int64, error) {
+func DecryptBackup(passphrase string, src io.Reader, dst io.Writer) (int64, error) {
 	r := openssl.NewReader(src, passphrase, openssl.PBKDF2SHA256)
 	return io.Copy(dst, r)
+}
+
+func (c *Core) StreamBackup(b *types.Backup, w io.Writer) (int64, error) {
+	client, err := c.GetS3Client()
+	if err != nil {
+		return 0, err
+	}
+
+	ctx := context.Background()
+	o, err := client.GetObject(ctx, c.cfg.S3Bucket, getBackupFilename(b), minio.GetObjectOptions{})
+	if err != nil {
+		return 0, err
+	}
+	defer o.Close()
+	return DecryptBackup(b.Passphrase, o, w)
 }
 
 func (c *Core) GetS3Client() (*minio.Client, error) {

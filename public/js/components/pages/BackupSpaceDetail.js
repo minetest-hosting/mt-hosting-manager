@@ -70,12 +70,18 @@ export default {
 						</span>
 					</td>
 					<td>
-						<button class="btn btn-sm btn-danger"
-							v-on:click="remove_backup(backup)"
-							:disabled="backup.state != 'COMPLETE' && backup.state != 'ERROR'">
-							<i class="fa fa-trash"></i>
-							Delete
-						</button>
+						<div class="btn-group">
+							<button class="btn btn-sm btn-danger"
+								v-on:click="remove_backup(backup)"
+								:disabled="backup.state != 'COMPLETE' && backup.state != 'ERROR'">
+								<i class="fa fa-trash"></i>
+								Delete
+							</button>
+							<a class="btn btn-sm btn-secondary" :href="'/api/backup/' + backup.id">
+								<i class="fa fa-download"></i>
+								Download
+							</a>
+						</div>
 					</td>
 				</tr>
 			</tbody>

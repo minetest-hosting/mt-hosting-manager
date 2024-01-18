@@ -109,6 +109,7 @@ func (api *Api) Setup() {
 
 	user_api.HandleFunc("/backup", api.Secure(api.CreateBackup)).Methods(http.MethodPost)
 	user_api.HandleFunc("/backup/{id}", api.Secure(api.RemoveBackup)).Methods(http.MethodDelete)
+	user_api.HandleFunc("/backup/{id}", api.Secure(api.DownloadBackup)).Methods(http.MethodGet)
 
 	// semi public, only with known identifier (backup_id)
 	apir.HandleFunc("/backup/{id}/progress", api.MarkBackupProgress).Methods(http.MethodPost)

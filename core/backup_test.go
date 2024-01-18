@@ -17,7 +17,7 @@ func TestStreamBackup(t *testing.T) {
 
 	buf := bytes.NewBuffer([]byte{})
 
-	count, err := core.StreamBackup("enter", f, buf)
+	count, err := core.DecryptBackup("enter", f, buf)
 	assert.NoError(t, err)
 	assert.True(t, count > 0)
 

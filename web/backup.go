@@ -199,3 +199,37 @@ func (a *Api) RemoveBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 	err = a.core.RemoveBackup(b)
 	Send(w, true, err)
 }
+
+func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	b, err := a.repos.BackupRepo.GetByID(vars["id"])
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if b == nil {
+		SendError(w, 404, fmt.Errorf("backup not found"))
+		return
+	}
+	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if bs == nil {
+		SendError(w, 404, fmt.Errorf("backup_space not found"))
+		return
+	}
+	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		return
+	}
+
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.tar.gz\"", b.ID))
+	w.Header().Set("Content-Type", "application/gzip")
+
+	_, err = a.core.StreamBackup(b, w)
+	if err != nil {
+		SendError(w, 500, err)
+	}
+}
