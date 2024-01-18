@@ -71,13 +71,15 @@ create table backup_space(
     id varchar(36) primary key not null, -- uuid
     name varchar(64) not null, -- display name
     user_id varchar(36) not null references user(id) on delete cascade, -- belongs to user
-    created bigint not null -- creation time in `time.Now().Unix()`
+    retention_days int not null default 30, -- backup retention in days
+    created bigint not null, -- creation time in `time.Now().Unix()`
+    valid_until bigint not null -- validity ("payed" until) in `time.Now().Unix()`
 );
 
 create table backup(
     id varchar(36) primary key not null, -- uuid
     state varchar(32) not null default 'CREATED', -- CREATED, PROGRESS, COMPLETE, ERROR
-    passphrase varchar(128) not null, -- passphrase to encrypt tar-file with (`gpg --batch --passphrase ${key} --symmetric`)
+    passphrase varchar(128) not null, -- passphrase to encrypt tar-file with (`openssl enc -aes-256-cbc -pbkdf2 -pass pass:${passphrase}`)
     backup_space_id varchar(36) not null references backup_space(id) on delete cascade, -- belongs to backup_space
     minetest_server_id varchar(36) references minetest_server(id) on delete cascade,
     created bigint not null, -- creation time in `time.Now().Unix()`

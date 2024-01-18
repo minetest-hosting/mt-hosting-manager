@@ -94,9 +94,10 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/transaction/{id}", api.Secure(api.GetTransaction)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/{id}/check", api.Secure(api.CheckTransaction)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/{id}/refund", api.Secure(api.RefundTransaction)).Methods(http.MethodPost)
+	user_api.HandleFunc("/backup/create", api.Secure(api.CreateBackup)).Methods(http.MethodPost)
 
-	// semi public, only with known identifiers (user_id and minetest_server_id)
-	apir.HandleFunc("/backup/create", api.CreateBackup).Methods(http.MethodPost)
+	// semi public, only with known identifier (backup_id)
+	apir.HandleFunc("/backup/{id}/progress", api.MarkBackupProgress).Methods(http.MethodPost)
 	apir.HandleFunc("/backup/{id}/complete", api.CompleteBackup).Methods(http.MethodPost)
 	apir.HandleFunc("/backup/{id}/error", api.MarkBackupError).Methods(http.MethodPost)
 

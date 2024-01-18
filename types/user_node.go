@@ -10,8 +10,7 @@ const (
 	UserNodeStateDecommissioned UserNodeState = "DECOMMISSIONED"
 )
 
-// Created -> Provisioning -> Running <-> Stopped
-//                                     -> Removing
+// Created -> Provisioning -> Running -> Removing -> Decommissioned
 
 func UserNodeProvider() *UserNode { return &UserNode{} }
 
