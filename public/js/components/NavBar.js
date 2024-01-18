@@ -79,6 +79,11 @@ export default {
 							<i class="fa fa-list"></i> Servers
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="has_role('ADMIN')">
+						<router-link to="/backup_spaces" class="nav-link">
+							<i class="fa fa-object-group"></i> Backup spaces
+						</router-link>
+					</li>
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/audit-logs" class="nav-link">
 							<i class="fa fa-rectangle-list"></i> Audit-logs
