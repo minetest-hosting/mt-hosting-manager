@@ -105,8 +105,10 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.GetBackupSpace)).Methods(http.MethodGet)
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.UpdateBackupSpace)).Methods(http.MethodPost)
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.RemoveBackupSpace)).Methods(http.MethodDelete)
+	user_api.HandleFunc("/backup_space/{id}/backup", api.Secure(api.GetBackups)).Methods(http.MethodGet)
 
-	user_api.HandleFunc("/backup/create", api.Secure(api.CreateBackup)).Methods(http.MethodPost)
+	user_api.HandleFunc("/backup", api.Secure(api.CreateBackup)).Methods(http.MethodPost)
+	user_api.HandleFunc("/backup/{id}", api.Secure(api.RemoveBackup)).Methods(http.MethodDelete)
 
 	// semi public, only with known identifier (backup_id)
 	apir.HandleFunc("/backup/{id}/progress", api.MarkBackupProgress).Methods(http.MethodPost)
