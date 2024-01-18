@@ -60,6 +60,7 @@ func main() {
 	if cfg.EnableWorker {
 		logrus.Info("Starting worker")
 		w = worker.NewWorker(repos, cfg)
+		w.RegisterExecutors()
 		w.Start()
 	}
 

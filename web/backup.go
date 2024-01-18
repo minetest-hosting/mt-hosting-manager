@@ -66,6 +66,13 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 	b.Created = time.Now().Unix()
 
 	err = a.repos.BackupRepo.Insert(b)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	// ssh exec
+	err = a.core.StartBackup(b)
 	Send(w, b, err)
 }
 

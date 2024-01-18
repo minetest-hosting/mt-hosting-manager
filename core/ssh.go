@@ -4,10 +4,14 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"mt-hosting-manager/types"
+	"net"
 	"os"
 	"text/template"
+	"time"
 
 	"github.com/pkg/sftp"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -124,4 +128,67 @@ func SSHExecute(client *ssh.Client, cmd string) ([]byte, []byte, error) {
 	}
 
 	return stdout.Bytes(), stderr.Bytes(), nil
+}
+
+func CreateClient(node *types.UserNode) (*ssh.Client, error) {
+	addr := fmt.Sprintf("%s:22", node.IPv4)
+	key_file := os.Getenv("SSH_KEY")
+	f, err := os.ReadFile(key_file)
+	if err != nil {
+		return nil, fmt.Errorf("ssh-key not found: %s", key_file)
+	}
+
+	key, err := ssh.ParsePrivateKey(f)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse private key: %v", err)
+	}
+
+	hostKeyCallback := func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		fp := ssh.FingerprintSHA256(key)
+		if node.Fingerprint == "" {
+			// no fingerprint yet, add and allow
+			node.Fingerprint = fp
+		}
+		if fp != node.Fingerprint {
+			// fingerprint mismatch
+			return fmt.Errorf("fingerprint mismatch, on record: '%s' got: '%s'", node.Fingerprint, fp)
+		}
+
+		return nil
+	}
+
+	config := &ssh.ClientConfig{
+		User: "root",
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(key),
+		},
+		HostKeyCallback: hostKeyCallback,
+	}
+
+	client, err := ssh.Dial("tcp", addr, config)
+	if err != nil {
+		return nil, fmt.Errorf("dial error: %v", err)
+	}
+	return client, nil
+}
+
+func TrySSHConnection(node *types.UserNode) (*ssh.Client, error) {
+	try_count := 0
+	for {
+		client, err := CreateClient(node)
+		if err != nil {
+			if try_count > 5 {
+				return nil, fmt.Errorf("ssh-client connection failed: %v", err)
+			} else {
+				logrus.WithFields(logrus.Fields{
+					"err":       err,
+					"try_count": try_count,
+				}).Warn("ssh-client failed")
+				try_count++
+				time.Sleep(10 * time.Second)
+			}
+		} else {
+			return client, nil
+		}
+	}
 }

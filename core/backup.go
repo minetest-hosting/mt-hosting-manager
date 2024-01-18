@@ -71,3 +71,29 @@ func (c *Core) RemoveBackupSpace(bs *types.BackupSpace) error {
 
 	return c.repos.BackupSpaceRepo.Delete(bs.ID)
 }
+
+func (c *Core) StartBackup(b *types.Backup) error {
+	server, err := c.repos.MinetestServerRepo.GetByID(b.MinetestServerID)
+	if err != nil {
+		return fmt.Errorf("server fetch error: %v", err)
+	}
+	if server == nil {
+		return fmt.Errorf("server not found: %s", b.MinetestServerID)
+	}
+
+	node, err := c.repos.UserNodeRepo.GetByID(server.UserNodeID)
+	if err != nil {
+		return fmt.Errorf("usernode fetch error: %v", err)
+	}
+	if node == nil {
+		return fmt.Errorf("usernode not found: %s", server.UserNodeID)
+	}
+
+	client, err := TrySSHConnection(node)
+	if err != nil {
+		return err
+	}
+
+	_, _, err = SSHExecute(client, fmt.Sprintf("/backup.sh %s %s %s", server.ID, b.ID, b.Passphrase))
+	return err
+}

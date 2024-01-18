@@ -7,22 +7,12 @@ import (
 	"mt-hosting-manager/worker/server_setup"
 )
 
-func (w *Worker) ServerDestroy(job *types.Job) error {
-	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
+func (w *Worker) ServerDestroy(job *types.Job, status StatusCallback) error {
+	node, server, err := w.GetJobContext(job)
 	if err != nil {
-		return fmt.Errorf("usernode fetch error: %v", err)
-	}
-	if node == nil {
-		return fmt.Errorf("usernode not found: %s", *job.UserNodeID)
+		return err
 	}
 
-	server, err := w.repos.MinetestServerRepo.GetByID(*job.MinetestServerID)
-	if err != nil {
-		return fmt.Errorf("usernode fetch error: %v", err)
-	}
-	if server == nil {
-		return fmt.Errorf("server not found: %s", *job.MinetestServerID)
-	}
 	server.State = types.MinetestServerStateRemoving
 	err = w.repos.MinetestServerRepo.Update(server)
 	if err != nil {
@@ -41,7 +31,7 @@ func (w *Worker) ServerDestroy(job *types.Job) error {
 		}
 	}
 
-	client, err := TrySSHConnection(node)
+	client, err := core.TrySSHConnection(node)
 	if err != nil {
 		return err
 	}

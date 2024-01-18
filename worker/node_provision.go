@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/api/hetzner_dns"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/provision"
 	"strings"
@@ -12,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
+func (w *Worker) NodeProvision(job *types.Job, status StatusCallback) error {
 	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
 	if err != nil {
 		return err
@@ -122,7 +123,7 @@ func (w *Worker) NodeProvision(job *types.Job, status func(string, int)) error {
 	}).Info("Executing provisioning")
 
 	status("waiting for node-startup", 40)
-	client, err := TrySSHConnection(node)
+	client, err := core.TrySSHConnection(node)
 	if err != nil {
 		return err
 	}

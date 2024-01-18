@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (w *Worker) NodeDestroy(job *types.Job) error {
+func (w *Worker) NodeDestroy(job *types.Job, status StatusCallback) error {
 	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
 	if err != nil {
 		return err

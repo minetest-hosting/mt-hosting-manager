@@ -3,26 +3,16 @@ package worker
 import (
 	"fmt"
 	"mt-hosting-manager/api/hetzner_dns"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
 	"mt-hosting-manager/worker/server_setup"
 	"time"
 )
 
-func (w *Worker) ServerSetup(job *types.Job) error {
-	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
+func (w *Worker) ServerSetup(job *types.Job, status StatusCallback) error {
+	node, server, err := w.GetJobContext(job)
 	if err != nil {
-		return fmt.Errorf("usernode fetch error: %v", err)
-	}
-	if node == nil {
-		return fmt.Errorf("usernode not found: %s", *job.UserNodeID)
-	}
-
-	server, err := w.repos.MinetestServerRepo.GetByID(*job.MinetestServerID)
-	if err != nil {
-		return fmt.Errorf("usernode fetch error: %v", err)
-	}
-	if server == nil {
-		return fmt.Errorf("server not found: %s", *job.MinetestServerID)
+		return err
 	}
 
 	w.core.AddAuditLog(&types.AuditLog{
@@ -77,7 +67,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 	// dns propagation time (LE has issues with really _fresh_ records)
 	time.Sleep(10 * time.Second)
 
-	client, err := TrySSHConnection(node)
+	client, err := core.TrySSHConnection(node)
 	if err != nil {
 		return err
 	}

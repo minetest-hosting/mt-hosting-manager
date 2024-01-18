@@ -4,54 +4,10 @@ import (
 	"fmt"
 	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
-	"net"
-	"os"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
-
-func CreateClient(node *types.UserNode) (*ssh.Client, error) {
-	addr := fmt.Sprintf("%s:22", node.IPv4)
-	key_file := os.Getenv("SSH_KEY")
-	f, err := os.ReadFile(key_file)
-	if err != nil {
-		return nil, fmt.Errorf("ssh-key not found: %s", key_file)
-	}
-
-	key, err := ssh.ParsePrivateKey(f)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse private key: %v", err)
-	}
-
-	hostKeyCallback := func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-		fp := ssh.FingerprintSHA256(key)
-		if node.Fingerprint == "" {
-			// no fingerprint yet, add and allow
-			node.Fingerprint = fp
-		}
-		if fp != node.Fingerprint {
-			// fingerprint mismatch
-			return fmt.Errorf("fingerprint mismatch, on record: '%s' got: '%s'", node.Fingerprint, fp)
-		}
-
-		return nil
-	}
-
-	config := &ssh.ClientConfig{
-		User: "root",
-		Auth: []ssh.AuthMethod{
-			ssh.PublicKeys(key),
-		},
-		HostKeyCallback: hostKeyCallback,
-	}
-
-	client, err := ssh.Dial("tcp", addr, config)
-	if err != nil {
-		return nil, fmt.Errorf("dial error: %v", err)
-	}
-	return client, nil
-}
 
 type ProvisionModel struct {
 	Config *types.Config

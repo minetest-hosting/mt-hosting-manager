@@ -24,6 +24,7 @@ const (
 	JobTypeNodeDestroy   JobType = "NODE_DESTROY"
 	JobTypeServerSetup   JobType = "SERVER_SETUP"
 	JobTypeServerDestroy JobType = "SERVER_DESTROY"
+	JobTypeStartBackup   JobType = "START_BACKUP"
 )
 
 func JobProvider() *Job { return &Job{} }

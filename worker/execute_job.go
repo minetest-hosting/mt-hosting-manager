@@ -26,17 +26,11 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 	}
 
 	var err error
-	switch job.Type {
-	case types.JobTypeNodeDestroy:
-		err = w.NodeDestroy(job)
-	case types.JobTypeNodeSetup:
-		err = w.NodeProvision(job, status_callback)
-	case types.JobTypeServerSetup:
-		err = w.ServerSetup(job)
-	case types.JobTypeServerDestroy:
-		err = w.ServerDestroy(job)
-	default:
+	var executor = executors[job.Type]
+	if executor == nil {
 		err = errors.New("type not implemented")
+	} else {
+		err = executor(job, status_callback)
 	}
 
 	if err != nil {

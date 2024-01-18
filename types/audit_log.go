@@ -21,6 +21,9 @@ const (
 	AuditLogServerSetupStarted  AuditLogType = "server_setup_started"
 	AuditLogServerSetupFinished AuditLogType = "server_setup_finished"
 
+	AuditLogServerBackupStarted  AuditLogType = "server_backup_started"
+	AuditLogServerBackupFinished AuditLogType = "server_backup_finished"
+
 	AuditLogPaymentCreated  AuditLogType = "payment_created"
 	AuditLogPaymentReceived AuditLogType = "payment_received"
 	AuditLogPaymentRefunded AuditLogType = "payment_refunded"

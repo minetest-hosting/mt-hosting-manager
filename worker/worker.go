@@ -25,6 +25,11 @@ type Worker struct {
 	wg      *sync.WaitGroup
 }
 
+type StatusCallback func(msg string, progress_percent int)
+type JobExecutor func(j *types.Job, cb StatusCallback) error
+
+var executors = map[types.JobType]JobExecutor{}
+
 func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 	return &Worker{
 		repos:   repos,
@@ -36,6 +41,13 @@ func NewWorker(repos *db.Repositories, cfg *types.Config) *Worker {
 		core:    core.New(repos, cfg),
 		wg:      &sync.WaitGroup{},
 	}
+}
+
+func (w *Worker) RegisterExecutors() {
+	executors[types.JobTypeNodeDestroy] = w.NodeDestroy
+	executors[types.JobTypeNodeSetup] = w.NodeProvision
+	executors[types.JobTypeServerDestroy] = w.ServerDestroy
+	executors[types.JobTypeServerSetup] = w.ServerSetup
 }
 
 func (w *Worker) Stop() {
