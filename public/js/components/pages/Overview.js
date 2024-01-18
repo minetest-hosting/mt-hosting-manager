@@ -33,7 +33,7 @@ export default {
             this.busy = true;
             const entries = [];
             const promises = nodes
-            .filter(node => node.state == "RUNNING")
+            .filter(node => node.state != "DECOMMISSIONED")
             .map(node => {
                 const entry = {
                     node: node,
@@ -43,7 +43,7 @@ export default {
                 return get_mtservers_by_nodeid(node.id)
                 .then(servers => {
                     entry.servers = servers
-                        .filter(server => server.state == "RUNNING")
+                        .filter(server => server.state != "DECOMMISSIONED")
                         .sort((a,b) => a.id < b.id);
                     entries.push(entry);
                 });
