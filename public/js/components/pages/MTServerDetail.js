@@ -2,6 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import ServerState from "../ServerState.js";
 import HelpPopup from "../HelpPopup.js";
 import NodeLink from "../NodeLink.js";
+import ClipboardCopy from "../ClipboardCopy.js";
 
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -13,7 +14,8 @@ export default {
 		"card-layout": CardLayout,
 		"server-state": ServerState,
 		"help-popup": HelpPopup,
-		"node-link": NodeLink
+		"node-link": NodeLink,
+		"clipboard-copy": ClipboardCopy
 	},
 	mounted: function() {
 		const server_id = this.id;
@@ -114,7 +116,7 @@ export default {
 				<tr>
 					<td>DNS Name</td>
 					<td>
-						{{dns_name}}
+						<clipboard-copy :text="dns_name"/>
 					</td>
 				</tr>
 				<tr v-if="server.state == 'RUNNING'">
