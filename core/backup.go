@@ -94,6 +94,6 @@ func (c *Core) StartBackup(b *types.Backup) error {
 		return err
 	}
 
-	_, _, err = SSHExecute(client, fmt.Sprintf("/backup.sh %s %s %s", server.ID, b.ID, b.Passphrase))
+	_, _, err = SSHExecute(client, fmt.Sprintf("nohup /backup.sh %s %s %s &", server.ID, b.ID, b.Passphrase))
 	return err
 }
