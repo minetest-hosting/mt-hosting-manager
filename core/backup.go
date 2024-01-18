@@ -24,7 +24,7 @@ func (c *Core) GetS3Client() (*minio.Client, error) {
 }
 
 func getBackupFilename(b *types.Backup) string {
-	return fmt.Sprintf("%s.tar.gz", b.ID)
+	return fmt.Sprintf("backup/%s.tar.gz", b.ID)
 }
 
 func (c *Core) RemoveBackup(b *types.Backup) error {
