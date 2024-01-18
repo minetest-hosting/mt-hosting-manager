@@ -44,7 +44,7 @@ trap on_exit EXIT
 
 # create tar and stream to s3 bucket
 S3_URL="s3://${BUCKET}/backup/${backup_id}.tar.gz"
-tar czf - --exclude='./mapserver.tiles' -C ${snapshot_dir}/${minetest_server_id}/world . |\
+tar czf - --exclude='./mapserver.tiles' --exclude='./mapserver.sqlite*' -C ${snapshot_dir}/${minetest_server_id}/world . |\
     openssl enc -aes-256-cbc -pbkdf2 -pass pass:${passphrase} |\
     aws --endpoint-url ${AWS_ENDPOINT_URL} s3 cp --expected-size ${max_size} - ${S3_URL}
 
