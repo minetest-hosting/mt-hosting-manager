@@ -7,6 +7,10 @@ import ClipboardCopy from "../ClipboardCopy.js";
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_by_id as get_node_by_id } from "../../api/node.js";
+import { get_all as get_all_backup_spaces } from "../../api/backup_space.js";
+import { create as create_backup } from "../../api/backup.js";
+
+import { has_role } from "../../service/login.js";
 
 export default {
 	props: ["id"],
@@ -19,6 +23,7 @@ export default {
 	},
 	mounted: function() {
 		const server_id = this.id;
+		get_all_backup_spaces().then(s => this.backup_spaces = s);
 		get_by_id(server_id)
 		.then(s => {
 			this.server = s;
@@ -36,6 +41,9 @@ export default {
 		return {
 			server: null,
 			node: null,
+			backup_spaces: [],
+			backup_space: null,
+			backup_scheduled: false,
 			job: null,
 			dns_suffix: get_hostingdomain_suffix(),
 			breadcrumb: [{
@@ -48,6 +56,7 @@ export default {
 		};
 	},
 	methods: {
+		has_role,
 		update: function() {
 			const server_id = this.id;
 
@@ -67,6 +76,13 @@ export default {
 		},
 		save: function() {
 			update(this.server);
+		},
+		create_backup: function() {
+			this.backup_scheduled = true;
+			create_backup({
+				backup_space_id: this.backup_space,
+				minetest_server_id: this.id
+			});
 		}
 	},
 	computed: {
@@ -131,7 +147,7 @@ export default {
 						<input type="text" placeholder="Custom DNS Name" class="form-control" v-model="server.custom_dns_name"/>
 					</td>					
 				</tr>
-				<tr v-if="server.state == 'RUNNING'">
+				<tr v-if="server.state == 'RUNNING' && has_role('ADMIN')">
 					<td>UI Version</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.ui_version"/>
@@ -164,20 +180,38 @@ export default {
 						<server-state :state="server.state"/>
 					</td>
 				</tr>
+				<tr v-if="server.state == 'RUNNING' && backup_spaces.length > 0">
+					<td>Backup</td>
+					<td>
+						<div class="input-group">
+							<select v-model="backup_space" class="form-control" :disabled="backup_scheduled">
+								<option v-for="bs in backup_spaces" :value="bs.id">{{bs.name}} ({{bs.id}})</option>
+							</select>
+							<button class="btn btn-secondary" :disabled="!backup_space || backup_scheduled" v-on:click="create_backup">
+								<i class="fa fa-floppy-disk"></i>
+								Create
+							</button>
+						</div>
+						<router-link :to="'/backup_spaces/' + backup_space" v-if="backup_scheduled">
+							<i class="fa fa-check"></i>
+							Backup scheduled
+						</router-link>
+					</td>
+				</tr>
 				<tr v-if="server.state == 'RUNNING'">
 					<td>Actions</td>
 					<td>
 						<div class="btn-group">
-							<button class="btn btn-xs btn-success" v-on:click="save" :disabled="setup_running">
+							<button class="btn btn-sm btn-success" v-on:click="save" :disabled="setup_running">
 								<i class="fa fa-floppy-disk"></i>
 								Save changes
 							</button>
-							<button class="btn btn-xs btn-outline-secondary" v-on:click="setup" :disabled="setup_running">
+							<button class="btn btn-sm btn-outline-secondary" v-on:click="setup" :disabled="setup_running">
 								<i class="fa fa-cog"></i>
 								Update management UI
 								<i class="fa fa-spinner fa-spin" v-if="setup_running"></i>
 							</button>
-							<router-link class="btn btn-xs btn-danger" :to="'/mtservers/' + server.id + '/delete'" :disabled="server.state != 'RUNNING'">
+							<router-link class="btn btn-sm btn-danger" :to="'/mtservers/' + server.id + '/delete'" :disabled="server.state != 'RUNNING'">
 								<i class="fa fa-trash"></i>
 								Delete
 							</router-link>

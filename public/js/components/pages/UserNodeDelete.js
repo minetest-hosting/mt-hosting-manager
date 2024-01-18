@@ -60,7 +60,7 @@ export default {
 				<tr>
 					<td>Delete</td>
 					<td>
-						<button class="btn btn-danger" :disabled="confirm_alias != node.alias" v-on:click="remove">
+						<button class="btn btn-sm btn-danger" :disabled="confirm_alias != node.alias" v-on:click="remove">
 							<i class="fa fa-trash"></i>
 							Delete
 						</button>

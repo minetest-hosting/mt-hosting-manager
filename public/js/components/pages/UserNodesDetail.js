@@ -162,7 +162,7 @@ export default {
 				<tr v-if="node.state == 'RUNNING'">
 					<td>Actions</td>
 					<td>
-						<router-link class="btn btn-xs btn-danger" :to="'/nodes/' + node.id + '/delete'">
+						<router-link class="btn btn-sm btn-danger" :to="'/nodes/' + node.id + '/delete'">
 							<i class="fa fa-trash"></i>
 							Delete
 						</router-link>

@@ -9,6 +9,7 @@ import (
 	openssl "github.com/Luzifer/go-openssl/v4"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"github.com/sirupsen/logrus"
 )
 
 func StreamBackup(passphrase string, src io.Reader, dst io.Writer) (int64, error) {
@@ -36,7 +37,11 @@ func (c *Core) RemoveBackup(b *types.Backup) error {
 	ctx := context.Background()
 	err = client.RemoveObject(ctx, c.cfg.S3Bucket, getBackupFilename(b), minio.RemoveObjectOptions{})
 	if err != nil {
-		return err
+		// ignore errors while removing
+		logrus.WithFields(logrus.Fields{
+			"backup_id": b.ID,
+			"error":     err,
+		}).Error("removing backup from s3 storage")
 	}
 
 	return c.repos.BackupRepo.Delete(b.ID)
