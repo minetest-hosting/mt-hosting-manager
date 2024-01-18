@@ -16,7 +16,7 @@ manager_baseurl={{.Config.BaseURL}}
 minetest_dir="/data/${minetest_server_id}"
 
 test -d ${minetest_dir} || exit 1
-snapshot_dir="/data/.snapshot-${minetest_server_id}/${minetest_server_id}/world"
+snapshot_dir="/data/.snapshot-${backup_id}"
 
 # try to remove previous snapshot just in case
 btrfs subvolume delete ${snapshot_dir} || true
@@ -27,7 +27,7 @@ curl -X POST ${manager_baseurl}/api/backup/${backup_id}/progress
 # create snapshot
 btrfs subvolume snapshot -r /data ${snapshot_dir}
 
-max_size=$(du -sb ${snapshot_dir} | cut -f1)
+max_size=$(du -sb ${snapshot_dir}/${minetest_server_id}/world | cut -f1)
 
 # setup error handling
 function on_err() {
@@ -44,7 +44,7 @@ trap on_exit EXIT
 
 # create tar and stream to s3 bucket
 S3_URL="s3://${BUCKET}/backup/${backup_id}.tar.gz"
-tar czf - -C ${snapshot_dir}/ . |\
+tar czf - -C ${snapshot_dir}/${minetest_server_id}/world . |\
     openssl enc -aes-256-cbc -pbkdf2 -pass pass:${passphrase} |\
     aws --endpoint-url ${AWS_ENDPOINT_URL} s3 cp --expected-size ${max_size} - ${S3_URL}
 
