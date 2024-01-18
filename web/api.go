@@ -62,6 +62,7 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
 	apir.HandleFunc("/exchange_rate", api.GetExchangeRates)
+	apir.HandleFunc("/geoip/{ip}", api.ResolveGeoIP)
 	apir.HandleFunc("/captcha", api.CreateCaptcha).Methods(http.MethodGet)
 	r.PathPrefix("/api/captcha/").Handler(captcha.Server(300, 200))
 

@@ -14,6 +14,7 @@ type Core struct {
 	wc    *wallee.WalleeClient
 	hdns  *hetzner_dns.HetznerDNSClient
 	cbc   *coinbase.CoinbaseClient
+	GeoIP *GeoipResolver
 }
 
 func New(repos *db.Repositories, cfg *types.Config) *Core {
@@ -23,5 +24,6 @@ func New(repos *db.Repositories, cfg *types.Config) *Core {
 		wc:    wallee.New(cfg.WalleeUserID, cfg.WalleeSpaceID, cfg.WalleeKey),
 		hdns:  hetzner_dns.New(cfg.HetznerApiKey, cfg.HetznerApiZoneID),
 		cbc:   coinbase.New(cfg.CoinbaseKey),
+		GeoIP: NewGeoipResolver(),
 	}
 }
