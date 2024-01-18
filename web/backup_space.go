@@ -51,6 +51,7 @@ func (a *Api) UpdateBackupSpace(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
+	bs.Name = updated_bs.Name
 	bs.RetentionDays = updated_bs.RetentionDays
 	if bs.RetentionDays < 7 {
 		bs.RetentionDays = 7
