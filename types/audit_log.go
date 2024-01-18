@@ -43,6 +43,7 @@ type AuditLog struct {
 	Type                 AuditLogType `json:"type"`
 	Timestamp            int64        `json:"timestamp"`
 	UserID               string       `json:"user_id"`
+	IPAddress            *string      `json:"ip_address"`
 	UserNodeID           *string      `json:"user_node_id"`
 	MinetestServerID     *string      `json:"minetest_server_id"`
 	PaymentTransactionID *string      `json:"payment_transaction_id"`
@@ -50,7 +51,17 @@ type AuditLog struct {
 }
 
 func (m *AuditLog) Columns(action string) []string {
-	return []string{"id", "type", "timestamp", "user_id", "user_node_id", "minetest_server_id", "payment_transaction_id", "amount"}
+	return []string{
+		"id",
+		"type",
+		"timestamp",
+		"user_id",
+		"ip_address",
+		"user_node_id",
+		"minetest_server_id",
+		"payment_transaction_id",
+		"amount",
+	}
 }
 
 func (m *AuditLog) Table() string {
@@ -58,9 +69,29 @@ func (m *AuditLog) Table() string {
 }
 
 func (m *AuditLog) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.Type, &m.Timestamp, &m.UserID, &m.UserNodeID, &m.MinetestServerID, &m.PaymentTransactionID, &m.Amount)
+	return r(
+		&m.ID,
+		&m.Type,
+		&m.Timestamp,
+		&m.UserID,
+		&m.IPAddress,
+		&m.UserNodeID,
+		&m.MinetestServerID,
+		&m.PaymentTransactionID,
+		&m.Amount,
+	)
 }
 
 func (m *AuditLog) Values(action string) []any {
-	return []any{m.ID, m.Type, m.Timestamp, m.UserID, m.UserNodeID, m.MinetestServerID, m.PaymentTransactionID, m.Amount}
+	return []any{
+		m.ID,
+		m.Type,
+		m.Timestamp,
+		m.UserID,
+		m.IPAddress,
+		m.UserNodeID,
+		m.MinetestServerID,
+		m.PaymentTransactionID,
+		m.Amount,
+	}
 }

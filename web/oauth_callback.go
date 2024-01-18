@@ -21,7 +21,7 @@ func (api *Api) OauthCallback(w http.ResponseWriter, r *http.Request, user_info 
 		}
 	}
 
-	err = api.loginUser(w, user)
+	_, err = api.loginUser(w, r, user)
 	if err != nil {
 		return err
 	}

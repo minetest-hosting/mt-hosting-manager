@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -35,22 +36,7 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		expires := time.Now().Add(7 * 24 * time.Hour)
-		new_claims := &types.Claims{
-			RegisteredClaims: &jwt.RegisteredClaims{
-				ExpiresAt: jwt.NewNumericDate(expires),
-			},
-			UserID: auth_entry.ID,
-			Name:   auth_entry.Name,
-			Role:   auth_entry.Role,
-		}
-
-		a.core.AddAuditLog(&types.AuditLog{
-			Type:   types.AuditLogUserLoggedIn,
-			UserID: auth_entry.ID,
-		})
-
-		err = a.SetClaims(w, claims)
+		new_claims, err := a.loginUser(w, r, auth_entry)
 		Send(w, new_claims, err)
 	}
 }
@@ -92,12 +78,12 @@ func (a *Api) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = a.loginUser(w, user)
+	_, err = a.loginUser(w, r, user)
 	user.RemoveSensitiveFields()
 	Send(w, user, err)
 }
 
-func (a *Api) loginUser(w http.ResponseWriter, user *types.User) error {
+func (a *Api) loginUser(w http.ResponseWriter, req *http.Request, user *types.User) (*types.Claims, error) {
 	dur := time.Duration(24 * 180 * time.Hour)
 	claims := &types.Claims{
 		Name:   user.Name,
@@ -108,10 +94,25 @@ func (a *Api) loginUser(w http.ResponseWriter, user *types.User) error {
 		},
 	}
 
-	a.core.AddAuditLog(&types.AuditLog{
+	l := &types.AuditLog{
 		Type:   types.AuditLogUserLoggedIn,
 		UserID: claims.UserID,
-	})
+	}
+	if req != nil {
+		// web request
+		fwdfor := req.Header.Get("X-Forwarded-For")
+		if fwdfor != "" {
+			// behind reverse proxy
+			parts := strings.Split(fwdfor, ",")
+			l.IPAddress = &parts[0]
+		} else {
+			// direct access
+			parts := strings.Split(req.RemoteAddr, ":")
+			l.IPAddress = &parts[0]
+		}
+	}
 
-	return a.SetClaims(w, claims)
+	a.core.AddAuditLog(l)
+
+	return claims, a.SetClaims(w, claims)
 }

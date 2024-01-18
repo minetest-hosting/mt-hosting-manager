@@ -100,6 +100,9 @@ export default {
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
 					<td>
+						<div v-if="log.ip_address">
+							<span class="badge bg-secondary">{{log.ip_address}}</span>
+						</div>
 						<div v-if="log.user_node_id">
 							<node-link :id="log.user_node_id"/>
 						</div>
