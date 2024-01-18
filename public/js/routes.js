@@ -22,6 +22,7 @@ import Pricing from './components/pages/Pricing.js';
 import Register from './components/pages/Register.js';
 import Overview from './components/pages/Overview.js';
 import BackupSpaces from './components/pages/BackupSpaces.js';
+import BackupSpaceDetail from './components/pages/BackupSpaceDetail.js';
 
 export default [{
 	path: "/", component: Start
@@ -86,5 +87,9 @@ export default [{
 	path: "/node_types/:id", component: NodeTypeDetail, props: true,
 	meta: { requiredRole: "ADMIN" }
 },{
-	path: "/backup_spaces", component: BackupSpaces
+	path: "/backup_spaces", component: BackupSpaces,
+	meta: { loggedIn: true }
+}, {
+	path: "/backup_spaces/:id", component: BackupSpaceDetail, props: true,
+	meta: { loggedIn: true }
 }];
