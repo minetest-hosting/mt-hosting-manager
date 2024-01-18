@@ -14,6 +14,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.19
 	github.com/minetest-go/dbutil v1.3.0
 	github.com/minetest-go/oauth v1.0.0
+	github.com/oschwald/geoip2-golang v1.9.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.18.0
 	github.com/prometheus/common v0.46.0
@@ -33,7 +34,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/oschwald/geoip2-golang v1.9.0 // indirect
 	github.com/oschwald/maxminddb-golang v1.11.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect

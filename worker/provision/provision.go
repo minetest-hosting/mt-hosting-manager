@@ -6,7 +6,6 @@ import (
 	"mt-hosting-manager/types"
 	"net"
 	"os"
-	"path"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -115,41 +114,10 @@ func Provision(client *ssh.Client, cfg *types.Config, userID string, status func
 		return fmt.Errorf("could not write file: %v", err)
 	}
 
-	status("executing setup script", 70)
+	status("executing setup script", 80)
 	_, _, err = core.SSHExecute(client, "/provision/setup.sh")
 	if err != nil {
 		return fmt.Errorf("SSHExecute error: %v", err)
-	}
-
-	wd, err := os.Getwd()
-	if err != nil {
-		return fmt.Errorf("could not get cwd: %v", err)
-	}
-
-	status("copying geolocation databases", 80)
-	err = core.SCPMkDir(sftp, "/data/mmdb")
-	if err != nil {
-		return err
-	}
-
-	mmdb_files := []string{"GeoLite2-ASN.mmdb", "GeoLite2-City.mmdb"}
-	for i, mmdb_file := range mmdb_files {
-		status(fmt.Sprintf("copying geolocation databases %d/%d", i+1, len(mmdb_files)), 85+(5*i))
-
-		p := path.Join(wd, mmdb_file)
-		fi, _ := os.Stat(p)
-		if fi != nil {
-			data, err := os.ReadFile(p)
-			if err != nil {
-				return fmt.Errorf("could not read '%s': %v", p, err)
-			}
-
-			target := fmt.Sprintf("/data/mmdb/%s", mmdb_file)
-			err = core.SCPWriteBytes(sftp, data, target, 0644, true)
-			if err != nil {
-				return fmt.Errorf("scp write error '%s': %v", target, err)
-			}
-		}
 	}
 
 	return nil

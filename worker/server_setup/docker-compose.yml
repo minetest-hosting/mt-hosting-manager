@@ -19,6 +19,7 @@ services:
    INSTALL_MTUI_MOD: "true"
    ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement,mediaserver,signup,chat"
    MINETEST_CONFIG: "/minetest.conf"
+   GEOIP_API: "https://hosting.minetest.ch/api/geoip"
    DEFAULT_THEME: "flatly"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/world/minetest.conf"
@@ -27,7 +28,6 @@ services:
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_CONTAINER_PREFIX: "{{.ServerShortID}}"
   volumes:
-   - "/data/mmdb:/root/.minetest/worlds/world/mmdb"
    - "./world:/root/.minetest/worlds/world"
    - "./world/minetest.conf:/minetest.conf"
    - "/var/run/docker.sock:/var/run/docker.sock:ro"
