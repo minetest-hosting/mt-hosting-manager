@@ -12,11 +12,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (a *Api) GetBackupSpaces(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	list, err := a.repos.BackupSpaceRepo.GetByUserID(c.UserID)
-	Send(w, list, err)
-}
-
 func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	b := &types.Backup{}
 	err := json.NewDecoder(r.Body).Decode(b)

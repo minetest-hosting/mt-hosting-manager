@@ -34,3 +34,7 @@ func (r *BackupRepository) GetByID(id string) (*types.Backup, error) {
 func (r *BackupRepository) GetByBackupSpaceID(backup_space_id string) ([]*types.Backup, error) {
 	return r.dbu.SelectMulti("where backup_space_id = %s", backup_space_id)
 }
+
+func (r *BackupRepository) Delete(id string) error {
+	return r.dbu.Delete("where id = %s", id)
+}
