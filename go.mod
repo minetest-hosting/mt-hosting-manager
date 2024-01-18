@@ -3,6 +3,7 @@ module mt-hosting-manager
 go 1.21.5
 
 require (
+	github.com/Luzifer/go-openssl/v4 v4.2.2
 	github.com/dchest/captcha v1.0.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.5.0
