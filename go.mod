@@ -14,6 +14,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.19
 	github.com/minetest-go/dbutil v1.3.0
 	github.com/minetest-go/oauth v1.0.0
+	github.com/minio/minio-go/v7 v7.0.66
 	github.com/oschwald/geoip2-golang v1.9.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.18.0
@@ -39,7 +40,6 @@ require (
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/minio/md5-simd v1.1.2 // indirect
-	github.com/minio/minio-go/v7 v7.0.66 // indirect
 	github.com/minio/sha256-simd v1.0.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
