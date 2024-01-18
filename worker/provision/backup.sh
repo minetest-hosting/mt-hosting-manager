@@ -9,7 +9,8 @@ export AWS_DEFAULT_REGION=us-east-1
 export BUCKET={{.Config.S3Bucket}}
 
 minetest_server_id=$1
-user_id=$2
+backup_id=$2
+passphrase=$3
 
 manager_baseurl={{.Config.BaseURL}}
 minetest_dir="/data/${minetest_server_id}"
@@ -22,10 +23,8 @@ snapshot_dir="/data/.snapshot-${minetest_server_id}"
 # try to remove previous snapshot just in case
 btrfs subvolume delete ${snapshot_dir} || true
 
-# call api to create backup entry
-json="{\"user_id\":\"${user_id}\",\"minetest_server_id\":\"${minetest_server_id}\"}"
-backup_id=$(curl --data "${json}" -H "Content-Type: application/json" ${manager_baseurl}/api/backup/create | jq .id -r)
-test -n "${backup_id}"
+# call api to notify progress
+curl -X POST ${manager_baseurl}/api/backup/${backup_id}/progress
 
 # create snapshot
 btrfs subvolume snapshot -r /data ${snapshot_dir}
@@ -44,9 +43,9 @@ function on_exit() {
 trap on_exit EXIT
 
 # create tar and stream to s3 bucket
-S3_URL="s3://${BUCKET}/${user_id}/${minetest_server_id}/${backup_id}.tar.gz"
+S3_URL="s3://${BUCKET}/${backup_id}.tar.gz"
 tar czf - -C ${snapshot_dir}/${minetest_server_id}/ . |\
-    gpg --batch --passphrase changeme --symmetric |\
+    gpg --batch --passphrase ${passphrase} --symmetric |\
     aws --endpoint-url ${AWS_ENDPOINT_URL} s3 cp --expected-size ${max_size} - ${S3_URL}
 
 # call api to complete backup entry
