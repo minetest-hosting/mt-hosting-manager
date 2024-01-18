@@ -65,8 +65,8 @@ func (w *Worker) Run() {
 	// start collector job
 	go w.CollectJob()
 
-	// start exchange rate update job
-	go w.ExchangeRateUpdateJob()
+	// start housekeeping job
+	go w.HousekeepingJob()
 
 	// start mail job
 	go w.MailJob()
@@ -108,7 +108,6 @@ func (w *Worker) Run() {
 			go w.ExecuteJob(job)
 		}
 
-		//TODO: remove old jobs
 		time.Sleep(500 * time.Millisecond)
 	}
 }

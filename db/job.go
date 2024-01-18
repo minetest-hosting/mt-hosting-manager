@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"mt-hosting-manager/types"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/minetest-go/dbutil"
@@ -57,4 +58,8 @@ func (r *JobRepository) GetAll() ([]*types.Job, error) {
 
 func (r *JobRepository) Delete(id string) error {
 	return r.dbu.Delete("where id = %s", id)
+}
+
+func (r *JobRepository) DeleteBefore(t time.Time) error {
+	return r.dbu.Delete("where started < %s", t.Unix())
 }
