@@ -81,7 +81,7 @@ export default {
                             &nbsp;
                             <server-state :state="server.state"/>
                         </li>
-                        <li>
+                        <li v-if="entry.node.state == 'RUNNING'">
                             <router-link class="btn btn-sm btn-outline-success" :to="'/mtservers/create?node=' + entry.node.id">
                                 <i class="fa fa-plus"></i>
                                 Create server
