@@ -149,7 +149,7 @@ export default {
 					</td>
 				</tr>
 				<tr v-if="node.state == 'PROVISIONING' && job">
-					<td>Privisioning progress</td>
+					<td>Provisioning progress</td>
 					<td>
 						<b>Status: </b> {{job.message}}
 						<div class="progress">
