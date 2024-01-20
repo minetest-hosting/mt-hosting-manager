@@ -35,7 +35,19 @@ func (c *HetznerCloudClient) CreateServer(csr *CreateServerRequest) (*CreateServ
 	}
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
+		// parse error response
+		err_resp := &ErrorResponse{}
+		err = json.Unmarshal(resp_bytes, err_resp)
+		if err != nil {
+			// error while parsing error
+			return nil, fmt.Errorf("api-response error-parsing error: %v", err)
+		}
+		if err_resp.Error != nil {
+			// provide full info
+			return nil, fmt.Errorf("api-error: status=%d, code='%s' message='%s'", resp.StatusCode, err_resp.Error.Code, err_resp.Error.Message)
+		}
+		// just the basics
+		return nil, fmt.Errorf("api-error status: %d", resp.StatusCode)
 	}
 
 	crsresp := &CreateServerResponse{}
