@@ -10,6 +10,15 @@ const (
 	LocationHillsboro   LocationType = "hil"
 )
 
+type ErrorMessage struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+type ErrorResponse struct {
+	Error *ErrorMessage `json:"error"`
+}
+
 type PublicNet struct {
 	EnableIPv4 bool `json:"enable_ipv4"`
 	EnableIPv6 bool `json:"enable_ipv6"`
