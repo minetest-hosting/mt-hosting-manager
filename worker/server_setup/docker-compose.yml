@@ -17,7 +17,7 @@ services:
    WORLD_DIR: "/root/.minetest/worlds/world"
    SERVER_NAME: "{{.Server.Name}}"
    INSTALL_MTUI_MOD: "true"
-   ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement,mediaserver,signup,chat"
+   ENABLE_FEATURES: "shell,luashell,minetest_config,docker,modmanagement,mediaserver,signup,chat,minetest_web"
    MINETEST_CONFIG: "/minetest.conf"
    GEOIP_API: "https://hosting.minetest.ch/api/geoip"
    DEFAULT_THEME: "flatly"
