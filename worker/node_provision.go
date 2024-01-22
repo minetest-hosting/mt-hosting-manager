@@ -55,7 +55,7 @@ func (w *Worker) NodeProvision(job *types.Job, status StatusCallback) error {
 				"node_id": node.ID,
 				"stage":   w.cfg.Stage,
 			},
-			Location: hetzner_cloud.LocationType(nodetype.Location),
+			Location: node.Location,
 			Name:     node.Name,
 			PublicNet: &hetzner_cloud.PublicNet{
 				EnableIPv4: true,

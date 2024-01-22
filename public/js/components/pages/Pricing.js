@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
+import LocationsList from "../LocationsList.js";
 
 import { get_nodetypes } from "../../service/nodetype.js";
 
@@ -8,7 +9,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
         "currency-display": CurrencyDisplay,
-        "node-type-spec": NodeTypeSpec
+        "node-type-spec": NodeTypeSpec,
+        "locations-list": LocationsList
 	},
 	data: function() {
 		return {
@@ -34,7 +36,7 @@ export default {
                         {{nt.name}}
                     </h4>
                     <h5>
-                        {{nt.location_readable}}
+                        Locations: <locations-list :locations="nt.locations"/>
                     </h5>
                     <node-type-spec :nodetype="nt"/>
                 </div>

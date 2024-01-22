@@ -28,7 +28,7 @@ export default {
 	methods: {
 		remove: function() {
 			remove(this.node)
-			.then(() => this.$router.push("/nodes"));
+			.then(() => this.$router.push("/overview"));
 		}
 	},
 	template: /*html*/`

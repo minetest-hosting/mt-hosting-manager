@@ -6,6 +6,7 @@ import { create } from "../../api/node.js";
 import { get_nodetype, get_nodetypes } from "../../service/nodetype.js";
 import { get_balance, fetch_profile } from "../../service/user.js";
 import random_name from "../../util/random_name.js";
+import { country_map, flag_map } from "../../util/country.js";
 
 export default {
 	components: {
@@ -14,17 +15,22 @@ export default {
         "node-type-spec": NodeTypeSpec
 	},
     data: function() {
+        const nt = get_nodetypes()[0];
         return {
-            nodetype_id: get_nodetypes()[0].id,
+            nodetype_id: nt.id,
+            location: nt.locations.split(",")[0],
             alias: random_name(),
-            busy: false
+            busy: false,
+            country_map,
+            flag_map
         };
     },
     methods: {
         create_node: function() {
             create({
                 node_type_id: this.nodetype_id,
-                alias: this.alias
+                alias: this.alias,
+                location: this.location
             })
             .then(node => {
                 this.$router.push(`/nodes/${node.id}`);
@@ -42,6 +48,14 @@ export default {
         },
         available_nodetypes: function() {
             return get_nodetypes().filter(nt => nt.state == "ACTIVE");
+        },
+        available_locations: function() {
+            return this.nodetype.locations.split(",");
+        }
+    },
+    watch: {
+        nodetype_id: function() {
+            this.location = this.nodetype.locations.split(",")[0];
         }
     },
 	template: /*html*/`
@@ -55,6 +69,20 @@ export default {
             </div>
         </div>
         <hr>
+        <div class="row">
+            <div class="col-12">
+                <label>Select location</label>
+                <div class="btn-group w-100">
+                    <a class="btn"
+                        v-bind:class="{'btn-outline-secondary': location != l, 'btn-success': location == l}"
+                        v-for="l in available_locations"
+                        v-on:click="location = l">
+                        {{country_map[l]}} {{flag_map[l]}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr>
         <table class="table" v-if="nodetype">
             <tbody>
                 <tr>
@@ -64,10 +92,6 @@ export default {
                 <tr>
                     <td>Description</td>
                     <td>{{nodetype.description}}</td>
-                </tr>
-                <tr>
-                    <td>Location</td>
-                    <td>{{nodetype.location_readable}}</td>
                 </tr>
                 <tr>
                     <td>Specs</td>

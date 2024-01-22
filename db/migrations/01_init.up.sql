@@ -21,8 +21,7 @@ create table node_type(
     order_id int not null default 1, -- order id
     provider varchar(32) not null, -- HETZNER
     server_type varchar(32) not null, -- provider server-type: cx11
-    location varchar(32) not null, -- location name/id
-    location_readable varchar(32) not null default '', -- location in readable format
+    locations varchar(32) not null, -- location list
     name varchar(128) not null default '', -- name of the node
     description varchar(1024) not null default '', -- description of the node
     cpu_count int not null default 1, -- number of cpu's
@@ -39,6 +38,7 @@ create table user_node(
     id varchar(36) primary key not null, -- uuid
     user_id varchar(36) not null references user(id) on delete restrict,
     node_type_id varchar(36) not null references node_type(id) on delete restrict,
+    location varchar(32) not null default 'nbg1',
     external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
     valid_until bigint not null, -- validity ("payed" until) in `time.Now().Unix()`

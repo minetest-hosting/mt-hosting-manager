@@ -27,7 +27,7 @@ type PublicNet struct {
 type CreateServerRequest struct {
 	Image            string            `json:"image"`
 	Labels           map[string]string `json:"labels"`
-	Location         LocationType      `json:"location"`
+	Location         string            `json:"location"`
 	Name             string            `json:"name"`
 	PublicNet        *PublicNet        `json:"public_net"`
 	ServerType       string            `json:"server_type"`

@@ -4,6 +4,8 @@ import ServerList from "../ServerList.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
 
+import { country_map, flag_map } from "../../util/country.js";
+
 import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid, get_latest_job } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_nodetype } from "../../service/nodetype.js";
@@ -45,7 +47,9 @@ export default {
 			disk_percent: 0,
 			memory_gb_total: 0,
 			memory_gb_used: 0,
-			memory_percent: 0
+			memory_percent: 0,
+			country_map,
+			flag_map
 		};
 	},
 	mounted: function() {
@@ -111,6 +115,12 @@ export default {
 					<td>Specs</td>
 					<td>
 						<node-type-spec :nodetype="nodetype"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Location</td>
+					<td>
+						{{country_map[node.location]}} {{flag_map[node.location]}}
 					</td>
 				</tr>
 				<tr>

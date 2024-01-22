@@ -7,6 +7,8 @@ import (
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"net/http"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -138,6 +140,11 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		return
 	}
 
+	locations := strings.Split(nt.Locations, ",")
+	if !slices.Contains(locations, create_node.Location) {
+		SendError(w, 404, fmt.Errorf("location not available: %s", create_node.Location))
+	}
+
 	user, err := a.repos.UserRepo.GetByID(c.UserID)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("user fetch error: %v", err))
@@ -159,6 +166,7 @@ func (a *Api) CreateNode(w http.ResponseWriter, r *http.Request, c *types.Claims
 		ID:         uuid.NewString(),
 		UserID:     c.UserID,
 		NodeTypeID: create_node.NodeTypeID,
+		Location:   create_node.Location,
 		Created:    time.Now().Unix(),
 		ValidUntil: time.Now().Unix(),
 		State:      types.UserNodeStateCreated,

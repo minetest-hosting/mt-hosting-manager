@@ -22,8 +22,7 @@ type NodeType struct {
 	OrderID                 int           `json:"order_id"`
 	Provider                ProviderType  `json:"provider"`
 	ServerType              string        `json:"server_type"`
-	Location                string        `json:"location"`
-	LocationReadable        string        `json:"location_readable"`
+	Locations               string        `json:"locations"`
 	Name                    string        `json:"name"`
 	Description             string        `json:"description"`
 	CpuCount                int           `json:"cpu_count"`
@@ -42,8 +41,7 @@ func (m *NodeType) Columns(action string) []string {
 		"order_id",
 		"provider",
 		"server_type",
-		"location",
-		"location_readable",
+		"locations",
 		"name",
 		"description",
 		"cpu_count",
@@ -67,8 +65,7 @@ func (m *NodeType) Scan(action string, r func(dest ...any) error) error {
 		&m.OrderID,
 		&m.Provider,
 		&m.ServerType,
-		&m.Location,
-		&m.LocationReadable,
+		&m.Locations,
 		&m.Name,
 		&m.Description,
 		&m.CpuCount,
@@ -88,8 +85,7 @@ func (m *NodeType) Values(action string) []any {
 		m.OrderID,
 		m.Provider,
 		m.ServerType,
-		m.Location,
-		m.LocationReadable,
+		m.Locations,
 		m.Name,
 		m.Description,
 		m.CpuCount,

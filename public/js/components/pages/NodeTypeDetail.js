@@ -91,15 +91,9 @@ export default {
 				</td>
 			</tr>
 			<tr>
-				<td>Location</td>
+				<td>Locations</td>
 				<td>
-					<input type="text" class="form-control" v-model="nt.location"/>
-				</td>
-			</tr>
-			<tr>
-				<td>Location (readable)</td>
-				<td>
-					<input type="text" class="form-control" v-model="nt.location_readable"/>
+					<input type="text" class="form-control" v-model="nt.locations"/>
 				</td>
 			</tr>
 			<tr>
