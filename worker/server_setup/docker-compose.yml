@@ -27,6 +27,7 @@ services:
    DOCKER_NETWORK: "network-{{.ServerShortID}},terminator"
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_CONTAINER_PREFIX: "{{.ServerShortID}}"
+   WASM_MINETEST_HOST: "{{.ServerShortID}}_engine"
   volumes:
    - "./world:/root/.minetest/worlds/world"
    - "./world/minetest.conf:/minetest.conf"
