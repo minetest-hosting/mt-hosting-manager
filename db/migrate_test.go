@@ -33,5 +33,9 @@ func SetupRepos(t *testing.T) *db.Repositories {
 }
 
 func TestMigrate(t *testing.T) {
+	if os.Getenv("PGHOST") == "" {
+		t.SkipNow()
+	}
+
 	SetupDB(t)
 }
