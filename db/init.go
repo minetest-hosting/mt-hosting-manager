@@ -2,22 +2,33 @@ package db
 
 import (
 	"database/sql"
-	"path"
+	"fmt"
+	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
-func Init(data_dir string) (*sql.DB, error) {
+func Init() (*sql.DB, error) {
+	connStr := fmt.Sprintf(
+		"user=%s password=%s port=%s host=%s dbname=%s sslmode=disable",
+		os.Getenv("PGUSER"),
+		os.Getenv("PGPASSWORD"),
+		os.Getenv("PGPORT"),
+		os.Getenv("PGHOST"),
+		os.Getenv("PGDATABASE"))
+
+	logrus.Infof("Connecting to %s", connStr)
 	var err error
-	db, err := sql.Open("sqlite3", path.Join(data_dir, "mt-hosting.sqlite?_timeout=5000&_journal=WAL&_foreign_keys=true"))
+	DB, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
 	}
 
-	err = db.Ping()
+	err = DB.Ping()
 	if err != nil {
 		return nil, err
 	}
 
-	return db, nil
+	return DB, nil
 }

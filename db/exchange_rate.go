@@ -21,3 +21,7 @@ func (r *ExchangeRateRepository) Update(n *types.ExchangeRate) error {
 func (r *ExchangeRateRepository) GetAll() ([]*types.ExchangeRate, error) {
 	return r.dbu.SelectMulti("")
 }
+
+func (r *ExchangeRateRepository) DeleteAll() error {
+	return r.dbu.Delete("")
+}

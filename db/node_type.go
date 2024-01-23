@@ -42,3 +42,7 @@ func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
 func (r *NodeTypeRepository) Delete(node_type_id string) error {
 	return r.dbu.Delete("where id = %s", node_type_id)
 }
+
+func (r *NodeTypeRepository) DeleteAll() error {
+	return r.dbu.Delete("")
+}

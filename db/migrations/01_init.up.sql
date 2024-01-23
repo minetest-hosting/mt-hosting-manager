@@ -1,5 +1,5 @@
 -- registered user
-create table user(
+create table public.user(
     id varchar(36) primary key not null, -- uuid
     state varchar(32) not null default 'ACTIVE',
     name varchar(128) not null, -- username
@@ -12,7 +12,7 @@ create table user(
     role varchar(32) not null -- ADMIN / USER
 );
 
-create unique index user_name on user(name);
+create unique index user_name on public.user(name);
 
 -- available node types to select
 create table node_type(
@@ -27,7 +27,7 @@ create table node_type(
     cpu_count int not null default 1, -- number of cpu's
     ram_gb int not null default 2, -- ram in gb
     disk_gb int not null default 10, -- disk size in gb
-    dedicated bit not null default false, -- dedicated machine
+    dedicated boolean not null default false, -- dedicated machine
     daily_cost bigint not null default 0, -- daily cost in eurocents
     max_recommended_instances int not null default 2, -- max number of recommended minetest instances on this host
     max_instances int not null default 4 -- max number of allowed minetest instances on this host
@@ -36,8 +36,8 @@ create table node_type(
 -- a node set up by a user
 create table user_node(
     id varchar(36) primary key not null, -- uuid
-    user_id varchar(36) not null references user(id) on delete restrict,
-    node_type_id varchar(36) not null references node_type(id) on delete restrict,
+    user_id varchar(36) not null references public.user(id) on delete cascade,
+    node_type_id varchar(36) not null references node_type(id) on delete cascade,
     location varchar(32) not null default 'nbg1',
     external_id varchar default '',
     created bigint not null, -- creation time in `time.Now().Unix()`
@@ -54,14 +54,14 @@ create table user_node(
 
 create table minetest_server(
     id varchar(36) primary key not null, -- uuid
-    user_node_id varchar(36) not null references user_node(id) on delete restrict,
+    user_node_id varchar(36) not null references user_node(id) on delete cascade,
     name varchar(64) not null, -- display name of the server
     dns_name varchar(256) not null, -- DNS name prefix
     admin varchar(32) not null default 'admin', -- admin name
     external_cname_dns_id varchar default '', -- hetzner dns record id
     custom_dns_name varchar default '', -- custom dns name (CNAME pointing to server-CNAME) optional
     port int not null default 30000, -- minetest server port
-    ui_version varchar(16) not null default 'latest', -- ui version to deploy
+    ui_version varchar(16) not null default 'sha256:..', -- ui version to deploy
     jwt_key varchar(16) not null, -- jwt key
     created bigint not null, -- creation time in `time.Now().Unix()`
     state varchar(32) not null default 'CREATED'
@@ -70,7 +70,7 @@ create table minetest_server(
 create table backup_space(
     id varchar(36) primary key not null, -- uuid
     name varchar(64) not null, -- display name
-    user_id varchar(36) not null references user(id) on delete cascade, -- belongs to user
+    user_id varchar(36) not null references public.user(id) on delete cascade, -- belongs to user
     retention_days int not null default 30, -- backup retention in days
     created bigint not null, -- creation time in `time.Now().Unix()`
     valid_until bigint not null -- validity ("payed" until) in `time.Now().Unix()`
@@ -96,7 +96,7 @@ create table job(
     minetest_server_id varchar(36) references minetest_server(id) on delete cascade,
     progress_percent float not null default 0,
     message varchar not null default '',
-    data blob -- json job data
+    data bytea -- json job data
 );
 
 create index job_type_state_started on job(type, state, started);
@@ -108,7 +108,7 @@ create table payment_transaction(
     payment_url varchar not null default '', -- url to payment service
     created bigint not null, -- creation time in `time.Now().Unix()`
     expires bigint not null, -- expiry time in `time.Now().Unix()`
-    user_id varchar(36) not null references user(id) on delete restrict,
+    user_id varchar(36) not null references public.user(id) on delete cascade,
     amount bigint not null default 0, -- currency amount in eurocents
     amount_refunded bigint not null default 0, -- amount refunded from this transaction in eurocents
     state varchar(32) not null default 'PENDING' -- state of the transaction, PENDING, SUCCESS, ERROR
@@ -120,8 +120,8 @@ create table audit_log(
     id varchar(36) primary key not null, -- uuid
     type varchar(64) not null, -- type of audit log
     timestamp bigint not null, -- time in `time.Now().Unix()`
-    user_id varchar(36) not null references user(id) on delete restrict, -- user
-    ip_address text(128), -- ip address (optional)
+    user_id varchar(36) not null references public.user(id) on delete cascade, -- user
+    ip_address varchar(128), -- ip address (optional)
     user_node_id varchar(36), -- node (optional)
     minetest_server_id varchar(36), -- server (optional)
     payment_transaction_id varchar(36), -- payment (optional)

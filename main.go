@@ -23,12 +23,7 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	db_, err := db.Init(wd)
+	db_, err := db.Init()
 	if err != nil {
 		panic(err)
 	}
