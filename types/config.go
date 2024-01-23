@@ -40,9 +40,6 @@ type Config struct {
 	DiscordOauthConfig  *OAuthConfig
 	MesehubOauthConfig  *OAuthConfig
 	CDBOauthConfig      *OAuthConfig
-	MailHost            string
-	MailAddress         string
-	MailPassword        string
 	MaxBalance          int //max balance in eurocents
 	S3Endpoint          string
 	S3Bucket            string
@@ -94,13 +91,10 @@ func NewConfig() *Config {
 			ClientID: os.Getenv("CDB_CLIENTID"),
 			Secret:   os.Getenv("CDB_SECRET"),
 		},
-		MailHost:     os.Getenv("MAIL_HOST"),
-		MailAddress:  os.Getenv("MAIL_ADDRESS"),
-		MailPassword: os.Getenv("MAIL_PASSWORD"),
-		MaxBalance:   100 * 100,
-		S3Endpoint:   os.Getenv("S3_ENDPOINT"),
-		S3Bucket:     os.Getenv("S3_BUCKET"),
-		S3KeyID:      os.Getenv("S3_KEY_ID"),
-		S3AccessKey:  os.Getenv("S3_ACCESS_KEY"),
+		MaxBalance:  100 * 100,
+		S3Endpoint:  os.Getenv("S3_ENDPOINT"),
+		S3Bucket:    os.Getenv("S3_BUCKET"),
+		S3KeyID:     os.Getenv("S3_KEY_ID"),
+		S3AccessKey: os.Getenv("S3_ACCESS_KEY"),
 	}
 }

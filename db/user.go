@@ -52,15 +52,6 @@ func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id st
 	}
 }
 
-func (r *UserRepository) GetByMail(mail string) (*types.User, error) {
-	u, err := r.dbu.Select("where mail = %s", mail)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	} else {
-		return u, err
-	}
-}
-
 func (r *UserRepository) GetAll() ([]*types.User, error) {
 	return r.dbu.SelectMulti("")
 }

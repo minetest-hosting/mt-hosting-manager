@@ -68,9 +68,6 @@ func (w *Worker) Run() {
 	// start housekeeping job
 	go w.HousekeepingJob()
 
-	// start mail job
-	go w.MailJob()
-
 	// execute previously running jobs
 	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {

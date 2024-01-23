@@ -14,7 +14,6 @@ type Repositories struct {
 	JobRepo                *JobRepository
 	PaymentTransactionRepo *PaymentTransactionRepository
 	AuditLogRepo           *AuditLogRepository
-	MailQueueRepo          *MailQueueRepository
 	BackupRepo             *BackupRepository
 	BackupSpaceRepo        *BackupSpaceRepository
 	ExchangeRateRepo       *ExchangeRateRepository
@@ -30,7 +29,6 @@ func NewRepositories(db dbutil.DBTx) *Repositories {
 		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dialect, types.JobProvider)},
 		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dialect, types.PaymentTransactionProvider)},
 		AuditLogRepo:           &AuditLogRepository{dbu: dbutil.New[*types.AuditLog](db, dialect, types.AuditLogProvider)},
-		MailQueueRepo:          &MailQueueRepository{dbu: dbutil.New[*types.MailQueue](db, dialect, types.MailQueueProvider)},
 		BackupRepo:             &BackupRepository{dbu: dbutil.New[*types.Backup](db, dialect, types.BackupProvider)},
 		BackupSpaceRepo:        &BackupSpaceRepository{dbu: dbutil.New[*types.BackupSpace](db, dialect, types.BackupSpaceProvider)},
 		ExchangeRateRepo:       &ExchangeRateRepository{dbu: dbutil.New[*types.ExchangeRate](db, dialect, types.ExchangeRateProvider)},

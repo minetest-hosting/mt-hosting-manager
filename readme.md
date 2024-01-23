@@ -37,7 +37,6 @@ sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
 * `GITHUB_CLIENTID`
 * `GITHUB_SECRET`
 
-* `ADMIN_USER_MAIL` mail of the user that gets the admin role on register
 * `SIGNUP_WHITELIST`
 
 * `WALLEE_USERID`
