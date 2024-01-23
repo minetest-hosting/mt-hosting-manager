@@ -6,6 +6,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:12
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: enter
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      PGUSER: postgres
+      PGPASSWORD: enter
+      PGHOST: localhost
+      PGDATABASE: postgres
+      PGPORT: 5432
+      LOGLEVEL: debug
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -23,7 +46,7 @@ jobs:
 
     - name: Test
       run: |
-        go test ./... -coverprofile=profile.cov
+        go test ./... -p 0 -coverprofile=profile.cov
 
     - uses: shogo82148/actions-goveralls@v1.8.0
       with:
