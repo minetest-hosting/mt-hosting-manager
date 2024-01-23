@@ -10,7 +10,6 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/google/uuid v1.5.0
 	github.com/gorilla/mux v1.8.1
-	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/mattn/go-sqlite3 v1.14.19
 	github.com/minetest-go/dbutil v1.3.0
 	github.com/minetest-go/oauth v1.0.0
