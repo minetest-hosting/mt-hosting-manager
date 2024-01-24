@@ -20,7 +20,7 @@ type Repositories struct {
 }
 
 func NewRepositories(db dbutil.DBTx) *Repositories {
-	dialect := dbutil.DialectSQLite
+	dialect := dbutil.DialectPostgres
 	return &Repositories{
 		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dialect, types.UserProvider), db: db},
 		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dialect, types.NodeTypeProvider)},

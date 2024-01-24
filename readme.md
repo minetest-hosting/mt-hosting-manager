@@ -14,10 +14,12 @@ State: **WIP**
 # Dev
 
 ```sh
-# setup
-docker-compose up
-# set all users as admin
-sudo sqlite3 mt-hosting.sqlite "update user set role = 'ADMIN'"
+# start redis and postgres
+docker-compose up -d postgres redis
+# ui assets
+docker-compose up hosting_webapp
+# main app
+docker-compose up hosting
 ```
 
 # Environment variables

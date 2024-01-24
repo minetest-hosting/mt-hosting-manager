@@ -63,7 +63,7 @@ func (m *User) Columns(action string) []string {
 }
 
 func (m *User) Table() string {
-	return "user"
+	return "public.user"
 }
 
 func (m *User) Scan(action string, r func(dest ...any) error) error {

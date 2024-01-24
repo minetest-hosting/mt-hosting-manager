@@ -10,10 +10,7 @@ import (
 )
 
 func SetupDB(t *testing.T) *sql.DB {
-	tmpdir, err := os.MkdirTemp(os.TempDir(), "mt-hosting")
-	assert.NoError(t, err)
-
-	db_, err := db.Init(tmpdir)
+	db_, err := db.Init()
 	assert.NoError(t, err)
 	assert.NotNil(t, db_)
 
@@ -24,5 +21,13 @@ func SetupDB(t *testing.T) *sql.DB {
 }
 
 func SetupRepos(t *testing.T) *db.Repositories {
-	return db.NewRepositories(SetupDB(t))
+	if os.Getenv("PGHOST") == "" {
+		t.SkipNow()
+	}
+
+	repos := db.NewRepositories(SetupDB(t))
+	assert.NoError(t, repos.UserRepo.DeleteAll())
+	assert.NoError(t, repos.NodeTypeRepo.DeleteAll())
+	assert.NoError(t, repos.ExchangeRateRepo.DeleteAll())
+	return repos
 }

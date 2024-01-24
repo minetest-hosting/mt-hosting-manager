@@ -60,13 +60,17 @@ func (r *UserRepository) Delete(user_id string) error {
 	return r.dbu.Delete("where id = %s", user_id)
 }
 
+func (r *UserRepository) DeleteAll() error {
+	return r.dbu.Delete("")
+}
+
 func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update user set balance = balance + $1 where id = $2", eurocents, user_id)
+	_, err := r.db.Exec("update public.user set balance = balance + $1 where id = $2", eurocents, user_id)
 	return err
 }
 
 func (r *UserRepository) SubtractBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update user set balance = balance - $1 where id = $2", eurocents, user_id)
+	_, err := r.db.Exec("update public.user set balance = balance - $1 where id = $2", eurocents, user_id)
 	return err
 }
 
@@ -80,7 +84,7 @@ func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
 	}
 
 	if s.Limit != nil && *s.Limit > 0 && *s.Limit < 100 {
-		q += fmt.Sprintf("limit %d", *s.Limit)
+		q += fmt.Sprintf(" limit %d", *s.Limit)
 	} else {
 		q += " limit 100"
 	}

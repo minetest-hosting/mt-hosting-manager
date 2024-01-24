@@ -8,6 +8,18 @@ services:
   working_dir: /app/public
   command: ["npm", "ci"]
 
+ postgres:
+  image: postgres:16.1
+  restart: always
+  environment:
+   POSTGRES_PASSWORD: enter
+  volumes:
+   - "postgres:/var/lib/postgresql/data"
+  command:
+   - "postgres"
+   - "-c"
+   - "log_statement=all"
+
  redis:
   image: redis:7.2.3-alpine
   restart: always
@@ -22,6 +34,11 @@ services:
    - "go_dir:/go"
    - "go_cache:/.cache"
   environment:
+   - PGUSER=postgres
+   - PGPASSWORD=enter
+   - PGHOST=postgres
+   - PGDATABASE=postgres
+   - PGPORT=5432
    - LOGLEVEL=debug
    - BASEURL=http://localhost:8080
    - COOKIE_PATH=/
@@ -38,11 +55,31 @@ services:
    - .env
   depends_on:
    - redis
+   - postgres
   ports:
    - "8080:8080"
   working_dir: /data
   command: ["go", "run", "."]
 
+ integration-test:
+  image: golang:1.21.5
+  depends_on:
+   - postgres
+  volumes:
+   - ".:/data"
+   - "go_dir:/go"
+   - "go_cache:/.cache"
+  environment:
+   - PGUSER=postgres
+   - PGPASSWORD=enter
+   - PGHOST=postgres
+   - PGDATABASE=postgres
+   - PGPORT=5432
+   - LOGLEVEL=debug
+  working_dir: /data
+  command: ["go", "test", "./...", "-p", "1", "-cover"]
+
 volumes:
   go_dir: {}
   go_cache: {}
+  postgres: {}
