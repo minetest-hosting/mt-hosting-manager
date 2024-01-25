@@ -61,7 +61,7 @@ export default {
                     &nbsp;
                     <node-state :state="node.state"/>
                     &nbsp;
-                    <node-type-spec :nodetype="nodetype"/>
+                    <node-type-spec :nodetype="node.nodetype"/>
                 </div>
                 <div class="card-body">
                     <ul>
