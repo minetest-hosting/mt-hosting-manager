@@ -10,6 +10,15 @@ import (
 	"github.com/pkg/sftp"
 )
 
+type SetupModel struct {
+	BaseDir       string
+	Hostname      string
+	Enginename    string
+	ServerShortID string
+	Server        *types.MinetestServer
+	Config        *types.Config
+}
+
 func GetShortName(id string) string {
 	parts := strings.Split(id, "-")
 	return parts[0]

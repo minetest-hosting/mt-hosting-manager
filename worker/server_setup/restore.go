@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *types.MinetestServer) error {
+func Restore(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *types.MinetestServer) error {
 	session, err := client.NewSession()
 	if err != nil {
 		return fmt.Errorf("could not open session: %v", err)
@@ -28,9 +28,15 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 	}
 
 	basedir := GetBaseDir(server)
-	setup_file := fmt.Sprintf("%s/setup.sh", basedir)
+	restore_file := fmt.Sprintf("%s/restore.sh", basedir)
 
-	_, _, err = core.SSHExecute(client, setup_file)
+	// TODO: template vars for restore script
+	err = core.SCPTemplateFile(sftp, Files, "restore.sh", restore_file, 0755, true, map[string]any{})
+	if err != nil {
+		return err
+	}
+
+	_, _, err = core.SSHExecute(client, restore_file)
 	if err != nil {
 		return err
 	}

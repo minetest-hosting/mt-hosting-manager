@@ -16,10 +16,11 @@ const (
 	AuditLogNodeProvisioningFinished AuditLogType = "node_provisioning_finished"
 	AuditLogNodeBilled               AuditLogType = "node_billed"
 
-	AuditLogServerCreated       AuditLogType = "server_created"
-	AuditLogServerRemoved       AuditLogType = "server_removed"
-	AuditLogServerSetupStarted  AuditLogType = "server_setup_started"
-	AuditLogServerSetupFinished AuditLogType = "server_setup_finished"
+	AuditLogServerCreated        AuditLogType = "server_created"
+	AuditLogServerRemoved        AuditLogType = "server_removed"
+	AuditLogServerSetupStarted   AuditLogType = "server_setup_started"
+	AuditLogServerRestoreStarted AuditLogType = "server_restore_started"
+	AuditLogServerSetupFinished  AuditLogType = "server_setup_finished"
 
 	AuditLogServerBackupStarted  AuditLogType = "server_backup_started"
 	AuditLogServerBackupFinished AuditLogType = "server_backup_finished"
