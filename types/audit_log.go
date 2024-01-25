@@ -32,10 +32,13 @@ const (
 )
 
 type AuditLogSearch struct {
-	FromTimestamp int64         `json:"from_timestamp"`
-	ToTimestamp   int64         `json:"to_timestamp"`
-	Type          *AuditLogType `json:"type"`
-	UserID        *string       `json:"user_id"`
+	FromTimestamp        int64         `json:"from_timestamp"`
+	ToTimestamp          int64         `json:"to_timestamp"`
+	Type                 *AuditLogType `json:"type"`
+	UserID               *string       `json:"user_id"`
+	UserNodeID           *string       `json:"user_node_id"`
+	MinetestServerID     *string       `json:"minetest_server_id"`
+	PaymentTransactionID *string       `json:"payment_transaction_id"`
 }
 
 type AuditLog struct {

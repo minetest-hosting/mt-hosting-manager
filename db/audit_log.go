@@ -37,6 +37,21 @@ func (r *AuditLogRepository) Search(s *types.AuditLogSearch) ([]*types.AuditLog,
 		params = append(params, *s.UserID)
 	}
 
+	if s.MinetestServerID != nil {
+		q += " and minetest_server_id = %s"
+		params = append(params, *s.UserID)
+	}
+
+	if s.UserNodeID != nil {
+		q += " and user_node_id = %s"
+		params = append(params, *s.UserID)
+	}
+
+	if s.PaymentTransactionID != nil {
+		q += " and payment_transaction_id = %s"
+		params = append(params, *s.UserID)
+	}
+
 	q += " order by timestamp desc limit 1000"
 
 	return r.dbu.SelectMulti(q, params...)
