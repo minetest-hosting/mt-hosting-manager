@@ -93,6 +93,8 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/mtserver/{id}/job", api.Secure(api.GetLatestMTServerJob)).Methods(http.MethodGet)
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.DeleteMTServer)).Methods(http.MethodDelete)
 
+	user_api.HandleFunc("/overview/{user_id}", api.Secure(api.GetOverviewData)).Methods(http.MethodGet)
+
 	user_api.HandleFunc("/transaction", api.Secure(api.GetTransactions)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/create", api.Secure(api.CreateTransaction)).Methods(http.MethodPost)
 	user_api.HandleFunc("/transaction/search", api.Secure(api.SearchTransaction)).Methods(http.MethodPost)
