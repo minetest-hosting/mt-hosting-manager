@@ -50,7 +50,7 @@ export default {
             <i class="fa fa-spinner fa-spin"></i>
 			Loading overview data
         </div>
-        <router-link class="btn btn-success" to="/nodes/create" v-if="entries.length == 0 && !busy">
+        <router-link class="btn btn-success" to="/nodes/create" v-if="nodes.length == 0 && !busy">
 			<i class="fa fa-plus"></i>
 			Create node
 		</router-link>
