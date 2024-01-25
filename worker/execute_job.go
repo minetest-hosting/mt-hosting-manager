@@ -10,6 +10,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var ErrJobStillRunning = errors.New("job is still running")
+
 func (w *Worker) ExecuteJob(job *types.Job) {
 	logrus.WithFields(job.LogrusFields()).Debug("Executing job")
 	w.wg.Add(1)
@@ -33,9 +35,15 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		err = executor(job, status_callback)
 	}
 
-	if err != nil {
+	if err == ErrJobStillRunning {
+		// job is still running
+		job.State = types.JobStateRunning
+
+	} else if err != nil {
+		// job failed
 		job.State = types.JobStateDoneFailure
 		job.Message = err.Error()
+		job.Finished = time.Now().Unix()
 
 		fields := job.LogrusFields()
 		fields["err"] = err
@@ -51,11 +59,11 @@ func (w *Worker) ExecuteJob(job *types.Job) {
 		}, true)
 
 	} else {
+		// done
 		job.State = types.JobStateDoneSuccess
-
+		job.Finished = time.Now().Unix()
 	}
 
-	job.Finished = time.Now().Unix()
 	err = w.repos.JobRepo.Update(job)
 	if err != nil {
 		fields := job.LogrusFields()

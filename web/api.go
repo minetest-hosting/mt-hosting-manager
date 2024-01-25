@@ -113,10 +113,12 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/backup/{id}", api.Secure(api.RemoveBackup)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/backup/{id}", api.Secure(api.DownloadBackup)).Methods(http.MethodGet)
 
-	// semi public, only with known identifier (backup_id)
+	// semi public, only with known identifier (backup_id, job_id)
 	apir.HandleFunc("/backup/{id}/progress", api.MarkBackupProgress).Methods(http.MethodPost)
 	apir.HandleFunc("/backup/{id}/complete", api.CompleteBackup).Methods(http.MethodPost)
 	apir.HandleFunc("/backup/{id}/error", api.MarkBackupError).Methods(http.MethodPost)
+	apir.HandleFunc("/job/{id}/complete", api.CompleteJob).Methods(http.MethodPost)
+	apir.HandleFunc("/job/{id}/error", api.MarkJobFailure).Methods(http.MethodPost)
 
 	// admin api
 	admin_api := apir.NewRoute().Subrouter()
