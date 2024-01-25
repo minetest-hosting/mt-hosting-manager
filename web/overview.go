@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
+	"slices"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -66,8 +68,16 @@ func (a *Api) GetOverviewData(w http.ResponseWriter, r *http.Request, c *types.C
 			})
 		}
 
+		slices.SortFunc(od.Servers, func(s1, s2 *types.MinetestServerOverview) int {
+			return strings.Compare(s1.ID, s2.ID)
+		})
+
 		data = append(data, od)
 	}
+
+	slices.SortFunc(data, func(o1, o2 *types.OverviewData) int {
+		return strings.Compare(o1.ID, o2.ID)
+	})
 
 	Send(w, data, nil)
 }
