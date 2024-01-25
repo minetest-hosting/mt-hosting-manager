@@ -37,6 +37,7 @@ type Job struct {
 	Finished         int64    `json:"finished"`
 	UserNodeID       *string  `json:"user_node_id"`
 	MinetestServerID *string  `json:"minetest_server_id"`
+	BackupID         *string  `json:"backup_id"`
 	ProgressPercent  float64  `json:"progress_percent"`
 	Message          string   `json:"message"`
 	Data             []byte   `json:"data"`
@@ -51,6 +52,7 @@ func (m *Job) Columns(action string) []string {
 		"finished",
 		"user_node_id",
 		"minetest_server_id",
+		"backup_id",
 		"progress_percent",
 		"message",
 		"data",
@@ -70,6 +72,7 @@ func (m *Job) Scan(action string, r func(dest ...any) error) error {
 		&m.Finished,
 		&m.UserNodeID,
 		&m.MinetestServerID,
+		&m.BackupID,
 		&m.ProgressPercent,
 		&m.Message,
 		&m.Data,
@@ -85,6 +88,7 @@ func (m *Job) Values(action string) []any {
 		m.Finished,
 		m.UserNodeID,
 		m.MinetestServerID,
+		m.BackupID,
 		m.ProgressPercent,
 		m.Message,
 		m.Data,

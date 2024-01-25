@@ -39,6 +39,7 @@ type AuditLogSearch struct {
 	UserID               *string       `json:"user_id"`
 	UserNodeID           *string       `json:"user_node_id"`
 	MinetestServerID     *string       `json:"minetest_server_id"`
+	BackupID             *string       `json:"backup_id"`
 	PaymentTransactionID *string       `json:"payment_transaction_id"`
 }
 
@@ -50,6 +51,7 @@ type AuditLog struct {
 	IPAddress            *string      `json:"ip_address"`
 	UserNodeID           *string      `json:"user_node_id"`
 	MinetestServerID     *string      `json:"minetest_server_id"`
+	BackupID             *string      `json:"backup_id"`
 	PaymentTransactionID *string      `json:"payment_transaction_id"`
 	Amount               *int64       `json:"amount"`
 }
@@ -63,6 +65,7 @@ func (m *AuditLog) Columns(action string) []string {
 		"ip_address",
 		"user_node_id",
 		"minetest_server_id",
+		"backup_id",
 		"payment_transaction_id",
 		"amount",
 	}
@@ -81,6 +84,7 @@ func (m *AuditLog) Scan(action string, r func(dest ...any) error) error {
 		&m.IPAddress,
 		&m.UserNodeID,
 		&m.MinetestServerID,
+		&m.BackupID,
 		&m.PaymentTransactionID,
 		&m.Amount,
 	)
@@ -95,6 +99,7 @@ func (m *AuditLog) Values(action string) []any {
 		m.IPAddress,
 		m.UserNodeID,
 		m.MinetestServerID,
+		m.BackupID,
 		m.PaymentTransactionID,
 		m.Amount,
 	}

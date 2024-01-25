@@ -39,17 +39,22 @@ func (r *AuditLogRepository) Search(s *types.AuditLogSearch) ([]*types.AuditLog,
 
 	if s.MinetestServerID != nil {
 		q += " and minetest_server_id = %s"
-		params = append(params, *s.UserID)
+		params = append(params, *s.MinetestServerID)
 	}
 
 	if s.UserNodeID != nil {
 		q += " and user_node_id = %s"
-		params = append(params, *s.UserID)
+		params = append(params, *s.UserNodeID)
+	}
+
+	if s.BackupID != nil {
+		q += " and backup_id = %s"
+		params = append(params, *s.BackupID)
 	}
 
 	if s.PaymentTransactionID != nil {
 		q += " and payment_transaction_id = %s"
-		params = append(params, *s.UserID)
+		params = append(params, *s.PaymentTransactionID)
 	}
 
 	q += " order by timestamp desc limit 1000"
