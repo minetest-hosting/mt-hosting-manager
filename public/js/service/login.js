@@ -28,5 +28,6 @@ export const logout = () => api_logout()
     .then(() => store.claims = null);
 
 export const get_claims = () => store.claims;
+export const get_user_id = () => store.claims && store.claims.user_id;
 export const is_logged_in = () => store.claims;
 export const has_role = role => store.claims && store.claims.role == role;

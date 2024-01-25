@@ -78,8 +78,7 @@ export default {
 			.then(n => this.node = n);
 
 			get_mtservers_by_nodeid(nodeid)
-			.then(list => list.filter(s => s.state != "DECOMMISSIONED"))
-			.then(this.servers = list);
+			.then(list => this.servers = list.filter(s => s.state != "DECOMMISSIONED"));
 	
 			if (this.node.state == "DECOMMISSIONED") {
 				clearInterval(this.handle);

@@ -5,7 +5,9 @@ import NodeState from "../NodeState.js";
 import ServerState from "../ServerState.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
 
-import { get_all, get_mtservers_by_nodeid } from "../../api/node.js";
+import { get_overview } from "../../api/overview.js";
+
+import { get_user_id } from "../../service/login.js";
 import { get_nodetype } from "../../service/nodetype.js";
 
 export default {
@@ -25,35 +27,22 @@ export default {
                 icon: "map", name: "Overview", link: "/overview"
             }],
             busy: false,
-            entries: []
+            nodes: []
 		};
 	},
+    methods: {
+        update: function() {
+            get_overview(get_user_id())
+            .then(od => {
+                // populate nodetypes
+                od.forEach(n => n.nodetype = get_nodetype(n.node_type_id));
+                this.nodes = od;
+            });
+        }
+    },
     mounted: function() {
-        get_all().then(nodes => {
-            this.busy = true;
-            const entries = [];
-            const promises = nodes
-            .filter(node => node.state != "DECOMMISSIONED")
-            .map(node => {
-                const entry = {
-                    node: node,
-                    nodetype: get_nodetype(node.node_type_id),
-                    servers: []
-                };
-                return get_mtservers_by_nodeid(node.id)
-                .then(servers => {
-                    entry.servers = servers
-                        .filter(server => server.state != "DECOMMISSIONED")
-                        .sort((a,b) => a.id < b.id);
-                    entries.push(entry);
-                });
-            });
-            Promise.all(promises).then(() => {
-                entries.sort((a,b) => a.node.id < b.node.id);
-                this.entries = entries;
-                this.busy = false;
-            });
-        });
+        this.update();
+        this.handle = setInterval(() => this.update(), 2000);
     },
 	template: /*html*/`
 	<card-layout title="Overview" icon="map" :breadcrumb="breadcrumb" :fullwidth="true" :flex="true">
@@ -65,24 +54,24 @@ export default {
 			<i class="fa fa-plus"></i>
 			Create node
 		</router-link>
-        <div class="col-md-4" v-for="entry in entries" v-if="!busy">
+        <div class="col-md-4" v-for="node in nodes" v-if="!busy">
             <div class="card" style="min-height: 250px;">
                 <div class="card-header">
-                    <node-link :node="entry.node"/>
+                    <node-link :node="node"/>
                     &nbsp;
-                    <node-state :state="entry.node.state"/>
+                    <node-state :state="node.state"/>
                     &nbsp;
-                    <node-type-spec :nodetype="entry.nodetype"/>
+                    <node-type-spec :nodetype="nodetype"/>
                 </div>
                 <div class="card-body">
                     <ul>
-                        <li v-for="server in entry.servers">
+                        <li v-for="server in node.servers">
                             <server-link :server="server"/>
                             &nbsp;
                             <server-state :state="server.state"/>
                         </li>
-                        <li v-if="entry.node.state == 'RUNNING'">
-                            <router-link class="btn btn-sm btn-outline-success" :to="'/mtservers/create?node=' + entry.node.id">
+                        <li v-if="node.state == 'RUNNING'">
+                            <router-link class="btn btn-sm btn-outline-success" :to="'/mtservers/create?node=' + node.id">
                                 <i class="fa fa-plus"></i>
                                 Create server
                             </router-link>
