@@ -12,12 +12,20 @@ func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
 	if err != nil {
 		return err
 	}
+	backup, err := w.repos.BackupRepo.GetByID(*job.BackupID)
+	if err != nil {
+		return err
+	}
+	if backup == nil {
+		return fmt.Errorf("backup not found: %s", *job.BackupID)
+	}
 
 	w.core.AddAuditLog(&types.AuditLog{
 		Type:             types.AuditLogServerRestoreStarted,
 		UserID:           node.UserID,
 		UserNodeID:       &node.ID,
 		MinetestServerID: &server.ID,
+		BackupID:         job.BackupID,
 	})
 
 	err = w.ServerPrepareSetup(job, node, server)
@@ -30,7 +38,7 @@ func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
 		return err
 	}
 
-	err = server_setup.Restore(client, w.cfg, node, server)
+	err = server_setup.Restore(client, w.cfg, node, server, backup)
 	if err != nil {
 		return err
 	}
