@@ -37,6 +37,7 @@ type Config struct {
 	WalleeKey           string
 	WalleeEnabled       bool
 	ZahlschPageID       string
+	ZahlschUser         string
 	ZahlschWebhookKey   string
 	ZahlschEnabled      bool
 	GithubOauthConfig   *OAuthConfig
@@ -83,6 +84,7 @@ func NewConfig() *Config {
 		WalleeEnabled: os.Getenv("WALLEE_ENABLED") == "true",
 		// zahls.ch
 		ZahlschPageID:     os.Getenv("ZAHLSCH_PAGEID"),
+		ZahlschUser:       os.Getenv("ZAHLSCH_USER"),
 		ZahlschWebhookKey: os.Getenv("ZAHLSCH_WEBHOOK_KEY"),
 		ZahlschEnabled:    os.Getenv("ZAHLSCH_ENABLED") == "true",
 		// oauth

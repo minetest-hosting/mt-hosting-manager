@@ -45,5 +45,41 @@ func (a *Api) ZahlschWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//TODO: get tx and update status
+	user_id := ""
+	tx_id := ""
+
+	for _, field := range payload.Transaction.Invoice.CustomFields {
+		switch field.Name {
+		case "user_id":
+			user_id = field.Value
+		case "transaction_id":
+			tx_id = field.Value
+		}
+	}
+
+	user, err := a.repos.UserRepo.GetByID(user_id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("user fetch error: %v", err))
+		return
+	}
+	if user == nil {
+		SendError(w, 500, fmt.Errorf("user not found: '%s'", user_id))
+		return
+	}
+
+	tx, err := a.repos.PaymentTransactionRepo.GetByID(tx_id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("tx fetch error: %v", err))
+		return
+	}
+	if tx == nil {
+		SendError(w, 500, fmt.Errorf("tx not found: '%s'", tx_id))
+		return
+	}
+	if tx.UserID != user.ID {
+		SendError(w, 500, fmt.Errorf("user mismatch: found '%s' expected: '%s'", tx.UserID, user.ID))
+		return
+	}
+
+	//TODO: update status
 }

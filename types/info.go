@@ -7,6 +7,8 @@ type Info struct {
 	CoinbaseEnabled     bool   `json:"coinbase_enabled"`
 	WalleeEnabled       bool   `json:"wallee_enabled"`
 	ZahlschEnabled      bool   `json:"zahlsch_enabled"`
+	ZahlschPageID       string `json:"zahlsch_pageid"`
+	ZahlschUser         string `json:"zahlsch_user"`
 	GithubLogin         string `json:"github_login"`
 	DiscordLogin        string `json:"discord_login"`
 	MesehubLogin        string `json:"mesehub_login"`
@@ -22,6 +24,8 @@ func NewInfo(cfg *Config) *Info {
 		CoinbaseEnabled:     cfg.CoinbaseEnabled,
 		WalleeEnabled:       cfg.WalleeEnabled,
 		ZahlschEnabled:      cfg.ZahlschEnabled,
+		ZahlschPageID:       cfg.ZahlschPageID,
+		ZahlschUser:         cfg.ZahlschUser,
 		GithubLogin:         cfg.GithubOauthConfig.LoginURL,
 		DiscordLogin:        cfg.DiscordOauthConfig.LoginURL,
 		MesehubLogin:        cfg.MesehubOauthConfig.LoginURL,

@@ -14,6 +14,7 @@ type PaymentType string
 const (
 	PaymentTypeWallee   PaymentType = "WALLEE"
 	PaymentTypeCoinbase PaymentType = "COINBASE"
+	PaymentTypeZahlsch  PaymentType = "ZAHLSCH"
 )
 
 func PaymentTransactionProvider() *PaymentTransaction { return &PaymentTransaction{} }

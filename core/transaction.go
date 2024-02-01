@@ -22,20 +22,41 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 		return nil, fmt.Errorf("user not found: '%s'", userid)
 	}
 
+	if user.Balance+create_tx_req.Amount > int64(c.cfg.MaxBalance) {
+		return nil, fmt.Errorf("max balance of %d exceeded", c.cfg.MaxBalance)
+	}
+	if create_tx_req.Amount < 500 {
+		return nil, fmt.Errorf("min payment: EUR 5")
+	}
+
 	payment_tx_id := uuid.NewString()
 	back_url := fmt.Sprintf("%s/#/finance/detail/%s", c.cfg.BaseURL, payment_tx_id)
 
+	payment_tx := &types.PaymentTransaction{
+		ID:             payment_tx_id,
+		Type:           create_tx_req.Type,
+		Created:        time.Now().Unix(),
+		Expires:        time.Now().Add(time.Hour).Unix(),
+		UserID:         userid,
+		Amount:         create_tx_req.Amount,
+		AmountRefunded: 0,
+		State:          types.PaymentStatePending,
+	}
+
 	switch create_tx_req.Type {
+	case types.PaymentTypeZahlsch:
+		if !c.cfg.ZahlschEnabled {
+			return nil, fmt.Errorf("zahlsch provider not enabled")
+		}
+
+		// use our own id
+		payment_tx.TransactionID = payment_tx.ID
+		payment_tx.PaymentURL = fmt.Sprintf("https://%s.zahls.ch/en/pay?invoice_amount=%.2f&custom_user_id=%s&custom_transaction_id=%s&tid=%s",
+			c.cfg.ZahlschUser, float64(create_tx_req.Amount)/100, user.ID, payment_tx.ID, c.cfg.ZahlschPageID)
+
 	case types.PaymentTypeWallee:
 		if !c.cfg.WalleeEnabled {
 			return nil, fmt.Errorf("wallee provider not enabled")
-		}
-
-		if user.Balance+create_tx_req.Amount > int64(c.cfg.MaxBalance) {
-			return nil, fmt.Errorf("max balance of %d exceeded", c.cfg.MaxBalance)
-		}
-		if create_tx_req.Amount < 500 {
-			return nil, fmt.Errorf("min payment: EUR 5")
 		}
 
 		item := &wallee.LineItem{
@@ -61,39 +82,8 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 			return nil, fmt.Errorf("create payment url failed: %v", err)
 		}
 
-		payment_tx := &types.PaymentTransaction{
-			ID:             payment_tx_id,
-			Type:           types.PaymentTypeWallee,
-			TransactionID:  fmt.Sprintf("%d", tx.ID),
-			PaymentURL:     url,
-			Created:        time.Now().Unix(),
-			Expires:        time.Now().Add(time.Hour).Unix(),
-			UserID:         userid,
-			Amount:         create_tx_req.Amount,
-			AmountRefunded: 0,
-			State:          types.PaymentStatePending,
-		}
-		err = c.repos.PaymentTransactionRepo.Insert(payment_tx)
-		if err != nil {
-			return nil, fmt.Errorf("payment tx insert failed: %v", err)
-		}
-
-		c.AddAuditLog(&types.AuditLog{
-			Type:                 types.AuditLogPaymentCreated,
-			UserID:               userid,
-			PaymentTransactionID: &payment_tx_id,
-			Amount:               &create_tx_req.Amount,
-		})
-
-		notify.Send(&notify.NtfyNotification{
-			Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Name, float64(create_tx_req.Amount)/100),
-			Message:  fmt.Sprintf("User: %s, EUR %.2f", user.Name, float64(create_tx_req.Amount)/100),
-			Click:    &url,
-			Priority: 3,
-			Tags:     []string{"credit_card", "new"},
-		}, true)
-
-		return payment_tx, nil
+		payment_tx.TransactionID = fmt.Sprintf("%d", tx.ID)
+		payment_tx.PaymentURL = url
 
 	case types.PaymentTypeCoinbase:
 		if !c.cfg.CoinbaseEnabled {
@@ -115,27 +105,36 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 			return nil, err
 		}
 
-		payment_tx := &types.PaymentTransaction{
-			ID:             payment_tx_id,
-			Type:           types.PaymentTypeCoinbase,
-			TransactionID:  charge.Data.Code,
-			PaymentURL:     charge.Data.HostedURL,
-			Created:        time.Now().Unix(),
-			Expires:        time.Now().Add(time.Hour).Unix(),
-			UserID:         userid,
-			Amount:         create_tx_req.Amount,
-			AmountRefunded: 0,
-			State:          types.PaymentStatePending,
-		}
-		err = c.repos.PaymentTransactionRepo.Insert(payment_tx)
-		if err != nil {
-			return nil, fmt.Errorf("payment tx insert failed: %v", err)
-		}
+		payment_tx.TransactionID = charge.Data.Code
+		payment_tx.PaymentURL = charge.Data.HostedURL
 
 		return payment_tx, nil
 	default:
 		return nil, fmt.Errorf("payment type not implemented: %s", create_tx_req.Type)
 	}
+
+	err = c.repos.PaymentTransactionRepo.Insert(payment_tx)
+	if err != nil {
+		return nil, fmt.Errorf("payment tx insert failed: %v", err)
+	}
+
+	c.AddAuditLog(&types.AuditLog{
+		Type:                 types.AuditLogPaymentCreated,
+		UserID:               userid,
+		PaymentTransactionID: &payment_tx_id,
+		Amount:               &create_tx_req.Amount,
+	})
+
+	notify.Send(&notify.NtfyNotification{
+		Title:    fmt.Sprintf("Transaction created by %s (%.2f)", user.Name, float64(create_tx_req.Amount)/100),
+		Message:  fmt.Sprintf("User: %s\nEUR %.2f\nType: %s", user.Name, float64(create_tx_req.Amount)/100, payment_tx.Type),
+		Priority: 3,
+		Click:    &back_url,
+		Tags:     []string{"credit_card", "new"},
+	}, true)
+
+	return payment_tx, nil
+
 }
 
 // refunds the given transaction by all or the available amount
