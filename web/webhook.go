@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mt-hosting-manager/api/zahlsch"
+	"mt-hosting-manager/types"
 	"net/http"
 )
 
@@ -80,6 +81,14 @@ func (a *Api) ZahlschWebhook(w http.ResponseWriter, r *http.Request) {
 		SendError(w, 500, fmt.Errorf("user mismatch: found '%s' expected: '%s'", tx.UserID, user.ID))
 		return
 	}
+	if tx.Amount != payload.Transaction.Amount {
+		SendError(w, 500, fmt.Errorf("amount mismatch: found '%d' expected: '%d'", payload.Transaction.Amount, tx.Amount))
+		return
+	}
 
-	//TODO: update status
+	// everything ok, update status
+	tx.State = types.PaymentStateSuccess
+	err = a.repos.PaymentTransactionRepo.Update(tx)
+
+	Send(w, true, err)
 }
