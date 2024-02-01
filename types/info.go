@@ -6,6 +6,7 @@ type Info struct {
 	Stage               string `json:"stage"`
 	CoinbaseEnabled     bool   `json:"coinbase_enabled"`
 	WalleeEnabled       bool   `json:"wallee_enabled"`
+	ZahlschEnabled      bool   `json:"zahlsch_enabled"`
 	GithubLogin         string `json:"github_login"`
 	DiscordLogin        string `json:"discord_login"`
 	MesehubLogin        string `json:"mesehub_login"`
@@ -20,6 +21,7 @@ func NewInfo(cfg *Config) *Info {
 		Stage:               cfg.Stage,
 		CoinbaseEnabled:     cfg.CoinbaseEnabled,
 		WalleeEnabled:       cfg.WalleeEnabled,
+		ZahlschEnabled:      cfg.ZahlschEnabled,
 		GithubLogin:         cfg.GithubOauthConfig.LoginURL,
 		DiscordLogin:        cfg.DiscordOauthConfig.LoginURL,
 		MesehubLogin:        cfg.MesehubOauthConfig.LoginURL,

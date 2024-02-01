@@ -22,8 +22,6 @@ type Config struct {
 	EnableWorker        bool
 	JWTKey              string
 	RedisURL            string
-	CoinbaseKey         string
-	CoinbaseEnabled     bool
 	LogStreamKey        string
 	LogStreamDir        string
 	CookieName          string
@@ -32,10 +30,15 @@ type Config struct {
 	HetznerCloudKey     string
 	HetznerApiKey       string
 	HetznerApiZoneID    string
+	CoinbaseKey         string
+	CoinbaseEnabled     bool
 	WalleeUserID        string
 	WalleeSpaceID       string
 	WalleeKey           string
 	WalleeEnabled       bool
+	ZahlschPageID       string
+	ZahlschWebhookKey   string
+	ZahlschEnabled      bool
 	GithubOauthConfig   *OAuthConfig
 	DiscordOauthConfig  *OAuthConfig
 	MesehubOauthConfig  *OAuthConfig
@@ -61,20 +64,28 @@ func NewConfig() *Config {
 		EnableWorker:     os.Getenv("ENABLE_WORKER") == "true",
 		JWTKey:           os.Getenv("JWT_KEY"),
 		RedisURL:         os.Getenv("REDIS_URL"),
-		CoinbaseKey:      os.Getenv("COINBASE_KEY"),
-		CoinbaseEnabled:  os.Getenv("COINBASE_ENABLED") == "true",
 		LogStreamKey:     os.Getenv("LOG_STREAM_KEY"),
 		LogStreamDir:     os.Getenv("LOG_STREAM_DIR"),
 		CookieName:       "mt-hosting-manager",
 		CookiePath:       os.Getenv("COOKIE_PATH"),
 		CookieSecure:     os.Getenv("COOKIE_SECURE") == "true",
+		// hetzner
 		HetznerCloudKey:  os.Getenv("HETZNER_CLOUD_KEY"),
 		HetznerApiKey:    os.Getenv("HETZNER_API_KEY"),
 		HetznerApiZoneID: os.Getenv("HETZNER_API_ZONEID"),
-		WalleeUserID:     os.Getenv("WALLEE_USERID"),
-		WalleeSpaceID:    os.Getenv("WALLEE_SPACEID"),
-		WalleeKey:        os.Getenv("WALLEE_KEY"),
-		WalleeEnabled:    os.Getenv("WALLEE_ENABLED") == "true",
+		// coinbase
+		CoinbaseKey:     os.Getenv("COINBASE_KEY"),
+		CoinbaseEnabled: os.Getenv("COINBASE_ENABLED") == "true",
+		// wallee
+		WalleeUserID:  os.Getenv("WALLEE_USERID"),
+		WalleeSpaceID: os.Getenv("WALLEE_SPACEID"),
+		WalleeKey:     os.Getenv("WALLEE_KEY"),
+		WalleeEnabled: os.Getenv("WALLEE_ENABLED") == "true",
+		// zahls.ch
+		ZahlschPageID:     os.Getenv("ZAHLSCH_PAGEID"),
+		ZahlschWebhookKey: os.Getenv("ZAHLSCH_WEBHOOK_KEY"),
+		ZahlschEnabled:    os.Getenv("ZAHLSCH_ENABLED") == "true",
+		// oauth
 		GithubOauthConfig: &OAuthConfig{
 			ClientID: os.Getenv("GITHUB_CLIENTID"),
 			Secret:   os.Getenv("GITHUB_SECRET"),
