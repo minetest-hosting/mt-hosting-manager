@@ -20,18 +20,22 @@ func (a *Api) Logout(w http.ResponseWriter, r *http.Request) {
 func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 	claims, err := a.GetClaims(r)
 	if err == err_unauthorized {
+		a.RemoveClaims(w)
 		w.WriteHeader(401)
 		w.Write([]byte("unauthorized"))
 	} else if err != nil {
+		a.RemoveClaims(w)
 		SendError(w, 500, err)
 	} else {
 		// refresh token
 		auth_entry, err := a.repos.UserRepo.GetByID(claims.UserID)
 		if err != nil {
+			a.RemoveClaims(w)
 			SendError(w, 500, err)
 			return
 		}
 		if auth_entry == nil {
+			a.RemoveClaims(w)
 			SendError(w, 404, errors.New("auth entry not found"))
 			return
 		}
