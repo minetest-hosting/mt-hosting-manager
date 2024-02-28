@@ -13,7 +13,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/minetest-go/dbutil v1.3.0
 	github.com/minetest-go/oauth v1.0.0
-	github.com/minio/minio-go/v7 v7.0.66
+	github.com/minio/minio-go/v7 v7.0.67
 	github.com/oschwald/geoip2-golang v1.9.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.19.0
