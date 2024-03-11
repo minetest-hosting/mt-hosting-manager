@@ -13,7 +13,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/minetest-go/dbutil v1.3.0
 	github.com/minetest-go/oauth v1.0.0
-	github.com/minio/minio-go/v7 v7.0.66
+	github.com/minio/minio-go/v7 v7.0.69
 	github.com/oschwald/geoip2-golang v1.9.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.19.0
@@ -34,7 +34,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.4 // indirect
+	github.com/klauspost/compress v1.17.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
