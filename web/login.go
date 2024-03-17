@@ -2,7 +2,6 @@ package web
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"mt-hosting-manager/types"
 	"net/http"
@@ -36,7 +35,7 @@ func (a *Api) GetLogin(w http.ResponseWriter, r *http.Request) {
 		}
 		if auth_entry == nil {
 			a.RemoveClaims(w)
-			SendError(w, 404, errors.New("auth entry not found"))
+			SendError(w, 404, fmt.Errorf("auth entry not found: userid='%s' username='%s'", claims.UserID, claims.Name))
 			return
 		}
 
