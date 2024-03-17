@@ -108,7 +108,6 @@ func (c *Core) CreateTransaction(userid string, create_tx_req *types.CreateTrans
 		payment_tx.TransactionID = charge.Data.Code
 		payment_tx.PaymentURL = charge.Data.HostedURL
 
-		return payment_tx, nil
 	default:
 		return nil, fmt.Errorf("payment type not implemented: %s", create_tx_req.Type)
 	}
