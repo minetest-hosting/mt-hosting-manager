@@ -43,8 +43,6 @@ services:
    - BASEURL=http://localhost:8080
    - COOKIE_PATH=/
    - COOKIE_SECURE=false
-   - CSRF_KEY=my-csrf-key
-   - JWT_KEY=my-jwt-key
    - LOG_STREAM_KEY=my-stream-key
    - LOG_STREAM_DIR=/data/logs
    - WEBDEV=true

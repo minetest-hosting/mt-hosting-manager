@@ -28,7 +28,6 @@ docker-compose up hosting
 * `ENABLE_WORKER`
 * `STAGE` "prod" / "dev"
 
-* `CSRF_KEY`
 * `JWT_KEY`
 * `BASEURL`
 * `WEBDEV`
