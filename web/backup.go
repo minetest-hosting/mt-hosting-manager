@@ -191,7 +191,7 @@ func (a *Api) RemoveBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 		SendError(w, 404, fmt.Errorf("backup_space not found"))
 		return
 	}
-	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
@@ -220,7 +220,7 @@ func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Cl
 		SendError(w, 404, fmt.Errorf("backup_space not found"))
 		return
 	}
-	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
