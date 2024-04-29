@@ -17,6 +17,10 @@ export default {
 			<h4>Minetest hosting</h4>
 			<img src="assets/minetest-hosting-80px.png" class="img img-rounded"/>
 			<hr/>
+			<div class="alert alert-warning">
+				<i class="fa-solid fa-triangle-exclamation"></i>
+				<b>Warning:</b> This project is still in an experimental stage, feel free to try things but don't expect stability at this point
+			</div>
 			<router-link class="btn btn-secondary" to="/pricing">
 				<i class="fa fa-money-bill"></i> Pricing
 			</router-link>
