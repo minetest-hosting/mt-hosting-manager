@@ -71,7 +71,7 @@ type PaymentStatus string
 const (
 	PaymentStatusPending   PaymentStatus = "PENDING"
 	PaymentStatusConfirmed PaymentStatus = "CONFIRMED"
-	PaymaneStatusCompleted PaymentStatus = "COMPLETED"
+	PaymentStatusCompleted PaymentStatus = "COMPLETED"
 )
 
 type PaymentValue struct {
