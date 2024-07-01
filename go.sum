@@ -76,8 +76,8 @@ github.com/minetest-go/oauth v1.0.0 h1:J1V8lSR2wZrrQ/PazcjyKSAGZN1vgoU6eEcwsoXPp
 github.com/minetest-go/oauth v1.0.0/go.mod h1:F55pfJpL8sDI7FrYSZytfQwnr6IZW9nWk9jqOvmUhjQ=
 github.com/minio/md5-simd v1.1.2 h1:Gdi1DZK69+ZVMoNHRXJyNcxrMA4dSxoYHZSQbirFg34=
 github.com/minio/md5-simd v1.1.2/go.mod h1:MzdKDxYpY2BT9XQFocsiZf/NKVtR7nkE4RoEpN+20RM=
-github.com/minio/minio-go/v7 v7.0.71 h1:No9XfOKTYi6i0GnBj+WZwD8WP5GZfL7n7GOjRqCdAjA=
-github.com/minio/minio-go/v7 v7.0.71/go.mod h1:4yBA8v80xGA30cfM3fz0DKYMXunWl/AV/6tWEs9ryzo=
+github.com/minio/minio-go/v7 v7.0.72 h1:ZSbxs2BfJensLyHdVOgHv+pfmvxYraaUy07ER04dWnA=
+github.com/minio/minio-go/v7 v7.0.72/go.mod h1:4yBA8v80xGA30cfM3fz0DKYMXunWl/AV/6tWEs9ryzo=
 github.com/moby/term v0.5.0 h1:xt8Q1nalod/v7BqbG21f8mQPqH+xAaC9C3N3wfWbVP0=
 github.com/moby/term v0.5.0/go.mod h1:8FzsFHVUBGZdbDsJw/ot+X+d5HLUbvklYLJ9uGfcI3Y=
 github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
