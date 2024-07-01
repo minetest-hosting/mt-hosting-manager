@@ -92,6 +92,7 @@ export default {
 				<tr>
 					<th>Time</th>
 					<th>Type</th>
+					<th v-if="has_role('ADMIN')">User</th>
 					<th>Info</th>
 				</tr>
 			</thead>
@@ -99,6 +100,9 @@ export default {
 				<tr v-for="log in list" :key="log.id">
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
+					<td v-if="has_role('ADMIN')">
+						{{log.user_id}}
+					</td>
 					<td>
 						<div v-if="log.ip_address">
 							<span class="badge bg-secondary">{{log.ip_address}}</span>

@@ -30,7 +30,7 @@ export default {
 	},
 	template: /*html*/`
 	<card-layout title="Profile" icon="user" :breadcrumb="breadcrumb">
-		<table class="table" v-if="profile">
+		<table class="table" v-if="profile && profile.name">
 			<tr>
 				<td>Name</td>
 				<td>{{profile.name}}</td>
