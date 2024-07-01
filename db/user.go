@@ -83,6 +83,11 @@ func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
 		params = append(params, *s.NameLike)
 	}
 
+	if s.UserID != nil {
+		q += " and id = %s"
+		params = append(params, *s.UserID)
+	}
+
 	if s.Limit != nil && *s.Limit > 0 && *s.Limit < 100 {
 		q += fmt.Sprintf(" limit %d", *s.Limit)
 	} else {

@@ -75,7 +75,10 @@ export default {
                             </thead>
                             <tbody>
                                 <tr v-for="user in users" :key="user.id" v-bind:class="{'table-success':modelValue && modelValue.id == user.id}">
-                                    <td>{{user.name}}</td>
+                                    <td>
+                                        {{user.name}}
+                                        <span class="badge bg-info">{{user.type}}</span>
+                                    </td>
                                     <td>
                                         <i class="fa-regular fa-square-check" v-on:click="select_user(user)"></i>
                                     </td>

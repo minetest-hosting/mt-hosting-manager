@@ -4,6 +4,7 @@ import ServerLink from "../ServerLink.js";
 import PaymentLink from "../PaymentLink.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import UserSearch from "../UserSearch.js";
+import UserLink from "../UserLink.js";
 
 import { search_audit_logs } from "../../api/audit_log.js";
 import format_time from "../../util/format_time.js";
@@ -30,11 +31,13 @@ export default {
 		"server-link": ServerLink,
 		"payment-link": PaymentLink,
 		"currency-display": CurrencyDisplay,
-		"user-search": UserSearch
+		"user-search": UserSearch,
+		"user-link": UserLink
 	},
 	data: () => store,
 	methods: {
-		format_time: format_time,
+		format_time,
+		has_role,
 		search: function() {
 			this.busy = true;
 			search_audit_logs({
@@ -44,8 +47,7 @@ export default {
 			})
 			.then(l => this.list = l)
 			.finally(() => this.busy = false);
-		},
-		has_role: has_role
+		}
 	},
 	watch: {
 		"from": "search",
@@ -101,7 +103,7 @@ export default {
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
 					<td v-if="has_role('ADMIN')">
-						{{log.user_id}}
+						<user-link :user_id="log.user_id"/>
 					</td>
 					<td>
 						<div v-if="log.ip_address">

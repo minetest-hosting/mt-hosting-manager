@@ -43,6 +43,7 @@ func (u *User) RemoveSensitiveFields() {
 }
 
 type UserSearch struct {
+	UserID   *string `json:"user_id"`
 	NameLike *string `json:"name_like"`
 	Limit    *int    `json:"limit"`
 }
