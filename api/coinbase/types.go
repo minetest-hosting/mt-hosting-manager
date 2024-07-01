@@ -69,9 +69,9 @@ type ChargeAddresses struct {
 type PaymentStatus string
 
 const (
-	PaymentStatusPending   PaymentStatus = "PENDING"
-	PaymentStatusConfirmed PaymentStatus = "CONFIRMED"
-	PaymentStatusCompleted PaymentStatus = "COMPLETED"
+	PaymentStatusPending   PaymentStatus = "pending"
+	PaymentStatusConfirmed PaymentStatus = "confirmed"
+	PaymentStatusCompleted PaymentStatus = "completed"
 )
 
 type PaymentValue struct {

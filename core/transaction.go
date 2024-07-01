@@ -211,7 +211,7 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 			}
 
 			for _, payment := range charge.Data.Payments {
-				if payment.Status == coinbase.PaymentStatusCompleted {
+				if payment.Status == coinbase.PaymentStatusConfirmed {
 
 					crypto_value := payment.Value[coinbase.PaymentValueCrypto]
 					if crypto_value == nil {
