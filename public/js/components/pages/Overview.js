@@ -44,6 +44,9 @@ export default {
         this.update();
         this.handle = setInterval(() => this.update(), 2000);
     },
+    beforeUnmount: function() {
+		clearInterval(this.handle);
+	},
 	template: /*html*/`
 	<card-layout title="Overview" icon="map" :breadcrumb="breadcrumb" :fullwidth="true" :flex="true">
         <div class="alert alert-info w-100" v-if="busy">
