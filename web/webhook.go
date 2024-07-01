@@ -51,9 +51,9 @@ func (a *Api) ZahlschWebhook(w http.ResponseWriter, r *http.Request) {
 
 	for _, field := range payload.Transaction.Invoice.CustomFields {
 		switch field.Name {
-		case "user_id":
+		case "custom_user_id":
 			user_id = field.Value
-		case "transaction_id":
+		case "custom_transaction_id":
 			tx_id = field.Value
 		}
 	}
@@ -83,6 +83,12 @@ func (a *Api) ZahlschWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 	if tx.Amount != payload.Transaction.Amount {
 		SendError(w, 500, fmt.Errorf("amount mismatch: found '%d' expected: '%d'", payload.Transaction.Amount, tx.Amount))
+		return
+	}
+
+	err = a.repos.UserRepo.AddBalance(tx.UserID, tx.Amount)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("could not add balance '%d' to user '%s': %v", tx.Amount, tx.UserID, err))
 		return
 	}
 

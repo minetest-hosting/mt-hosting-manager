@@ -4,7 +4,7 @@ import UserSearch from "../UserSearch.js";
 
 import { search_transaction, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
-import { get_max_balance, get_coinbase_enabled, get_wallee_enabled } from "../../service/info.js";
+import { get_max_balance, get_coinbase_enabled, get_zahlsch_enabled } from "../../service/info.js";
 import { get_balance, get_user_profile } from "../../service/user.js";
 import { has_role } from "../../service/login.js";
 
@@ -58,7 +58,7 @@ export default {
     computed: {
         balance: get_balance,
         coinbase_enabled: get_coinbase_enabled,
-        wallee_enabled: get_wallee_enabled,
+        zahlsch_enabled: get_zahlsch_enabled,
         profile: get_user_profile,
         min_sum_error: function() {
             return this.amount < 5;
@@ -92,7 +92,7 @@ export default {
                         <div class="input-group">
                             <span class="input-group-text">&euro;</span>
                             <input class="form-control" type="number" min="5" max="100" v-model="amount" v-bind:class="{'is-invalid':!amount_valid||min_sum_error}"/>
-                            <button class="btn btn-outline-primary" v-on:click="new_payment('WALLEE')" :disabled="busy||!amount_valid||min_sum_error" v-if="wallee_enabled">
+                            <button class="btn btn-outline-primary" v-on:click="new_payment('ZAHLSCH')" :disabled="busy||!amount_valid||min_sum_error" v-if="zahlsch_enabled">
                                 <i class="fa-brands fa-cc-visa"></i>
                                 <i class="fa-brands fa-paypal"></i>
                                 Pay

@@ -15,5 +15,5 @@ export const get_cdb_login = () => store.cdb_login;
 
 export const get_hostingdomain_suffix = () => store.hostingdomain_suffix;
 export const get_max_balance = () => store.max_balance;
-export const get_wallee_enabled = () => store.wallee_enabled;
+export const get_zahlsch_enabled = () => store.zahlsch_enabled;
 export const get_coinbase_enabled = () => store.coinbase_enabled;

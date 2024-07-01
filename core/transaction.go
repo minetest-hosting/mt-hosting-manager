@@ -156,6 +156,9 @@ func (c *Core) CheckTransaction(id string) (*types.PaymentTransaction, error) {
 	if tx.State == types.PaymentStatePending {
 
 		switch tx.Type {
+		case types.PaymentTypeZahlsch:
+			// nothing to do here
+
 		case types.PaymentTypeWallee:
 			// verify tx success
 			txr := &wallee.TransactionSearchRequest{
