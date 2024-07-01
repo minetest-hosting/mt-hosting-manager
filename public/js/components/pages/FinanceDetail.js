@@ -50,58 +50,60 @@ export default {
 	template: /*html*/`
 	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
         <table class="table table-condensed" v-if="transaction">
-            <tr>
-                <td>State</td>
-                <td>
-                    {{transaction.state}}
-                    <a class="btn btn-secondary btn-sm" v-if="transaction.state == 'PENDING'" :disabled="busy" v-on:click="update">
-                        <i class="fa fa-spinner fa-spin" v-if="busy"></i>
-                        <i class="fa fa-refresh" v-else></i>
-                        Update
-                    </a>
-                </td>
-            </tr>
-            <tr v-if="transaction.state == 'PENDING' && transaction.type == 'COINBASE'">
-                <td></td>
-                <td>
-                    <div class="alert alert-primary">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <b>Note:</b> Coinbase transactions might take up to an hour to complete
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Amount</td>
-                <td>
-                    <currency-display :eurocents="transaction.amount"/>
-                </td>
-            </tr>
-            <tr>
-                <td>Type</td>
-                <td>
-                    <span class="badge bg-success">{{transaction.type}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Created</td>
-                <td>
-                    {{format_time(transaction.created)}}
-                </td>
-            </tr>
-            <tr>
-                <td>Expires</td>
-                <td>
-                    {{format_time(transaction.expires)}}
-                </td>
-            </tr>
-            <tr v-if="transaction.state == 'PENDING'">
-                <td>Payment url</td>
-                <td>
-                    <a :href="transaction.payment_url" class="btn btn-primary" target="new">
-                        Go to payment provider
-                    </a>
-                </td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>State</td>
+                    <td>
+                        {{transaction.state}}
+                        <a class="btn btn-secondary btn-sm" v-if="transaction.state == 'PENDING'" :disabled="busy" v-on:click="update">
+                            <i class="fa fa-spinner fa-spin" v-if="busy"></i>
+                            <i class="fa fa-refresh" v-else></i>
+                            Update
+                        </a>
+                    </td>
+                </tr>
+                <tr v-if="transaction.state == 'PENDING' && transaction.type == 'COINBASE'">
+                    <td></td>
+                    <td>
+                        <div class="alert alert-primary">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <b>Note:</b> Coinbase transactions might take up to an hour to complete
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td>
+                        <currency-display :eurocents="transaction.amount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>
+                        <span class="badge bg-success">{{transaction.type}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>
+                        {{format_time(transaction.created)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Expires</td>
+                    <td>
+                        {{format_time(transaction.expires)}}
+                    </td>
+                </tr>
+                <tr v-if="transaction.state == 'PENDING'">
+                    <td>Payment url</td>
+                    <td>
+                        <a :href="transaction.payment_url" class="btn btn-primary" target="new">
+                            Go to payment provider
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 	</card-layout>
 	`
