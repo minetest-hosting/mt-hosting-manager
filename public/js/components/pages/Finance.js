@@ -112,7 +112,7 @@ export default {
                         &nbsp;
                         <div class="alert alert-primary">
                             <i class="fa-solid fa-circle-info"></i>
-							<b>Note:</b> Crypto-payments can't be refunded, normal payments can be refunded with the currently available balance.
+							<b>Note:</b> For refunds please contact the support via <a :href="'mailto:hosting@minetest.ch?subject=Refund,name:' + profile.name + ',userid:' + profile.id">mail</a>
 						</div>
                     </td>
                 </tr>
@@ -167,10 +167,6 @@ export default {
                     <td>{{tx.type}}</td>
                     <td>
                         {{tx.state}}
-                        <span class="badge bg-warning" v-if="tx.amount_refunded != '0'">
-                            <i class="fa-solid fa-recycle"></i>
-                            Refunded
-                        </span>
                     </td>
                 </tr>
             </tbody>

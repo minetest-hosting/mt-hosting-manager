@@ -29,14 +29,6 @@ func (a *Api) CheckTransaction(w http.ResponseWriter, r *http.Request, c *types.
 	Send(w, tx, err)
 }
 
-func (a *Api) RefundTransaction(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	tx, err := a.core.RefundTransaction(id)
-	Send(w, tx, err)
-}
-
 func (a *Api) GetTransactions(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	list, err := a.repos.PaymentTransactionRepo.GetByUserID(c.UserID)
 	Send(w, list, err)

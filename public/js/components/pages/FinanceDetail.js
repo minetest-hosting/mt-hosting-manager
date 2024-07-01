@@ -1,11 +1,10 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 
-import { check, get_by_id, refund } from "../../api/transaction.js";
+import { check, get_by_id } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
 import { fetch_profile } from "../../service/user.js";
 import { get_balance } from "../../service/user.js";
-import { get_refund_amount } from "../../service/finance.js";
 
 export default {
     props: ["id"],
@@ -41,23 +40,10 @@ export default {
                     .then(() => fetch_profile());
                 }
             });
-        },
-        refund: function() {
-            this.busy = true;
-            refund(this.transaction)
-            .then(() => {
-                this.update();
-                fetch_profile();
-                this.busy = false;
-            });
-        },
-        get_refund_amount: get_refund_amount
+        }
     },
     computed: {
-        balance: get_balance,
-        refund_disabled: function() {
-            return this.transaction.amount_refunded > 0 || this.balance <= 0 || this.busy || this.transaction.state != "SUCCESS";
-        }
+        balance: get_balance
     },
 	template: /*html*/`
 	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
@@ -76,23 +62,6 @@ export default {
                 <td>Type</td>
                 <td>
                     <span class="badge bg-success">{{transaction.type}}</span>
-                </td>
-            </tr>
-            <tr v-if="transaction.type == 'WALLEE'">
-                <td>Refunded amount</td>
-                <td>
-                    <currency-display :eurocents="transaction.amount_refunded"/>
-                </td>
-            </tr>
-            <tr v-if="transaction.type == 'WALLEE'">
-                <td>Actions</td>
-                <td>
-                    <button class="btn btn-warning" v-on:click="refund" :disabled="refund_disabled">
-                        <i class="fa-solid fa-recycle"></i>
-                        Refund
-                        <currency-display :eurocents="get_refund_amount(transaction)" v-if="!refund_disabled"/>
-                        <i class="fa fa-spinner fa-spin" v-if="busy"></i>
-                    </button>
                 </td>
             </tr>
             <tr v-if="transaction.state == 'PENDING'">

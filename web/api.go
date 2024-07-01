@@ -101,7 +101,6 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/transaction/search", api.Secure(api.SearchTransaction)).Methods(http.MethodPost)
 	user_api.HandleFunc("/transaction/{id}", api.Secure(api.GetTransaction)).Methods(http.MethodGet)
 	user_api.HandleFunc("/transaction/{id}/check", api.Secure(api.CheckTransaction)).Methods(http.MethodGet)
-	user_api.HandleFunc("/transaction/{id}/refund", api.Secure(api.RefundTransaction)).Methods(http.MethodPost)
 
 	user_api.HandleFunc("/backup_space", api.Secure(api.GetBackupSpaces)).Methods(http.MethodGet)
 	user_api.HandleFunc("/backup_space", api.Secure(api.CreateBackupSpace)).Methods(http.MethodPost)

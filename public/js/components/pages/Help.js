@@ -70,13 +70,6 @@ export default {
 			Payments are deducted from your current balance, you can top that up at any time in the "Finance" page.
 		</p>
 		<p>
-			<b>Note:</b> All local payments are done and displayed in the &euro; currency
-		</p>
-		<p>
-			Refunds are possible for each payment (up to the available balance).
-			Used up funds can't be refunded.
-		</p>
-		<p>
 			Billing of nodes is done 24 hours in advance (see the "Next billing cycle" entry in the Node-details).
 		</p>
 	</card-layout>
