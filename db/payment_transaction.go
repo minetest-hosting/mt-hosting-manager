@@ -48,6 +48,11 @@ func (r *PaymentTransactionRepository) Search(s *types.PaymentTransactionSearch)
 		params = append(params, *s.UserID)
 	}
 
+	if s.State != nil {
+		q += " and state = %s"
+		params = append(params, *s.State)
+	}
+
 	q += " order by created desc limit 1000"
 
 	return r.dbu.SelectMulti(q, params...)
