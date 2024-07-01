@@ -48,7 +48,7 @@ export default {
         balance: get_balance
     },
 	template: /*html*/`
-	<card-layout title="Finance details" icon="money-bill" :breadcrumb="breadcrumb">
+	<card-layout title="Transaction details" icon="money-bill" :breadcrumb="breadcrumb">
         <table class="table table-condensed" v-if="transaction">
             <tbody>
                 <tr>
@@ -100,6 +100,7 @@ export default {
                     <td>
                         <a :href="transaction.payment_url" class="btn btn-primary" target="new">
                             Go to payment provider
+                            <i class="fa fa-arrow-up-right-from-square"></i>
                         </a>
                     </td>
                 </tr>
