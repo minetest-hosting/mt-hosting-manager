@@ -16,7 +16,7 @@ type Invoice struct {
 }
 
 type Transaction struct {
-	ID      string            `json:"id"`
+	ID      int64             `json:"id"`
 	Amount  int64             `json:"amount"`
 	Time    string            `json:"time"`
 	Status  TransactionStatus `json:"status"`
