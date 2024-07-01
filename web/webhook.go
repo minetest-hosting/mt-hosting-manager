@@ -51,9 +51,9 @@ func (a *Api) ZahlschWebhook(w http.ResponseWriter, r *http.Request) {
 
 	for _, field := range payload.Transaction.Invoice.CustomFields {
 		switch field.Name {
-		case "custom_user_id":
+		case "user_id":
 			user_id = field.Value
-		case "custom_transaction_id":
+		case "transaction_id":
 			tx_id = field.Value
 		}
 	}
