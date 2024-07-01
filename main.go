@@ -84,7 +84,7 @@ func main() {
 	}
 	//stop api
 	api.Stop()
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
 	db_.Close()
 	logrus.Info("Shutdown complete")
 	server.Shutdown(context.Background())
