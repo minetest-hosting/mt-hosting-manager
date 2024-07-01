@@ -31,6 +31,7 @@ export default {
     methods: {
         format_time: format_time,
         update: function() {
+            this.busy = true;
             get_by_id(this.id)
             .then(tx => this.transaction = tx)
             .then(() => {
@@ -39,7 +40,8 @@ export default {
                     .then(tx => this.transaction = tx)
                     .then(() => fetch_profile());
                 }
-            });
+            })
+            .finally(() => this.busy = false);
         }
     },
     computed: {
@@ -50,7 +52,14 @@ export default {
         <table class="table table-condensed" v-if="transaction">
             <tr>
                 <td>State</td>
-                <td>{{transaction.state}}</td>
+                <td>
+                    {{transaction.state}}
+                    <a class="btn btn-secondary btn-sm" v-if="transaction.state == 'PENDING'" :disabled="busy" v-on:click="update">
+                        <i class="fa fa-spinner fa-spin" v-if="busy"></i>
+                        <i class="fa fa-refresh" v-else></i>
+                    Update
+                    </a>
+                </td>
             </tr>
             <tr>
                 <td>Amount</td>
