@@ -79,7 +79,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		DNSName:    create_mtserver.DNSName,
 		Port:       create_mtserver.Port,
 		Created:    time.Now().Unix(),
-		UIVersion:  "latest",
+		UIVersion:  "master",
 		JWTKey:     core.RandSeq(16),
 		State:      types.MinetestServerStateCreated,
 	}

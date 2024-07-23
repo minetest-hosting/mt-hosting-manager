@@ -62,7 +62,7 @@ func PrepareDataDirectory(sftp *sftp.Client, cfg *types.Config, node *types.User
 
 	if m.Server.UIVersion == "" {
 		// fall back to latest
-		m.Server.UIVersion = "latest"
+		m.Server.UIVersion = "master"
 	}
 
 	files := []string{
