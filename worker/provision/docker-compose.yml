@@ -49,6 +49,8 @@ services:
    - "--certificatesresolvers.default.acme.tlschallenge=true"
    - "--certificatesresolvers.default.acme.email=thomas@rudin.io"
    - "--certificatesresolvers.default.acme.storage=/letsencrypt/acme.json"
+   - "--serversTransport.forwardingTimeouts.responseHeaderTimeout=1800s"
+   - "--serversTransport.forwardingTimeouts.idleConnTimeout=1800s"
   logging:
    options:
     max-size: 50m
