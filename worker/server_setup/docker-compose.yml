@@ -3,6 +3,7 @@ version: "3.7"
 services:
  ui-{{.ServerShortID}}:
   image: ghcr.io/minetest-go/mtui:{{.Server.UIVersion}}
+  stop_grace_period: 1m
   networks:
    - terminator
    - network-{{.ServerShortID}}
@@ -23,7 +24,7 @@ services:
    DEFAULT_THEME: "flatly"
    DOCKER_HOSTNAME: "ui-{{.ServerShortID}}"
    DOCKER_MINETEST_CONFIG: "{{.BaseDir}}/world/minetest.conf"
-   DOCKER_MINETEST_PORT: {{.Server.Port}}
+   DOCKER_MINETEST_PORT: "{{.Server.Port}}"
    DOCKER_NETWORK: "network-{{.ServerShortID}},terminator"
    DOCKER_WORLD_DIR: "{{.BaseDir}}/world"
    DOCKER_CONTAINER_PREFIX: "{{.ServerShortID}}"
