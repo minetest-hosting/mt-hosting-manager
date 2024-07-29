@@ -20,6 +20,6 @@ func (c *Core) AddAuditLog(l *types.AuditLog) {
 
 	err := c.repos.AuditLogRepo.Insert(l)
 	if err != nil {
-		logrus.WithError(err).Error("Error inserting log")
+		logrus.WithError(err).Errorf("Error inserting log: %v", l)
 	}
 }
