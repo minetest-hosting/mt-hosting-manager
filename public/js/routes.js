@@ -23,6 +23,8 @@ import Register from './components/pages/Register.js';
 import Overview from './components/pages/Overview.js';
 import BackupSpaces from './components/pages/BackupSpaces.js';
 import BackupSpaceDetail from './components/pages/BackupSpaceDetail.js';
+import Users from './components/pages/Users.js';
+import UserDetail from './components/pages/UserDetail.js';
 
 export default [{
 	path: "/", component: Start
@@ -77,6 +79,12 @@ export default [{
 },{
 	path: "/mtservers/:id/delete", component: MTServerDelete, props: true,
 	meta: { loggedIn: true }
+},{
+	path: "/users", component: Users,
+	meta: { requiredRole: "ADMIN" }
+},{
+	path: "/users/:id", component: UserDetail, props: true,
+	meta: { requiredRole: "ADMIN" }
 },{
 	path: "/jobs", component: Jobs,
 	meta: { requiredRole: "ADMIN" }

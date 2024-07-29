@@ -125,6 +125,8 @@ func (api *Api) Setup() {
 	admin_api.Use(SecureHandler(api.RoleCheck(types.UserRoleAdmin)))
 	admin_api.HandleFunc("/user", api.Secure(api.GetUsers)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/user/search", api.Secure(api.SearchUser)).Methods(http.MethodPost)
+	admin_api.HandleFunc("/user/{id}", api.Secure(api.GetUserByID)).Methods(http.MethodGet)
+	admin_api.HandleFunc("/user/{id}", api.Secure(api.SaveUser)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype", api.Secure(api.CreateNodeType)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.UpdateNodeType)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/nodetype/{id}", api.Secure(api.DeleteNodeType)).Methods(http.MethodDelete)

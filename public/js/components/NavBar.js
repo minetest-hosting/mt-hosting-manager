@@ -70,6 +70,11 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">
+						<router-link to="/users" class="nav-link">
+							<i class="fa fa-users"></i> Users
+						</router-link>
+					</li>
+					<li class="nav-item" v-if="has_role('ADMIN')">
 						<router-link to="/nodes" class="nav-link">
 							<i class="fa fa-server"></i> Nodes
 						</router-link>
