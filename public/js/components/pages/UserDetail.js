@@ -55,6 +55,10 @@ export default {
                     <td>{{format_time(user.created)}}</td>
                 </tr>
                 <tr>
+                    <td>Last login</td>
+                    <td>{{format_time(user.lastlogin)}}</td>
+                </tr>
+                <tr>
                     <td>Balance</td>
                     <td>
                         <currency-display :eurocents="user.balance"/>

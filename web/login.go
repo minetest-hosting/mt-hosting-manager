@@ -117,5 +117,11 @@ func (a *Api) loginUser(w http.ResponseWriter, req *http.Request, user *types.Us
 
 	a.core.AddAuditLog(l)
 
+	user.LastLogin = time.Now().Unix()
+	err := a.repos.UserRepo.Update(user)
+	if err != nil {
+		return nil, fmt.Errorf("last login update error: %v", err)
+	}
+
 	return claims, a.SetClaims(w, claims)
 }

@@ -32,6 +32,7 @@ export default {
                     <th>Type</th>
                     <th>Role</th>
                     <th>Created</th>
+                    <th>Last login</th>
                     <th>Balance</th>
                 </tr>
             </thead>
@@ -47,6 +48,7 @@ export default {
                     <td>{{user.type}}</td>
                     <td>{{user.role}}</td>
                     <td>{{format_time(user.created)}}</td>
+                    <td>{{format_time(user.lastlogin)}}</td>
                     <td>
                         <currency-display :eurocents="user.balance"/>
                     </td>

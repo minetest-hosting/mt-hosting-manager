@@ -28,6 +28,7 @@ func (c *Core) CreateUser(name, external_id, hash string, t types.UserType, role
 		Name:       name,
 		State:      types.UserStateActive,
 		Created:    time.Now().Unix(),
+		LastLogin:  time.Now().Unix(),
 		Balance:    balance,
 		Currency:   "EUR",
 		Type:       t,

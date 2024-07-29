@@ -1,0 +1,1 @@
+alter table public.user add column lastlogin bigint not null default 1722237221;

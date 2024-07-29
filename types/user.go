@@ -30,6 +30,7 @@ type User struct {
 	Name       string    `json:"name"`
 	Hash       string    `json:"hash"`
 	Created    int64     `json:"created"`
+	LastLogin  int64     `json:"lastlogin"`
 	Balance    int64     `json:"balance"`
 	ExternalID string    `json:"external_id"`
 	Currency   string    `json:"currency"`
@@ -55,6 +56,7 @@ func (m *User) Columns(action string) []string {
 		"name",
 		"hash",
 		"created",
+		"lastlogin",
 		"balance",
 		"external_id",
 		"currency",
@@ -74,6 +76,7 @@ func (m *User) Scan(action string, r func(dest ...any) error) error {
 		&m.Name,
 		&m.Hash,
 		&m.Created,
+		&m.LastLogin,
 		&m.Balance,
 		&m.ExternalID,
 		&m.Currency,
@@ -89,6 +92,7 @@ func (m *User) Values(action string) []any {
 		m.Name,
 		m.Hash,
 		m.Created,
+		m.LastLogin,
 		m.Balance,
 		m.ExternalID,
 		m.Currency,
