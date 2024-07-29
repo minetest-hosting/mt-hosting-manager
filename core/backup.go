@@ -3,34 +3,12 @@ package core
 import (
 	"context"
 	"fmt"
-	"io"
 	"mt-hosting-manager/types"
 
-	openssl "github.com/Luzifer/go-openssl/v4"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/sirupsen/logrus"
 )
-
-func DecryptBackup(passphrase string, src io.Reader, dst io.Writer) (int64, error) {
-	r := openssl.NewReader(src, passphrase, openssl.PBKDF2SHA256)
-	return io.Copy(dst, r)
-}
-
-func (c *Core) StreamBackup(b *types.Backup, w io.Writer) (int64, error) {
-	client, err := c.GetS3Client()
-	if err != nil {
-		return 0, err
-	}
-
-	ctx := context.Background()
-	o, err := client.GetObject(ctx, c.cfg.S3Bucket, getBackupFilename(b), minio.GetObjectOptions{})
-	if err != nil {
-		return 0, err
-	}
-	defer o.Close()
-	return DecryptBackup(b.Passphrase, o, w)
-}
 
 func (c *Core) GetS3Client() (*minio.Client, error) {
 	return minio.New(c.cfg.S3Endpoint, &minio.Options{
@@ -109,11 +87,6 @@ func (c *Core) StartBackup(b *types.Backup) error {
 		return fmt.Errorf("usernode not found: %s", server.UserNodeID)
 	}
 
-	client, err := TrySSHConnection(node)
-	if err != nil {
-		return err
-	}
-
-	_, _, err = SSHExecute(client, fmt.Sprintf("nohup /backup.sh %s %s %s &", server.ID, b.ID, b.Passphrase))
-	return err
+	fmt.Printf("Backup stub %v, %v\n", node, server)
+	return nil
 }

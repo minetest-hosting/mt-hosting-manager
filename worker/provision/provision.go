@@ -57,14 +57,6 @@ func Provision(client *ssh.Client, cfg *types.Config, userID string, status func
 		return fmt.Errorf("could not write setup.sh: %v", err)
 	}
 
-	err = core.SCPTemplateFile(sftp, Files, "backup.sh", "/backup.sh", 0755, true, &ProvisionModel{
-		Config: cfg,
-		UserID: userID,
-	})
-	if err != nil {
-		return fmt.Errorf("could not write backup.sh: %v", err)
-	}
-
 	err = core.SCPWriteFile(sftp, Files, "docker-compose.yml", "/provision/docker-compose.yml", 0644, true)
 	if err != nil {
 		return fmt.Errorf("could not write file: %v", err)
