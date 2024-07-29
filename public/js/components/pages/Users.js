@@ -3,11 +3,13 @@ import { get_users } from "../../api/user.js";
 
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import CardLayout from "../layouts/CardLayout.js";
+import UserLink from "../UserLink.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
-        "currency-display": CurrencyDisplay
+        "currency-display": CurrencyDisplay,
+        "user-link": UserLink
 	},
     methods: {
         format_time
@@ -39,9 +41,7 @@ export default {
             <tbody>
                 <tr v-for="user in users">
                     <td>
-                        <router-link :to="'/users/' + user.id">
-                            {{user.name}}
-                        </router-link>
+                        <user-link :id="user.id"/>
                     </td>
                     <td>{{user.id}}</td>
                     <td>{{user.state}}</td>
@@ -50,7 +50,7 @@ export default {
                     <td>{{format_time(user.created)}}</td>
                     <td>{{format_time(user.lastlogin)}}</td>
                     <td>
-                        <currency-display :eurocents="user.balance"/>
+                        <currency-display :eurocents="user.balance" :enable_warning="true"/>
                     </td>
                 </tr>
             </tbody>

@@ -1,16 +1,19 @@
 import CardLayout from "../layouts/CardLayout.js";
 import NodeLink from "../NodeLink.js";
+import UserLink from "../UserLink.js";
 import NodeState from "../NodeState.js";
 
 import { get_all } from "../../api/node.js";
 import { get_nodetype } from "../../service/nodetype.js";
+import { has_role } from "../../service/login.js";
 import format_time from "../../util/format_time.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
 		"node-link": NodeLink,
-		"node-state": NodeState
+		"node-state": NodeState,
+		"user-link": UserLink
 	},
 	data: function() {
 		return {
@@ -30,17 +33,19 @@ export default {
 		clearInterval(this.handle);
 	},
 	methods: {
-		format_time: format_time,
+		format_time,
+		has_role,
+		get_nodetype,
 		update: function() {
 			get_all().then(nodes => this.nodes = nodes);
-		},
-		get_nodetype: get_nodetype
+		}
 	},
 	template: /*html*/`
 	<card-layout title="Nodes" icon="server" :breadcrumb="breadcrumb">
 		<table class="table">
 			<thead>
 				<th>Name</th>
+				<th v-if="has_role('ADMIN')">User</th>
 				<th>State</th>
 				<th>Created</th>
 				<th>Node-Type</th>
@@ -49,6 +54,9 @@ export default {
 				<tr v-for="node in nodes" :key="node.id">
 					<td>
 						<node-link :node="node"/>
+					</td>
+					<td v-if="has_role('ADMIN')">
+						<user-link :id="node.user_id"/>
 					</td>
 					<td>
 						<node-state :state="node.state"/>

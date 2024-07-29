@@ -103,7 +103,7 @@ export default {
 					<td>{{format_time(log.timestamp)}}</td>
 					<td>{{log.type}}</td>
 					<td v-if="has_role('ADMIN')">
-						<user-link :user_id="log.user_id"/>
+						<user-link :id="log.user_id"/>
 					</td>
 					<td>
 						<div v-if="log.ip_address">

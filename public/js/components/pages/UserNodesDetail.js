@@ -3,12 +3,14 @@ import NodeState from "../NodeState.js";
 import ServerList from "../ServerList.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
+import UserLink from "../UserLink.js";
 
 import { country_map, flag_map } from "../../util/country.js";
 
 import { get_by_id, get_stats, update as update_node, get_mtservers_by_nodeid, get_latest_job } from "../../api/node.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_nodetype } from "../../service/nodetype.js";
+import { has_role } from "../../service/login.js";
 
 import format_time from "../../util/format_time.js";
 
@@ -25,7 +27,8 @@ export default {
 		"node-state": NodeState,
 		"server-list": ServerList,
 		"currency-display": CurrencyDisplay,
-		"node-type-spec": NodeTypeSpec
+		"node-type-spec": NodeTypeSpec,
+		"user-link": UserLink
 	},
 	data: function() {
 		return {
@@ -66,7 +69,8 @@ export default {
 		clearInterval(this.handle);
 	},
 	methods: {
-		format_time: format_time,
+		format_time,
+		has_role,
 		update_stats: function() {
 			const nodeid = this.id;
 			if (this.node.state == "PROVISIONING") {
@@ -110,6 +114,12 @@ export default {
 				<tr>
 					<td>ID</td>
 					<td>{{node.id}}</td>
+				</tr>
+				<tr v-if="has_role('ADMIN')">
+					<td>User</td>
+					<td>
+						<user-link :id="node.user_id"/>
+					</td>
 				</tr>
 				<tr>
 					<td>Specs</td>
