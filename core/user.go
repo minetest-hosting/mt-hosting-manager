@@ -48,10 +48,12 @@ func (c *Core) CreateUser(name, external_id, hash string, t types.UserType, role
 		Tags:     []string{"new"},
 	}, true)
 
+	err := c.repos.UserRepo.Insert(user)
+
 	c.AddAuditLog(&types.AuditLog{
 		Type:   types.AuditLogUserCreated,
 		UserID: user.ID,
 	})
 
-	return user, c.repos.UserRepo.Insert(user)
+	return user, err
 }
