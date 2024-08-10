@@ -7,9 +7,9 @@ import (
 )
 
 type MtuiClient struct {
-	client http.Client
-	url    string
-	token  string
+	client  http.Client
+	url     string
+	cookies []*http.Cookie
 }
 
 func New(url string) *MtuiClient {
@@ -36,20 +36,11 @@ func (a *MtuiClient) Login(username, jwt_key string) error {
 	}
 	defer resp.Body.Close()
 
-	resp_bytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("io.read error: %v", err)
-	}
-
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("api-response status: %d", resp.StatusCode)
 	}
 
-	if len(resp_bytes) == 0 {
-		return fmt.Errorf("token-length is zero")
-	}
-
-	a.token = string(resp_bytes)
+	a.cookies = resp.Cookies()
 	return nil
 }
 
@@ -63,11 +54,17 @@ func (a *MtuiClient) DownloadRootZip() (io.ReadCloser, error) {
 	q.Set("dir", "/")
 	req.URL.RawQuery = q.Encode()
 
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", a.token))
+	for _, c := range a.cookies {
+		req.AddCookie(c)
+	}
 
 	resp, err := a.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("http do error: %v", err)
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
 	}
 
 	return resp.Body, nil
