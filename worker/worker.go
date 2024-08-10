@@ -49,6 +49,7 @@ func (w *Worker) RegisterExecutors() {
 	executors[types.JobTypeServerDestroy] = w.ServerDestroy
 	executors[types.JobTypeServerSetup] = w.ServerSetup
 	executors[types.JobTypeServerRestore] = w.ServerRestore
+	executors[types.JobTypeServerBackup] = w.ServerBackup
 }
 
 func (w *Worker) Stop() {
