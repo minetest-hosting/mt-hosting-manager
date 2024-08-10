@@ -21,7 +21,7 @@ func TestLoginDownload(t *testing.T) {
 	err := c.Login(username, jwt_key)
 	assert.NoError(t, err)
 
-	r, err := c.DownloadRootZip()
+	r, err := c.DownloadZip("/")
 	assert.NoError(t, err)
 	defer r.Close()
 
