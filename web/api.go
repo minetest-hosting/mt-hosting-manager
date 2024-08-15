@@ -62,6 +62,7 @@ func (api *Api) Setup() {
 	apir.HandleFunc("/nodetype/{id}", api.GetNodeType).Methods(http.MethodGet)
 	apir.HandleFunc("/logstream/{id}", api.LogStream).Methods(http.MethodPost)
 	apir.HandleFunc("/exchange_rate", api.GetExchangeRates)
+	apir.HandleFunc("/exchange_rate/{currency}", api.GetExchangeRate)
 	apir.HandleFunc("/geoip/{ip}", api.ResolveGeoIP)
 	apir.HandleFunc("/captcha", api.CreateCaptcha).Methods(http.MethodGet)
 	apir.HandleFunc("/webhook/zahlsch", api.ZahlschWebhook).Methods(http.MethodPost)
@@ -133,6 +134,10 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/job", api.Secure(api.GetJobs)).Methods(http.MethodGet)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.DeleteJob)).Methods(http.MethodDelete)
 	admin_api.HandleFunc("/job/{id}", api.Secure(api.RetryJob)).Methods(http.MethodPost)
+
+	admin_api.HandleFunc("/exchange_rate", api.Secure(api.CreateExchangeRate)).Methods(http.MethodPost)
+	admin_api.HandleFunc("/exchange_rate/{currency}", api.Secure(api.UpdateExchangeRate)).Methods(http.MethodPut)
+	admin_api.HandleFunc("/exchange_rate/{currency}", api.Secure(api.DeleteExchangeRate)).Methods(http.MethodDelete)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {
