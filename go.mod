@@ -3,7 +3,6 @@ module mt-hosting-manager
 go 1.21.5
 
 require (
-	github.com/Luzifer/go-openssl/v4 v4.2.2
 	github.com/dchest/captcha v1.0.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -21,7 +20,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
 	github.com/vearutop/statigz v1.4.0
-	golang.org/x/crypto v0.24.0
+	golang.org/x/crypto v0.26.0
 )
 
 require (
@@ -49,8 +48,8 @@ require (
 	github.com/rs/xid v1.5.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
