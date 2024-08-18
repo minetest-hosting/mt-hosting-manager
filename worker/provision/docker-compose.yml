@@ -17,7 +17,7 @@ services:
   network_mode: "host"
 
  traefik:
-  image: traefik:v3.0
+  image: traefik:v3.1
   restart: always
   depends_on:
    - ipv6nat
