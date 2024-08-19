@@ -1,7 +1,6 @@
 
 # Minetest hosting orchestrator
 
-![](https://github.com/minetest-hosting/mt-hosting-manager/workflows/test/badge.svg)
 ![](https://github.com/minetest-hosting/mt-hosting-manager/workflows/build/badge.svg)
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/minetest-hosting/mt-hosting-manager)
