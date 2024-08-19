@@ -45,7 +45,7 @@ func (a *Api) GetOverviewData(w http.ResponseWriter, r *http.Request, c *types.C
 			Servers:  []*types.MinetestServerOverview{},
 		}
 
-		servers, err := a.repos.MinetestServerRepo.GetByNodeID(node.ID)
+		servers, err := a.repos.MinetestServerRepo.Search(&types.MinetestServerSearch{NodeID: &node.ID})
 		if err != nil {
 			SendError(w, 500, fmt.Errorf("servers fetch error: %v", err))
 			return

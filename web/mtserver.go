@@ -17,9 +17,26 @@ func (a *Api) GetMTServers(w http.ResponseWriter, r *http.Request, c *types.Clai
 		list, err := a.repos.MinetestServerRepo.GetAll()
 		Send(w, list, err)
 	} else {
-		list, err := a.repos.MinetestServerRepo.GetByUserID(c.UserID)
+		list, err := a.repos.MinetestServerRepo.Search(&types.MinetestServerSearch{UserID: &c.UserID})
 		Send(w, list, err)
 	}
+}
+
+func (a *Api) SearchMTServers(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	search := &types.MinetestServerSearch{}
+	err := json.NewDecoder(r.Body).Decode(search)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	if c.Role != types.UserRoleAdmin {
+		// fix userid
+		search.UserID = &c.UserID
+	}
+
+	list, err := a.repos.MinetestServerRepo.Search(search)
+	Send(w, list, err)
 }
 
 func (a *Api) GetMTServer(w http.ResponseWriter, r *http.Request, c *types.Claims) {

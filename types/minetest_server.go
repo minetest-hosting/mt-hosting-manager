@@ -77,3 +77,10 @@ func (m *MinetestServer) Scan(action string, r func(dest ...any) error) error {
 func (m *MinetestServer) Values(action string) []any {
 	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.Admin, m.ExternalCNAMEDNSID, m.CustomDNS, m.Port, m.UIVersion, m.JWTKey, m.Created, m.State}
 }
+
+type MinetestServerSearch struct {
+	ID     *string              `json:"id"`
+	UserID *string              `json:"user_id"`
+	NodeID *string              `json:"node_id"`
+	State  *MinetestServerState `json:"state"`
+}

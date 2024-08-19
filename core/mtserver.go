@@ -26,7 +26,7 @@ func (c *Core) ValidateCreateServer(server *types.MinetestServer, node *types.Us
 		Valid: true,
 	}
 
-	other_servers, err := c.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	other_servers, err := c.repos.MinetestServerRepo.Search(&types.MinetestServerSearch{NodeID: &node.ID})
 	if err != nil {
 		return nil, fmt.Errorf("servers fetch error: %v", err)
 	}

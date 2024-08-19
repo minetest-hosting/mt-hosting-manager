@@ -89,6 +89,7 @@ func (api *Api) Setup() {
 
 	user_api.HandleFunc("/mtserver", api.Secure(api.GetMTServers)).Methods(http.MethodGet)
 	user_api.HandleFunc("/mtserver", api.Secure(api.CreateMTServer)).Methods(http.MethodPost)
+	user_api.HandleFunc("/mtserver/search", api.Secure(api.SearchMTServers)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver/validate", api.Secure(api.ValidateCreateMTServer)).Methods(http.MethodPost)
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.GetMTServer)).Methods(http.MethodGet)
 	user_api.HandleFunc("/mtserver/{id}", api.Secure(api.UpdateMTServer)).Methods(http.MethodPost)

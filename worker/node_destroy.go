@@ -35,7 +35,7 @@ func (w *Worker) NodeDestroy(job *types.Job, status StatusCallback) error {
 		return errors.New("user not found")
 	}
 
-	servers, err := w.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	servers, err := w.repos.MinetestServerRepo.Search(&types.MinetestServerSearch{NodeID: &node.ID})
 	if err != nil {
 		return fmt.Errorf("could not fetch servers: %v", err)
 	}

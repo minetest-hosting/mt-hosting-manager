@@ -57,7 +57,7 @@ func (a *Api) GetNodeServers(w http.ResponseWriter, r *http.Request, c *types.Cl
 		SendError(w, 500, err)
 		return
 	}
-	servers, err := a.repos.MinetestServerRepo.GetByNodeID(node.ID)
+	servers, err := a.repos.MinetestServerRepo.Search(&types.MinetestServerSearch{NodeID: &node.ID})
 	Send(w, servers, err)
 }
 
