@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"mt-hosting-manager/types"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/minetest-go/dbutil"
@@ -31,22 +32,6 @@ func (r *UserNodeRepository) GetByID(id string) (*types.UserNode, error) {
 	return nt, err
 }
 
-func (r *UserNodeRepository) GetByName(name string) (*types.UserNode, error) {
-	nt, err := r.dbu.Select("where name = %s", name)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	}
-	return nt, err
-}
-
-func (r *UserNodeRepository) GetByUserID(user_id string) ([]*types.UserNode, error) {
-	return r.dbu.SelectMulti("where user_id = %s", user_id)
-}
-
-func (r *UserNodeRepository) GetByUserIDAndState(user_id string, state types.UserNodeState) ([]*types.UserNode, error) {
-	return r.dbu.SelectMulti("where user_id = %s and state = %s", user_id, state)
-}
-
 func (r *UserNodeRepository) GetAll() ([]*types.UserNode, error) {
 	return r.dbu.SelectMulti("")
 }
@@ -55,6 +40,35 @@ func (r *UserNodeRepository) Delete(id string) error {
 	return r.dbu.Delete("where id = %s", id)
 }
 
-func (r *UserNodeRepository) GetByValidUntilTime(valid_until int64) ([]*types.UserNode, error) {
-	return r.dbu.SelectMulti("where valid_until < %s", valid_until)
+func (r *UserNodeRepository) Search(search *types.UserNodeSearch) ([]*types.UserNode, error) {
+	q := strings.Builder{}
+	params := []any{}
+	q.WriteString("where true")
+
+	if search.ID != nil {
+		q.WriteString(" and id = %s")
+		params = append(params, *search.ID)
+	}
+
+	if search.Name != nil {
+		q.WriteString(" and name = %s")
+		params = append(params, *search.Name)
+	}
+
+	if search.UserID != nil {
+		q.WriteString(" and user_id = %s")
+		params = append(params, *search.UserID)
+	}
+
+	if search.State != nil {
+		q.WriteString(" and state = %s")
+		params = append(params, *search.State)
+	}
+
+	if search.ValidUntil != nil {
+		q.WriteString(" and valid_until < %s")
+		params = append(params, *search.ValidUntil)
+	}
+
+	return r.dbu.SelectMulti(q.String(), params)
 }

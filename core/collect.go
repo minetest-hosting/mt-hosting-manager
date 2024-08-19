@@ -10,7 +10,7 @@ import (
 const SECONDS_IN_A_DAY = 3600 * 24
 
 func (c *Core) Collect(valid_until int64) error {
-	list, err := c.repos.UserNodeRepo.GetByValidUntilTime(valid_until)
+	list, err := c.repos.UserNodeRepo.Search(&types.UserNodeSearch{ValidUntil: &valid_until})
 	if err != nil {
 		return fmt.Errorf("could not fetch usernodes: %v", err)
 	}

@@ -20,9 +20,26 @@ func (a *Api) GetNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) 
 		list, err := a.repos.UserNodeRepo.GetAll()
 		Send(w, list, err)
 	} else {
-		list, err := a.repos.UserNodeRepo.GetByUserID(c.UserID)
+		list, err := a.repos.UserNodeRepo.Search(&types.UserNodeSearch{UserID: &c.UserID})
 		Send(w, list, err)
 	}
+}
+
+func (a *Api) SearchNodes(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	search := &types.UserNodeSearch{}
+	err := json.NewDecoder(r.Body).Decode(search)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	if c.Role != types.UserRoleAdmin {
+		// fix userid
+		search.UserID = &c.UserID
+	}
+
+	list, err := a.repos.UserNodeRepo.Search(search)
+	Send(w, list, err)
 }
 
 func (a *Api) GetNode(w http.ResponseWriter, r *http.Request, c *types.Claims) {

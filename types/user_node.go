@@ -95,3 +95,11 @@ func (m *UserNode) Values(action string) []any {
 		m.Fingerprint,
 	}
 }
+
+type UserNodeSearch struct {
+	ID         *string        `json:"id"`
+	Name       *string        `json:"name"`
+	UserID     *string        `json:"user_id"`
+	State      *UserNodeState `json:"state"`
+	ValidUntil *int64         `json:"valid_until"`
+}

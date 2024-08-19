@@ -20,7 +20,7 @@ func (a *Api) GetOverviewData(w http.ResponseWriter, r *http.Request, c *types.C
 		return
 	}
 
-	nodes, err := a.repos.UserNodeRepo.GetByUserID(user_id)
+	nodes, err := a.repos.UserNodeRepo.Search(&types.UserNodeSearch{UserID: &user_id})
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("node fetch error: %v", err))
 		return

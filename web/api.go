@@ -78,6 +78,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
 
 	user_api.HandleFunc("/node", api.Secure(api.GetNodes)).Methods(http.MethodGet)
+	user_api.HandleFunc("/node/search", api.Secure(api.SearchNodes)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node/{id}", api.Secure(api.GetNode)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node/{id}/stats", api.Secure(api.GetNodeStats)).Methods(http.MethodGet)
