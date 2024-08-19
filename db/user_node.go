@@ -70,5 +70,5 @@ func (r *UserNodeRepository) Search(search *types.UserNodeSearch) ([]*types.User
 		params = append(params, *search.ValidUntil)
 	}
 
-	return r.dbu.SelectMulti(q.String(), params)
+	return r.dbu.SelectMulti(q.String(), params...)
 }
