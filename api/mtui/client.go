@@ -1,6 +1,8 @@
 package mtui
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,15 +17,29 @@ type MtuiClient struct {
 
 func New(url string) *MtuiClient {
 	return &MtuiClient{
-		url:    url,
-		client: http.Client{},
+		url:     url,
+		client:  http.Client{},
+		cookies: make([]*http.Cookie, 0),
 	}
 }
 
-func (a *MtuiClient) Login(username, jwt_key string) error {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/loginadmin/%s", a.url, username), nil)
+func (a *MtuiClient) request(method, path string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", a.url, path), body)
 	if err != nil {
-		return fmt.Errorf("create request failed: %v", err)
+		return nil, fmt.Errorf("create request failed: %v", err)
+	}
+
+	for _, c := range a.cookies {
+		req.AddCookie(c)
+	}
+
+	return req, nil
+}
+
+func (a *MtuiClient) Login(username, jwt_key string) error {
+	req, err := a.request(http.MethodGet, fmt.Sprintf("api/loginadmin/%s", username), nil)
+	if err != nil {
+		return fmt.Errorf("request error: %v", err)
 	}
 
 	q := req.URL.Query()
@@ -46,18 +62,14 @@ func (a *MtuiClient) Login(username, jwt_key string) error {
 }
 
 func (a *MtuiClient) DownloadZip(dir string) (io.ReadCloser, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/filebrowser/zip", a.url), nil)
+	req, err := a.request(http.MethodGet, "api/filebrowser/zip", nil)
 	if err != nil {
-		return nil, fmt.Errorf("create request failed: %v", err)
+		return nil, fmt.Errorf("request error: %v", err)
 	}
 
 	q := req.URL.Query()
 	q.Set("dir", dir)
 	req.URL.RawQuery = q.Encode()
-
-	for _, c := range a.cookies {
-		req.AddCookie(c)
-	}
 
 	resp, err := a.client.Do(req)
 	if err != nil {
@@ -72,18 +84,14 @@ func (a *MtuiClient) DownloadZip(dir string) (io.ReadCloser, error) {
 }
 
 func (a *MtuiClient) GetDirectorySize(dir string) (int64, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/filebrowser/size", a.url), nil)
+	req, err := a.request(http.MethodGet, "api/filebrowser/size", nil)
 	if err != nil {
-		return 0, fmt.Errorf("create request failed: %v", err)
+		return 0, fmt.Errorf("request error: %v", err)
 	}
 
 	q := req.URL.Query()
 	q.Set("dir", dir)
 	req.URL.RawQuery = q.Encode()
-
-	for _, c := range a.cookies {
-		req.AddCookie(c)
-	}
 
 	resp, err := a.client.Do(req)
 	if err != nil {
@@ -105,4 +113,59 @@ func (a *MtuiClient) GetDirectorySize(dir string) (int64, error) {
 	}
 
 	return size, nil
+}
+
+func (a *MtuiClient) CreateBackupJob(job *CreateBackupJob) (*BackupJobInfo, error) {
+	obj, err := json.Marshal(job)
+	if err != nil {
+		return nil, fmt.Errorf("json error: %v", err)
+	}
+
+	req, err := a.request(http.MethodPost, "api/backupjob", bytes.NewReader(obj))
+	if err != nil {
+		return nil, fmt.Errorf("request error: %v", err)
+	}
+
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("http do error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
+	}
+
+	info := &BackupJobInfo{}
+	err = json.NewDecoder(resp.Body).Decode(info)
+	if err != nil {
+		return nil, fmt.Errorf("json response error: %v", err)
+	}
+
+	return info, nil
+}
+
+func (a *MtuiClient) GetBackupJobInfo(id string) (*BackupJobInfo, error) {
+	req, err := a.request(http.MethodGet, fmt.Sprintf("api/backupjob/%s", id), nil)
+	if err != nil {
+		return nil, fmt.Errorf("request error: %v", err)
+	}
+
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("http do error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
+	}
+
+	info := &BackupJobInfo{}
+	err = json.NewDecoder(resp.Body).Decode(info)
+	if err != nil {
+		return nil, fmt.Errorf("json response error: %v", err)
+	}
+
+	return info, nil
 }
