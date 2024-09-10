@@ -23,7 +23,7 @@ type Repositories struct {
 func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
 	dialect := dbutil.DialectPostgres
 	return &Repositories{
-		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dialect, types.UserProvider), db: db, g: g},
+		UserRepo:               &UserRepository{db: db, g: g},
 		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dialect, types.NodeTypeProvider)},
 		UserNodeRepo:           &UserNodeRepository{dbu: dbutil.New[*types.UserNode](db, dialect, types.UserNodeProvider)},
 		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},

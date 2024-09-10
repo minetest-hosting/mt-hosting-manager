@@ -1,8 +1,6 @@
 package db
 
 import (
-	"database/sql"
-	"fmt"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
@@ -11,9 +9,8 @@ import (
 )
 
 type UserRepository struct {
-	dbu *dbutil.DBUtil[*types.User]
-	db  dbutil.DBTx
-	g   *gorm.DB
+	db dbutil.DBTx
+	g  *gorm.DB
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
@@ -28,42 +25,35 @@ func (r *UserRepository) Update(u *types.User) error {
 }
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {
-	u, err := r.dbu.Select("where id = %s", id)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	} else {
-		return u, err
-	}
+	var user *types.User
+	err := r.g.Where(types.User{ID: id}).First(user).Error
+	return user, err
 }
 
 func (r *UserRepository) GetByName(name string) (*types.User, error) {
-	u, err := r.dbu.Select("where name = %s", name)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	} else {
-		return u, err
-	}
+	var user *types.User
+	err := r.g.Where(types.User{Name: name}).First(user).Error
+	return user, err
 }
 
 func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id string) (*types.User, error) {
-	u, err := r.dbu.Select("where type = %s and external_id = %s", t, external_id)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	} else {
-		return u, err
-	}
+	var user *types.User
+	err := r.g.Where(types.User{Type: t, ExternalID: external_id}).First(user).Error
+	return user, err
 }
 
 func (r *UserRepository) GetAll() ([]*types.User, error) {
-	return r.dbu.SelectMulti("")
+	var users []*types.User
+	err := r.g.Find(&users).Error
+	return users, err
 }
 
 func (r *UserRepository) Delete(user_id string) error {
-	return r.dbu.Delete("where id = %s", user_id)
+	return r.g.Delete(types.User{ID: user_id}).Error
 }
 
 func (r *UserRepository) DeleteAll() error {
-	return r.dbu.Delete("")
+	return r.g.Delete(types.User{}).Error
 }
 
 func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
@@ -77,24 +67,23 @@ func (r *UserRepository) SubtractBalance(user_id string, eurocents int64) error 
 }
 
 func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
-	q := "where true=true"
-	params := []any{}
+	q := r.g
 
 	if s.NameLike != nil {
-		q += " and name like %s"
-		params = append(params, *s.NameLike)
+		q = q.Where("name like ?", *s.NameLike)
 	}
 
 	if s.UserID != nil {
-		q += " and id = %s"
-		params = append(params, *s.UserID)
+		q = q.Where(types.User{ID: *s.UserID})
 	}
 
 	if s.Limit != nil && *s.Limit > 0 && *s.Limit < 100 {
-		q += fmt.Sprintf(" limit %d", *s.Limit)
+		q = q.Limit(*s.Limit)
 	} else {
-		q += " limit 100"
+		q = q.Limit(100)
 	}
 
-	return r.dbu.SelectMulti(q, params...)
+	var users []*types.User
+	err := q.Find(&users).Error
+	return users, err
 }
