@@ -26,7 +26,7 @@ func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
 		UserRepo:               &UserRepository{g: g},
 		NodeTypeRepo:           &NodeTypeRepository{g: g},
 		UserNodeRepo:           &UserNodeRepository{g: g},
-		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},
+		MinetestServerRepo:     &MinetestServerRepository{g: g},
 		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dialect, types.JobProvider)},
 		PaymentTransactionRepo: &PaymentTransactionRepository{dbu: dbutil.New[*types.PaymentTransaction](db, dialect, types.PaymentTransactionProvider)},
 		AuditLogRepo:           &AuditLogRepository{dbu: dbutil.New[*types.AuditLog](db, dialect, types.AuditLogProvider)},
