@@ -1,59 +1,61 @@
 package db
 
 import (
-	"database/sql"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
-	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type PaymentTransactionRepository struct {
-	dbu *dbutil.DBUtil[*types.PaymentTransaction]
+	g *gorm.DB
 }
 
 func (r *PaymentTransactionRepository) Insert(n *types.PaymentTransaction) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return r.dbu.Insert(n)
-}
-
-func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransaction, error) {
-	nt, err := r.dbu.Select("where id = %s", id)
-	if err == sql.ErrNoRows {
-		return nil, nil
-	}
-	return nt, err
-}
-
-func (r *PaymentTransactionRepository) GetByUserID(user_id string) ([]*types.PaymentTransaction, error) {
-	return r.dbu.SelectMulti("where user_id = %s", user_id)
+	return r.g.Create(n).Error
 }
 
 func (r *PaymentTransactionRepository) Update(tx *types.PaymentTransaction) error {
-	return r.dbu.Update(tx, "where id = %s", tx.ID)
+	return r.g.Model(tx).Updates(tx).Error
+}
+
+func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransaction, error) {
+	var tx *types.PaymentTransaction
+	err := r.g.Where(types.Job{ID: id}).First(&tx).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return tx, err
+}
+
+func (r *PaymentTransactionRepository) GetByUserID(user_id string) ([]*types.PaymentTransaction, error) {
+	var list []*types.PaymentTransaction
+	err := r.g.Where(types.PaymentTransaction{UserID: user_id}).Find(&list).Error
+	return list, err
 }
 
 func (r *PaymentTransactionRepository) Delete(id string) error {
-	return r.dbu.Delete("where id = %s", id)
+	return r.g.Delete(types.PaymentTransaction{ID: id}).Error
 }
 
 func (r *PaymentTransactionRepository) Search(s *types.PaymentTransactionSearch) ([]*types.PaymentTransaction, error) {
-	q := "where created > %s and created < %s"
-	params := []any{s.FromTimestamp, s.ToTimestamp}
+	q := r.g.Where("created > ?", s.FromTimestamp)
+	q = q.Where("created < ?", s.ToTimestamp)
 
 	if s.UserID != nil {
-		q += " and user_id = %s"
-		params = append(params, *s.UserID)
+		q = q.Where(types.PaymentTransaction{UserID: *s.UserID})
 	}
 
 	if s.State != nil {
-		q += " and state = %s"
-		params = append(params, *s.State)
+		q = q.Where(types.PaymentTransaction{State: *s.State})
 	}
 
-	q += " order by created desc limit 1000"
+	q = q.Order("created desc").Limit(1000)
 
-	return r.dbu.SelectMulti(q, params...)
+	var list []*types.PaymentTransaction
+	err := q.Find(&list).Error
+	return list, err
 }
