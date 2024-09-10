@@ -15,6 +15,7 @@ type Repositories struct {
 	BackupRepo             *BackupRepository
 	BackupSpaceRepo        *BackupSpaceRepository
 	ExchangeRateRepo       *ExchangeRateRepository
+	Lock                   *DBLock
 }
 
 func NewRepositories(g *gorm.DB) *Repositories {
@@ -29,5 +30,6 @@ func NewRepositories(g *gorm.DB) *Repositories {
 		BackupRepo:             &BackupRepository{g: g},
 		BackupSpaceRepo:        &BackupSpaceRepository{g: g},
 		ExchangeRateRepo:       &ExchangeRateRepository{g: g},
+		Lock:                   &DBLock{g: g},
 	}
 }
