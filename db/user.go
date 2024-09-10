@@ -4,13 +4,11 @@ import (
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
-	"github.com/minetest-go/dbutil"
 	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	db dbutil.DBTx
-	g  *gorm.DB
+	g *gorm.DB
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
@@ -26,19 +24,28 @@ func (r *UserRepository) Update(u *types.User) error {
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {
 	var user *types.User
-	err := r.g.Where(types.User{ID: id}).First(user).Error
+	err := r.g.Where(types.User{ID: id}).First(&user).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
 	return user, err
 }
 
 func (r *UserRepository) GetByName(name string) (*types.User, error) {
 	var user *types.User
-	err := r.g.Where(types.User{Name: name}).First(user).Error
+	err := r.g.Where(types.User{Name: name}).First(&user).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
 	return user, err
 }
 
 func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id string) (*types.User, error) {
 	var user *types.User
-	err := r.g.Where(types.User{Type: t, ExternalID: external_id}).First(user).Error
+	err := r.g.Where(types.User{Type: t, ExternalID: external_id}).First(&user).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
 	return user, err
 }
 
@@ -53,17 +60,15 @@ func (r *UserRepository) Delete(user_id string) error {
 }
 
 func (r *UserRepository) DeleteAll() error {
-	return r.g.Delete(types.User{}).Error
+	return r.g.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(types.User{}).Error
 }
 
 func (r *UserRepository) AddBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update public.user set balance = balance + $1 where id = $2", eurocents, user_id)
-	return err
+	return r.g.Exec("update public.user set balance = balance + $1 where id = $2", eurocents, user_id).Error
 }
 
 func (r *UserRepository) SubtractBalance(user_id string, eurocents int64) error {
-	_, err := r.db.Exec("update public.user set balance = balance - $1 where id = $2", eurocents, user_id)
-	return err
+	return r.g.Exec("update public.user set balance = balance - $1 where id = $2", eurocents, user_id).Error
 }
 
 func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
