@@ -34,7 +34,7 @@ func main() {
 	}
 
 	cfg := types.NewConfig()
-	repos := db.NewRepositories(db_, g)
+	repos := db.NewRepositories(g)
 
 	// redis/ captcha
 	captchaExp := 10 * time.Minute

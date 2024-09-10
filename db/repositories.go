@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/minetest-go/dbutil"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +17,7 @@ type Repositories struct {
 	ExchangeRateRepo       *ExchangeRateRepository
 }
 
-func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
+func NewRepositories(g *gorm.DB) *Repositories {
 	return &Repositories{
 		UserRepo:               &UserRepository{g: g},
 		NodeTypeRepo:           &NodeTypeRepository{g: g},

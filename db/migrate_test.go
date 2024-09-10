@@ -1,7 +1,6 @@
 package db_test
 
 import (
-	"database/sql"
 	"mt-hosting-manager/db"
 	"os"
 	"testing"
@@ -10,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupDB(t *testing.T) (*sql.DB, *gorm.DB) {
+func SetupDB(t *testing.T) *gorm.DB {
 	db_, g, err := db.Init()
 	assert.NoError(t, err)
 	assert.NotNil(t, db_)
@@ -19,7 +18,7 @@ func SetupDB(t *testing.T) (*sql.DB, *gorm.DB) {
 	err = db.Migrate(db_)
 	assert.NoError(t, err)
 
-	return db_, g
+	return g
 }
 
 func SetupRepos(t *testing.T) *db.Repositories {
