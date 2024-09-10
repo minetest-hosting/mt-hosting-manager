@@ -7,22 +7,24 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
 	dbu *dbutil.DBUtil[*types.User]
 	db  dbutil.DBTx
+	g   *gorm.DB
 }
 
 func (r *UserRepository) Insert(u *types.User) error {
 	if u.ID == "" {
 		u.ID = uuid.NewString()
 	}
-	return r.dbu.Insert(u)
+	return r.g.Create(u).Error
 }
 
 func (r *UserRepository) Update(u *types.User) error {
-	return r.dbu.Update(u, "where id = %s", u.ID)
+	return r.g.Model(u).Updates(u).Error
 }
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {

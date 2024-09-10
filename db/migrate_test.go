@@ -7,17 +7,19 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
 
-func SetupDB(t *testing.T) *sql.DB {
-	db_, err := db.Init()
+func SetupDB(t *testing.T) (*sql.DB, *gorm.DB) {
+	db_, g, err := db.Init()
 	assert.NoError(t, err)
 	assert.NotNil(t, db_)
+	assert.NotNil(t, g)
 
 	err = db.Migrate(db_)
 	assert.NoError(t, err)
 
-	return db_
+	return db_, g
 }
 
 func SetupRepos(t *testing.T) *db.Repositories {

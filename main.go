@@ -23,7 +23,7 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 
-	db_, err := db.Init()
+	db_, g, err := db.Init()
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,7 @@ func main() {
 	}
 
 	cfg := types.NewConfig()
-	repos := db.NewRepositories(db_)
+	repos := db.NewRepositories(db_, g)
 
 	// redis/ captcha
 	captchaExp := 10 * time.Minute

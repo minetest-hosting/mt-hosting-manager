@@ -4,6 +4,7 @@ import (
 	"mt-hosting-manager/types"
 
 	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type Repositories struct {
@@ -19,10 +20,10 @@ type Repositories struct {
 	ExchangeRateRepo       *ExchangeRateRepository
 }
 
-func NewRepositories(db dbutil.DBTx) *Repositories {
+func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
 	dialect := dbutil.DialectPostgres
 	return &Repositories{
-		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dialect, types.UserProvider), db: db},
+		UserRepo:               &UserRepository{dbu: dbutil.New[*types.User](db, dialect, types.UserProvider), db: db, g: g},
 		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dialect, types.NodeTypeProvider)},
 		UserNodeRepo:           &UserNodeRepository{dbu: dbutil.New[*types.UserNode](db, dialect, types.UserNodeProvider)},
 		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},

@@ -20,6 +20,8 @@ func TestUserRepository(t *testing.T) {
 		Role:       types.UserRoleUser,
 	}
 	assert.NoError(t, repos.UserRepo.Insert(user))
+	user.ExternalID = "def"
+	assert.NoError(t, repos.UserRepo.Update(user))
 
 	// existing user
 	u, err := repos.UserRepo.GetByName("somedude")
