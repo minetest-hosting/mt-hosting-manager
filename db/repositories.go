@@ -1,8 +1,6 @@
 package db
 
 import (
-	"mt-hosting-manager/types"
-
 	"github.com/minetest-go/dbutil"
 	"gorm.io/gorm"
 )
@@ -21,7 +19,6 @@ type Repositories struct {
 }
 
 func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
-	dialect := dbutil.DialectPostgres
 	return &Repositories{
 		UserRepo:               &UserRepository{g: g},
 		NodeTypeRepo:           &NodeTypeRepository{g: g},
@@ -30,8 +27,8 @@ func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
 		JobRepo:                &JobRepository{g: g},
 		PaymentTransactionRepo: &PaymentTransactionRepository{g: g},
 		AuditLogRepo:           &AuditLogRepository{g: g},
-		BackupRepo:             &BackupRepository{dbu: dbutil.New[*types.Backup](db, dialect, types.BackupProvider)},
-		BackupSpaceRepo:        &BackupSpaceRepository{dbu: dbutil.New[*types.BackupSpace](db, dialect, types.BackupSpaceProvider)},
-		ExchangeRateRepo:       &ExchangeRateRepository{dbu: dbutil.New[*types.ExchangeRate](db, dialect, types.ExchangeRateProvider)},
+		BackupRepo:             &BackupRepository{g: g},
+		BackupSpaceRepo:        &BackupSpaceRepository{g: g},
+		ExchangeRateRepo:       &ExchangeRateRepository{g: g},
 	}
 }
