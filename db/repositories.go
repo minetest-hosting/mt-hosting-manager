@@ -24,7 +24,7 @@ func NewRepositories(db dbutil.DBTx, g *gorm.DB) *Repositories {
 	dialect := dbutil.DialectPostgres
 	return &Repositories{
 		UserRepo:               &UserRepository{g: g},
-		NodeTypeRepo:           &NodeTypeRepository{dbu: dbutil.New[*types.NodeType](db, dialect, types.NodeTypeProvider)},
+		NodeTypeRepo:           &NodeTypeRepository{g: g},
 		UserNodeRepo:           &UserNodeRepository{dbu: dbutil.New[*types.UserNode](db, dialect, types.UserNodeProvider)},
 		MinetestServerRepo:     &MinetestServerRepository{dbu: dbutil.New[*types.MinetestServer](db, dialect, types.MinetestServerProvider)},
 		JobRepo:                &JobRepository{dbu: dbutil.New[*types.Job](db, dialect, types.JobProvider)},
