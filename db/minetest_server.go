@@ -1,70 +1,66 @@
 package db
 
 import (
-	"database/sql"
 	"mt-hosting-manager/types"
-	"strings"
 
 	"github.com/google/uuid"
-	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type MinetestServerRepository struct {
-	dbu *dbutil.DBUtil[*types.MinetestServer]
+	g *gorm.DB
 }
 
 func (r *MinetestServerRepository) Insert(n *types.MinetestServer) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return r.dbu.Insert(n)
+	return r.g.Create(n).Error
 }
 
 func (r *MinetestServerRepository) Update(n *types.MinetestServer) error {
-	return r.dbu.Update(n, "where id = %s", n.ID)
+	return r.g.Model(n).Updates(n).Error
 }
 
 func (r *MinetestServerRepository) GetByID(id string) (*types.MinetestServer, error) {
-	nt, err := r.dbu.Select("where id = %s", id)
-	if err == sql.ErrNoRows {
-		return nil, nil
+	var list []*types.MinetestServer
+	err := r.g.Where(types.MinetestServer{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return nt, err
+	return list[0], err
 }
 
 func (r *MinetestServerRepository) GetAll() ([]*types.MinetestServer, error) {
-	return r.dbu.SelectMulti("")
+	var list []*types.MinetestServer
+	err := r.g.Where(types.MinetestServer{}).Find(&list).Error
+	return list, err
 }
 
 func (r *MinetestServerRepository) Delete(id string) error {
-	return r.dbu.Delete("where id = %s", id)
+	return r.g.Delete(types.MinetestServer{ID: id}).Error
 }
 
 func (r *MinetestServerRepository) Search(search *types.MinetestServerSearch) ([]*types.MinetestServer, error) {
-	q := strings.Builder{}
-	params := []any{}
-
-	q.WriteString("where true")
+	q := r.g
 
 	if search.ID != nil {
-		q.WriteString(" and id = %s")
-		params = append(params, *search.ID)
+		q = q.Where(types.MinetestServer{ID: *search.ID})
 	}
 
 	if search.UserID != nil {
-		q.WriteString(" and user_node_id in (select id from user_node where user_id = %s)")
-		params = append(params, *search.UserID)
+		q = q.Where("user_node_id in (select id from user_node where user_id = ?)", *search.UserID)
 	}
 
 	if search.NodeID != nil {
-		q.WriteString(" and user_node_id = %s")
-		params = append(params, *search.NodeID)
+		q = q.Where(types.MinetestServer{UserNodeID: *search.NodeID})
 	}
 
 	if search.State != nil {
-		q.WriteString(" and state = %s")
-		params = append(params, *search.State)
+		q = q.Where(types.MinetestServer{State: *search.State})
 	}
 
-	return r.dbu.SelectMulti(q.String(), params...)
+	var list []*types.MinetestServer
+	err := q.Find(&list).Error
+	return list, err
 }

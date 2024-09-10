@@ -44,63 +44,18 @@ type AuditLogSearch struct {
 }
 
 type AuditLog struct {
-	ID                   string       `json:"id"`
-	Type                 AuditLogType `json:"type"`
-	Timestamp            int64        `json:"timestamp"`
-	UserID               string       `json:"user_id"`
-	IPAddress            *string      `json:"ip_address"`
-	UserNodeID           *string      `json:"user_node_id"`
-	MinetestServerID     *string      `json:"minetest_server_id"`
-	BackupID             *string      `json:"backup_id"`
-	PaymentTransactionID *string      `json:"payment_transaction_id"`
-	Amount               *int64       `json:"amount"`
+	ID                   string       `json:"id" gorm:"primarykey;column:id"`
+	Type                 AuditLogType `json:"type" gorm:"column:type"`
+	Timestamp            int64        `json:"timestamp" gorm:"column:timestamp"`
+	UserID               string       `json:"user_id" gorm:"column:user_id"`
+	IPAddress            *string      `json:"ip_address" gorm:"column:ip_address"`
+	UserNodeID           *string      `json:"user_node_id" gorm:"column:user_node_id"`
+	MinetestServerID     *string      `json:"minetest_server_id" gorm:"column:minetest_server_id"`
+	BackupID             *string      `json:"backup_id" gorm:"column:backup_id"`
+	PaymentTransactionID *string      `json:"payment_transaction_id" gorm:"column:payment_transaction_id"`
+	Amount               *int64       `json:"amount" gorm:"column:amount"`
 }
 
-func (m *AuditLog) Columns(action string) []string {
-	return []string{
-		"id",
-		"type",
-		"timestamp",
-		"user_id",
-		"ip_address",
-		"user_node_id",
-		"minetest_server_id",
-		"backup_id",
-		"payment_transaction_id",
-		"amount",
-	}
-}
-
-func (m *AuditLog) Table() string {
+func (m *AuditLog) TableName() string {
 	return "audit_log"
-}
-
-func (m *AuditLog) Scan(action string, r func(dest ...any) error) error {
-	return r(
-		&m.ID,
-		&m.Type,
-		&m.Timestamp,
-		&m.UserID,
-		&m.IPAddress,
-		&m.UserNodeID,
-		&m.MinetestServerID,
-		&m.BackupID,
-		&m.PaymentTransactionID,
-		&m.Amount,
-	)
-}
-
-func (m *AuditLog) Values(action string) []any {
-	return []any{
-		m.ID,
-		m.Type,
-		m.Timestamp,
-		m.UserID,
-		m.IPAddress,
-		m.UserNodeID,
-		m.MinetestServerID,
-		m.BackupID,
-		m.PaymentTransactionID,
-		m.Amount,
-	}
 }

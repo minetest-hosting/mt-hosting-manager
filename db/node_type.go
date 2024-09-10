@@ -1,48 +1,52 @@
 package db
 
 import (
-	"database/sql"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
-	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type NodeTypeRepository struct {
-	dbu *dbutil.DBUtil[*types.NodeType]
+	g *gorm.DB
 }
 
 func (r *NodeTypeRepository) Insert(n *types.NodeType) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return r.dbu.Insert(n)
+	return r.g.Create(n).Error
 }
 
 func (r *NodeTypeRepository) Update(n *types.NodeType) error {
-	return r.dbu.Update(n, "where id = %s", n.ID)
+	return r.g.Model(n).Updates(n).Error
 }
 
 func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
-	nt, err := r.dbu.Select("where id = %s", id)
-	if err == sql.ErrNoRows {
-		return nil, nil
+	var list []*types.NodeType
+	err := r.g.Where(types.NodeType{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return nt, err
+	return list[0], err
 }
 
 func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeType, error) {
-	return r.dbu.SelectMulti("where state = %s order by order_id asc", t)
+	var list []*types.NodeType
+	err := r.g.Where(types.NodeType{State: t}).Find(&list).Error
+	return list, err
 }
 
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
-	return r.dbu.SelectMulti("order by order_id asc")
+	var list []*types.NodeType
+	err := r.g.Where(types.NodeType{}).Find(&list).Error
+	return list, err
 }
 
 func (r *NodeTypeRepository) Delete(node_type_id string) error {
-	return r.dbu.Delete("where id = %s", node_type_id)
+	return r.g.Delete(types.NodeType{ID: node_type_id}).Error
 }
 
 func (r *NodeTypeRepository) DeleteAll() error {
-	return r.dbu.Delete("")
+	return r.g.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(types.NodeType{}).Error
 }

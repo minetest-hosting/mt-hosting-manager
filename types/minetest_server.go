@@ -35,47 +35,22 @@ func ValidateUsername(username string) error {
 func MinetestServerProvider() *MinetestServer { return &MinetestServer{} }
 
 type MinetestServer struct {
-	ID                 string              `json:"id"`
-	UserNodeID         string              `json:"user_node_id"`
-	Name               string              `json:"name"`
-	DNSName            string              `json:"dns_name"`
-	Admin              string              `json:"admin"`
-	ExternalCNAMEDNSID string              `json:"external_cname_dns_id"`
-	CustomDNS          string              `json:"custom_dns_name"`
-	Port               int                 `json:"port"`
-	UIVersion          string              `json:"ui_version"`
-	JWTKey             string              `json:"jwt_key"`
-	Created            int64               `json:"created"`
-	State              MinetestServerState `json:"state"`
+	ID                 string              `json:"id" gorm:"primarykey;column:id"`
+	UserNodeID         string              `json:"user_node_id" gorm:"column:user_node_id"`
+	Name               string              `json:"name" gorm:"column:name"`
+	DNSName            string              `json:"dns_name" gorm:"column:dns_name"`
+	Admin              string              `json:"admin" gorm:"column:admin"`
+	ExternalCNAMEDNSID string              `json:"external_cname_dns_id" gorm:"column:external_cname_dns_id"`
+	CustomDNS          string              `json:"custom_dns_name" gorm:"column:custom_dns_name"`
+	Port               int                 `json:"port" gorm:"column:port"`
+	UIVersion          string              `json:"ui_version" gorm:"column:ui_version"`
+	JWTKey             string              `json:"jwt_key" gorm:"column:jwt_key"`
+	Created            int64               `json:"created" gorm:"column:created"`
+	State              MinetestServerState `json:"state" gorm:"column:state"`
 }
 
-func (m *MinetestServer) Columns(action string) []string {
-	return []string{
-		"id",
-		"user_node_id",
-		"name",
-		"dns_name",
-		"admin",
-		"external_cname_dns_id",
-		"custom_dns_name",
-		"port",
-		"ui_version",
-		"jwt_key",
-		"created",
-		"state",
-	}
-}
-
-func (m *MinetestServer) Table() string {
+func (m *MinetestServer) TableName() string {
 	return "minetest_server"
-}
-
-func (m *MinetestServer) Scan(action string, r func(dest ...any) error) error {
-	return r(&m.ID, &m.UserNodeID, &m.Name, &m.DNSName, &m.Admin, &m.ExternalCNAMEDNSID, &m.CustomDNS, &m.Port, &m.UIVersion, &m.JWTKey, &m.Created, &m.State)
-}
-
-func (m *MinetestServer) Values(action string) []any {
-	return []any{m.ID, m.UserNodeID, m.Name, m.DNSName, m.Admin, m.ExternalCNAMEDNSID, m.CustomDNS, m.Port, m.UIVersion, m.JWTKey, m.Created, m.State}
 }
 
 type MinetestServerSearch struct {

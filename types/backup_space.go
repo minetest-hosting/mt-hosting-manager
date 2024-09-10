@@ -3,47 +3,14 @@ package types
 func BackupSpaceProvider() *BackupSpace { return &BackupSpace{} }
 
 type BackupSpace struct {
-	ID            string `json:"id"`
-	Name          string `json:"name"`
-	UserID        string `json:"user_id"`
-	RetentionDays int    `json:"retention_days"`
-	Created       int64  `json:"created"`
-	ValidUntil    int64  `json:"valid_until"`
+	ID            string `json:"id" gorm:"primarykey;column:id"`
+	Name          string `json:"name" gorm:"column:name"`
+	UserID        string `json:"user_id" gorm:"column:user_id"`
+	RetentionDays int    `json:"retention_days" gorm:"column:retention_days"`
+	Created       int64  `json:"created" gorm:"column:created"`
+	ValidUntil    int64  `json:"valid_until" gorm:"column:valid_until"`
 }
 
-func (m *BackupSpace) Columns(action string) []string {
-	return []string{
-		"id",
-		"name",
-		"user_id",
-		"retention_days",
-		"created",
-		"valid_until",
-	}
-}
-
-func (m *BackupSpace) Table() string {
+func (m *BackupSpace) TableName() string {
 	return "backup_space"
-}
-
-func (m *BackupSpace) Scan(action string, r func(dest ...any) error) error {
-	return r(
-		&m.ID,
-		&m.Name,
-		&m.UserID,
-		&m.RetentionDays,
-		&m.Created,
-		&m.ValidUntil,
-	)
-}
-
-func (m *BackupSpace) Values(action string) []any {
-	return []any{
-		m.ID,
-		m.Name,
-		m.UserID,
-		m.RetentionDays,
-		m.Created,
-		m.ValidUntil,
-	}
 }

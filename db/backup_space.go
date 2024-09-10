@@ -1,40 +1,42 @@
 package db
 
 import (
-	"database/sql"
 	"mt-hosting-manager/types"
 
 	"github.com/google/uuid"
-	"github.com/minetest-go/dbutil"
+	"gorm.io/gorm"
 )
 
 type BackupSpaceRepository struct {
-	dbu *dbutil.DBUtil[*types.BackupSpace]
+	g *gorm.DB
 }
 
 func (r *BackupSpaceRepository) Insert(n *types.BackupSpace) error {
 	if n.ID == "" {
 		n.ID = uuid.NewString()
 	}
-	return r.dbu.Insert(n)
+	return r.g.Create(n).Error
 }
 
 func (r *BackupSpaceRepository) Update(n *types.BackupSpace) error {
-	return r.dbu.Update(n, "where id = %s", n.ID)
+	return r.g.Model(n).Updates(n).Error
 }
 
 func (r *BackupSpaceRepository) GetByID(id string) (*types.BackupSpace, error) {
-	nt, err := r.dbu.Select("where id = %s", id)
-	if err == sql.ErrNoRows {
-		return nil, nil
+	var list []*types.BackupSpace
+	err := r.g.Where(types.BackupSpace{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return nt, err
+	return list[0], err
 }
 
 func (r *BackupSpaceRepository) GetByUserID(user_id string) ([]*types.BackupSpace, error) {
-	return r.dbu.SelectMulti("where user_id = %s", user_id)
+	var list []*types.BackupSpace
+	err := r.g.Where(types.BackupSpace{UserID: user_id}).Find(&list).Error
+	return list, err
 }
 
 func (r *BackupSpaceRepository) Delete(id string) error {
-	return r.dbu.Delete("where id = %s", id)
+	return r.g.Delete(types.BackupSpace{ID: id}).Error
 }
