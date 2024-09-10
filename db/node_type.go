@@ -23,12 +23,12 @@ func (r *NodeTypeRepository) Update(n *types.NodeType) error {
 }
 
 func (r *NodeTypeRepository) GetByID(id string) (*types.NodeType, error) {
-	var nt *types.NodeType
-	err := r.g.Where(types.NodeType{ID: id}).First(&nt).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.NodeType
+	err := r.g.Where(types.NodeType{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return nt, err
+	return list[0], err
 }
 
 func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeType, error) {

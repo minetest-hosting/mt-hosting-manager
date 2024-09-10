@@ -24,12 +24,12 @@ func (r *JobRepository) Update(n *types.Job) error {
 }
 
 func (r *JobRepository) GetByID(id string) (*types.Job, error) {
-	var mt *types.Job
-	err := r.g.Where(types.Job{ID: id}).First(&mt).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.Job
+	err := r.g.Where(types.Job{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return mt, err
+	return list[0], err
 }
 
 func (r *JobRepository) GetByState(state types.JobState) ([]*types.Job, error) {
@@ -39,21 +39,21 @@ func (r *JobRepository) GetByState(state types.JobState) ([]*types.Job, error) {
 }
 
 func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, error) {
-	var mt *types.Job
-	err := r.g.Where(types.Job{UserNodeID: &usernodeID}).Order("started desc").Limit(1).First(&mt).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.Job
+	err := r.g.Where(types.Job{UserNodeID: &usernodeID}).Order("started desc").Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return mt, err
+	return list[0], err
 }
 
 func (r *JobRepository) GetLatestByMinetestServerID(minetestserverID string) (*types.Job, error) {
-	var mt *types.Job
-	err := r.g.Where(types.Job{MinetestServerID: &minetestserverID}).Order("started desc").Limit(1).First(&mt).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.Job
+	err := r.g.Where(types.Job{MinetestServerID: &minetestserverID}).Order("started desc").Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return mt, err
+	return list[0], err
 }
 
 func (r *JobRepository) GetAll() ([]*types.Job, error) {

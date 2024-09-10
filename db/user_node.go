@@ -23,12 +23,12 @@ func (r *UserNodeRepository) Update(n *types.UserNode) error {
 }
 
 func (r *UserNodeRepository) GetByID(id string) (*types.UserNode, error) {
-	var un *types.UserNode
-	err := r.g.Where(types.UserNode{ID: id}).First(&un).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.UserNode
+	err := r.g.Where(types.UserNode{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return un, err
+	return list[0], err
 }
 
 func (r *UserNodeRepository) GetAll() ([]*types.UserNode, error) {

@@ -23,12 +23,12 @@ func (r *PaymentTransactionRepository) Update(tx *types.PaymentTransaction) erro
 }
 
 func (r *PaymentTransactionRepository) GetByID(id string) (*types.PaymentTransaction, error) {
-	var tx *types.PaymentTransaction
-	err := r.g.Where(types.Job{ID: id}).First(&tx).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.PaymentTransaction
+	err := r.g.Where(types.PaymentTransaction{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return tx, err
+	return list[0], err
 }
 
 func (r *PaymentTransactionRepository) GetByUserID(user_id string) ([]*types.PaymentTransaction, error) {

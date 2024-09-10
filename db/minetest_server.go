@@ -23,12 +23,12 @@ func (r *MinetestServerRepository) Update(n *types.MinetestServer) error {
 }
 
 func (r *MinetestServerRepository) GetByID(id string) (*types.MinetestServer, error) {
-	var mt *types.MinetestServer
-	err := r.g.Where(types.MinetestServer{ID: id}).First(&mt).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.MinetestServer
+	err := r.g.Where(types.MinetestServer{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return mt, err
+	return list[0], err
 }
 
 func (r *MinetestServerRepository) GetAll() ([]*types.MinetestServer, error) {

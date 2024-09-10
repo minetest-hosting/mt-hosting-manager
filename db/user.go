@@ -23,30 +23,30 @@ func (r *UserRepository) Update(u *types.User) error {
 }
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {
-	var user *types.User
-	err := r.g.Where(types.User{ID: id}).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.User
+	err := r.g.Where(types.User{ID: id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return user, err
+	return list[0], err
 }
 
 func (r *UserRepository) GetByName(name string) (*types.User, error) {
-	var user *types.User
-	err := r.g.Where(types.User{Name: name}).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.User
+	err := r.g.Where(types.User{Name: name}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return user, err
+	return list[0], err
 }
 
 func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id string) (*types.User, error) {
-	var user *types.User
-	err := r.g.Where(types.User{Type: t, ExternalID: external_id}).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return nil, nil
+	var list []*types.User
+	err := r.g.Where(types.User{Type: t, ExternalID: external_id}).Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
 	}
-	return user, err
+	return list[0], err
 }
 
 func (r *UserRepository) GetAll() ([]*types.User, error) {
