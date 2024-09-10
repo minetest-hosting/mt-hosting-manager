@@ -13,8 +13,8 @@ State: **WIP**
 # Dev
 
 ```sh
-# start redis and postgres
-docker-compose up -d postgres redis
+# start postgres
+docker-compose up -d postgres
 # ui assets
 docker-compose up hosting_webapp
 # main app

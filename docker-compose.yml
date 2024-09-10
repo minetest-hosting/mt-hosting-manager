@@ -20,12 +20,6 @@ services:
    - "-c"
    - "log_statement=all"
 
- redis:
-  image: redis:7.2.3-alpine
-  restart: always
-  labels:
-   - "promtail=true"
-
  hosting:
   image: golang:1.21.5
   stop_grace_period: 1m
@@ -48,11 +42,9 @@ services:
    - WEBDEV=true
    - ENABLE_WORKER=true
    - INITIAL_BALANCE=2000
-   - REDIS_URL=redis:6379
   env_file:
    - .env
   depends_on:
-   - redis
    - postgres
   ports:
    - "8080:8080"
