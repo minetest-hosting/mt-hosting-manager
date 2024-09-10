@@ -11,11 +11,17 @@ import (
 func TestJobRepo(t *testing.T) {
 	repos := SetupRepos(t)
 
-	err := repos.JobRepo.Insert(&types.Job{
+	j := &types.Job{
 		Type:    types.JobTypeNodeSetup,
 		State:   types.JobStateCreated,
 		Started: time.Now().Unix(),
-	})
-	assert.NoError(t, err)
+	}
+	assert.NoError(t, repos.JobRepo.Insert(j))
+
+	j.Data = []byte{0x00, 0x01}
+	assert.NoError(t, repos.JobRepo.Update(j))
+
+	assert.NoError(t, repos.JobRepo.Delete(j.ID))
+	assert.NoError(t, repos.JobRepo.DeleteBefore(time.Now()))
 
 }
