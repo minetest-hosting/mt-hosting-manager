@@ -88,7 +88,7 @@ func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
 		q = q.Limit(100)
 	}
 
-	var users []*types.User
-	err := q.Find(&users).Error
-	return users, err
+	var list []*types.User
+	err := q.Find(&list).Error
+	return list, err
 }
