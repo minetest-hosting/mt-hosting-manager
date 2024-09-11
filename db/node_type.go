@@ -39,7 +39,7 @@ func (r *NodeTypeRepository) GetByState(t types.NodeTypeState) ([]*types.NodeTyp
 
 func (r *NodeTypeRepository) GetAll() ([]*types.NodeType, error) {
 	var list []*types.NodeType
-	err := r.g.Where(types.NodeType{}).Find(&list).Error
+	err := r.g.Where(types.NodeType{}).Order("order_id ASC").Find(&list).Error
 	return list, err
 }
 
