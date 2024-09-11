@@ -63,9 +63,9 @@ func Provision(client *ssh.Client, cfg *types.Config, userID string, status func
 	}
 
 	status("executing setup script", 80)
-	_, _, err = core.SSHExecute(client, "/provision/setup.sh")
+	_, stderr, err := core.SSHExecute(client, "/provision/setup.sh")
 	if err != nil {
-		return fmt.Errorf("SSHExecute error: %v", err)
+		return fmt.Errorf("SSHExecute error: %v, stderr: '%s'", err, string(stderr))
 	}
 
 	return nil

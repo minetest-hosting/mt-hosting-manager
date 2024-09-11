@@ -120,10 +120,10 @@ func SSHExecute(client *ssh.Client, cmd string) ([]byte, []byte, error) {
 		if ok {
 			fmt.Printf("Exit status: %d\n", ex.ExitStatus())
 			if ex.ExitStatus() != 0 {
-				return nil, nil, fmt.Errorf("exit-status: %d", ex.ExitStatus())
+				return stdout.Bytes(), stderr.Bytes(), fmt.Errorf("exit-status: %d", ex.ExitStatus())
 			}
 		} else {
-			return nil, nil, fmt.Errorf("unknown script execution error: %v", err)
+			return stdout.Bytes(), stderr.Bytes(), fmt.Errorf("unknown script execution error: %v", err)
 		}
 	}
 
