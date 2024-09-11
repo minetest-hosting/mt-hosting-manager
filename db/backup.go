@@ -31,6 +31,12 @@ func (r *BackupRepository) GetByID(id string) (*types.Backup, error) {
 	return list[0], err
 }
 
+func (r *BackupRepository) GetByState(state types.BackupState) ([]*types.Backup, error) {
+	var list []*types.Backup
+	err := r.g.Where(types.Backup{State: state}).Find(&list).Error
+	return list, err
+}
+
 func (r *BackupRepository) GetByBackupSpaceID(backup_space_id string) ([]*types.Backup, error) {
 	var list []*types.Backup
 	err := r.g.Where(types.Backup{BackupSpaceID: backup_space_id}).Find(&list).Error
