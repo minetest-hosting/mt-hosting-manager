@@ -7,6 +7,11 @@ import (
 )
 
 func (w *Worker) ServerBackup(job *types.Job, status StatusCallback) error {
+	if len(job.Data) > 0 {
+		// remote backup job already started and id registered
+		return ErrJobStillRunning
+	}
+
 	server, err := w.repos.MinetestServerRepo.GetByID(*job.MinetestServerID)
 	if err != nil {
 		return fmt.Errorf("get server error: %v", err)

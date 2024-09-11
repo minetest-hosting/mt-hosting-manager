@@ -154,3 +154,32 @@ func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Cl
 
 	fmt.Printf("backup download stub\n")
 }
+
+func (a *Api) GetBackupJob(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	b, err := a.repos.BackupRepo.GetByID(vars["id"])
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if b == nil {
+		SendError(w, 404, fmt.Errorf("backup not found"))
+		return
+	}
+	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if bs == nil {
+		SendError(w, 404, fmt.Errorf("backup_space not found"))
+		return
+	}
+	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		return
+	}
+
+	job, err := a.repos.JobRepo.GetLatestByBackupID(b.ID)
+	Send(w, job, err)
+}

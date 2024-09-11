@@ -73,6 +73,9 @@ func (w *Worker) Run() {
 	// start transaction update job
 	go w.TransactionUpdateJob()
 
+	// start backup progress update job
+	go w.UpdateBackupProgressJob()
+
 	// execute previously running jobs
 	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
 	if err != nil {

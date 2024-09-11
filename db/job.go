@@ -38,6 +38,12 @@ func (r *JobRepository) GetByState(state types.JobState) ([]*types.Job, error) {
 	return list, err
 }
 
+func (r *JobRepository) GetByTypeAndState(t types.JobType, state types.JobState) ([]*types.Job, error) {
+	var list []*types.Job
+	err := r.g.Where(types.Job{State: state, Type: t}).Find(&list).Error
+	return list, err
+}
+
 func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, error) {
 	var list []*types.Job
 	err := r.g.Where(types.Job{UserNodeID: &usernodeID}).Order("started desc").Limit(1).Find(&list).Error
@@ -50,6 +56,15 @@ func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, er
 func (r *JobRepository) GetLatestByMinetestServerID(minetestserverID string) (*types.Job, error) {
 	var list []*types.Job
 	err := r.g.Where(types.Job{MinetestServerID: &minetestserverID}).Order("started desc").Limit(1).Find(&list).Error
+	if len(list) == 0 {
+		return nil, err
+	}
+	return list[0], err
+}
+
+func (r *JobRepository) GetLatestByBackupID(backupID string) (*types.Job, error) {
+	var list []*types.Job
+	err := r.g.Where(types.Job{BackupID: &backupID}).Order("started desc").Limit(1).Find(&list).Error
 	if len(list) == 0 {
 		return nil, err
 	}
