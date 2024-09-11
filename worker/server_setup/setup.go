@@ -32,7 +32,7 @@ func Setup(client *ssh.Client, cfg *types.Config, node *types.UserNode, server *
 
 	_, _, err = core.SSHExecute(client, setup_file)
 	if err != nil {
-		return err
+		return fmt.Errorf("ssh-exec of setup.sh error: %v", err)
 	}
 
 	return nil
