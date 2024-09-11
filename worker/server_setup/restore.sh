@@ -2,7 +2,7 @@
 set -e
 cd `dirname $0`
 
-# TODO: read and decrypt from s3 storage
+# TODO: read and uncompress
 
 docker network create "network-{{.ServerShortID}}" || true
 docker-compose pull

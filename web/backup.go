@@ -71,84 +71,8 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	// ssh exec
-	err = a.core.StartBackup(b)
-	Send(w, b, err)
-}
-
-// created -> progress
-func (a *Api) MarkBackupProgress(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	backup, err := a.repos.BackupRepo.GetByID(id)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if backup == nil {
-		SendError(w, 404, fmt.Errorf("backup not found: '%s'", id))
-		return
-	}
-	if backup.State != types.BackupStateCreated {
-		SendError(w, http.StatusConflict, fmt.Errorf("state invalid"))
-		return
-	}
-
-	backup.State = types.BackupStateProgress
-	err = a.repos.BackupRepo.Update(backup)
-	Send(w, backup, err)
-}
-
-// progress -> complete
-func (a *Api) CompleteBackup(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	backup, err := a.repos.BackupRepo.GetByID(id)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if backup == nil {
-		SendError(w, 404, fmt.Errorf("backup not found: '%s'", id))
-		return
-	}
-	if backup.State != types.BackupStateProgress {
-		SendError(w, http.StatusConflict, fmt.Errorf("state invalid"))
-		return
-	}
-
-	size, err := a.core.GetBackupSize(backup)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-
-	backup.State = types.BackupStateComplete
-	backup.Size = size
-	err = a.repos.BackupRepo.Update(backup)
-
-	Send(w, backup, err)
-}
-
-// progress -> error
-func (a *Api) MarkBackupError(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	backup, err := a.repos.BackupRepo.GetByID(id)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if backup == nil {
-		SendError(w, 404, fmt.Errorf("backup not found: '%s'", id))
-		return
-	}
-	if backup.State != types.BackupStateProgress {
-		SendError(w, http.StatusConflict, fmt.Errorf("state invalid"))
-		return
-	}
-
-	backup.State = types.BackupStateError
-	//TODO: notify someone?
-	err = a.repos.BackupRepo.Update(backup)
-	Send(w, backup, err)
+	// TODO
+	Send(w, b, nil)
 }
 
 func (a *Api) GetBackups(w http.ResponseWriter, r *http.Request, c *types.Claims) {

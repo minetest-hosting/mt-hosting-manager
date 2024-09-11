@@ -44,10 +44,9 @@ type Config struct {
 	MesehubOauthConfig  *OAuthConfig
 	CDBOauthConfig      *OAuthConfig
 	MaxBalance          int //max balance in eurocents
-	S3Endpoint          string
-	S3Bucket            string
-	S3KeyID             string
-	S3AccessKey         string
+	StorageHostname     string
+	StorageUsername     string
+	StoragePassword     string
 }
 
 func NewConfig() *Config {
@@ -102,10 +101,9 @@ func NewConfig() *Config {
 			ClientID: os.Getenv("CDB_CLIENTID"),
 			Secret:   os.Getenv("CDB_SECRET"),
 		},
-		MaxBalance:  100 * 100,
-		S3Endpoint:  os.Getenv("S3_ENDPOINT"),
-		S3Bucket:    os.Getenv("S3_BUCKET"),
-		S3KeyID:     os.Getenv("S3_KEY_ID"),
-		S3AccessKey: os.Getenv("S3_ACCESS_KEY"),
+		MaxBalance:      100 * 100,
+		StorageHostname: os.Getenv("STORAGE_HOSTNAME"),
+		StorageUsername: os.Getenv("STORAGE_USERNAME"),
+		StoragePassword: os.Getenv("STORAGE_PASSWORD"),
 	}
 }
