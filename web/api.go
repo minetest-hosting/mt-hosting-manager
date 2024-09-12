@@ -108,6 +108,7 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/backup_space", api.Secure(api.GetBackupSpaces)).Methods(http.MethodGet)
 	user_api.HandleFunc("/backup_space", api.Secure(api.CreateBackupSpace)).Methods(http.MethodPost)
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.GetBackupSpace)).Methods(http.MethodGet)
+	user_api.HandleFunc("/backup_space/{id}/usage", api.Secure(api.GetBackupSpaceUsage)).Methods(http.MethodGet)
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.UpdateBackupSpace)).Methods(http.MethodPost)
 	user_api.HandleFunc("/backup_space/{id}", api.Secure(api.RemoveBackupSpace)).Methods(http.MethodDelete)
 	user_api.HandleFunc("/backup_space/{id}/backup", api.Secure(api.GetBackups)).Methods(http.MethodGet)

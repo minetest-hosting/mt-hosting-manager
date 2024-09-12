@@ -14,6 +14,7 @@ export default {
                 icon: "object-group", name: "Backup spaces", link: "backup_spaces"
             }],
             spaces: [],
+            new_name: "new backup space",
             busy: false
 		};
 	},
@@ -27,24 +28,43 @@ export default {
     methods: {
         create: function() {
             create({
-                name: "New backup space"
+                name: this.new_name
             })
             .then(bs => this.$router.push(`/backup_spaces/${bs.id}`));
         }
     },
 	template: /*html*/`
 	<card-layout title="Backup spaces" icon="object-group" :breadcrumb="breadcrumb">
-        <ul>
-            <li v-for="space in spaces">
-                <router-link :to="'/backup_spaces/' + space.id">
-                    {{space.name}} ({{space.id}})
-                </router-link>
-            </li>
-        </ul>
-        <a class="btn btn-success" v-if="!busy && spaces.length == 0" v-on:click="create">
-            <i class="fa fa-plus"></i>
-            Create backup space
-        </a>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Retention</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="space in spaces">
+                    <td>
+                        <router-link :to="'/backup_spaces/' + space.id">
+                            {{space.name}}
+                        </router-link>
+                    </td>
+                    <td>{{space.retention_days}} days</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" placeholder="Name" v-model="new_name"/>
+                    </td>
+                    <td>
+                        <a class="btn btn-success" v-if="!busy && new_name.length > 0" v-on:click="create">
+                        <i class="fa fa-plus"></i>
+                            Create backup space
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
 	</card-layout>
 	`
 };

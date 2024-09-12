@@ -2,7 +2,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import ServerLink from "../ServerLink.js";
 import BackupState from "../BackupState.js";
 
-import { get_by_id } from "../../api/backup_space.js";
+import { get_by_id, update, remove as remove_space } from "../../api/backup_space.js";
 import { get_by_backup_space_id, remove } from "../../api/backup.js";
 
 import format_time from "../../util/format_time.js";
@@ -25,6 +25,8 @@ export default {
                 icon: "object-group", name: `Backup space ${this.id}`, link: `/backup_spaces/${this.id}`
 			}],
 			space: null,
+			space_save_ok: false,
+			space_remove_confirm: "",
 			backups: []
 		};
 	},
@@ -39,6 +41,13 @@ export default {
 		},
 		remove_backup: function(backup) {
 			remove(backup).then(() => this.update_backups());
+		},
+		save_space: function() {
+			update(this.space).then(() => this.space_save_ok = true);
+		},
+		remove_space: function() {
+			remove_space(this.space)
+			.then(() => this.$router.push("/backup_spaces"));
 		}
 	},
 	mounted: function() {
@@ -47,6 +56,40 @@ export default {
 	},
 	template: /*html*/`
 	<card-layout title="Backup space detail" icon="object-group" :breadcrumb="breadcrumb">
+		<table class="table" v-if="space">
+			<tr>
+				<td>Name</td>
+				<td>
+					<input class="form-control" type="text" placeholder="Name" v-model="space.name"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Retention (days)</td>
+				<td>
+					<input class="form-control" type="number" min="7" placeholder="Retention (days)" v-model="space.retention_days"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Save</td>
+				<td>
+					<a class="btn btn-success btn-sm w-100" v-on:click="save_space">
+						<i class="fa fa-floppy-disk"></i>
+						Save
+						<i class="fa fa-check" color="green" v-if="space_save_ok"></i>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td>Delete space</td>
+				<td class="input-group">
+					<input class="form-control" type="text" placeholder="Re-type name to confirm" v-model="space_remove_confirm"/>
+					<button class="input-group-addon btn btn-danger btn-sm" :disabled="space_remove_confirm != space.name" v-on:click="remove_space">
+						<i class="fa fa-trash"></i>
+						Delete backup-space
+					</button>
+				</td>
+			</tr>
+		</table>
 		<table class="table table-condensed table-striped">
 			<thead>
 				<tr>

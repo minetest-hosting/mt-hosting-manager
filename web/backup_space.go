@@ -64,12 +64,50 @@ func (a *Api) UpdateBackupSpace(w http.ResponseWriter, r *http.Request, c *types
 func (a *Api) GetBackupSpace(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	bs, err := a.repos.BackupSpaceRepo.GetByID(vars["id"])
-	if err != nil && bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
 
 	Send(w, bs, err)
+}
+
+func (a *Api) GetBackupSpaceUsage(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	bs, err := a.repos.BackupSpaceRepo.GetByID(vars["id"])
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		return
+	}
+
+	backups, err := a.repos.BackupRepo.GetByBackupSpaceID(bs.ID)
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+
+	size := int64(0)
+	count := int64(0)
+
+	for _, backup := range backups {
+		size += backup.Size
+		count += 1
+	}
+
+	usage := map[string]int64{
+		"size":  size,
+		"count": count,
+	}
+
+	Send(w, usage, err)
 }
 
 func (a *Api) GetBackupSpaces(w http.ResponseWriter, r *http.Request, c *types.Claims) {
