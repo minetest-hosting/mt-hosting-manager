@@ -14,8 +14,6 @@ const (
 	NodeTypeStateDeprecated NodeTypeState = "DEPRECATED"
 )
 
-func NodeTypeProvider() *NodeType { return &NodeType{} }
-
 type NodeType struct {
 	ID                      string        `json:"id" gorm:"primarykey;column:id"`
 	State                   NodeTypeState `json:"state" gorm:"column:state"`

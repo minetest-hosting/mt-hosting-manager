@@ -17,8 +17,6 @@ const (
 	PaymentTypeZahlsch  PaymentType = "ZAHLSCH"
 )
 
-func PaymentTransactionProvider() *PaymentTransaction { return &PaymentTransaction{} }
-
 type PaymentTransaction struct {
 	ID             string           `json:"id" gorm:"primarykey;column:id"`
 	Type           PaymentType      `json:"type" gorm:"column:type"`

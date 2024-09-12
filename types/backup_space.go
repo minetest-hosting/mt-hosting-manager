@@ -1,7 +1,5 @@
 package types
 
-func BackupSpaceProvider() *BackupSpace { return &BackupSpace{} }
-
 type BackupSpace struct {
 	ID            string `json:"id" gorm:"primarykey;column:id"`
 	Name          string `json:"name" gorm:"column:name"`

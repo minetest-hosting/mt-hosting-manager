@@ -1,7 +1,5 @@
 package types
 
-func AuditLogProvider() *AuditLog { return &AuditLog{} }
-
 type AuditLogType string
 
 const (

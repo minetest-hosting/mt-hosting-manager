@@ -12,8 +12,6 @@ const (
 
 // Created -> Provisioning -> Running -> Removing -> Decommissioned
 
-func UserNodeProvider() *UserNode { return &UserNode{} }
-
 type UserNode struct {
 	ID                string        `json:"id" gorm:"primarykey;column:id"`
 	UserID            string        `json:"user_id" gorm:"column:user_id"`

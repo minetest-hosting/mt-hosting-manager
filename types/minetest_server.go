@@ -32,8 +32,6 @@ func ValidateUsername(username string) error {
 	return nil
 }
 
-func MinetestServerProvider() *MinetestServer { return &MinetestServer{} }
-
 type MinetestServer struct {
 	ID                 string              `json:"id" gorm:"primarykey;column:id"`
 	UserNodeID         string              `json:"user_node_id" gorm:"column:user_node_id"`

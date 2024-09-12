@@ -28,8 +28,6 @@ const (
 	JobTypeServerBackup  JobType = "SERVER_BACKUP"
 )
 
-func JobProvider() *Job { return &Job{} }
-
 type Job struct {
 	ID               string   `json:"id" gorm:"primarykey;column:id"`
 	Type             JobType  `json:"type" gorm:"column:type"`

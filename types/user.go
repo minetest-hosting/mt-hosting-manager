@@ -22,8 +22,6 @@ const (
 	UserStateActive UserState = "ACTIVE"
 )
 
-func UserProvider() *User { return &User{} }
-
 type User struct {
 	ID         string    `json:"id" gorm:"primarykey;column:id"`
 	State      UserState `json:"state" gorm:"column:state"`

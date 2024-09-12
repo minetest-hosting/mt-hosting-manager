@@ -9,8 +9,6 @@ const (
 	BackupStateError    BackupState = "ERROR"
 )
 
-func BackupProvider() *Backup { return &Backup{} }
-
 type Backup struct {
 	ID               string      `json:"id" gorm:"primarykey;column:id"`
 	State            BackupState `json:"state" gorm:"column:state"`
