@@ -185,7 +185,7 @@ export default {
 					<td>
 						<div class="input-group">
 							<select v-model="backup_space" class="form-control" :disabled="backup_scheduled">
-								<option v-for="bs in backup_spaces" :value="bs.id">{{bs.name}} ({{bs.id}})</option>
+								<option v-for="bs in backup_spaces" :value="bs.id">{{bs.name}} ({{bs.retention_days}} days retention)</option>
 							</select>
 							<button class="btn btn-secondary" :disabled="!backup_space || backup_scheduled" v-on:click="create_backup">
 								<i class="fa fa-floppy-disk"></i>

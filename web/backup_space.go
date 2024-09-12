@@ -119,7 +119,7 @@ func (a *Api) RemoveBackupSpace(w http.ResponseWriter, r *http.Request, c *types
 	vars := mux.Vars(r)
 	bs, err := a.repos.BackupSpaceRepo.GetByID(vars["id"])
 	if err != nil {
-		SendError(w, 500, err)
+		SendError(w, 500, fmt.Errorf("get by id error: %v", err))
 		return
 	}
 	if bs != nil && bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
@@ -127,7 +127,25 @@ func (a *Api) RemoveBackupSpace(w http.ResponseWriter, r *http.Request, c *types
 		return
 	}
 
-	//TODO: remove all backups and data
+	backups, err := a.repos.BackupRepo.GetByBackupSpaceID(bs.ID)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get backups error: %v", err))
+		return
+	}
+
+	for _, backup := range backups {
+		err = a.core.RemoveBackup(backup)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("remove backup data '%s' error: %v", backup.ID, err))
+			return
+		}
+
+		err = a.repos.BackupRepo.Delete(backup.ID)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("remove backup metadata '%s' error: %v", backup.ID, err))
+			return
+		}
+	}
 
 	err = a.repos.BackupSpaceRepo.Delete(vars["id"])
 	Send(w, true, err)

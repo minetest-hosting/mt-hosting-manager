@@ -84,6 +84,17 @@ func RemoveServerJob(node *UserNode, server *MinetestServer) *Job {
 	}
 }
 
+func BackupServerJob(node *UserNode, server *MinetestServer, backup *Backup) *Job {
+	return &Job{
+		ID:               uuid.NewString(),
+		Type:             JobTypeServerBackup,
+		State:            JobStateCreated,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+		BackupID:         &backup.ID,
+	}
+}
+
 func (job *Job) LogrusFields() logrus.Fields {
 	return logrus.Fields{
 		"jobid":              job.ID,

@@ -67,11 +67,18 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	err = a.repos.BackupRepo.Insert(b)
 	if err != nil {
-		SendError(w, 500, err)
+		SendError(w, 500, fmt.Errorf("backup insert error: %v", err))
 		return
 	}
 
-	// TODO
+	// create job
+	job := types.BackupServerJob(node, mtserver, b)
+	err = a.repos.JobRepo.Insert(job)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("backup-job insert error: %v", err))
+		return
+	}
+
 	Send(w, b, nil)
 }
 
@@ -152,7 +159,10 @@ func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Cl
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.tar.gz\"", b.ID))
 	w.Header().Set("Content-Type", "application/gzip")
 
-	fmt.Printf("backup download stub\n")
+	err = a.core.StreamBackup(b, w)
+	if err != nil {
+		SendError(w, 500, err)
+	}
 }
 
 func (a *Api) GetBackupJob(w http.ResponseWriter, r *http.Request, c *types.Claims) {

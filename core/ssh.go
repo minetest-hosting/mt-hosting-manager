@@ -172,6 +172,20 @@ func CreateClient(node *types.UserNode) (*ssh.Client, error) {
 	return client, nil
 }
 
+func CreateStorageClient(cfg *types.Config) (*ssh.Client, error) {
+	addr := fmt.Sprintf("%s:%d", cfg.StorageHostname, 22)
+
+	config := &ssh.ClientConfig{
+		User: cfg.StorageUsername,
+		Auth: []ssh.AuthMethod{
+			ssh.Password(cfg.StoragePassword),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+	}
+
+	return ssh.Dial("tcp", addr, config)
+}
+
 func TrySSHConnection(node *types.UserNode) (*ssh.Client, error) {
 	try_count := 0
 	for {

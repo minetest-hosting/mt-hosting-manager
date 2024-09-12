@@ -115,6 +115,12 @@ export default {
         <hr>
         <div class="row">
             <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-info"></i>
+                    <b>Note:</b> A node can contain multiple minetest servers, use a group-name as alias
+                </div>
+            </div>
+            <div class="col-12">
                 <div class="input-group">
                     <span class="input-group-text">Alias</span>
                     <input class="form-control" placeholder="friendly nodename" type="text" v-model="alias" :disabled="busy"/>
