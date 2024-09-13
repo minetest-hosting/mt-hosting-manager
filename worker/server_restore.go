@@ -2,9 +2,7 @@ package worker
 
 import (
 	"fmt"
-	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
-	"mt-hosting-manager/worker/server_setup"
 )
 
 func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
@@ -28,20 +26,7 @@ func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
 		BackupID:         job.BackupID,
 	})
 
-	err = w.ServerPrepareSetup(job, node, server)
-	if err != nil {
-		return err
-	}
-
-	client, err := core.TrySSHConnection(node)
-	if err != nil {
-		return err
-	}
-
-	err = server_setup.Restore(client, w.cfg, node, server, backup)
-	if err != nil {
-		return err
-	}
+	//TODO
 
 	server.State = types.MinetestServerStateProvisioning
 	err = w.repos.MinetestServerRepo.Update(server)

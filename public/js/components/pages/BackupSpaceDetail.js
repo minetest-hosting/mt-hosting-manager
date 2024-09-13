@@ -95,6 +95,7 @@ export default {
 				<tr>
 					<th>Created</th>
 					<th>Server</th>
+					<th>Size</th>
 					<th>State</th>
 					<th>Actions</th>
 				</tr>
@@ -106,11 +107,12 @@ export default {
 						<server-link :id="backup.minetest_server_id"/>
 					</td>
 					<td>
-						<backup-state :state="backup.state"/>
 						<span v-if="backup.state == 'COMPLETE'">
-							&nbsp;
 							{{format_size(backup.size)}}
 						</span>
+					</td>
+					<td>
+						<backup-state :state="backup.state"/>
 					</td>
 					<td>
 						<div class="btn-group">
