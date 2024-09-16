@@ -100,7 +100,10 @@ func (w *Worker) Run() {
 		}
 
 		for _, job := range jobs {
-			job.Started = time.Now().Unix()
+			if job.Created == 0 {
+				// set created date if not already set
+				job.Created = time.Now().Unix()
+			}
 			job.State = types.JobStateRunning
 			err := w.repos.JobRepo.Update(job)
 			if err != nil {

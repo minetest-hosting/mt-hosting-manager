@@ -14,7 +14,7 @@ func TestJobRepo(t *testing.T) {
 	j := &types.Job{
 		Type:    types.JobTypeNodeSetup,
 		State:   types.JobStateCreated,
-		Started: time.Now().Unix(),
+		Created: time.Now().Unix(),
 	}
 	assert.NoError(t, repos.JobRepo.Insert(j))
 

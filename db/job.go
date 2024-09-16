@@ -46,7 +46,7 @@ func (r *JobRepository) GetByTypeAndState(t types.JobType, state types.JobState)
 
 func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, error) {
 	var list []*types.Job
-	err := r.g.Where(types.Job{UserNodeID: &usernodeID}).Order("started desc").Limit(1).Find(&list).Error
+	err := r.g.Where(types.Job{UserNodeID: &usernodeID}).Order("created desc").Limit(1).Find(&list).Error
 	if len(list) == 0 {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (r *JobRepository) GetLatestByUserNodeID(usernodeID string) (*types.Job, er
 
 func (r *JobRepository) GetLatestByMinetestServerID(minetestserverID string) (*types.Job, error) {
 	var list []*types.Job
-	err := r.g.Where(types.Job{MinetestServerID: &minetestserverID}).Order("started desc").Limit(1).Find(&list).Error
+	err := r.g.Where(types.Job{MinetestServerID: &minetestserverID}).Order("created desc").Limit(1).Find(&list).Error
 	if len(list) == 0 {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (r *JobRepository) GetLatestByMinetestServerID(minetestserverID string) (*t
 
 func (r *JobRepository) GetLatestByBackupID(backupID string) (*types.Job, error) {
 	var list []*types.Job
-	err := r.g.Where(types.Job{BackupID: &backupID}).Order("started desc").Limit(1).Find(&list).Error
+	err := r.g.Where(types.Job{BackupID: &backupID}).Order("created desc").Limit(1).Find(&list).Error
 	if len(list) == 0 {
 		return nil, err
 	}
@@ -82,5 +82,5 @@ func (r *JobRepository) Delete(id string) error {
 }
 
 func (r *JobRepository) DeleteBefore(t time.Time) error {
-	return r.g.Where("started < ?", t.Unix()).Delete(types.Job{}).Error
+	return r.g.Where("created < ?", t.Unix()).Delete(types.Job{}).Error
 }

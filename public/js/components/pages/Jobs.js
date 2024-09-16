@@ -51,8 +51,10 @@ export default {
 				<tr>
 					<th>ID</th>
 					<th>Type</th>
-					<th>Started</th>
+					<th>Created</th>
+					<th>Next run</th>
 					<th>State</th>
+					<th>Step</th>
 					<th>Links</th>
 					<th>Progress</th>
 					<th>Message</th>
@@ -63,9 +65,13 @@ export default {
 				<tr v-for="job in jobs">
 					<td>{{job.id}}</td>
 					<td>{{job.type}}</td>
-					<td>{{format_time(job.started)}}</td>
+					<td>{{format_time(job.created)}}</td>
+					<td>{{format_time(job.next_run)}}</td>
 					<td>
 						<job-state :state="job.state"/>
+					</td>
+					<td>
+						{{job.step}}
 					</td>
 					<td>
 						<node-link :id="job.user_node_id" v-if="job.user_node_id"/>
