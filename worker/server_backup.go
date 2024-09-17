@@ -24,7 +24,7 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 		return fmt.Errorf("backup not found")
 	}
 
-	client, err := w.GetMTUIClient(server)
+	client, err := w.core.GetMTUIClient(server)
 	if err != nil {
 		return fmt.Errorf("get client error: %v", err)
 	}
