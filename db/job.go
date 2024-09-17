@@ -98,7 +98,7 @@ func (r *JobRepository) GetLatestByBackupID(backupID string) (*types.Job, error)
 
 func (r *JobRepository) GetAll() ([]*types.Job, error) {
 	var list []*types.Job
-	err := r.g.Where(types.Job{}).Find(&list).Error
+	err := r.g.Where(types.Job{}).Order("created desc").Find(&list).Error
 	return list, err
 }
 

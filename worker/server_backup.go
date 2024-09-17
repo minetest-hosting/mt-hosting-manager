@@ -78,6 +78,11 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 				backup.Size = size
 			}
 
+			err = w.repos.BackupRepo.Update(backup)
+			if err != nil {
+				return fmt.Errorf("error in backup update: %v", err)
+			}
+
 		case mtui.BackupJobFailure:
 			// backup failed
 			job.Message = info.Message
