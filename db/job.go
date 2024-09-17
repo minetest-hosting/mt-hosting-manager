@@ -55,8 +55,8 @@ func (r *JobRepository) GetByStateAndNextRun(state types.JobState, nextrun int64
 func (r *JobRepository) GetNextJob(tx *gorm.DB, state types.JobState, nextrun int64) (*types.Job, error) {
 	var list []*types.Job
 	q := tx.Clauses(clause.Locking{
-		Strength: "UPDATE",
-		Options:  "SKIP LOCKED",
+		Strength: clause.LockingStrengthUpdate,
+		Options:  clause.LockingOptionsSkipLocked,
 	})
 	q = q.Where(types.Job{State: state})
 	q = q.Limit(1)
