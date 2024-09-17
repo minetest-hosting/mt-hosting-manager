@@ -88,6 +88,28 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
+	var backup *types.Backup
+	restore_from := r.URL.Query().Get("restore_from")
+	if restore_from != "" {
+		// restore-point specified, resolve backup
+		backup, err = a.repos.BackupRepo.GetByID(restore_from)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("could not fetch backup '%s': %v", restore_from, err))
+			return
+		}
+
+		backup_space, err := a.repos.BackupSpaceRepo.GetByID(backup.BackupSpaceID)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("could not fetch backup_space '%s': %v", backup.BackupSpaceID, err))
+			return
+		}
+
+		if c.Role != types.UserRoleAdmin && backup_space.UserID != c.UserID {
+			SendError(w, 403, fmt.Errorf("not authorized for backup space id: '%s'", backup_space.ID))
+			return
+		}
+	}
+
 	mtserver := &types.MinetestServer{
 		ID:         uuid.NewString(),
 		UserNodeID: node.ID,
@@ -106,7 +128,7 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	job := types.SetupServerJob(node, mtserver)
+	job := types.SetupServerJob(node, mtserver, backup)
 	err = a.repos.JobRepo.Insert(job)
 	if err != nil {
 		SendError(w, 500, fmt.Errorf("job insert error: %v", err))
@@ -186,7 +208,7 @@ func (a *Api) SetupMTServer(w http.ResponseWriter, r *http.Request, c *types.Cla
 		return
 	}
 
-	job := types.SetupServerJob(node, mtserver)
+	job := types.SetupServerJob(node, mtserver, nil)
 	err = a.repos.JobRepo.Insert(job)
 
 	Send(w, job, err)

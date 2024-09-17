@@ -71,8 +71,8 @@ func RemoveNodeJob(node *UserNode) *Job {
 	}
 }
 
-func SetupServerJob(node *UserNode, server *MinetestServer) *Job {
-	return &Job{
+func SetupServerJob(node *UserNode, server *MinetestServer, backup *Backup) *Job {
+	job := &Job{
 		ID:               uuid.NewString(),
 		Created:          time.Now().Unix(),
 		NextRun:          time.Now().Unix(),
@@ -81,6 +81,12 @@ func SetupServerJob(node *UserNode, server *MinetestServer) *Job {
 		UserNodeID:       &node.ID,
 		MinetestServerID: &server.ID,
 	}
+
+	if backup != nil {
+		job.BackupID = &backup.ID
+	}
+
+	return job
 }
 
 func RemoveServerJob(node *UserNode, server *MinetestServer) *Job {
