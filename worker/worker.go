@@ -49,7 +49,6 @@ func (w *Worker) RegisterExecutors() {
 	executors[types.JobTypeNodeSetup] = w.NodeProvision
 	executors[types.JobTypeServerDestroy] = w.ServerDestroy
 	executors[types.JobTypeServerSetup] = w.ServerSetup
-	executors[types.JobTypeServerRestore] = w.ServerRestore
 	executors[types.JobTypeServerBackup] = w.ServerBackup
 }
 

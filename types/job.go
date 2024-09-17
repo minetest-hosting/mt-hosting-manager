@@ -24,7 +24,6 @@ const (
 	JobTypeNodeSetup     JobType = "NODE_SETUP"
 	JobTypeNodeDestroy   JobType = "NODE_DESTROY"
 	JobTypeServerSetup   JobType = "SERVER_SETUP"
-	JobTypeServerRestore JobType = "SERVER_RESTORE"
 	JobTypeServerDestroy JobType = "SERVER_DESTROY"
 	JobTypeServerBackup  JobType = "SERVER_BACKUP"
 )
