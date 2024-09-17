@@ -12,6 +12,6 @@ func (a *Api) Healthcheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := a.repos.JobRepo.GetByState(types.JobStateCreated)
+	_, err := a.repos.JobRepo.GetByState(types.JobStateRunning)
 	Send(w, true, err)
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (w *Worker) NodeDestroy(job *types.Job, status StatusCallback) error {
+func (w *Worker) NodeDestroy(job *types.Job) error {
 	node, err := w.repos.UserNodeRepo.GetByID(*job.UserNodeID)
 	if err != nil {
 		return err
@@ -109,6 +109,7 @@ func (w *Worker) NodeDestroy(job *types.Job, status StatusCallback) error {
 	}, true)
 
 	node.State = types.UserNodeStateDecommissioned
+	job.State = types.JobStateDoneSuccess
 
 	return w.repos.UserNodeRepo.Update(node)
 }
