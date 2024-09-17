@@ -7,7 +7,7 @@ import (
 	"mt-hosting-manager/worker/server_setup"
 )
 
-func (w *Worker) ServerSetup(job *types.Job, status StatusCallback) error {
+func (w *Worker) ServerSetup(job *types.Job) error {
 	node, server, err := w.GetJobContext(job)
 	if err != nil {
 		return err
@@ -48,5 +48,6 @@ func (w *Worker) ServerSetup(job *types.Job, status StatusCallback) error {
 		MinetestServerID: &server.ID,
 	})
 
+	job.State = types.JobStateDoneSuccess
 	return nil
 }

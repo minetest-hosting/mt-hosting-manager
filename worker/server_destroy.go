@@ -7,7 +7,7 @@ import (
 	"mt-hosting-manager/worker/server_setup"
 )
 
-func (w *Worker) ServerDestroy(job *types.Job, status StatusCallback) error {
+func (w *Worker) ServerDestroy(job *types.Job) error {
 	node, server, err := w.GetJobContext(job)
 	if err != nil {
 		return err
@@ -60,6 +60,7 @@ func (w *Worker) ServerDestroy(job *types.Job, status StatusCallback) error {
 		MinetestServerID: &server.ID,
 	})
 
+	job.State = types.JobStateDoneSuccess
 	server.State = types.MinetestServerStateDecommissioned
 	return w.repos.MinetestServerRepo.Update(server)
 }

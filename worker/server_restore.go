@@ -5,7 +5,7 @@ import (
 	"mt-hosting-manager/types"
 )
 
-func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
+func (w *Worker) ServerRestore(job *types.Job) error {
 	node, server, err := w.GetJobContext(job)
 	if err != nil {
 		return err
@@ -27,6 +27,7 @@ func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
 	})
 
 	//TODO
+	job.State = types.JobStateDoneSuccess
 
 	server.State = types.MinetestServerStateProvisioning
 	err = w.repos.MinetestServerRepo.Update(server)
@@ -34,5 +35,5 @@ func (w *Worker) ServerRestore(job *types.Job, status StatusCallback) error {
 		return fmt.Errorf("server entity update error: %v", err)
 	}
 
-	return ErrJobStillRunning
+	return nil
 }

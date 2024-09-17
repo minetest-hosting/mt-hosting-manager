@@ -10,7 +10,6 @@ import (
 type JobState string
 
 const (
-	JobStateCreated     JobState = "CREATED"
 	JobStateRunning     JobState = "RUNNING"
 	JobStateDoneSuccess JobState = "DONE_SUCCESS"
 	JobStateDoneFailure JobState = "DONE_FAILURE"
@@ -56,7 +55,7 @@ func SetupNodeJob(node *UserNode) *Job {
 		Created:    time.Now().Unix(),
 		NextRun:    time.Now().Unix(),
 		Type:       JobTypeNodeSetup,
-		State:      JobStateCreated,
+		State:      JobStateRunning,
 		UserNodeID: &node.ID,
 	}
 }
@@ -67,7 +66,7 @@ func RemoveNodeJob(node *UserNode) *Job {
 		Created:    time.Now().Unix(),
 		NextRun:    time.Now().Unix(),
 		Type:       JobTypeNodeDestroy,
-		State:      JobStateCreated,
+		State:      JobStateRunning,
 		UserNodeID: &node.ID,
 	}
 }
@@ -78,7 +77,7 @@ func SetupServerJob(node *UserNode, server *MinetestServer) *Job {
 		Created:          time.Now().Unix(),
 		NextRun:          time.Now().Unix(),
 		Type:             JobTypeServerSetup,
-		State:            JobStateCreated,
+		State:            JobStateRunning,
 		UserNodeID:       &node.ID,
 		MinetestServerID: &server.ID,
 	}
@@ -90,7 +89,7 @@ func RemoveServerJob(node *UserNode, server *MinetestServer) *Job {
 		Created:          time.Now().Unix(),
 		NextRun:          time.Now().Unix(),
 		Type:             JobTypeServerDestroy,
-		State:            JobStateCreated,
+		State:            JobStateRunning,
 		UserNodeID:       &node.ID,
 		MinetestServerID: &server.ID,
 	}
@@ -102,7 +101,7 @@ func BackupServerJob(node *UserNode, server *MinetestServer, backup *Backup) *Jo
 		Created:          time.Now().Unix(),
 		NextRun:          time.Now().Unix(),
 		Type:             JobTypeServerBackup,
-		State:            JobStateCreated,
+		State:            JobStateRunning,
 		UserNodeID:       &node.ID,
 		MinetestServerID: &server.ID,
 		BackupID:         &backup.ID,
@@ -115,6 +114,8 @@ func (job *Job) LogrusFields() logrus.Fields {
 		"type":               job.Type,
 		"state":              job.State,
 		"user_node_id":       job.UserNodeID,
+		"backup_id":          job.BackupID,
+		"next_run":           job.NextRun,
 		"minetest_server_id": job.MinetestServerID,
 		"message":            job.Message,
 		"created":            job.Created,

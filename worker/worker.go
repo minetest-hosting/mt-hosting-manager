@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"fmt"
 	"mt-hosting-manager/api/coinbase"
 	"mt-hosting-manager/api/hetzner_cloud"
 	"mt-hosting-manager/api/hetzner_dns"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 )
 
 type Worker struct {
@@ -25,8 +27,7 @@ type Worker struct {
 	wg      *sync.WaitGroup
 }
 
-type StatusCallback func(msg string, progress_percent int)
-type JobExecutor func(j *types.Job, cb StatusCallback) error
+type JobExecutor func(j *types.Job) error
 
 var executors = map[types.JobType]JobExecutor{}
 
@@ -63,6 +64,23 @@ func (w *Worker) Start() {
 	}
 }
 
+func (w *Worker) processNextJob() {
+	err := w.repos.Gorm().Transaction(func(tx *gorm.DB) error {
+		job, err := w.repos.JobRepo.GetNextJob(tx, types.JobStateRunning, time.Now().Unix())
+		if err != nil {
+			return fmt.Errorf("get next job error: %v", err)
+		}
+		if job != nil {
+			w.ExecuteJob(tx, job)
+		}
+
+		return nil
+	})
+	if err != nil {
+		logrus.WithError(err).Error("job processing error")
+	}
+}
+
 func (w *Worker) Run() {
 	// start collector job
 	go w.CollectJob()
@@ -73,49 +91,8 @@ func (w *Worker) Run() {
 	// start transaction update job
 	go w.TransactionUpdateJob()
 
-	// start backup progress update job
-	go w.UpdateBackupProgressJob()
-
-	// execute previously running jobs
-	jobs, err := w.repos.JobRepo.GetByState(types.JobStateRunning)
-	if err != nil {
-		logrus.WithFields(logrus.Fields{
-			"err": err,
-		}).Error("Running jobs fetch error")
-	}
-
-	for _, job := range jobs {
-		go w.ExecuteJob(job)
-	}
-
 	for w.running.Load() {
-		//Execute pending (created) jobs
-		jobs, err := w.repos.JobRepo.GetByState(types.JobStateCreated)
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"err": err,
-			}).Error("Created jobs fetch error")
-			time.Sleep(10 * time.Second)
-			continue
-		}
-
-		for _, job := range jobs {
-			if job.Created == 0 {
-				// set created date if not already set
-				job.Created = time.Now().Unix()
-			}
-			job.State = types.JobStateRunning
-			err := w.repos.JobRepo.Update(job)
-			if err != nil {
-				fields := job.LogrusFields()
-				fields["err"] = err
-				logrus.WithFields(fields).Error("job update failed (running)")
-				continue
-			}
-
-			go w.ExecuteJob(job)
-		}
-
+		go w.processNextJob()
 		time.Sleep(500 * time.Millisecond)
 	}
 }

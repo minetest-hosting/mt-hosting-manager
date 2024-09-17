@@ -27,8 +27,9 @@ func (a *Api) RetryJob(w http.ResponseWriter, r *http.Request, c *types.Claims) 
 		return
 	}
 
-	job.State = types.JobStateCreated
-	job.Step = 0
+	// reset state, message and next run date
+	job.State = types.JobStateRunning
+	job.Message = ""
 	job.NextRun = time.Now().Unix()
 	err = a.repos.JobRepo.Update(job)
 	Send(w, job, err)
