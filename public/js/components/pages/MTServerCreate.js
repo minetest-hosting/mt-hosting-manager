@@ -3,6 +3,7 @@ import CardLayout from "../layouts/CardLayout.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { create as create_server, create_validate } from "../../api/mtserver.js";
 import { get_all as get_all_nodes } from "../../api/node.js";
+import { get_by_id as get_backup_by_id } from "../../api/backup.js";
 import random_name from "../../util/random_name.js";
 
 export default {
@@ -15,6 +16,7 @@ export default {
 			validation_result: {},
 			user_nodes: [],
 			user_node_id: this.$route.query.node ? this.$route.query.node : "",
+			backup: null,
 			port: 30000,
 			admin: "admin",
 			name: n,
@@ -29,16 +31,18 @@ export default {
 			}]
 		};
 	},
-	mounted: function() {
-		get_all_nodes()
-		.then(n => {
-			const nodelist = n.filter(node => node.state == "RUNNING");
-			if (this.user_node_id == "" && nodelist.length) {
-				// default node id
-				this.user_node_id = nodelist[0].id;
-			}
-			this.user_nodes = nodelist;
-		});
+	mounted: async function() {
+		const nodes = await get_all_nodes();
+		const nodelist = nodes.filter(node => node.state == "RUNNING");
+		if (this.user_node_id == "" && nodelist.length) {
+			// default node id
+			this.user_node_id = nodelist[0].id;
+		}
+		this.user_nodes = nodelist;
+
+		if (this.$route.query.restore_from) {
+			this.backup = await get_backup_by_id(this.$route.query.restore_from);
+		}
 	},
 	methods: {
 		create: function() {
@@ -53,7 +57,7 @@ export default {
 			create_validate(server)
 			.then(v => {
 				if (v.valid) {
-					return create_server(server)
+					return create_server(server, this.backup ? this.backup.id : null)
 					.then(s => this.$router.push(`/mtservers/${s.id}`));
 				}
 
@@ -74,7 +78,7 @@ export default {
 					<td>Node</td>
 					<td>
 						<select v-model="user_node_id" class="form-control">
-							<option v-for="node in user_nodes" :value="node.id">{{node.name}}</option>
+							<option v-for="node in user_nodes" :value="node.id">{{node.alias}} ({{node.name}})</option>
 						</select>
 					</td>
 				</tr>
@@ -103,6 +107,12 @@ export default {
 						<div class="invalid-feedback" v-if="validation_result.admin_name_invalid">
 							Username invalid
 						</div>
+					</td>
+				</tr>
+				<tr v-if="backup">
+					<td>Restore from backup</td>
+					<td>
+						{{backup.id}}
 					</td>
 				</tr>
 				<tr>

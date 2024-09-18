@@ -115,7 +115,8 @@ func (api *Api) Setup() {
 
 	user_api.HandleFunc("/backup", api.Secure(api.CreateBackup)).Methods(http.MethodPost)
 	user_api.HandleFunc("/backup/{id}", api.Secure(api.RemoveBackup)).Methods(http.MethodDelete)
-	user_api.HandleFunc("/backup/{id}", api.Secure(api.DownloadBackup)).Methods(http.MethodGet)
+	user_api.HandleFunc("/backup/{id}", api.Secure(api.GetBackup)).Methods(http.MethodGet)
+	user_api.HandleFunc("/backup/{id}/download", api.Secure(api.DownloadBackup)).Methods(http.MethodGet)
 	user_api.HandleFunc("/backup/{id}/job", api.Secure(api.GetBackupJob)).Methods(http.MethodGet)
 
 	// admin api

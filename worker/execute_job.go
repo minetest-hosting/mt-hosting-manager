@@ -56,5 +56,5 @@ func (w *Worker) ExecuteJob(tx *gorm.DB, job *types.Job) {
 		return
 	}
 
-	logrus.WithFields(job.LogrusFields()).Debug("Job finished")
+	logrus.WithFields(job.LogrusFields()).Debug("Job step finished")
 }

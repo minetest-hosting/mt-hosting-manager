@@ -59,6 +59,7 @@ func (r *JobRepository) GetNextJob(tx *gorm.DB, state types.JobState, nextrun in
 		Options:  clause.LockingOptionsSkipLocked,
 	})
 	q = q.Where(types.Job{State: state})
+	q = q.Where("next_run < ?", nextrun)
 	q = q.Limit(1)
 	q = q.Find(&list)
 	err := q.Error

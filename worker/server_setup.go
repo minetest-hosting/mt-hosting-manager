@@ -39,14 +39,20 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			return err
 		}
 
-		job.Step = 1
-
-	case 1:
 		if job.BackupID == nil {
 			// skip restore steps
 			job.Step = 3
 			return nil
+		} else {
+			// restore after the tls connection can be established
+			job.Step = 1
+			job.Message = "Restore pending"
+			job.NextRun = time.Now().Add(60 * time.Second).Unix()
+			return nil
 		}
+
+	case 1:
+		// trigger restore
 
 		client, err := w.core.GetMTUIClient(server)
 		if err != nil {
@@ -72,6 +78,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		job.NextRun = time.Now().Add(5 * time.Second).Unix()
 
 	case 2:
+		// get restore status
 
 		client, err := w.core.GetMTUIClient(server)
 		if err != nil {
@@ -102,6 +109,8 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		}
 
 	case 3:
+		// mark running
+
 		server.State = types.MinetestServerStateRunning
 		err = w.repos.MinetestServerRepo.Update(server)
 		if err != nil {

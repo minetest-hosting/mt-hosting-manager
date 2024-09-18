@@ -122,10 +122,14 @@ export default {
 								<i class="fa fa-trash"></i>
 								Delete
 							</button>
-							<a class="btn btn-sm btn-secondary" :href="'/api/backup/' + backup.id">
+							<a class="btn btn-sm btn-secondary" :href="'/api/backup/' + backup.id + '/download'">
 								<i class="fa fa-download"></i>
 								Download
 							</a>
+							<router-link class="btn btn-sm btn-outline-secondary" :to="'/mtservers/create?restore_from=' + backup.id">
+								<i class="fa fa-play"></i>
+								Restore
+							</router-link>
 						</div>
 					</td>
 				</tr>
