@@ -14,7 +14,7 @@ require (
 	github.com/oschwald/geoip2-golang v1.11.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.20.4
-	github.com/prometheus/common v0.55.0
+	github.com/prometheus/common v0.59.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
 	github.com/vearutop/statigz v1.4.3
