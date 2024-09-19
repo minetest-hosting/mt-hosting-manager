@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -46,6 +47,19 @@ type Job struct {
 
 func (m *Job) TableName() string {
 	return "job"
+}
+
+func (j *Job) SetData(data any) error {
+	json, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	j.Data = json
+	return nil
+}
+
+func (j *Job) GetData(data any) error {
+	return json.Unmarshal(j.Data, data)
 }
 
 func SetupNodeJob(node *UserNode) *Job {
