@@ -119,7 +119,7 @@ export default {
 					<td>DNS Prefix</td>
 					<td>
 						<div class="input-group">
-							<input type="text" class="form-control" v-bind:class="{'is-invalid':validation_result.server_name_invalid||validation_result.server_name_used}" v-model="dns_name"/>
+							<input type="text" class="form-control" v-bind:class="{'is-invalid':validation_result.server_name_invalid || validation_result.server_name_used || validation_result.server_name_too_short || validation_result.server_name_reserved}" v-model="dns_name"/>
 							<span class="input-group-text">.{{dns_suffix}}</span>
 							<div class="invalid-feedback" v-if="validation_result.server_name_invalid">
 								Servername invalid, only the letters a to z and numbers 0 to 9 can be used
