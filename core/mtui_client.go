@@ -21,7 +21,7 @@ func (c *Core) GetMTUIClient(server *types.MinetestServer) (*mtui.MtuiClient, er
 		if err != nil {
 			return nil, fmt.Errorf("login error: %v", err)
 		}
-		mtui_cache.Add(url, client)
+		mtui_cache.Add(server.ID, client)
 	}
 
 	return client, nil
