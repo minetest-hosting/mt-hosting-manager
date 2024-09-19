@@ -28,6 +28,7 @@ type CreateBackupJob struct {
 	Filename string        `json:"filename"`
 	Username string        `json:"username"`
 	Password string        `json:"password"`
+	Key      string        `json:"key"`
 }
 
 type RestoreJobState string
@@ -58,4 +59,5 @@ type CreateRestoreJob struct {
 	Filename string         `json:"filename"`
 	Username string         `json:"username"`
 	Password string         `json:"password"`
+	Key      string         `json:"key"`
 }

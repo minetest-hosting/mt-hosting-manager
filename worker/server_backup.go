@@ -21,7 +21,7 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 		return fmt.Errorf("get backup error: %v", err)
 	}
 	if backup == nil {
-		return fmt.Errorf("backup not found")
+		return fmt.Errorf("backup not found: '%s'", *job.BackupID)
 	}
 
 	client, err := w.core.GetMTUIClient(server)
@@ -40,6 +40,7 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 			Password: w.cfg.StoragePassword,
 			Port:     22,
 			Filename: fmt.Sprintf("%s.tar.gz", backup.ID),
+			Key:      backup.Passphrase,
 		})
 		if err != nil {
 			return fmt.Errorf("create backup job error: %v", err)

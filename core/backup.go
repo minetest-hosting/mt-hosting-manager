@@ -73,7 +73,18 @@ func (c *Core) StreamBackup(b *types.Backup, w io.Writer) error {
 	}
 	defer f.Close()
 
-	_, err = io.Copy(w, f)
+	var reader io.Reader
+	reader = f
+
+	if b.Passphrase != "" {
+		// enable decryption
+		reader, err = EncryptedReader(b.Passphrase, f)
+		if err != nil {
+			return fmt.Errorf("decryption failed: %v", err)
+		}
+	}
+
+	_, err = io.Copy(w, reader)
 	return err
 }
 

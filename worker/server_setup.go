@@ -60,6 +60,14 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			return fmt.Errorf("get client error: %v", err)
 		}
 
+		backup, err := w.repos.BackupRepo.GetByID(*job.BackupID)
+		if err != nil {
+			return fmt.Errorf("get backup error: %v", err)
+		}
+		if backup == nil {
+			return fmt.Errorf("backup not found: '%s'", *job.BackupID)
+		}
+
 		info, err := client.CreateRestoreJob(&mtui.CreateRestoreJob{
 			ID:       *job.BackupID,
 			Type:     mtui.RestoreJobTypeSCP,
@@ -68,6 +76,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			Password: w.cfg.StoragePassword,
 			Port:     22,
 			Filename: fmt.Sprintf("%s.tar.gz", *job.BackupID),
+			Key:      backup.Passphrase,
 		})
 		if err != nil {
 			return fmt.Errorf("create restore job error: %v", err)
