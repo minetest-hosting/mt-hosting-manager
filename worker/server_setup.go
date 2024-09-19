@@ -33,6 +33,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		if err != nil {
 			return err
 		}
+		defer client.Close()
 
 		err = server_setup.Setup(client, w.cfg, node, server)
 		if err != nil {
@@ -41,7 +42,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 
 		if job.BackupID == nil {
 			// skip restore steps
-			job.Step = 3
+			job.Step = 4
 			return nil
 		} else {
 			// restore after the tls connection can be established
@@ -109,6 +110,21 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		}
 
 	case 3:
+		// restart ui
+		client, err := core.TrySSHConnection(node)
+		if err != nil {
+			return err
+		}
+		defer client.Close()
+
+		basedir := server_setup.GetBaseDir(server)
+		_, _, err = core.SSHExecute(client, fmt.Sprintf("docker-compose --project-directory %s restart", basedir))
+		if err != nil {
+			return fmt.Errorf("could not restart server: %v", err)
+		}
+		job.Step = 4
+
+	case 4:
 		// mark running
 
 		server.State = types.MinetestServerStateRunning
