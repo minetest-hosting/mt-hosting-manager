@@ -44,7 +44,7 @@ type Config struct {
 	MesehubOauthConfig  *OAuthConfig
 	CDBOauthConfig      *OAuthConfig
 	MaxBalance          int //max balance in eurocents
-	StorageHostname     string
+	StorageURL          string
 	StorageUsername     string
 	StoragePassword     string
 }
@@ -102,7 +102,7 @@ func NewConfig() *Config {
 			Secret:   os.Getenv("CDB_SECRET"),
 		},
 		MaxBalance:      100 * 100,
-		StorageHostname: os.Getenv("STORAGE_HOSTNAME"),
+		StorageURL:      os.Getenv("STORAGE_URL"),
 		StorageUsername: os.Getenv("STORAGE_USERNAME"),
 		StoragePassword: os.Getenv("STORAGE_PASSWORD"),
 	}

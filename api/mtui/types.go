@@ -17,14 +17,16 @@ type BackupJobInfo struct {
 type BackupJobType string
 
 const (
-	BackupJobTypeSCP BackupJobType = "scp"
+	BackupJobTypeSCP    BackupJobType = "scp"
+	BackupJobTypeWEBDAV BackupJobType = "webdav"
 )
 
 type CreateBackupJob struct {
 	ID       string        `json:"id"`
 	Type     BackupJobType `json:"type"`
-	Host     string        `json:"host"`
-	Port     int           `json:"port"`
+	Host     string        `json:"host"` //scp
+	Port     int           `json:"port"` //scp
+	URL      string        `json:"url"`  // webdav
 	Filename string        `json:"filename"`
 	Username string        `json:"username"`
 	Password string        `json:"password"`
@@ -48,14 +50,16 @@ type RestoreJobInfo struct {
 type RestoreJobType string
 
 const (
-	RestoreJobTypeSCP RestoreJobType = "scp"
+	RestoreJobTypeSCP    RestoreJobType = "scp"
+	RestoreJobTypeWEBDAV RestoreJobType = "webdav"
 )
 
 type CreateRestoreJob struct {
 	ID       string         `json:"id"`
 	Type     RestoreJobType `json:"type"`
-	Host     string         `json:"host"`
-	Port     int            `json:"port"`
+	Host     string         `json:"host"` //scp
+	Port     int            `json:"port"` //scp
+	URL      string         `json:"url"`  // webdav
 	Filename string         `json:"filename"`
 	Username string         `json:"username"`
 	Password string         `json:"password"`

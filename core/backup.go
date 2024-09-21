@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"io"
 	"mt-hosting-manager/types"
-
-	"github.com/pkg/sftp"
 )
 
 func getBackupFilename(b *types.Backup) string {
@@ -17,17 +15,10 @@ func (c *Core) RemoveBackup(b *types.Backup) error {
 	if err != nil {
 		return fmt.Errorf("create client error: %v", err)
 	}
-	defer client.Close()
 
-	sc, err := sftp.NewClient(client)
+	err = client.Remove(getBackupFilename(b))
 	if err != nil {
-		return fmt.Errorf("sftp client error: %v", err)
-	}
-	defer sc.Close()
-
-	err = sc.Remove(getBackupFilename(b))
-	if err != nil {
-		return fmt.Errorf("sftp remove error: %v", err)
+		return fmt.Errorf("webdav remove error: %v", err)
 	}
 
 	return c.repos.BackupRepo.Delete(b.ID)
@@ -38,15 +29,8 @@ func (c *Core) GetBackupSize(b *types.Backup) (int64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("create client error: %v", err)
 	}
-	defer client.Close()
 
-	sc, err := sftp.NewClient(client)
-	if err != nil {
-		return 0, fmt.Errorf("sftp client error: %v", err)
-	}
-	defer sc.Close()
-
-	fi, err := sc.Stat(getBackupFilename(b))
+	fi, err := client.Stat(getBackupFilename(b))
 	if err != nil {
 		return 0, fmt.Errorf("sftp stat error: %v", err)
 	}
@@ -59,26 +43,19 @@ func (c *Core) StreamBackup(b *types.Backup, w io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("create client error: %v", err)
 	}
-	defer client.Close()
 
-	sc, err := sftp.NewClient(client)
+	r, err := client.ReadStream(getBackupFilename(b))
 	if err != nil {
-		return fmt.Errorf("sftp client error: %v", err)
+		return fmt.Errorf("readstream error: %v", err)
 	}
-	defer sc.Close()
-
-	f, err := sc.Open(getBackupFilename(b))
-	if err != nil {
-		return fmt.Errorf("scp file open error: %v", err)
-	}
-	defer f.Close()
+	defer r.Close()
 
 	var reader io.Reader
-	reader = f
+	reader = r
 
 	if b.Passphrase != "" {
 		// enable decryption
-		reader, err = EncryptedReader(b.Passphrase, f)
+		reader, err = EncryptedReader(b.Passphrase, reader)
 		if err != nil {
 			return fmt.Errorf("decryption failed: %v", err)
 		}

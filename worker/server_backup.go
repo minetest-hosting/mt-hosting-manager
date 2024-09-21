@@ -34,11 +34,10 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 		// trigger backup
 		info, err := client.CreateBackupJob(&mtui.CreateBackupJob{
 			ID:       backup.ID,
-			Type:     mtui.BackupJobTypeSCP,
-			Host:     w.cfg.StorageHostname,
+			Type:     mtui.BackupJobTypeWEBDAV,
+			URL:      w.cfg.StorageURL,
 			Username: w.cfg.StorageUsername,
 			Password: w.cfg.StoragePassword,
-			Port:     22,
 			Filename: fmt.Sprintf("%s.tar.gz", backup.ID),
 			Key:      backup.Passphrase,
 		})

@@ -12,6 +12,7 @@ import (
 
 	"github.com/pkg/sftp"
 	"github.com/sirupsen/logrus"
+	"github.com/studio-b12/gowebdav"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -172,18 +173,10 @@ func CreateClient(node *types.UserNode) (*ssh.Client, error) {
 	return client, nil
 }
 
-func CreateStorageClient(cfg *types.Config) (*ssh.Client, error) {
-	addr := fmt.Sprintf("%s:%d", cfg.StorageHostname, 22)
-
-	config := &ssh.ClientConfig{
-		User: cfg.StorageUsername,
-		Auth: []ssh.AuthMethod{
-			ssh.Password(cfg.StoragePassword),
-		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	}
-
-	return ssh.Dial("tcp", addr, config)
+func CreateStorageClient(cfg *types.Config) (*gowebdav.Client, error) {
+	c := gowebdav.NewClient(cfg.StorageURL, cfg.StorageUsername, cfg.StoragePassword)
+	err := c.Connect()
+	return c, err
 }
 
 func TrySSHConnection(node *types.UserNode) (*ssh.Client, error) {

@@ -70,11 +70,10 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 
 		info, err := client.CreateRestoreJob(&mtui.CreateRestoreJob{
 			ID:       *job.BackupID,
-			Type:     mtui.RestoreJobTypeSCP,
-			Host:     w.cfg.StorageHostname,
+			Type:     mtui.RestoreJobTypeWEBDAV,
+			URL:      w.cfg.StorageURL,
 			Username: w.cfg.StorageUsername,
 			Password: w.cfg.StoragePassword,
-			Port:     22,
 			Filename: fmt.Sprintf("%s.tar.gz", *job.BackupID),
 			Key:      backup.Passphrase,
 		})
