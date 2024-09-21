@@ -60,6 +60,11 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			return fmt.Errorf("get client error: %v", err)
 		}
 
+		err = client.SetMaintenanceMode(true)
+		if err != nil {
+			return fmt.Errorf("error enabling maintenance mode: %v", err)
+		}
+
 		backup, err := w.repos.BackupRepo.GetByID(*job.BackupID)
 		if err != nil {
 			return fmt.Errorf("get backup error: %v", err)
@@ -110,6 +115,11 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			// all done
 			job.Message = info.Message
 			job.Step = 3
+
+			err = client.SetMaintenanceMode(false)
+			if err != nil {
+				return err
+			}
 
 		case mtui.RestoreJobFailure:
 			// restore failed
