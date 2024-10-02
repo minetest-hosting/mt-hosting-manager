@@ -14,9 +14,10 @@ require (
 	github.com/oschwald/geoip2-golang v1.11.0
 	github.com/pkg/sftp v1.13.6
 	github.com/prometheus/client_golang v1.20.4
-	github.com/prometheus/common v0.55.0
+	github.com/prometheus/common v0.60.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
+	github.com/studio-b12/gowebdav v0.9.0
 	github.com/vearutop/statigz v1.4.3
 	golang.org/x/crypto v0.27.0
 	gorm.io/driver/postgres v1.5.9
@@ -44,7 +45,6 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
-	github.com/studio-b12/gowebdav v0.9.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
