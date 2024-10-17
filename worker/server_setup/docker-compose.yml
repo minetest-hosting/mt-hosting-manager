@@ -32,6 +32,7 @@ services:
    DOCKER_AUTOINSTALL_ENGINE: "true"
    WASM_MINETEST_HOST: "{{.ServerShortID}}_engine"
    FILEBROWSER_URL: "http://filebrowser-{{.ServerShortID}}/"
+   FILEBROWSER_PROXY_PATH: "/ui"
   volumes:
    - "./world:/root/.minetest/worlds/world"
    - "./world/minetest.conf:/minetest.conf"
