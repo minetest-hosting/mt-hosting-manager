@@ -51,6 +51,8 @@ services:
 
  filebrowser-{{.ServerShortID}}:
   image: filebrowser/filebrowser:v2.31.2
+  networks:
+   - network-{{.ServerShortID}}
   restart: always
   environment:
     FB_DATABASE: /database/filebrowser.db
