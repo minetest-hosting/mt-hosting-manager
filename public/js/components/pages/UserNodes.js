@@ -3,7 +3,7 @@ import NodeLink from "../NodeLink.js";
 import UserLink from "../UserLink.js";
 import NodeState from "../NodeState.js";
 
-import { get_all } from "../../api/node.js";
+import { search } from "../../api/node.js";
 import { get_nodetype } from "../../service/nodetype.js";
 import { has_role } from "../../service/login.js";
 import format_time from "../../util/format_time.js";
@@ -17,6 +17,7 @@ export default {
 	},
 	data: function() {
 		return {
+			show_archived: false,
 			nodes: [],
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
@@ -24,6 +25,11 @@ export default {
 				icon: "server", name: "Nodes", link: "/nodes"
 			}]
 		};
+	},
+	watch: {
+		show_archived: function() {
+			this.update();
+		}
 	},
 	mounted: function() {
 		this.update();
@@ -37,11 +43,22 @@ export default {
 		has_role,
 		get_nodetype,
 		update: function() {
-			get_all().then(nodes => this.nodes = nodes);
+			let s = {};
+			if (!this.show_archived) {
+				// limit search to active nodes
+				s.state = "RUNNING";
+			}
+			search(s).then(nodes => this.nodes = nodes);
 		}
 	},
 	template: /*html*/`
 	<card-layout title="Nodes" icon="server" :breadcrumb="breadcrumb">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" v-model="show_archived" value="" id="show_archived">
+			<label class="form-check-label" for="show_archived">
+				Show archived nodes
+			</label>
+		</div>
 		<table class="table">
 			<thead>
 				<th>Name</th>

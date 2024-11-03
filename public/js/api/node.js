@@ -6,6 +6,11 @@ export const get_mtservers_by_nodeid = id => protected_fetch(`api/node/${id}/mts
 export const get_latest_job = id => protected_fetch(`api/node/${id}/job`);
 export const get_stats = id => protected_fetch(`api/node/${id}/stats`);
 
+export const search = s => protected_fetch(`api/node/search`, {
+    method: "POST",
+    body: JSON.stringify(s)
+});
+
 export const create = n => protected_fetch(`api/node`, {
     method: "POST",
     body: JSON.stringify(n)

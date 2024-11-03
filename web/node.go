@@ -29,7 +29,7 @@ func (a *Api) SearchNodes(w http.ResponseWriter, r *http.Request, c *types.Claim
 	search := &types.UserNodeSearch{}
 	err := json.NewDecoder(r.Body).Decode(search)
 	if err != nil {
-		SendError(w, 500, err)
+		SendError(w, 500, fmt.Errorf("json error: %v", err))
 		return
 	}
 
