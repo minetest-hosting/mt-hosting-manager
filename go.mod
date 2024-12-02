@@ -20,7 +20,7 @@ require (
 	github.com/studio-b12/gowebdav v0.9.0
 	github.com/vearutop/statigz v1.4.3
 	golang.org/x/crypto v0.28.0
-	gorm.io/driver/postgres v1.5.9
+	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )
 
