@@ -55,7 +55,11 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
 
-		nodes, err := c.repos.UserNodeRepo.Search(&types.UserNodeSearch{UserID: &before_user.ID})
+		runstate := types.UserNodeStateRunning
+		nodes, err := c.repos.UserNodeRepo.Search(&types.UserNodeSearch{
+			UserID: &before_user.ID,
+			State:  &runstate,
+		})
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"err":     err,
