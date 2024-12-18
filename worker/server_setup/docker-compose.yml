@@ -31,8 +31,6 @@ services:
    DOCKER_CONTAINER_PREFIX: "{{.ServerShortID}}"
    DOCKER_AUTOINSTALL_ENGINE: "true"
    WASM_MINETEST_HOST: "{{.ServerShortID}}_engine"
-   FILEBROWSER_URL: "http://filebrowser-{{.ServerShortID}}/"
-   FILEBROWSER_PROXY_PATH: "/ui"
   volumes:
    - "./world:/root/.minetest/worlds/world"
    - "./world/minetest.conf:/minetest.conf"
@@ -48,19 +46,6 @@ services:
     - "traefik.http.routers.{{.ServerShortID}}.middlewares={{.ServerShortID}}-stripprefix"
     - "traefik.http.middlewares.{{.ServerShortID}}-stripprefix.stripprefix.prefixes=/ui"
   restart: always
-
- filebrowser-{{.ServerShortID}}:
-  image: filebrowser/filebrowser:v2.31.2
-  networks:
-   - network-{{.ServerShortID}}
-  restart: always
-  environment:
-    FB_DATABASE: /database/filebrowser.db
-    FB_BASEURL: /ui/filebrowser
-    FB_NOAUTH: "true"
-  volumes:
-    - ./world:/srv
-    - ./filebrowser:/database
 
  nginx-{{.ServerShortID}}:
   image: nginx:1.25.2
