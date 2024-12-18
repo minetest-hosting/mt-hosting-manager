@@ -60,11 +60,6 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			return fmt.Errorf("get client error: %v", err)
 		}
 
-		err = client.SetMaintenanceMode(true)
-		if err != nil {
-			return fmt.Errorf("error enabling maintenance mode: %v", err)
-		}
-
 		backup, err := w.repos.BackupRepo.GetByID(*job.BackupID)
 		if err != nil {
 			return fmt.Errorf("get backup error: %v", err)
@@ -116,11 +111,6 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			job.Message = info.Message
 			job.Step = 3
 
-			err = client.SetMaintenanceMode(false)
-			if err != nil {
-				return err
-			}
-
 		case mtui.RestoreJobFailure:
 			// restore failed
 			job.Message = info.Message
@@ -128,21 +118,6 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 		}
 
 	case 3:
-		// restart ui
-		client, err := core.TrySSHConnection(node)
-		if err != nil {
-			return err
-		}
-		defer client.Close()
-
-		basedir := server_setup.GetBaseDir(server)
-		_, _, err = core.SSHExecute(client, fmt.Sprintf("docker-compose --project-directory %s restart", basedir))
-		if err != nil {
-			return fmt.Errorf("could not restart server: %v", err)
-		}
-		job.Step = 4
-
-	case 4:
 		// mark running
 
 		server.State = types.MinetestServerStateRunning
