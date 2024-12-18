@@ -79,7 +79,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			URL:      w.cfg.StorageURL,
 			Username: w.cfg.StorageUsername,
 			Password: w.cfg.StoragePassword,
-			Filename: fmt.Sprintf("%s.tar.gz", *job.BackupID),
+			Filename: fmt.Sprintf("%s.zip", *job.BackupID),
 			Key:      backup.Passphrase,
 		})
 		if err != nil {

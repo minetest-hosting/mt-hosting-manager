@@ -7,7 +7,7 @@ import (
 )
 
 func getBackupFilename(b *types.Backup) string {
-	return fmt.Sprintf("%s.tar.gz", b.ID)
+	return fmt.Sprintf("%s.zip", b.ID)
 }
 
 func (c *Core) RemoveBackup(b *types.Backup) error {

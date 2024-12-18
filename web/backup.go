@@ -184,7 +184,7 @@ func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Cl
 		return
 	}
 
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.tar.gz\"", b.ID))
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.zip\"", b.ID))
 	w.Header().Set("Content-Type", "application/gzip")
 
 	err = a.core.StreamBackup(b, w)
