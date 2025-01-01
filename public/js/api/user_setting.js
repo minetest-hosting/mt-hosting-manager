@@ -1,3 +1,4 @@
+import { protected_fetch } from "./protected_fetch.js";
 
 export const get_user_settings = () => protected_fetch(`api/profile/settings`);
 

@@ -8,7 +8,10 @@ import events, { EVENT_STARTUP } from './events.js';
 import { fetch_nodetypes } from './service/nodetype.js';
 import "./service/user.js";
 
-function start(){
+async function start(){
+	await fetch_info();
+	await Promise.all([check_login(), fetch_nodetypes(), load_exchange_rates()]);
+
 	// create router instance
 	const router = VueRouter.createRouter({
 		history: VueRouter.createWebHashHistory(),
@@ -28,7 +31,4 @@ function start(){
 	app.mount("#app");
 }
 
-fetch_info()
-.then(() => Promise.all([check_login(), fetch_nodetypes(), load_exchange_rates()]))
-.then(() => start())
-.catch(e => console.error(e));
+start().catch(e => console.error(e));
