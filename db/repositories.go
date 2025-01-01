@@ -6,6 +6,7 @@ import (
 
 type Repositories struct {
 	UserRepo               *UserRepository
+	UserSettingRepo        *UserSettingRepository
 	NodeTypeRepo           *NodeTypeRepository
 	UserNodeRepo           *UserNodeRepository
 	MinetestServerRepo     *MinetestServerRepository
@@ -22,6 +23,7 @@ type Repositories struct {
 func NewRepositories(g *gorm.DB) *Repositories {
 	return &Repositories{
 		UserRepo:               &UserRepository{g: g},
+		UserSettingRepo:        &UserSettingRepository{g: g},
 		NodeTypeRepo:           &NodeTypeRepository{g: g},
 		UserNodeRepo:           &UserNodeRepository{g: g},
 		MinetestServerRepo:     &MinetestServerRepository{g: g},

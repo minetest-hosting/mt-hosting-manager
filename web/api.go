@@ -77,6 +77,10 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/profile", api.Secure(api.GetUserProfile)).Methods(http.MethodGet)
 	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
 
+	user_api.HandleFunc("/profile/settings", api.Secure(api.GetUserSettings)).Methods(http.MethodGet)
+	user_api.HandleFunc("/profile/settings/{key}", api.Secure(api.SetUserSetting)).Methods(http.MethodPut)
+	user_api.HandleFunc("/profile/settings/{key}", api.Secure(api.DeleteUserSetting)).Methods(http.MethodDelete)
+
 	user_api.HandleFunc("/node", api.Secure(api.GetNodes)).Methods(http.MethodGet)
 	user_api.HandleFunc("/node/search", api.Secure(api.SearchNodes)).Methods(http.MethodPost)
 	user_api.HandleFunc("/node", api.Secure(api.CreateNode)).Methods(http.MethodPost)
