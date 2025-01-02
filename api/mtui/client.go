@@ -1,6 +1,7 @@
 package mtui
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -95,6 +96,7 @@ func (a *MtuiClient) GetDirectorySize(dir string) (int64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("http do error: %v", err)
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		return 0, fmt.Errorf("api-response status: %d", resp.StatusCode)
@@ -111,4 +113,29 @@ func (a *MtuiClient) GetDirectorySize(dir string) (int64, error) {
 	}
 
 	return size, nil
+}
+
+func (a *MtuiClient) GetStats() (*Stats, error) {
+	req, err := a.request(http.MethodGet, "api/stats", nil)
+	if err != nil {
+		return nil, fmt.Errorf("request error: %v", err)
+	}
+
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("http do error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("api-response status: %d", resp.StatusCode)
+	}
+
+	stats := &Stats{}
+	err = json.NewDecoder(resp.Body).Decode(stats)
+	if err != nil {
+		return nil, fmt.Errorf("json parse error: %v", err)
+	}
+
+	return stats, nil
 }

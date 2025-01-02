@@ -4,6 +4,7 @@ import ServerLink from "../ServerLink.js";
 import NodeState from "../NodeState.js";
 import ServerState from "../ServerState.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
+import ServerStatsBadge from "../ServerStatsBadge.js";
 
 import { get_overview } from "../../api/overview.js";
 
@@ -17,7 +18,8 @@ export default {
         "server-link": ServerLink,
         "node-state": NodeState,
         "server-state": ServerState,
-        "node-type-spec": NodeTypeSpec
+        "node-type-spec": NodeTypeSpec,
+        "server-stats-badge": ServerStatsBadge
 	},
 	data: function() {
 		return {
@@ -71,7 +73,8 @@ export default {
                         <li v-for="server in node.servers">
                             <server-link :server="server"/>
                             &nbsp;
-                            <server-state :state="server.state"/>
+                            <server-state :state="server.state" v-if="server.state != 'RUNNING'"/>
+                            <server-stats-badge :id="server.id" v-else/>
                         </li>
                         <li v-if="node.state == 'RUNNING'">
                             <router-link class="btn btn-sm btn-outline-success" :to="'/mtservers/create?node=' + node.id">

@@ -1,10 +1,7 @@
 package mtui_test
 
 import (
-	"fmt"
-	"io"
 	"mt-hosting-manager/api/mtui"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,23 +10,29 @@ import (
 func TestLoginDownload(t *testing.T) {
 	t.SkipNow() // disabled for automated tests
 
-	url := "https://tmpserver.hosting.minetest.ch/ui"
-	jwt_key := "REDACTED"
-	username := "admin"
+	url := "https://pandorabox.io/ui"
+	//jwt_key := "REDACTED"
+	//username := "admin"
 
 	c := mtui.New(url)
-	err := c.Login(username, jwt_key)
-	assert.NoError(t, err)
+	//err := c.Login(username, jwt_key)
+	//assert.NoError(t, err)
 
-	r, err := c.DownloadZip("/")
+	stats, err := c.GetStats()
 	assert.NoError(t, err)
-	defer r.Close()
+	assert.NotNil(t, stats)
 
-	f, err := os.CreateTemp(os.TempDir(), "mtui-download.zip")
-	assert.NoError(t, err)
-	defer f.Close()
+	/*
+		r, err := c.DownloadZip("/")
+		assert.NoError(t, err)
+		defer r.Close()
 
-	n, err := io.Copy(f, r)
-	assert.NoError(t, err)
-	fmt.Printf("copied %d bytes to %s\n", n, f.Name())
+		f, err := os.CreateTemp(os.TempDir(), "mtui-download.zip")
+		assert.NoError(t, err)
+		defer f.Close()
+
+		n, err := io.Copy(f, r)
+		assert.NoError(t, err)
+		fmt.Printf("copied %d bytes to %s\n", n, f.Name())
+	*/
 }

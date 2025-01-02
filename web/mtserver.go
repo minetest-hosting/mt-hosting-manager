@@ -226,3 +226,31 @@ func (a *Api) GetLatestMTServerJob(w http.ResponseWriter, r *http.Request, c *ty
 	job, err := a.repos.JobRepo.GetLatestByMinetestServerID(mtserver.ID)
 	Send(w, job, err)
 }
+
+func (a *Api) GetMTServerStats(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	_, server, _, err := a.CheckedGetMTServer(id, c)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get server error: %v", err))
+		return
+	}
+	if server == nil {
+		SendError(w, 404, fmt.Errorf("server not found: %s", id))
+		return
+	}
+
+	client, err := a.core.GetMTUIClient(server)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get client error: %v", err))
+		return
+	}
+
+	stats, err := client.GetStats()
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get stats error: %v", err))
+		return
+	}
+
+	Send(w, stats, nil)
+}

@@ -3,6 +3,7 @@ import ServerState from "../ServerState.js";
 import HelpPopup from "../HelpPopup.js";
 import NodeLink from "../NodeLink.js";
 import ClipboardCopy from "../ClipboardCopy.js";
+import ServerStatsBadge from "../ServerStatsBadge.js";
 
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -19,7 +20,8 @@ export default {
 		"server-state": ServerState,
 		"help-popup": HelpPopup,
 		"node-link": NodeLink,
-		"clipboard-copy": ClipboardCopy
+		"clipboard-copy": ClipboardCopy,
+		"server-stats-badge": ServerStatsBadge
 	},
 	mounted: function() {
 		const server_id = this.id;
@@ -177,7 +179,8 @@ export default {
 				<tr>
 					<td>State</td>
 					<td>
-						<server-state :state="server.state"/>
+						<server-state :state="server.state" v-if="server.state != 'RUNNING'"/>
+						<server-stats-badge v-if="server.state == 'RUNNING'" :id="server.id"/>
 					</td>
 				</tr>
 				<tr v-if="server.state == 'RUNNING' && backup_spaces.length > 0">
