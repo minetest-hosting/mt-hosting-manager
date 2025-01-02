@@ -24,7 +24,7 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 		return fmt.Errorf("could not fetch after user: %v", err)
 	}
 
-	if before_user.Balance >= 500 && after_user.Balance < 500 {
+	if before_user.Balance >= 400 && after_user.Balance < 400 {
 		// crossed warning threshold
 		c.AddAuditLog(&types.AuditLog{
 			Type:   types.AuditLogPaymentWarning,
