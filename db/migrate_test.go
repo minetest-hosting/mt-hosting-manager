@@ -31,6 +31,7 @@ func SetupRepos(t *testing.T) *db.Repositories {
 	assert.NoError(t, repos.NodeTypeRepo.DeleteAll())
 	assert.NoError(t, repos.ExchangeRateRepo.DeleteAll())
 	assert.NoError(t, repos.JobRepo.DeleteAll())
+	assert.NoError(t, repos.CouponRepo.DeleteAll())
 	return repos
 }
 
