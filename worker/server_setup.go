@@ -42,7 +42,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 
 		if job.BackupID == nil {
 			// skip restore steps
-			job.Step = 4
+			job.Step = 3
 			return nil
 		} else {
 			// restore after the tls connection can be established
