@@ -47,6 +47,9 @@ type Config struct {
 	StorageURL          string
 	StorageUsername     string
 	StoragePassword     string
+	MailHost            string
+	MailAddress         string
+	MailPassword        string
 }
 
 func NewConfig() *Config {
@@ -105,5 +108,8 @@ func NewConfig() *Config {
 		StorageURL:      os.Getenv("STORAGE_URL"),
 		StorageUsername: os.Getenv("STORAGE_USERNAME"),
 		StoragePassword: os.Getenv("STORAGE_PASSWORD"),
+		MailHost:        os.Getenv("MAIL_HOST"),
+		MailAddress:     os.Getenv("MAIL_ADDRESS"),
+		MailPassword:    os.Getenv("MAIL_PASSWORD"),
 	}
 }

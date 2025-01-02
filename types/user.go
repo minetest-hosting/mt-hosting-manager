@@ -26,6 +26,7 @@ type User struct {
 	ID         string    `json:"id" gorm:"primarykey;column:id"`
 	State      UserState `json:"state" gorm:"column:state"`
 	Name       string    `json:"name" gorm:"column:name"`
+	Mail       string    `json:"mail" gorm:"column:mail"`
 	Hash       string    `json:"hash" gorm:"column:hash"`
 	Created    int64     `json:"created" gorm:"column:created"`
 	LastLogin  int64     `json:"lastlogin" gorm:"column:lastlogin"`

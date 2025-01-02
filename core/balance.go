@@ -38,6 +38,16 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Priority: 3,
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
+
+		if after_user.Mail != "" {
+			err = c.SendBalanceWarningMail(after_user)
+			if err != nil {
+				logrus.WithError(err).WithFields(logrus.Fields{
+					"user_id": after_user.ID,
+					"mail":    after_user.Mail,
+				}).Error("could not send balance warning mail")
+			}
+		}
 	}
 
 	if before_user.Balance >= 0 && after_user.Balance < 0 {
@@ -54,6 +64,16 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 			Priority: 4,
 			Tags:     []string{"credit_card", "warning"},
 		}, true)
+
+		if after_user.Mail != "" {
+			err = c.SendBalanceZeroMail(after_user)
+			if err != nil {
+				logrus.WithError(err).WithFields(logrus.Fields{
+					"user_id": after_user.ID,
+					"mail":    after_user.Mail,
+				}).Error("could not send balance zero mail")
+			}
+		}
 
 		runstate := types.UserNodeStateRunning
 		nodes, err := c.repos.UserNodeRepo.Search(&types.UserNodeSearch{

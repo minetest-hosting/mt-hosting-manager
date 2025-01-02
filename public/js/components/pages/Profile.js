@@ -56,6 +56,12 @@ export default {
 				</td>
 			</tr>
 			<tr>
+				<td>E-Mail (for notifications only)</td>
+				<td>
+					<input class="form-control" v-model="profile.mail" placeholder="E-Mail address"/>
+				</td>
+			</tr>
+			<tr>
 				<td>Alternative currency</td>
 				<td>
 					<select class="form-control" v-model="profile.currency">

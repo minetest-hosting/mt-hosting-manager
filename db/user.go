@@ -19,7 +19,7 @@ func (r *UserRepository) Insert(u *types.User) error {
 }
 
 func (r *UserRepository) Update(u *types.User) error {
-	return r.g.Model(u).Updates(u).Error
+	return r.g.Model(u).Select("*").Updates(u).Error
 }
 
 func (r *UserRepository) GetByID(id string) (*types.User, error) {
