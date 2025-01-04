@@ -34,7 +34,7 @@ export default {
                     {{server.port}}
                 </td>
                 <td v-if="show_stats">
-                    <server-stats-badge :id="server.id"/>
+                    <server-stats-badge :id="server.id" v-if="server.state == 'RUNNING'"/>
                 </td>
                 <td v-if="show_parent">
                     <node-link :id="server.user_node_id"/>
