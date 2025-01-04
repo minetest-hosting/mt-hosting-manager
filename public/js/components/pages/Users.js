@@ -4,12 +4,14 @@ import { get_users } from "../../api/user.js";
 
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import CardLayout from "../layouts/CardLayout.js";
+import TimestampBadge from "../TimestampBadge.js";
 import UserLink from "../UserLink.js";
 
 export default {
 	components: {
 		"card-layout": CardLayout,
         "currency-display": CurrencyDisplay,
+        "timestamp-badge": TimestampBadge,
         "user-link": UserLink
 	},
     methods: {
@@ -50,7 +52,9 @@ export default {
                     <td>{{user.type}}</td>
                     <td>{{user.role}}</td>
                     <td>{{format_time(user.created)}}</td>
-                    <td>{{format_time(user.lastlogin)}} ({{format_duration((Date.now()/1000) - user.lastlogin)}} ago)</td>
+                    <td>
+                        <timestamp-badge :timestamp="user.lastlogin" :show_duration="true"/>
+                    </td>
                     <td>
                         <currency-display :eurocents="user.balance" :enable_warning="true"/>
                     </td>

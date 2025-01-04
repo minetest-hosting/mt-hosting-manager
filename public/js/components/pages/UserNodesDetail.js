@@ -4,6 +4,7 @@ import ServerList from "../ServerList.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import NodeTypeSpec from "../NodeTypeSpec.js";
 import UserLink from "../UserLink.js";
+import TimestampBadge from "../TimestampBadge.js";
 
 import { country_map, flag_map } from "../../util/country.js";
 
@@ -28,7 +29,8 @@ export default {
 		"server-list": ServerList,
 		"currency-display": CurrencyDisplay,
 		"node-type-spec": NodeTypeSpec,
-		"user-link": UserLink
+		"user-link": UserLink,
+		"timestamp-badge": TimestampBadge
 	},
 	data: function() {
 		return {
@@ -146,11 +148,15 @@ export default {
 				</tr>
 				<tr>
 					<td>Created</td>
-					<td>{{format_time(node.created)}}</td>
+					<td>
+						<timestamp-badge :timestamp="node.created" :show_duration="true"/>
+					</td>
 				</tr>
 				<tr>
 					<td>Next billing cycle</td>
-					<td>{{format_time(node.valid_until)}}</td>
+					<td>
+						<timestamp-badge :timestamp="node.valid_until" :show_duration="true"/>
+					</td>
 				</tr>
 				<tr>
 					<td>Daily cost</td>

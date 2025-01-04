@@ -4,6 +4,7 @@ import HelpPopup from "../HelpPopup.js";
 import NodeLink from "../NodeLink.js";
 import ClipboardCopy from "../ClipboardCopy.js";
 import ServerStatsBadge from "../ServerStatsBadge.js";
+import TimestampBadge from "../TimestampBadge.js";
 
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
@@ -21,7 +22,8 @@ export default {
 		"help-popup": HelpPopup,
 		"node-link": NodeLink,
 		"clipboard-copy": ClipboardCopy,
-		"server-stats-badge": ServerStatsBadge
+		"server-stats-badge": ServerStatsBadge,
+		"timestamp-badge": TimestampBadge
 	},
 	mounted: function() {
 		const server_id = this.id;
@@ -119,6 +121,12 @@ export default {
 					<td>Name</td>
 					<td>
 						<input type="text" class="form-control" v-model="server.name" :disabled="server.state != 'RUNNING'"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td>
+						<timestamp-badge :timestamp="server.created" :show_duration="true"/>
 					</td>
 				</tr>
 				<tr>
