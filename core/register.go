@@ -36,7 +36,7 @@ func (c *Core) RegisterOauth(user_info *oauth.OauthUserInfo) (*types.User, error
 		}
 	}
 
-	user, err = c.CreateUser(new_name, user_info.ExternalID, "", types.UserType(user_info.Provider), types.UserRoleUser)
+	user, err = c.CreateUser(new_name, user_info.ExternalID, "", types.UserType(user_info.Provider))
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (c *Core) RegisterLocal(rr *types.RegisterRequest) (*types.User, *types.Che
 		return nil, nil, err
 	}
 
-	user, err := c.CreateUser(rr.Name, "", string(hash), types.UserTypeLocal, types.UserRoleUser)
+	user, err := c.CreateUser(rr.Name, "", string(hash), types.UserTypeLocal)
 	if err != nil {
 		return nil, nil, err
 	}

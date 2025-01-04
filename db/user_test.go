@@ -47,11 +47,16 @@ func TestUserRepository(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Nil(t, u)
 
-	// all users
+	// get all users
 	list, err := repos.UserRepo.GetAll()
 	assert.NoError(t, err)
 	assert.NotNil(t, list)
 	assert.Equal(t, 1, len(list))
+
+	// count
+	count, err := repos.UserRepo.CountAll()
+	assert.NoError(t, err)
+	assert.Equal(t, int64(1), count)
 
 	// search existing
 	limit := 10

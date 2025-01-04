@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (c *Core) CreateUser(name, external_id, hash string, t types.UserType, role types.UserRole) (*types.User, error) {
+func (c *Core) CreateUser(name, external_id, hash string, t types.UserType) (*types.User, error) {
 	var balance int64 = 0
 
 	if c.cfg.InitialBalance != "" {
@@ -19,6 +19,18 @@ func (c *Core) CreateUser(name, external_id, hash string, t types.UserType, role
 		if err == nil {
 			balance = b
 		}
+	}
+
+	// default role
+	role := types.UserRoleUser
+
+	usercount, err := c.repos.UserRepo.CountAll()
+	if err != nil {
+		return nil, fmt.Errorf("error counting users: %v", err)
+	}
+	if usercount == 0 {
+		// first user, make them admin
+		role = types.UserRoleAdmin
 	}
 
 	user := &types.User{
@@ -48,7 +60,7 @@ func (c *Core) CreateUser(name, external_id, hash string, t types.UserType, role
 		Tags:     []string{"new"},
 	}, true)
 
-	err := c.repos.UserRepo.Insert(user)
+	err = c.repos.UserRepo.Insert(user)
 
 	c.AddAuditLog(&types.AuditLog{
 		Type:   types.AuditLogUserCreated,

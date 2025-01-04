@@ -50,9 +50,12 @@ func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id st
 }
 
 func (r *UserRepository) GetAll() ([]*types.User, error) {
-	var users []*types.User
-	err := r.g.Find(&users).Error
-	return users, err
+	return FindMulti[types.User](r.g.Where(types.User{}))
+}
+
+func (r *UserRepository) CountAll() (int64, error) {
+	var c int64
+	return c, r.g.Model(types.User{}).Count(&c).Error
 }
 
 func (r *UserRepository) Delete(user_id string) error {
