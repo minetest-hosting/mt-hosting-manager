@@ -11,6 +11,7 @@ export default {
 	data: function() {
 		return {
 			show_archived: false,
+			show_stats: false,
 			servers: [],
 			breadcrumb: [{
 				icon: "home", name: "Home", link: "/"
@@ -45,7 +46,13 @@ export default {
 				Show archived servers
 			</label>
 		</div>
-		<server-list :list="servers" :show_parent="true"/>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" v-model="show_stats" value="" id="show_stats">
+			<label class="form-check-label" for="show_stats">
+				Show status
+			</label>
+		</div>
+		<server-list :list="servers" :show_parent="true" :show_stats="show_stats"/>
 	</card-layout>
 	`
 };
