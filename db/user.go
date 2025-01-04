@@ -92,6 +92,6 @@ func (r *UserRepository) Search(s *types.UserSearch) ([]*types.User, error) {
 	}
 
 	var list []*types.User
-	err := q.Find(&list).Error
+	err := q.Order("lastlogin DESC").Find(&list).Error
 	return list, err
 }
