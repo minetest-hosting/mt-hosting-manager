@@ -239,6 +239,9 @@ func (a *Api) GetMTServerStats(w http.ResponseWriter, r *http.Request, c *types.
 		SendError(w, 404, fmt.Errorf("server not found: %s", id))
 		return
 	}
+	if server.State != types.MinetestServerStateRunning {
+		SendError(w, 500, fmt.Errorf("server is not running"))
+	}
 
 	client, err := a.core.GetMTUIClient(server)
 	if err != nil {
