@@ -50,7 +50,7 @@ func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id st
 }
 
 func (r *UserRepository) GetAll() ([]*types.User, error) {
-	return FindMulti[types.User](r.g.Where(types.User{}))
+	return FindMulti[types.User](r.g.Where(types.User{}).Order("lastlogin DESC"))
 }
 
 func (r *UserRepository) CountAll() (int64, error) {

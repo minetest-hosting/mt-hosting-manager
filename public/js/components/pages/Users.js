@@ -1,4 +1,5 @@
 import format_time from "../../util/format_time.js";
+import format_duration from "../../util/format_duration.js";
 import { get_users } from "../../api/user.js";
 
 import CurrencyDisplay from "../CurrencyDisplay.js";
@@ -12,7 +13,8 @@ export default {
         "user-link": UserLink
 	},
     methods: {
-        format_time
+        format_time,
+        format_duration
     },
 	data: function() {
 		return {
@@ -48,7 +50,7 @@ export default {
                     <td>{{user.type}}</td>
                     <td>{{user.role}}</td>
                     <td>{{format_time(user.created)}}</td>
-                    <td>{{format_time(user.lastlogin)}}</td>
+                    <td>{{format_time(user.lastlogin)}} ({{format_duration((Date.now()/1000) - user.lastlogin)}} ago)</td>
                     <td>
                         <currency-display :eurocents="user.balance" :enable_warning="true"/>
                     </td>
