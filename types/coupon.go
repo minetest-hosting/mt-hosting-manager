@@ -7,6 +7,8 @@ type Coupon struct {
 	ValidFrom  int64  `json:"valid_from" gorm:"column:valid_from"`
 	ValidUntil int64  `json:"valid_until" gorm:"column:valid_until"`
 	Value      int64  `json:"value" gorm:"column:value"`
+	UseCount   int64  `json:"use_count" gorm:"column:use_count"`
+	UseMax     int64  `json:"use_max" gorm:"column:use_max"`
 }
 
 func (*Coupon) TableName() string {

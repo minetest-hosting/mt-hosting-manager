@@ -5,7 +5,9 @@ create table coupon(
     code varchar(32) not null unique,
     valid_from bigint not null, -- valid from time in `time.Now().Unix()`
     valid_until bigint not null, -- expiration time in `time.Now().Unix()`
-    value bigint not null default 0 -- coupon value in euro-cent
+    value bigint not null default 0, -- coupon value in euro-cent
+    use_count bigint not null default 0, -- current uses
+    use_max bigint not null default 10 -- max use count
 );
 
 create table redeemed_coupon(
