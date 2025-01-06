@@ -16,8 +16,6 @@ import Finance from './components/pages/Finance.js';
 import FinanceDetail from './components/pages/FinanceDetail.js';
 import AuditLogs from './components/pages/AuditLogs.js';
 import Help from './components/pages/Help.js';
-import PrivacyPolicy from './components/pages/PrivacyPolicy.js';
-import TermsConditions from './components/pages/TermsConditions.js';
 import Pricing from './components/pages/Pricing.js';
 import Register from './components/pages/Register.js';
 import Overview from './components/pages/Overview.js';
@@ -36,10 +34,6 @@ export default [{
 	path: "/overview", component: Overview
 },{
 	path: "/pricing", component: Pricing
-},{
-	path: "/privacy-policy", component: PrivacyPolicy
-},{
-	path: "/terms-conditions", component: TermsConditions
 },{
 	path: "/help", component: Help,
 	meta: { loggedIn: true }
