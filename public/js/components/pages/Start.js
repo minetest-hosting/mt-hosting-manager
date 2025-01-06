@@ -1,6 +1,8 @@
 import CardLayout from "../layouts/CardLayout.js";
 import Breadcrumb from "../Breadcrumb.js";
 
+import { is_logged_in } from "../../service/login.js";
+
 export default {
 	components: {
 		"card-layout": CardLayout,
@@ -11,11 +13,14 @@ export default {
 			breadcrumb: [{icon: "home", name: "Home", link: "/"}]
 		};
 	},
+	computed: {
+		is_logged_in
+	},
 	template: /*html*/`
 	<card-layout title="Home" icon="home" :breadcrumb="breadcrumb">
 		<div class="text-center">
 			<h4>Minetest hosting</h4>
-			<img src="assets/minetest-hosting-80px.png" class="img img-rounded"/>
+			<img src="assets/minetest-hosting-600px.png" class="img img-rounded"/>
 			<hr/>
 			<router-link class="btn btn-secondary" to="/pricing">
 				<i class="fa fa-money-bill"></i> Pricing
@@ -37,6 +42,11 @@ export default {
 			<a class="btn btn-outline-secondary" href="https://github.com/minetest-go/mtui" target="new">
 				<i class="fa-brands fa-github"></i> Powered by mtui
 			</a>
+			&nbsp;
+			<router-link class="btn btn btn-outline-success" :to="'/mtservers/create'" v-if="is_logged_in">
+				<i class="fa fa-plus"></i>
+				Create server
+			</router-link>
 		</div>
 	</card-layout>
 	`
