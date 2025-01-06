@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/lib/pq v1.10.9
-	github.com/minetest-go/oauth v1.0.1
+	github.com/minetest-go/oauth v1.0.2
 	github.com/oschwald/geoip2-golang v1.11.0
 	github.com/pkg/sftp v1.13.7
 	github.com/prometheus/client_golang v1.20.4
