@@ -55,7 +55,7 @@ jobs:
 
     - name: Build docker image
       run: |
-        docker build . -t ghcr.io/minetest-hosting/mt-hosting-manager:latest
+        docker build . -t ghcr.io/luanti-hosting/mt-hosting-manager:latest
 
     - name: Log in to the Container registry
       if: success() && github.ref == 'refs/heads/master'
@@ -68,13 +68,13 @@ jobs:
     - name: Push docker image
       if: success() && github.ref == 'refs/heads/master'
       run: |
-        docker push ghcr.io/minetest-hosting/mt-hosting-manager:latest
+        docker push ghcr.io/luanti-hosting/mt-hosting-manager:latest
 
-    - name: Trigger deployment on hosting.minetest.ch
+    - name: Trigger deployment on hosting.luanti.ch
       if: success() && github.ref == 'refs/heads/master'
       uses: benc-uk/workflow-dispatch@v1.2.4
       with:
         workflow: deploy
-        repo: minetest-hosting/hosting.minetest.ch
+        repo: luanti-hosting/hosting.luanti.ch
         ref: refs/heads/main
         token: ${{ secrets.GH_DEPLOY_TOKEN }}
