@@ -74,6 +74,8 @@ func (api *Api) Setup() {
 	user_api.HandleFunc("/set_password", api.Secure(api.SetPassword)).Methods(http.MethodPost)
 	user_api.HandleFunc("/audit_log", api.Secure(api.SearchAuditLog)).Methods(http.MethodPost)
 
+	user_api.HandleFunc("/coupon/redeem/{code}", api.Secure(api.RedeemCoupon)).Methods(http.MethodPost)
+
 	user_api.HandleFunc("/profile", api.Secure(api.GetUserProfile)).Methods(http.MethodGet)
 	user_api.HandleFunc("/profile", api.Secure(api.UpdateUserProfile)).Methods(http.MethodPost)
 
@@ -141,6 +143,8 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/exchange_rate", api.Secure(api.CreateExchangeRate)).Methods(http.MethodPost)
 	admin_api.HandleFunc("/exchange_rate/{currency}", api.Secure(api.UpdateExchangeRate)).Methods(http.MethodPut)
 	admin_api.HandleFunc("/exchange_rate/{currency}", api.Secure(api.DeleteExchangeRate)).Methods(http.MethodDelete)
+
+	admin_api.HandleFunc("/coupon", api.Secure(api.CreateCoupon)).Methods(http.MethodPost)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {

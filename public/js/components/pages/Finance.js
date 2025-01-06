@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import CurrencyDisplay from "../CurrencyDisplay.js";
 import UserSearch from "../UserSearch.js";
+import RedeemCoupon from "../RedeemCoupon.js";
 
 import { search_transaction, create } from "../../api/transaction.js";
 import format_time from "../../util/format_time.js";
@@ -12,7 +13,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
         "currency-display": CurrencyDisplay,
-        "user-search": UserSearch
+        "user-search": UserSearch,
+        "redeem-coupon": RedeemCoupon
 	},
     data: function() {
         return {
@@ -118,6 +120,9 @@ export default {
                 </tr>
             </thead>
         </table>
+        <hr>
+        <h4>Coupon</h4>
+        <redeem-coupon/>
         <hr>
         <h4>Payment history</h4>
         <div class="row">
