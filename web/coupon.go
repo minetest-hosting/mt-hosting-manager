@@ -73,6 +73,12 @@ func (a *Api) RedeemCoupon(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
+	a.core.AddAuditLog(&types.AuditLog{
+		Type:   types.AuditLogCouponRedeemed,
+		UserID: c.UserID,
+		Amount: &coupon.Value,
+	})
+
 	// all done
 	Send(w, RedeemStatus{Success: true}, nil)
 }

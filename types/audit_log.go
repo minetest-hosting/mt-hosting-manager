@@ -23,6 +23,8 @@ const (
 	AuditLogServerBackupStarted  AuditLogType = "server_backup_started"
 	AuditLogServerBackupFinished AuditLogType = "server_backup_finished"
 
+	AuditLogCouponRedeemed AuditLogType = "coupon_redeemed"
+
 	AuditLogPaymentCreated  AuditLogType = "payment_created"
 	AuditLogPaymentReceived AuditLogType = "payment_received"
 	AuditLogPaymentRefunded AuditLogType = "payment_refunded"
