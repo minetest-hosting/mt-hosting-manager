@@ -45,6 +45,14 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 			return fmt.Errorf("create backup job error: %v", err)
 		}
 
+		w.core.AddAuditLog(&types.AuditLog{
+			Type:             types.AuditLogServerBackupStarted,
+			UserID:           backup.UserID,
+			UserNodeID:       job.UserNodeID,
+			MinetestServerID: job.MinetestServerID,
+			BackupID:         job.BackupID,
+		})
+
 		job.Message = info.Message
 		job.Data = []byte(info.ID)
 		job.Step = 1
@@ -82,6 +90,14 @@ func (w *Worker) ServerBackup(job *types.Job) error {
 			if err != nil {
 				return fmt.Errorf("error in backup update: %v", err)
 			}
+
+			w.core.AddAuditLog(&types.AuditLog{
+				Type:             types.AuditLogServerBackupFinished,
+				UserID:           backup.UserID,
+				UserNodeID:       job.UserNodeID,
+				MinetestServerID: job.MinetestServerID,
+				BackupID:         job.BackupID,
+			})
 
 		case mtui.BackupJobFailure:
 			// backup failed
