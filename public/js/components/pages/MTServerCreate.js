@@ -45,8 +45,8 @@ export default {
 		}
 	},
 	methods: {
-		create: function() {
-			const server = {
+		create: async function() {
+			const new_server = {
 				port: this.port,
 				name: this.name,
 				dns_name: this.dns_name,
@@ -54,15 +54,11 @@ export default {
 				user_node_id: this.user_node_id
 			};
 
-			create_validate(server)
-			.then(v => {
-				if (v.valid) {
-					return create_server(server, this.backup ? this.backup.id : null)
-					.then(s => this.$router.push(`/mtservers/${s.id}`));
-				}
-
-				this.validation_result = v;
-			});
+			this.validation_result = await create_validate(new_server);
+			if (this.validation_result.valid) {
+				const server = await create_server(new_server, this.backup ? this.backup.id : null);
+				this.$router.push(`/mtservers/${server.id}`);
+			}
 		}
 	},
 	computed: {

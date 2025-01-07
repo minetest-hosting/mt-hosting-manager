@@ -19,10 +19,10 @@ export default {
 			}]
 		};
 	},
-	mounted: function() {
+	mounted: async function() {
 		const id = this.id;
 		if (id != "new") {
-			get_by_id(this.id).then(nt => this.nt = nt);
+			this.nt = await get_by_id(this.id);
 		} else {
 			this.nt = {
 				id: "",
@@ -32,23 +32,21 @@ export default {
 		}
 	},
 	methods: {
-		remove: function() {
-			remove(this.nt)
-			.then(() => fetch_nodetypes())
-			.then(() => this.$router.push("/node_types"));
+		remove: async function() {
+			await remove(this.nt);
+			await fetch_nodetypes();
+			this.$router.push("/node_types");
 		},
-		save: function() {
+		save: async function() {
 			if (this.nt.id == "") {
 				// create new
-				add(this.nt).then(nt => Object.assign(this.nt, nt))
-				.then(() => fetch_nodetypes())
-				.then(() => this.$router.push("/node_types"));
+				await add(this.nt);
 			} else {
 				// update existing
-				update(this.nt)
-				.then(() => fetch_nodetypes())
-				.then(() => this.$router.push("/node_types"));
+				await update(this.nt);
 			}
+			await fetch_nodetypes();
+			this.$router.push("/node_types");
 		}
 	},
 	template: /*html*/`

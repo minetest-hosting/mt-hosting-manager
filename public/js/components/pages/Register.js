@@ -22,10 +22,10 @@ export default {
 		};
 	},
 	methods: {
-		update_captcha: function() {
-			create_captcha().then(c => this.captcha_id = c);
+		update_captcha: async function() {
+			this.captcha_id = await create_captcha();
 		},
-		register: function() {
+		register: async function() {
 			const rr = {
 				name: this.name,
 				password: this.password,
@@ -33,21 +33,15 @@ export default {
 				captcha_answer: this.captcha_answer
 			};
 
-			register(rr)
-			.then(r => {
-				this.register_result = r;
-				if (!r.success) {
-					// update captcha
-					this.update_captcha();
-				} else {
-					// register and redirect
-					login({
-						username: this.name,
-						password: this.password
-					})
-					.then(() => this.$router.push("/profile"));
-				}
-			});
+			this.register_result = await register(rr);
+			if (!this.register_result.success) {
+				// update captcha
+				this.update_captcha();
+			} else {
+				// register and redirect
+				await login({ username: this.name, password: this.password });
+				this.$router.push("/profile");
+			}
 		}
 	},
 	computed: {

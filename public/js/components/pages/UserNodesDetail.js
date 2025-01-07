@@ -57,15 +57,12 @@ export default {
 			flag_map
 		};
 	},
-	mounted: function() {
+	mounted: async function() {
 		const nodeid = this.id;
-		get_by_id(nodeid)
-		.then(n => this.node = n)
-		.then(() => {
-			this.update_stats();
-			this.handle = setInterval(() => this.update_stats(), 2000);
-			this.nodetype = get_nodetype(this.node.node_type_id);
-		});
+		this.node = await get_by_id(nodeid);
+		this.update_stats();
+		this.handle = setInterval(() => this.update_stats(), 2000);
+		this.nodetype = get_nodetype(this.node.node_type_id);
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
@@ -73,18 +70,17 @@ export default {
 	methods: {
 		format_time,
 		has_role,
-		update_stats: function() {
+		update_stats: async function() {
 			const nodeid = this.id;
 			if (this.node.state == "PROVISIONING") {
 				// fetch job progress
-				get_latest_job(this.id).then(j => this.job = j);
+				this.job = await get_latest_job(this.id);
 			}
 
-			get_by_id(nodeid)
-			.then(n => this.node = n);
+			this.node = await get_by_id(nodeid);
 
-			get_mtservers_by_nodeid(nodeid)
-			.then(list => this.servers = list.filter(s => s.state != "DECOMMISSIONED"));
+			const list = await get_mtservers_by_nodeid(nodeid);
+			this.servers = list.filter(s => s.state != "DECOMMISSIONED");
 	
 			if (this.node.state == "DECOMMISSIONED") {
 				clearInterval(this.handle);
@@ -92,16 +88,14 @@ export default {
 			}
 
 			if (this.node.state == "RUNNING") {
-				get_stats(nodeid)
-				.then(stats => {
-					this.load_percent = stats.load_percent;
-					this.disk_gb_total = get_gb_rounded(stats.disk_size);
-					this.disk_gb_used = get_gb_rounded(stats.disk_used);
-					this.disk_percent = parseInt(this.disk_gb_used / this.disk_gb_total * 100);
-					this.memory_gb_total = get_gb_rounded(stats.memory_size);
-					this.memory_gb_used = get_gb_rounded(stats.memory_used);
-					this.memory_percent = parseInt(this.memory_gb_used / this.memory_gb_total * 100);
-				});
+				const stats = await get_stats(nodeid);
+				this.load_percent = stats.load_percent;
+				this.disk_gb_total = get_gb_rounded(stats.disk_size);
+				this.disk_gb_used = get_gb_rounded(stats.disk_used);
+				this.disk_percent = parseInt(this.disk_gb_used / this.disk_gb_total * 100);
+				this.memory_gb_total = get_gb_rounded(stats.memory_size);
+				this.memory_gb_used = get_gb_rounded(stats.memory_used);
+				this.memory_percent = parseInt(this.memory_gb_used / this.memory_gb_total * 100);
 			}
 		},
 		save: function() {

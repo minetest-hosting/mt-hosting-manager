@@ -24,17 +24,11 @@ export default {
 		"server-stats-badge": ServerStatsBadge,
 		"timestamp-badge": TimestampBadge
 	},
-	mounted: function() {
+	mounted: async function() {
 		const server_id = this.id;
-		get_by_id(server_id)
-		.then(s => {
-			this.server = s;
-			return get_node_by_id(s.user_node_id);
-		})
-		.then(n => {
-			this.node = n;
-			this.handle = setInterval(() => this.update(), 2000);
-		});
+		this.server = await get_by_id(server_id);
+		this.node = await get_node_by_id(this.server.user_node_id);
+		this.handle = setInterval(() => this.update(), 2000);
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
@@ -57,31 +51,26 @@ export default {
 	},
 	methods: {
 		has_role,
-		update: function() {
+		update: async function() {
 			const server_id = this.id;
 
-			get_latest_job(server_id)
-			.then(j => this.job = j);
+			this.job = await get_latest_job(server_id);
 
 			// update state
-			get_by_id(server_id)
-			.then(s => this.server.state = s.state);
+			const server = await get_by_id(server_id);
+			this.server.state = server.state;
 		},
-		setup: function() {
-			setup(this.server)
-			.then(j => {
-				j.state = "RUNNING";
-				this.job = j;
-			});
+		setup: async function() {
+			const job = await setup(this.server);
+			job.state = "RUNNING";
+			this.job = job;
 		},
 		save: function() {
 			update(this.server);
 		},
-		create_backup: function() {
+		create_backup: async function() {
 			this.backup_scheduled = true;
-			create_backup({
-				minetest_server_id: this.id
-			});
+			await create_backup({ minetest_server_id: this.id });
 		}
 	},
 	computed: {

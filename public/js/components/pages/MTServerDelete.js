@@ -21,14 +21,13 @@ export default {
 			}]
 		};
 	},
-	mounted: function() {
-		get_by_id(this.id)
-		.then(s => this.server = s);
+	mounted: async function() {
+		this.server = await get_by_id(this.id);
 	},
 	methods: {
-		remove: function() {
-			remove(this.server)
-			.then(() => this.$router.push(`/nodes/${this.server.user_node_id}`));
+		remove: async function() {
+			await remove(this.server);
+			this.$router.push(`/nodes/${this.server.user_node_id}`);
 		}
 	},
 	template: /*html*/`
