@@ -1,4 +1,4 @@
-import { protected_fetch } from "./protected_fetch.js";
+import { protected_fetch, to_json } from "./protected_fetch.js";
 
 export const get_all = () => protected_fetch(`api/mtserver`);
 
@@ -6,7 +6,7 @@ export const get_by_id = id => protected_fetch(`api/mtserver/${id}`);
 
 export const get_latest_job = id => protected_fetch(`api/mtserver/${id}/job`);
 
-export const get_stats = id => protected_fetch(`api/mtserver/${id}/stats`);
+export const get_stats = id => fetch(`api/mtserver/${id}/stats`).then(to_json);
 
 export const search = s => protected_fetch(`api/mtserver/search`, {
     method: "POST",

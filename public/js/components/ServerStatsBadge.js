@@ -17,7 +17,12 @@ export default {
 	},
     methods: {
         update: async function() {
-            this.stats = await get_stats(this.id);
+            try {
+                this.stats = await get_stats(this.id);
+            } catch (e) {
+                // ignore error
+                this.stats = null;
+            }
         }
     },
     computed: {
