@@ -1,6 +1,7 @@
 import CardLayout from "../layouts/CardLayout.js";
 import ServerLink from "../ServerLink.js";
 import BackupState from "../BackupState.js";
+import TimestampBadge from "../TimestampBadge.js";
 
 import { get_all, remove } from "../../api/backup.js";
 
@@ -12,7 +13,8 @@ export default {
 	components: {
 		"card-layout": CardLayout,
 		"server-link": ServerLink,
-		"backup-state": BackupState
+		"backup-state": BackupState,
+		"timestamp-badge": TimestampBadge
 	},
 	data: function() {
 		return {
@@ -46,6 +48,7 @@ export default {
 			<thead>
 				<tr>
 					<th>Created</th>
+					<th>Expires</th>
 					<th>Server</th>
 					<th>Size</th>
 					<th>State</th>
@@ -55,6 +58,9 @@ export default {
 			<tbody>
 				<tr v-for="backup in backups">
 					<td>{{format_time(backup.created)}}</td>
+					<td>
+						<timestamp-badge :timestamp="backup.expires" :show_duration="true"/>
+					</td>
 					<td>
 						<server-link :id="backup.minetest_server_id"/>
 					</td>
