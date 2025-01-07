@@ -55,6 +55,7 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 	b.ID = uuid.NewString()
 	b.Size = 0
 	b.Created = time.Now().Unix()
+	b.UserID = c.UserID
 
 	err = a.repos.BackupRepo.Insert(b)
 	if err != nil {
