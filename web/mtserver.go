@@ -98,14 +98,8 @@ func (a *Api) CreateMTServer(w http.ResponseWriter, r *http.Request, c *types.Cl
 			return
 		}
 
-		backup_space, err := a.repos.BackupSpaceRepo.GetByID(backup.BackupSpaceID)
-		if err != nil {
-			SendError(w, 500, fmt.Errorf("could not fetch backup_space '%s': %v", backup.BackupSpaceID, err))
-			return
-		}
-
-		if c.Role != types.UserRoleAdmin && backup_space.UserID != c.UserID {
-			SendError(w, 403, fmt.Errorf("not authorized for backup space id: '%s'", backup_space.ID))
+		if c.Role != types.UserRoleAdmin && backup.UserID != c.UserID {
+			SendError(w, 403, fmt.Errorf("not authorized for backup id: '%s'", backup.ID))
 			return
 		}
 	}

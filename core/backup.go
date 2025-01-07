@@ -64,19 +64,3 @@ func (c *Core) StreamBackup(b *types.Backup, w io.Writer) error {
 	_, err = io.Copy(w, reader)
 	return err
 }
-
-func (c *Core) RemoveBackupSpace(bs *types.BackupSpace) error {
-	list, err := c.repos.BackupRepo.GetByBackupSpaceID(bs.ID)
-	if err != nil {
-		return err
-	}
-
-	for _, b := range list {
-		err = c.RemoveBackup(b)
-		if err != nil {
-			return err
-		}
-	}
-
-	return c.repos.BackupSpaceRepo.Delete(bs.ID)
-}

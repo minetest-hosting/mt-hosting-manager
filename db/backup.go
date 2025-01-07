@@ -23,24 +23,15 @@ func (r *BackupRepository) Update(n *types.Backup) error {
 }
 
 func (r *BackupRepository) GetByID(id string) (*types.Backup, error) {
-	var list []*types.Backup
-	err := r.g.Where(types.Backup{ID: id}).Limit(1).Find(&list).Error
-	if len(list) == 0 {
-		return nil, err
-	}
-	return list[0], err
+	return FindSingle[types.Backup](r.g.Where(types.Backup{ID: id}))
 }
 
 func (r *BackupRepository) GetByState(state types.BackupState) ([]*types.Backup, error) {
-	var list []*types.Backup
-	err := r.g.Where(types.Backup{State: state}).Find(&list).Error
-	return list, err
+	return FindMulti[types.Backup](r.g.Where(types.Backup{State: state}))
 }
 
-func (r *BackupRepository) GetByBackupSpaceID(backup_space_id string) ([]*types.Backup, error) {
-	var list []*types.Backup
-	err := r.g.Where(types.Backup{BackupSpaceID: backup_space_id}).Find(&list).Error
-	return list, err
+func (r *BackupRepository) GetByUserID(user_id string) ([]*types.Backup, error) {
+	return FindMulti[types.Backup](r.g.Where(types.Backup{UserID: user_id}))
 }
 
 func (r *BackupRepository) Delete(id string) error {

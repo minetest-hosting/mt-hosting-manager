@@ -87,8 +87,8 @@ export default {
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="has_role('ADMIN')">
-						<router-link to="/backup_spaces" class="nav-link">
-							<i class="fa fa-object-group"></i> Backup spaces
+						<router-link to="/backup" class="nav-link">
+							<i class="fa fa-object-group"></i> Backups
 						</router-link>
 					</li>
 					<li class="nav-item" v-if="is_logged_in">
