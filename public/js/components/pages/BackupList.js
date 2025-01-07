@@ -9,7 +9,6 @@ import format_time from "../../util/format_time.js";
 import format_size from "../../util/format_size.js";
 
 export default {
-	props: ["id"],
 	components: {
 		"card-layout": CardLayout,
 		"server-link": ServerLink,
