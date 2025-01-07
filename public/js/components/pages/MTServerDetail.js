@@ -9,7 +9,6 @@ import TimestampBadge from "../TimestampBadge.js";
 import { get_by_id, setup, get_latest_job, update } from "../../api/mtserver.js";
 import { get_hostingdomain_suffix } from "../../service/info.js";
 import { get_by_id as get_node_by_id } from "../../api/node.js";
-import { get_all as get_all_backup_spaces } from "../../api/backup_space.js";
 import { create as create_backup } from "../../api/backup.js";
 
 import { has_role } from "../../service/login.js";
@@ -25,18 +24,11 @@ export default {
 		"server-stats-badge": ServerStatsBadge,
 		"timestamp-badge": TimestampBadge
 	},
-	mounted: function() {
+	mounted: async function() {
 		const server_id = this.id;
-		get_all_backup_spaces().then(s => this.backup_spaces = s);
-		get_by_id(server_id)
-		.then(s => {
-			this.server = s;
-			return get_node_by_id(s.user_node_id);
-		})
-		.then(n => {
-			this.node = n;
-			this.handle = setInterval(() => this.update(), 2000);
-		});
+		this.server = await get_by_id(server_id);
+		this.node = await get_node_by_id(this.server.user_node_id);
+		this.handle = setInterval(() => this.update(), 2000);
 	},
 	beforeUnmount: function() {
 		clearInterval(this.handle);
@@ -45,8 +37,6 @@ export default {
 		return {
 			server: null,
 			node: null,
-			backup_spaces: [],
-			backup_space: null,
 			backup_scheduled: false,
 			job: null,
 			dns_suffix: get_hostingdomain_suffix(),
@@ -61,32 +51,26 @@ export default {
 	},
 	methods: {
 		has_role,
-		update: function() {
+		update: async function() {
 			const server_id = this.id;
 
-			get_latest_job(server_id)
-			.then(j => this.job = j);
+			this.job = await get_latest_job(server_id);
 
 			// update state
-			get_by_id(server_id)
-			.then(s => this.server.state = s.state);
+			const server = await get_by_id(server_id);
+			this.server.state = server.state;
 		},
-		setup: function() {
-			setup(this.server)
-			.then(j => {
-				j.state = "RUNNING";
-				this.job = j;
-			});
+		setup: async function() {
+			const job = await setup(this.server);
+			job.state = "RUNNING";
+			this.job = job;
 		},
 		save: function() {
 			update(this.server);
 		},
-		create_backup: function() {
+		create_backup: async function() {
 			this.backup_scheduled = true;
-			create_backup({
-				backup_space_id: this.backup_space,
-				minetest_server_id: this.id
-			});
+			await create_backup({ minetest_server_id: this.id });
 		}
 	},
 	computed: {
@@ -191,19 +175,14 @@ export default {
 						<server-stats-badge v-if="server.state == 'RUNNING'" :id="server.id"/>
 					</td>
 				</tr>
-				<tr v-if="server.state == 'RUNNING' && backup_spaces.length > 0">
+				<tr v-if="server.state == 'RUNNING'">
 					<td>Backup</td>
 					<td>
-						<div class="input-group">
-							<select v-model="backup_space" class="form-control" :disabled="backup_scheduled">
-								<option v-for="bs in backup_spaces" :value="bs.id">{{bs.name}} ({{bs.retention_days}} days retention)</option>
-							</select>
-							<button class="btn btn-secondary" :disabled="!backup_space || backup_scheduled" v-on:click="create_backup">
-								<i class="fa fa-floppy-disk"></i>
-								Create
-							</button>
-						</div>
-						<router-link :to="'/backup_spaces/' + backup_space" v-if="backup_scheduled">
+						<button class="btn btn-secondary" :disabled="backup_scheduled" v-on:click="create_backup">
+							<i class="fa fa-floppy-disk"></i>
+							Create
+						</button>
+						<router-link :to="'/backup'" v-if="backup_scheduled">
 							<i class="fa fa-check"></i>
 							Backup scheduled
 						</router-link>

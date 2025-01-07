@@ -20,16 +20,7 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 		return
 	}
 
-	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backupspace not found: '%s'", b.MinetestServerID))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		// not the owner and not admin
 		SendError(w, 401, fmt.Errorf("user-id mismatch"))
 		return
@@ -64,6 +55,7 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 	b.ID = uuid.NewString()
 	b.Size = 0
 	b.Created = time.Now().Unix()
+	b.UserID = c.UserID
 
 	err = a.repos.BackupRepo.Insert(b)
 	if err != nil {
@@ -83,22 +75,7 @@ func (a *Api) CreateBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 }
 
 func (a *Api) GetBackups(w http.ResponseWriter, r *http.Request, c *types.Claims) {
-	vars := mux.Vars(r)
-	bs, err := a.repos.BackupSpaceRepo.GetByID(vars["id"])
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backup_space not found"))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
-		SendError(w, 401, fmt.Errorf("unauthorized"))
-		return
-	}
-
-	list, err := a.repos.BackupRepo.GetByBackupSpaceID(bs.ID)
+	list, err := a.repos.BackupRepo.GetByUserID(c.UserID)
 	Send(w, list, err)
 }
 
@@ -113,16 +90,7 @@ func (a *Api) RemoveBackup(w http.ResponseWriter, r *http.Request, c *types.Clai
 		SendError(w, 404, fmt.Errorf("backup not found"))
 		return
 	}
-	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backup_space not found"))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
@@ -142,16 +110,8 @@ func (a *Api) GetBackup(w http.ResponseWriter, r *http.Request, c *types.Claims)
 		SendError(w, 404, fmt.Errorf("backup not found"))
 		return
 	}
-	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backup_space not found"))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
@@ -170,16 +130,8 @@ func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Cl
 		SendError(w, 404, fmt.Errorf("backup not found"))
 		return
 	}
-	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backup_space not found"))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}
@@ -204,16 +156,8 @@ func (a *Api) GetBackupJob(w http.ResponseWriter, r *http.Request, c *types.Clai
 		SendError(w, 404, fmt.Errorf("backup not found"))
 		return
 	}
-	bs, err := a.repos.BackupSpaceRepo.GetByID(b.BackupSpaceID)
-	if err != nil {
-		SendError(w, 500, err)
-		return
-	}
-	if bs == nil {
-		SendError(w, 404, fmt.Errorf("backup_space not found"))
-		return
-	}
-	if bs.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
 		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
 		return
 	}

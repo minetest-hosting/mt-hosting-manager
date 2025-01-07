@@ -26,16 +26,14 @@ export default {
         };
     },
     methods: {
-        create_node: function() {
-            create({
+        create_node: async function() {
+            const node = await create({
                 node_type_id: this.nodetype_id,
                 alias: this.alias,
                 location: this.location
-            })
-            .then(node => {
-                this.$router.push(`/nodes/${node.id}`);
-                fetch_profile();
             });
+            this.$router.push(`/nodes/${node.id}`);
+            fetch_profile();
         }
     },
     computed: {
