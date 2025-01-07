@@ -18,19 +18,16 @@ export default {
             busy: false
 		};
 	},
-    mounted: function() {
+    mounted: async function() {
         this.busy = true;
-        get_all().then(s => {
-            this.spaces = s;
-            this.busy = false;
-        });
+        const s = await get_all();
+        this.spaces = s;
+        this.busy = false;
     },
     methods: {
-        create: function() {
-            create({
-                name: this.new_name
-            })
-            .then(bs => this.$router.push(`/backup_spaces/${bs.id}`));
+        create: async function() {
+            const bs = await create({ name: this.new_name });
+            this.$router.push(`/backup_spaces/${bs.id}`);
         }
     },
 	template: /*html*/`
