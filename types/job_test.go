@@ -16,10 +16,20 @@ func TestJobData(t *testing.T) {
 		Var: 666,
 	}
 
+	// job with data
+
 	j := &types.Job{}
+	assert.False(t, j.HasData())
 	assert.NoError(t, j.SetData(d))
+	assert.True(t, j.HasData())
 
 	d2 := &TestJobDataStruct{}
 	assert.NoError(t, j.GetData(d2))
 	assert.Equal(t, d.Var, d2.Var)
+
+	// job without data
+
+	j = &types.Job{}
+	assert.False(t, j.HasData())
+
 }

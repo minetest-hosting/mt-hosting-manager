@@ -58,6 +58,10 @@ func (j *Job) SetData(data any) error {
 	return nil
 }
 
+func (j *Job) HasData() bool {
+	return len(j.Data) > 0
+}
+
 func (j *Job) GetData(data any) error {
 	return json.Unmarshal(j.Data, data)
 }
@@ -71,6 +75,11 @@ func SetupNodeJob(node *UserNode) *Job {
 		State:      JobStateRunning,
 		UserNodeID: &node.ID,
 	}
+}
+
+type RemoveNodeJobData struct {
+	CreateBackups bool
+	BackupJobIDs  []string
 }
 
 func RemoveNodeJob(node *UserNode) *Job {

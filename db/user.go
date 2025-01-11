@@ -49,6 +49,10 @@ func (r *UserRepository) GetByTypeAndExternalID(t types.UserType, external_id st
 	return list[0], err
 }
 
+func (r *UserRepository) GetAllByRole(role types.UserRole) ([]*types.User, error) {
+	return FindMulti[types.User](r.g.Where(types.User{Role: role}).Order("lastlogin DESC"))
+}
+
 func (r *UserRepository) GetAll() ([]*types.User, error) {
 	return FindMulti[types.User](r.g.Where(types.User{}).Order("lastlogin DESC"))
 }

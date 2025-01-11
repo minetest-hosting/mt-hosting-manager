@@ -89,6 +89,15 @@ func (c *Core) SubtractBalance(user_id string, eurocents int64) error {
 
 			for _, node := range nodes {
 				j := types.RemoveNodeJob(node)
+				err = j.SetData(types.RemoveNodeJobData{CreateBackups: true})
+				if err != nil {
+					logrus.WithFields(logrus.Fields{
+						"err":     err,
+						"node_id": node.ID,
+					}).Error("could not set job data")
+					continue
+				}
+
 				err = c.repos.JobRepo.Insert(j)
 				if err != nil {
 					logrus.WithFields(logrus.Fields{

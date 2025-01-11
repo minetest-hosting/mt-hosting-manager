@@ -4,9 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"mt-hosting-manager/api/hetzner_dns"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -40,76 +43,165 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 		return fmt.Errorf("could not fetch servers: %v", err)
 	}
 
-	for _, server := range servers {
-		// remove CNAME record
-		if server.ExternalCNAMEDNSID != "" {
-			err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
-			if err != nil && err != hetzner_dns.ErrRecordNotFound {
-				return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
+	jd := &types.RemoveNodeJobData{}
+	if job.HasData() {
+		err = job.GetData(jd)
+		if err != nil {
+			return fmt.Errorf("could get job data: %v", err)
+		}
+	}
+
+	if !jd.CreateBackups {
+		// skip backup step
+		job.Step = 2
+	}
+
+	switch job.Step {
+	case 0: // create backup job(s)
+		for _, server := range servers {
+			if server.State != types.MinetestServerStateRunning {
+				// server is already removed, no need for backup
+				continue
 			}
 
-			server.ExternalCNAMEDNSID = ""
-			server.State = types.MinetestServerStateDecommissioned
-			err = w.repos.MinetestServerRepo.Update(server)
+			now := time.Now()
+			backup := &types.Backup{
+				ID:               uuid.NewString(),
+				State:            types.BackupStateCreated,
+				Passphrase:       core.RandStringRunes(64),
+				UserID:           node.UserID,
+				MinetestServerID: server.ID,
+				Created:          now.Unix(),
+				Expires:          now.Add(time.Hour * 24 * 365).Unix(),
+			}
+			err = w.repos.BackupRepo.Insert(backup)
 			if err != nil {
-				return fmt.Errorf("could not update server entry '%s': %v", server.ID, err)
+				return fmt.Errorf("backup insert error: %v", err)
+			}
+
+			backup_job := types.BackupServerJob(node, server, backup)
+			err = w.repos.JobRepo.Insert(backup_job)
+			if err != nil {
+				return fmt.Errorf("backup-job insert error: %v", err)
+			}
+
+			jd.BackupJobIDs = append(jd.BackupJobIDs, backup_job.ID)
+		}
+
+		err = job.SetData(jd)
+		if err != nil {
+			return fmt.Errorf("could not set job data: %v", err)
+		}
+		job.Step = 1
+		job.Message = fmt.Sprintf("waiting for %d backup(s) to finish", len(jd.BackupJobIDs))
+		job.NextRun = time.Now().Add(5 * time.Second).Unix()
+
+	case 1: // wait for backup jobs to finish
+
+		done_count := 0
+		for _, backup_job_id := range jd.BackupJobIDs {
+			backup_job, err := w.repos.JobRepo.GetByID(backup_job_id)
+			if err != nil {
+				return fmt.Errorf("could not get backup job %s: %v", backup_job_id, err)
+			}
+			switch backup_job.State {
+			case types.JobStateDoneFailure:
+				return fmt.Errorf("backup-job failed: %s", backup_job_id)
+			case types.JobStateDoneSuccess:
+				done_count++
 			}
 		}
-	}
 
-	if node.ExternalID != "" {
-		err = w.hcc.DeleteServer(node.ExternalID)
-		if err != nil {
-			logrus.WithFields(logrus.Fields{
-				"ExternalID": node.ExternalID,
-			}).Warn("Server instance not found, not deleting anything")
+		if done_count == len(jd.BackupJobIDs) {
+			job.Message = "Backups done"
+			job.Step = 2
+		} else {
+			job.Message = fmt.Sprintf("Backups: %d/%d done", done_count, len(jd.BackupJobIDs))
 		}
-		node.ExternalID = ""
+
+		job.NextRun = time.Now().Add(5 * time.Second).Unix()
+
+	case 2: // remove everything
+		for _, server := range servers {
+			// remove CNAME record
+			if server.ExternalCNAMEDNSID != "" {
+				err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
+				if err != nil && err != hetzner_dns.ErrRecordNotFound {
+					return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
+				}
+
+				server.ExternalCNAMEDNSID = ""
+				server.State = types.MinetestServerStateDecommissioned
+				err = w.repos.MinetestServerRepo.Update(server)
+				if err != nil {
+					return fmt.Errorf("could not update server entry '%s': %v", server.ID, err)
+				}
+			}
+		}
+
+		if node.ExternalID != "" {
+			err = w.hcc.DeleteServer(node.ExternalID)
+			if err != nil {
+				logrus.WithFields(logrus.Fields{
+					"ExternalID": node.ExternalID,
+				}).Warn("Server instance not found, not deleting anything")
+			}
+			node.ExternalID = ""
+			err = w.repos.UserNodeRepo.Update(node)
+			if err != nil {
+				return fmt.Errorf("could not update usernode: %v", err)
+			}
+		}
+
+		if node.ExternalIPv4DNSID != "" {
+			err = w.hdc.DeleteRecord(node.ExternalIPv4DNSID)
+			if err != nil && err != hetzner_dns.ErrRecordNotFound {
+				return fmt.Errorf("could not remove A-record: %v", err)
+			}
+			node.ExternalIPv4DNSID = ""
+			err = w.repos.UserNodeRepo.Update(node)
+			if err != nil {
+				return fmt.Errorf("could not update usernode: %v", err)
+			}
+		}
+
+		if node.ExternalIPv6DNSID != "" {
+			err = w.hdc.DeleteRecord(node.ExternalIPv6DNSID)
+			if err != nil && err != hetzner_dns.ErrRecordNotFound {
+				return fmt.Errorf("could not remove AAAA-record: %v", err)
+			}
+			node.ExternalIPv6DNSID = ""
+			err = w.repos.UserNodeRepo.Update(node)
+			if err != nil {
+				return fmt.Errorf("could not update usernode: %v", err)
+			}
+		}
+
+		w.core.AddAuditLog(&types.AuditLog{
+			Type:       types.AuditLogNodeRemoved,
+			UserID:     node.UserID,
+			UserNodeID: &node.ID,
+		})
+
+		notify.Send(&notify.NtfyNotification{
+			Title:    fmt.Sprintf("Node removed by %s (Type: %s)", user.Name, nt.Name),
+			Message:  fmt.Sprintf("User: %s, Node-type %s, Name: %s", user.Name, nt.Name, node.Name),
+			Priority: 3,
+			Tags:     []string{"computer", "x"},
+		}, true)
+
+		node.State = types.UserNodeStateDecommissioned
+		job.State = types.JobStateDoneSuccess
+
 		err = w.repos.UserNodeRepo.Update(node)
 		if err != nil {
-			return fmt.Errorf("could not update usernode: %v", err)
+			return fmt.Errorf("could not update usernode before finish: %v", err)
 		}
+
+		job.State = types.JobStateDoneSuccess
+		job.ProgressPercent = 100
+		job.Message = "done"
 	}
 
-	if node.ExternalIPv4DNSID != "" {
-		err = w.hdc.DeleteRecord(node.ExternalIPv4DNSID)
-		if err != nil && err != hetzner_dns.ErrRecordNotFound {
-			return fmt.Errorf("could not remove A-record: %v", err)
-		}
-		node.ExternalIPv4DNSID = ""
-		err = w.repos.UserNodeRepo.Update(node)
-		if err != nil {
-			return fmt.Errorf("could not update usernode: %v", err)
-		}
-	}
-
-	if node.ExternalIPv6DNSID != "" {
-		err = w.hdc.DeleteRecord(node.ExternalIPv6DNSID)
-		if err != nil && err != hetzner_dns.ErrRecordNotFound {
-			return fmt.Errorf("could not remove AAAA-record: %v", err)
-		}
-		node.ExternalIPv6DNSID = ""
-		err = w.repos.UserNodeRepo.Update(node)
-		if err != nil {
-			return fmt.Errorf("could not update usernode: %v", err)
-		}
-	}
-
-	w.core.AddAuditLog(&types.AuditLog{
-		Type:       types.AuditLogNodeRemoved,
-		UserID:     node.UserID,
-		UserNodeID: &node.ID,
-	})
-
-	notify.Send(&notify.NtfyNotification{
-		Title:    fmt.Sprintf("Node removed by %s (Type: %s)", user.Name, nt.Name),
-		Message:  fmt.Sprintf("User: %s, Node-type %s, Name: %s", user.Name, nt.Name, node.Name),
-		Priority: 3,
-		Tags:     []string{"computer", "x"},
-	}, true)
-
-	node.State = types.UserNodeStateDecommissioned
-	job.State = types.JobStateDoneSuccess
-
-	return w.repos.UserNodeRepo.Update(node)
+	return nil
 }
