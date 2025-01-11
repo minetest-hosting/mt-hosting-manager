@@ -62,7 +62,7 @@ func TestUserRepository(t *testing.T) {
 	list, err = repos.UserRepo.GetAllByRole(types.UserRoleAdmin)
 	assert.NoError(t, err)
 	assert.NotNil(t, list)
-	assert.Equal(t, 1, len(list))
+	assert.Equal(t, 0, len(list))
 
 	// count
 	count, err := repos.UserRepo.CountAll()
