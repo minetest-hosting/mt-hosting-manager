@@ -123,6 +123,11 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 
 	case 2: // remove everything
 		for _, server := range servers {
+			if server.State != types.MinetestServerStateRunning {
+				// server is already removed
+				continue
+			}
+
 			err = w.removeServer(node, server, false) // no need to remove data
 			if err != nil {
 				return fmt.Errorf("error removing server '%s': %v", server.ID, err)
