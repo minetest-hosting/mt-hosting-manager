@@ -53,6 +53,7 @@ export default {
 					cl["table-danger"] = true;
 					break;
 			}
+			return cl;
 		}
 	},
 	template: /*html*/`
