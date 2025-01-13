@@ -3,11 +3,13 @@ package worker
 import (
 	"fmt"
 	"mt-hosting-manager/api/hetzner_dns"
+	"mt-hosting-manager/core"
 	"mt-hosting-manager/types"
+	"mt-hosting-manager/worker/server_setup"
 	"time"
 )
 
-func (w *Worker) ServerPrepareSetup(job *types.Job, node *types.UserNode, server *types.MinetestServer) error {
+func (w *Worker) serverPrepareSetup(node *types.UserNode, server *types.MinetestServer) error {
 
 	server.State = types.MinetestServerStateProvisioning
 	err := w.repos.MinetestServerRepo.Update(server)
@@ -53,6 +55,66 @@ func (w *Worker) ServerPrepareSetup(job *types.Job, node *types.UserNode, server
 
 	// dns propagation time (LE has issues with really _fresh_ records)
 	time.Sleep(20 * time.Second)
+
+	return nil
+}
+
+// removes a server instance and optionally removes all the containing data
+func (w *Worker) removeServer(node *types.UserNode, server *types.MinetestServer, cleanup_data bool) error {
+	server.State = types.MinetestServerStateRemoving
+	err := w.repos.MinetestServerRepo.Update(server)
+	if err != nil {
+		return fmt.Errorf("server entity update error: %v", err)
+	}
+
+	if server.ExternalCNAMEDNSID != "" {
+		err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
+		if err != nil {
+			return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
+		}
+		server.ExternalCNAMEDNSID = ""
+		err = w.repos.MinetestServerRepo.Update(server)
+		if err != nil {
+			return fmt.Errorf("could not update server entry '%s': %v", server.ID, err)
+		}
+	}
+
+	if cleanup_data {
+		client, err := core.TrySSHConnection(node)
+		if err != nil {
+			return err
+		}
+
+		// remove potentially running services
+		_, _, err = core.SSHExecute(client, fmt.Sprintf("docker rm -f %s || true", server_setup.GetEngineName(server)))
+		if err != nil {
+			return fmt.Errorf("could not stop running service: %v", err)
+		}
+
+		basedir := server_setup.GetBaseDir(server)
+		_, _, err = core.SSHExecute(client, fmt.Sprintf("cd %s && docker-compose down -v", basedir))
+		if err != nil {
+			return fmt.Errorf("could not run docker-compose down: %v", err)
+		}
+
+		_, _, err = core.SSHExecute(client, fmt.Sprintf("rm -rf %s", basedir))
+		if err != nil {
+			return fmt.Errorf("could not run remove data-dir '%s': %v", basedir, err)
+		}
+	}
+
+	server.State = types.MinetestServerStateDecommissioned
+	err = w.repos.MinetestServerRepo.Update(server)
+	if err != nil {
+		return fmt.Errorf("server entity update error (decommissioned): %v", err)
+	}
+
+	w.core.AddAuditLog(&types.AuditLog{
+		Type:             types.AuditLogServerRemoved,
+		UserID:           node.UserID,
+		UserNodeID:       &node.ID,
+		MinetestServerID: &server.ID,
+	})
 
 	return nil
 }

@@ -123,19 +123,9 @@ func (w *Worker) NodeDestroy(job *types.Job) error {
 
 	case 2: // remove everything
 		for _, server := range servers {
-			// remove CNAME record
-			if server.ExternalCNAMEDNSID != "" {
-				err = w.hdc.DeleteRecord(server.ExternalCNAMEDNSID)
-				if err != nil && err != hetzner_dns.ErrRecordNotFound {
-					return fmt.Errorf("could not remove cname (id: %s) of server %s: %v", server.ExternalCNAMEDNSID, server.DNSName, err)
-				}
-
-				server.ExternalCNAMEDNSID = ""
-				server.State = types.MinetestServerStateDecommissioned
-				err = w.repos.MinetestServerRepo.Update(server)
-				if err != nil {
-					return fmt.Errorf("could not update server entry '%s': %v", server.ID, err)
-				}
+			err = w.removeServer(node, server, false) // no need to remove data
+			if err != nil {
+				return fmt.Errorf("error removing server '%s': %v", server.ID, err)
 			}
 		}
 

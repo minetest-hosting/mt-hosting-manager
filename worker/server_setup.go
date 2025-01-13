@@ -24,7 +24,7 @@ func (w *Worker) ServerSetup(job *types.Job) error {
 			MinetestServerID: &server.ID,
 		})
 
-		err = w.ServerPrepareSetup(job, node, server)
+		err = w.serverPrepareSetup(node, server)
 		if err != nil {
 			return err
 		}
