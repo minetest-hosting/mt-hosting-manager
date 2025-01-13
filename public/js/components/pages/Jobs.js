@@ -45,13 +45,8 @@ export default {
 		},
 		rowClass: function(job) {
 			const cl = {};
-			switch (job.state) {
-				case 'DONE_SUCCESS':
-					cl["table-success"] = true;
-					break;
-				case 'DONE_FAILURE':
-					cl["table-danger"] = true;
-					break;
+			if (job.state == 'DONE_FAILURE') {
+				cl["table-danger"] = true;
 			}
 			return cl;
 		}
