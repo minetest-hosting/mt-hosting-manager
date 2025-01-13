@@ -24,13 +24,13 @@ export default {
 			This section explains the relationship between <i class="fa fa-server"></i> nodes and <i class="fa fa-list"></i> servers
 		</p>
 		<p>
-			A node is a container for several (minetest) servers.
-			From a financial standpoint only the node is billed, you <i>could</i> host as many minetest-servers on it as you like
+			A node is a container for several (minetest/luanti) servers.
+			From a financial standpoint only the node is billed, you <i>could</i> host as many luanti-servers on it as you like
 			but the limiting factor will always be the available RAM and CPU resources.
 			There are several types of nodes, each with their own resources.
 		</p>
 		<p>
-			<b>Note:</b> ports (usually 30000+ for minetest) can only be used once on each node (see below).
+			<b>Note:</b> ports (usually 30000+ for luanti) can only be used once on each node (see below).
 		</p>
 		<p>
 			Below is an example how multiple servers are hosted on several nodes

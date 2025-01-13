@@ -33,16 +33,16 @@ func (c *Core) SendMail(to, subject, body string) error {
 
 func (c *Core) SendBalanceWarningMail(user *types.User) error {
 	body := strings.Builder{}
-	body.WriteString(fmt.Sprintf("Warning: your minetest hosting balance is low (EUR %.2f)\n", float64(user.Balance)/100))
+	body.WriteString(fmt.Sprintf("Warning: your luanti hosting balance is low (EUR %.2f)\n", float64(user.Balance)/100))
 	body.WriteString("Your nodes will be automatically removed when the balance is reaching zero.")
 
-	return c.SendMail(user.Mail, "Minetest hosting balance warning", body.String())
+	return c.SendMail(user.Mail, "Luanti hosting balance warning", body.String())
 }
 
 func (c *Core) SendBalanceZeroMail(user *types.User) error {
 	body := strings.Builder{}
-	body.WriteString(fmt.Sprintf("Warning: your minetest hosting balance has reached EUR %.2f\n", float64(user.Balance)/100))
+	body.WriteString(fmt.Sprintf("Warning: your luanti hosting balance has reached EUR %.2f\n", float64(user.Balance)/100))
 	body.WriteString("Your nodes will now be automatically removed.")
 
-	return c.SendMail(user.Mail, "Minetest hosting removal notice", body.String())
+	return c.SendMail(user.Mail, "Luanti hosting removal notice", body.String())
 }

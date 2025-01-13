@@ -19,14 +19,14 @@ export default {
 	template: /*html*/`
 	<card-layout title="Home" icon="home" :breadcrumb="breadcrumb">
 		<div class="text-center">
-			<h4>Minetest hosting</h4>
-			<img src="assets/minetest-hosting-600px.png" class="img img-rounded"/>
+			<h4>Luanti hosting</h4>
+			<img src="assets/luanti-hosting-600px.png" class="img img-rounded"/>
 			<hr/>
 			<router-link class="btn btn-secondary" to="/pricing">
 				<i class="fa fa-money-bill"></i> Pricing
 			</router-link>
 			&nbsp;
-			<a class="btn btn-secondary" href="mailto:hosting@minetest.ch">
+			<a class="btn btn-secondary" href="mailto:hosting@luanti.ch">
 				<i class="fa fa-envelope"></i> Contact
 			</a>
 			&nbsp;
@@ -35,7 +35,7 @@ export default {
 				Join the discord server
 			</a>
 			&nbsp;
-			<a class="btn btn-outline-secondary" href="https://github.com/minetest-hosting/mt-hosting-manager" target="new">
+			<a class="btn btn-outline-secondary" href="https://github.com/luanti-hosting/mt-hosting-manager" target="new">
 				<i class="fa-brands fa-github"></i> Source
 			</a>
 			&nbsp;

@@ -114,7 +114,7 @@ export default {
                         &nbsp;
                         <div class="alert alert-primary">
                             <i class="fa-solid fa-circle-info"></i>
-							<b>Note:</b> For refunds please contact the support via <a :href="'mailto:hosting@minetest.ch?subject=Refund,name:' + profile.name + ',userid:' + profile.id">mail</a>
+							<b>Note:</b> For refunds please contact the support via <a :href="'mailto:hosting@luanti.ch?subject=Refund,name:' + profile.name + ',userid:' + profile.id">mail</a>
 						</div>
                     </td>
                 </tr>

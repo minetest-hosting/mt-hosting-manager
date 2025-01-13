@@ -115,7 +115,7 @@ export default {
             <div class="col-12">
                 <div class="alert alert-info">
                     <i class="fa-solid fa-info"></i>
-                    <b>Note:</b> A node can contain multiple minetest servers, use a group-name as alias
+                    <b>Note:</b> A node can contain multiple minetest/luanti servers, use a group-name as alias
                 </div>
             </div>
             <div class="col-12">

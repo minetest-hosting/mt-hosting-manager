@@ -1,11 +1,11 @@
 
-# Minetest hosting orchestrator
+# Luanti hosting orchestrator
 
-![](https://github.com/minetest-hosting/mt-hosting-manager/workflows/build/badge.svg)
+![](https://github.com/luanti-hosting/mt-hosting-manager/workflows/build/badge.svg)
 
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/minetest-hosting/mt-hosting-manager)
-[![Go Report Card](https://goreportcard.com/badge/github.com/minetest-hosting/mt-hosting-manager)](https://goreportcard.com/report/github.com/minetest-hosting/mt-hosting-manager)
-[![Coverage Status](https://coveralls.io/repos/github/minetest-hosting/mt-hosting-manager/badge.svg)](https://coveralls.io/github/minetest-hosting/mt-hosting-manager)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/luanti-hosting/mt-hosting-manager)
+[![Go Report Card](https://goreportcard.com/badge/github.com/luanti-hosting/mt-hosting-manager)](https://goreportcard.com/report/github.com/luanti-hosting/mt-hosting-manager)
+[![Coverage Status](https://coveralls.io/repos/github/luanti-hosting/mt-hosting-manager/badge.svg)](https://coveralls.io/github/luanti-hosting/mt-hosting-manager)
 
 
 State: **WIP**

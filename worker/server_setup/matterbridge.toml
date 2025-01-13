@@ -20,7 +20,7 @@ JoinDelay=2000
 #UseUserName=false
 #AllowMention=["users"]
 
-[api.minetest]
+[api.luanti]
 BindAddress="0.0.0.0:4242"
 Token="my-token"
 Buffer=1000
@@ -31,10 +31,10 @@ name="main"
 enable=true
 [[gateway.inout]]
 account="irc.Libera"
-channel="#minetest-hosting"
+channel="#luanti-hosting"
 #[[gateway.inout]]
 #account = "discord.Discord"
 #channel="main"
 [[gateway.inout]]
-account="api.minetest"
+account="api.luanti"
 channel="api"
