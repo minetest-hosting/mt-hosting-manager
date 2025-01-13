@@ -22,6 +22,7 @@ import Overview from './components/pages/Overview.js';
 import BackupList from './components/pages/BackupList.js';
 import Users from './components/pages/Users.js';
 import UserDetail from './components/pages/UserDetail.js';
+import Coupon from './components/pages/Coupon.js';
 
 export default [{
 	path: "/", component: Start
@@ -90,4 +91,7 @@ export default [{
 },{
 	path: "/backup", component: BackupList,
 	meta: { loggedIn: true }
+},{
+	path: "/coupon", component: Coupon,
+	meta: { requiredRole: "ADMIN" }
 }];

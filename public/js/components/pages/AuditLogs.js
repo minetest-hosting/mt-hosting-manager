@@ -54,8 +54,8 @@ export default {
 		"to": "search",
 		"user": "search"
 	},
-	created: function() {
-		get_profile().then(u => this.user = u);
+	created: async function() {
+		this.user = await get_profile();
 	},
 	template: /*html*/`
 	<card-layout title="Audit-Logs" icon="rectangle-list" :breadcrumb="breadcrumb" fullwidth="true">

@@ -139,6 +139,10 @@ func (api *Api) Setup() {
 	admin_api.HandleFunc("/exchange_rate/{currency}", api.Secure(api.DeleteExchangeRate)).Methods(http.MethodDelete)
 
 	admin_api.HandleFunc("/coupon", api.Secure(api.CreateCoupon)).Methods(http.MethodPost)
+	admin_api.HandleFunc("/coupon", api.Secure(api.GetCoupons)).Methods(http.MethodGet)
+	admin_api.HandleFunc("/coupon/{id}", api.Secure(api.GetCoupon)).Methods(http.MethodGet)
+	admin_api.HandleFunc("/coupon/{id}/users", api.Secure(api.GetCouponUsers)).Methods(http.MethodGet)
+	admin_api.HandleFunc("/coupon/{id}", api.Secure(api.UpdateCoupon)).Methods(http.MethodPost)
 
 	// oauth
 	if api.cfg.GithubOauthConfig.ClientID != "" {

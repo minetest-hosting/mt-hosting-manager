@@ -91,6 +91,11 @@ export default {
 							<i class="fa fa-object-group"></i> Backups
 						</router-link>
 					</li>
+					<li class="nav-item" v-if="has_role('ADMIN')">
+						<router-link to="/coupon" class="nav-link">
+							<i class="fa fa-ticket"></i> Coupon
+						</router-link>
+					</li>
 					<li class="nav-item" v-if="is_logged_in">
 						<router-link to="/audit-logs" class="nav-link">
 							<i class="fa fa-rectangle-list"></i> Audit-logs

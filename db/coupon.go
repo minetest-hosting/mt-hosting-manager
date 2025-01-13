@@ -37,6 +37,10 @@ func (r *CouponRepository) GetAll() ([]*types.Coupon, error) {
 	return FindMulti[types.Coupon](r.g.Where(types.Coupon{}))
 }
 
+func (r *CouponRepository) GetRedeemedCoupons(id string) ([]*types.RedeemedCoupon, error) {
+	return FindMulti[types.RedeemedCoupon](r.g.Where(types.RedeemedCoupon{CouponID: id}))
+}
+
 func (r *CouponRepository) Delete(id string) error {
 	return r.g.Delete(types.Coupon{ID: id}).Error
 }

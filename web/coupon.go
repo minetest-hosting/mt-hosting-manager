@@ -94,3 +94,69 @@ func (a *Api) CreateCoupon(w http.ResponseWriter, r *http.Request, c *types.Clai
 	err = a.repos.CouponRepo.Insert(coupon)
 	Send(w, coupon, err)
 }
+
+func (a *Api) UpdateCoupon(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	coupon, err := a.repos.CouponRepo.GetByID(id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get coupon error: %v", err))
+		return
+	}
+	if coupon == nil {
+		SendError(w, http.StatusNotFound, fmt.Errorf("coupon not found: '%s'", id))
+		return
+	}
+
+	updated_coupon := &types.Coupon{}
+	err = json.NewDecoder(r.Body).Decode(updated_coupon)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("json error: %v", err))
+		return
+	}
+
+	// apply modifiable fields
+	coupon.Name = updated_coupon.Name
+	coupon.ValidUntil = updated_coupon.ValidUntil
+	coupon.ValidFrom = updated_coupon.ValidFrom
+	coupon.UseMax = updated_coupon.UseMax
+
+	err = a.repos.CouponRepo.Update(coupon)
+	Send(w, coupon, err)
+}
+
+func (a *Api) GetCoupon(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	coupon, err := a.repos.CouponRepo.GetByID(id)
+	Send(w, coupon, err)
+}
+
+func (a *Api) GetCouponUsers(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	redeemed_coupons, err := a.repos.CouponRepo.GetRedeemedCoupons(id)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("get redeemed coupons error: %v", err))
+		return
+	}
+
+	user_list := []*types.User{}
+	for _, rc := range redeemed_coupons {
+		user, err := a.repos.UserRepo.GetByID(rc.UserID)
+		if err != nil {
+			SendError(w, 500, fmt.Errorf("get redeemed coupons error: %v", err))
+			return
+		}
+
+		user.RemoveSensitiveFields()
+		user_list = append(user_list, user)
+	}
+
+	Send(w, user_list, err)
+}
+
+func (a *Api) GetCoupons(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	list, err := a.repos.CouponRepo.GetAll()
+	Send(w, list, err)
+}
