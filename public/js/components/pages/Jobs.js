@@ -32,16 +32,27 @@ export default {
 	},
 	methods: {
 		format_time: format_time,
-		update: function() {
-			get_all().then(j => this.jobs = j);
+		update: async function() {
+			this.jobs = await get_all();
 		},
-		retry: function(job) {
-			retry(job)
-			.then(() => this.update());
+		retry: async function(job) {
+			await retry(job);
+			await this.update();
 		},
-		remove: function(job) {
-			remove(job)
-			.then(() => this.update());
+		remove: async function(job) {
+			await remove(job);
+			await this.update();
+		},
+		rowClass: function(job) {
+			const cl = {};
+			switch (job.state) {
+				case 'DONE_SUCCESS':
+					cl["table-success"] = true;
+					break;
+				case 'DONE_FAILURE':
+					cl["table-danger"] = true;
+					break;
+			}
 		}
 	},
 	template: /*html*/`
@@ -62,7 +73,7 @@ export default {
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="job in jobs">
+				<tr v-for="job in jobs" v-bind:class="rowClass(job)">
 					<td>{{job.id}}</td>
 					<td>{{job.type}}</td>
 					<td>{{format_time(job.created)}}</td>
@@ -84,11 +95,11 @@ export default {
 					<td>{{job.message}}</td>
 					<td>
 						<div class="btn-group">
-							<a class="btn btn-sm btn-outline-primary" v-on:click="retry(job)">
+							<a class="btn btn-sm btn-outline-primary" v-on:click="retry(job)" v-if="job.state == 'DONE_FAILURE'">
 								<i class="fa-solid fa-rotate-right"></i>
 								Retry
 							</a>
-							<a class="btn btn-sm btn-outline-danger" v-on:click="remove(job)">
+							<a class="btn btn-sm btn-outline-danger" v-on:click="remove(job)" v-if="job.state != 'RUNNING'">
 								<i class="fa-solid fa-trash"></i>
 								Remove
 							</a>

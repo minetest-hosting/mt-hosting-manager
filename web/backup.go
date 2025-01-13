@@ -119,6 +119,38 @@ func (a *Api) GetBackup(w http.ResponseWriter, r *http.Request, c *types.Claims)
 	Send(w, b, nil)
 }
 
+func (a *Api) UpdateBackup(w http.ResponseWriter, r *http.Request, c *types.Claims) {
+	vars := mux.Vars(r)
+	b, err := a.repos.BackupRepo.GetByID(vars["id"])
+	if err != nil {
+		SendError(w, 500, err)
+		return
+	}
+	if b == nil {
+		SendError(w, 404, fmt.Errorf("backup not found"))
+		return
+	}
+
+	if b.UserID != c.UserID && c.Role != types.UserRoleAdmin {
+		SendError(w, http.StatusUnauthorized, fmt.Errorf("unauthorized"))
+		return
+	}
+
+	updated_backup := &types.Backup{}
+	err = json.NewDecoder(r.Body).Decode(updated_backup)
+	if err != nil {
+		SendError(w, 500, fmt.Errorf("json error: %v", err))
+		return
+	}
+
+	// update allowed fields
+	b.Comment = updated_backup.Comment
+	b.Expires = updated_backup.Expires
+
+	err = a.repos.BackupRepo.Update(b)
+	Send(w, b, err)
+}
+
 func (a *Api) DownloadBackup(w http.ResponseWriter, r *http.Request, c *types.Claims) {
 	vars := mux.Vars(r)
 	b, err := a.repos.BackupRepo.GetByID(vars["id"])

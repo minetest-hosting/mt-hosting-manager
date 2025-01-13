@@ -18,6 +18,7 @@ type Backup struct {
 	Created          int64       `json:"created" gorm:"column:created"`
 	Expires          int64       `json:"expires" gorm:"column:expires"`
 	Size             int64       `json:"size" gorm:"column:size"`
+	Comment          string      `json:"comment" gorm:"column:comment"`
 }
 
 func (m *Backup) TableName() string {

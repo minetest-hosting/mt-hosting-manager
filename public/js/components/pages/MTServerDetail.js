@@ -70,7 +70,10 @@ export default {
 		},
 		create_backup: async function() {
 			this.backup_scheduled = true;
-			await create_backup({ minetest_server_id: this.id });
+			await create_backup({
+				minetest_server_id: this.id,
+				expires: Math.floor(Date.now() / 1000) + (3600 * 24 * 365)
+			});
 		}
 	},
 	computed: {
