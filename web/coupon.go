@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"mt-hosting-manager/notify"
 	"mt-hosting-manager/types"
 	"net/http"
 	"time"
@@ -81,6 +82,13 @@ func (a *Api) RedeemCoupon(w http.ResponseWriter, r *http.Request, c *types.Clai
 
 	// all done
 	Send(w, RedeemStatus{Success: true}, nil)
+
+	notify.Send(&notify.NtfyNotification{
+		Title:    fmt.Sprintf("Coupon '%s' used by %s (%.2f)", coupon.Code, c.Name, float64(coupon.Value)/100),
+		Message:  fmt.Sprintf("User: %s\nEUR %.2f\nCode: %s\nUses left: %d", c.Name, float64(coupon.Value)/100, coupon.Code, coupon.UseMax-coupon.UseCount),
+		Priority: 3,
+		Tags:     []string{"ticket"},
+	}, true)
 }
 
 func (a *Api) CreateCoupon(w http.ResponseWriter, r *http.Request, c *types.Claims) {
